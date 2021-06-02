@@ -1,0 +1,50 @@
+---------------------------------------------------------------------------
+
+1º período EC:
+https://www.dropbox.com/sh/o0urkaiqf95m8tp/AAD6B_g_aBKwzRfF_r1uTj4-a?dl=0
+
+2ª período EC:
+https://www.dropbox.com/sh/d0c08np307neuco/AACsqBHc-17wYrdmXfnZiTYRa?dl=0
+
+3º período EC:
+https://www.dropbox.com/sh/0drcwesxz7e6mnb/AABR_X54UJRlmkrp-ydgBfSPa?dl=0
+
+4º período EC:
+https://www.dropbox.com/sh/mr1108mmaei9t6d/AAAHF7I92gNwjK2IHup38eoAa?dl=0
+
+5º período EC:
+https://www.dropbox.com/sh/bx09oxbuy7tce1f/AABfdIsLok-KkZzrAmkCsubxa?dl=0
+
+6º período EC:
+https://www.dropbox.com/sh/7v01bn42pv8xy4k/AADqQyWfVbgrXGG3Nrtuj2tTa?dl=0
+
+7º período EC:
+https://www.dropbox.com/sh/538ttx8mvpb3tux/AAABYkRFZRxBhXwEV9Ku5M2Oa?dl=0
+
+---------------------------------------------------------------------------
+
+Link de eng. eletrônica:
+https://www.dropbox.com/sh/0lb67bhed7kk3er/AADBnQ1Fu_2M-y6Dt4xwK4nTa?dl=0
+
+---------------------------------------------------------------------------
+
+Link de CC:
+https://www.dropbox.com/sh/tgd67gmw94kirxy/XHcUQ-tpEh
+
+---------------------------------------------------------------------------
+
+Link do GuiaUFPE - EC
+
+https://drive.google.com/drive/folders/0B1ySdk9_ZqcMQndSQ2tfWGZOcDA
+
+---------------------------------------------------------------------------
+
+Link PETLib
+
+https://drive.google.com/drive/folders/1r8wIE118BmVVacs5f-09GhthWHVvYe_6
+
+---------------------------------------------------------------------------
+
+GoPortableIDE:
+
+https://github.com/josephspurrier/golang-portable-windows
