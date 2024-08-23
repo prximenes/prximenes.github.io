@@ -23,15 +23,25 @@ body {
 
 .container {
     background-color: rgba(255, 255, 255, 0.9);
-    padding: 50px;
+    padding: 60px; /* Aumenta o padding para mais espaço interno */
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-    width: 80%;
-    min-height: 60vh; /* Define a altura mínima como 60% da altura da tela */
+    max-width: 40%; /* Aumentei a largura máxima para se ajustar melhor em telas pequenas */
+    width: 90%; /* Ajuste a largura para 90% para uma melhor adaptação */
+    min-height: 60vh; /* Mantém a altura mínima como 60% da altura da tela */
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin: 0 auto; /* Centraliza o container horizontalmente */
+}
+
+/* Adiciona uma media query para telas menores */
+@media (max-width: 600px) {
+    .container {
+        padding: 15px; /* Reduz o padding em telas pequenas */
+        max-width: 95%; /* Ajusta a largura máxima para telas muito pequenas */
+        width: 95%; /* Ajusta a largura para 95% para se ajustar melhor em telas pequenas */
+    }
 }
 
 .content {
