@@ -88,6 +88,20 @@ p {
     right: 20px;
 }
 
+/* Adiciona uma media query para telas menores */
+@media (max-width: 600px) {
+    .theme-button {
+        position: fixed; /* Faz com que o botão fique fixo na tela */
+        top: 10px; /* Ajuste a posição superior para evitar sobreposição */
+        right: 10px; /* Ajuste a posição lateral para melhor espaçamento */
+        z-index: 1000; /* Garante que o botão fique acima de outros elementos */
+    }
+
+    .container {
+        margin-top: 60px; /* Adiciona uma margem superior para garantir que o conteúdo não fique coberto pelo botão */
+    }
+}
+
 #toggle-button {
     padding: 10px 20px;
     font-size: 14px;
