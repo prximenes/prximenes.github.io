@@ -34,6 +34,7 @@ body {
     justify-content: center;
     margin: 0 auto; /* Centraliza o container horizontalmente */
 }
+
 /* Adiciona uma media query para telas menores */
 @media (max-width: 600px) {
     .container {
@@ -50,7 +51,7 @@ body {
 h1 {
     font-size: 32px;
     margin-bottom: 10px;
-    color: #7e57c2;
+    color: #e53935; /* Cor vermelha para o título */
 }
 
 p {
@@ -73,11 +74,11 @@ p {
     transition: background-color 0.3s ease, color 0.3s ease;
     padding: 10px;
     border-radius: 5px;
-    background-color: #7e57c2;
+    background-color: #e53935; /* Cor vermelha para os links */
 }
 
 .links a:hover {
-    background-color: #5e35b1;
+    background-color: #c62828; /* Vermelho mais escuro ao passar o mouse */
     color: #ffffff;
 }
 
@@ -104,7 +105,7 @@ p {
 #toggle-button {
     padding: 10px 20px;
     font-size: 14px;
-    background-color: #7e57c2;
+    background-color: #e53935; /* Cor vermelha para o botão */
     color: #ffffff;
     border: none;
     border-radius: 5px;
@@ -113,5 +114,5 @@ p {
 }
 
 #toggle-button:hover {
-    background-color: #5e35b1;
+    background-color: #c62828; /* Vermelho mais escuro ao passar o mouse */
 }
