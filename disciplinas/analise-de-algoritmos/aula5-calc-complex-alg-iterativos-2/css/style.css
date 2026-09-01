@@ -1,0 +1,946 @@
+/* ============================================================
+   AULA 5: ANÁLISE DE ALGORITMOS ITERATIVOS - PARTE 2
+   Tema LaTeX Beamer Warsaw Fiel para Reveal.js
+   Autor: Pedro Ximenes (UNICAP)
+   ============================================================ */
+
+:root {
+  /* Paleta Beamer Warsaw Oficial (Tema Claro) */
+  --warsaw-dark: #001f3f;
+  --warsaw-primary: #003366;
+  --warsaw-secondary: #174276;
+  --warsaw-light: #e8f0fe;
+  --warsaw-accent: #2563eb;
+  
+  /* Cores dos Blocos Beamer */
+  --block-header-bg: linear-gradient(180deg, #003366 0%, #153e75 100%);
+  --block-header-color: #ffffff;
+  --block-body-bg: #f0f4f9;
+  --block-body-border: #d0dbe8;
+  --block-body-color: #1a202c;
+
+  --example-header-bg: linear-gradient(180deg, #1b5e20 0%, #2e7d32 100%);
+  --example-header-color: #ffffff;
+  --example-body-bg: #f0faf0;
+  --example-body-border: #c8e6c9;
+  --example-body-color: #1a331b;
+
+  --alert-header-bg: linear-gradient(180deg, #88181e 0%, #a8232a 100%);
+  --alert-header-color: #ffffff;
+  --alert-body-bg: #fdf2f2;
+  --alert-body-border: #f8d7da;
+  --alert-body-color: #4a0f12;
+
+  /* Superfície geral */
+  --bg-main: #f8fafc;
+  --slide-bg: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+
+  /* Pseudocódigo */
+  --code-bg: #f8fafc;
+  --code-border: #cbd5e1;
+  --code-line-num: #94a3b8;
+  --code-keyword: #003366;
+  --code-comment: #15803d;
+  --code-var: #0f172a;
+  --code-num: #b45309;
+
+  /* Canvas / Simuladores */
+  --canvas-bg: #f8fafc;
+  --canvas-border: #cbd5e1;
+  --bar-default: #3b82f6;
+  --bar-comparing: #eab308;
+  --bar-sorted: #22c55e;
+  --bar-min: #ef4444;
+  --bar-active: #8b5cf6;
+}
+
+/* Modo Escuro */
+body.dark-mode {
+  --warsaw-dark: #070d18;
+  --warsaw-primary: #0f2b4c;
+  --warsaw-secondary: #1a3c66;
+  --warsaw-light: #1e293b;
+  --warsaw-accent: #38bdf8;
+
+  --block-header-bg: linear-gradient(180deg, #103159 0%, #1a4273 100%);
+  --block-header-color: #ffffff;
+  --block-body-bg: #0f1b2b;
+  --block-body-border: #1e3a5f;
+  --block-body-color: #e2e8f0;
+
+  --example-header-bg: linear-gradient(180deg, #144618 0%, #1e6324 100%);
+  --example-header-color: #ffffff;
+  --example-body-bg: #0d2111;
+  --example-body-border: #1a4b20;
+  --example-body-color: #e2e8f0;
+
+  --alert-header-bg: linear-gradient(180deg, #5c1115 0%, #7d191f 100%);
+  --alert-header-color: #ffffff;
+  --alert-body-bg: #260d10;
+  --alert-body-border: #52191e;
+  --alert-body-color: #fce7e7;
+
+  --bg-main: #0b0f17;
+  --slide-bg: #111827;
+  --text-main: #e2e8f0;
+  --text-muted: #94a3b8;
+  --border-color: #334155;
+
+  --code-bg: #090d14;
+  --code-border: #1e293b;
+  --code-line-num: #64748b;
+  --code-keyword: #38bdf8;
+  --code-comment: #4ade80;
+  --code-var: #f1f5f9;
+  --code-num: #fbbf24;
+
+  --canvas-bg: #0b0f17;
+  --canvas-border: #1e293b;
+}
+
+/* Reset e Base */
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  overflow: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ============================================================
+   ESTRUTURA FIXA WARSAW
+   ============================================================ */
+
+/* Cabeçalho Fixo Superior */
+#warsaw-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  font-size: 11px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  user-select: none;
+}
+
+.warsaw-section-bar {
+  background: var(--warsaw-dark);
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 16px;
+  height: 22px;
+  box-sizing: border-box;
+}
+
+.warsaw-sections-list {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.warsaw-sections-list::-webkit-scrollbar {
+  display: none;
+}
+
+.warsaw-sec-item {
+  color: #cbd5e1;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 1px 6px;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  font-weight: 500;
+}
+.warsaw-sec-item:hover {
+  color: #ffffff;
+  background: rgba(255,255,255,0.15);
+}
+.warsaw-sec-item.active {
+  color: #ffffff;
+  background: var(--warsaw-primary);
+  font-weight: 700;
+}
+
+.warsaw-tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme-toggle-btn {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #ffffff;
+  border-radius: 4px;
+  padding: 1px 7px;
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: background 0.2s ease;
+}
+.theme-toggle-btn:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+.warsaw-subsection-bar {
+  background: var(--warsaw-primary);
+  color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  padding: 2px 18px;
+  height: 20px;
+  box-sizing: border-box;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* Rodapé Fixo Inferior */
+#warsaw-footline {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 24px;
+  z-index: 1000;
+  display: grid;
+  grid-template-columns: 28% 46% 26%;
+  font-size: 11px;
+  color: #ffffff;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
+  user-select: none;
+}
+
+.foot-left {
+  background: var(--warsaw-dark);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.foot-mid {
+  background: var(--warsaw-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.foot-right {
+  background: var(--warsaw-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 14px;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.foot-btn {
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: white;
+  border-radius: 3px;
+  padding: 1px 6px;
+  font-size: 10px;
+  cursor: pointer;
+  line-height: 14px;
+}
+.foot-btn:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+/* ============================================================
+   CONTAINER DO REVEAL.JS (1024 x 768)
+   ============================================================ */
+
+.reveal-viewport {
+  background: var(--bg-main) !important;
+}
+
+.reveal {
+  font-family: inherit !important;
+  color: var(--text-main) !important;
+  font-size: 20px;
+}
+
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal .slides > section,
+.reveal .slides > section > section {
+  padding: 0 !important;
+  box-sizing: border-box;
+  width: 1024px !important;
+  height: 768px !important;
+  top: 0 !important;
+}
+
+/* Slide Container Interno com Margens e Scroll seguro */
+.beamer-slide {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 44px 28px 30px 28px; /* Espaço para cabeçalho e rodapé */
+  display: flex;
+  flex-direction: column;
+  background: var(--slide-bg);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Banner de Título do Slide */
+.slide-title-banner {
+  background: linear-gradient(180deg, var(--warsaw-primary) 0%, var(--warsaw-secondary) 100%);
+  color: #ffffff;
+  padding: 8px 18px;
+  margin: -4px -28px 16px -28px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+  border-radius: 0 0 6px 6px;
+}
+
+.slide-title-banner h2 {
+  font-size: 23px;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  letter-spacing: -0.2px;
+}
+
+.slide-title-banner .slide-subtitle {
+  font-size: 13px;
+  color: #cbd5e1;
+  margin-top: 2px;
+  font-weight: 400;
+}
+
+/* ============================================================
+   BLOCOS BEAMER OFICIAIS
+   ============================================================ */
+
+.block, .beamer-block,
+.exampleblock, .example-block,
+.alertblock, .alert-block {
+  margin: 10px 0 14px 0;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Bloco Padrão / Definição / Teorema */
+.block .block-title,
+.beamer-block .block-title {
+  background: var(--block-header-bg);
+  color: var(--block-header-color);
+  padding: 6px 14px;
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: -0.2px;
+}
+
+.block .block-content,
+.beamer-block .block-content {
+  background: var(--block-body-bg);
+  border: 1px solid var(--block-body-border);
+  border-top: none;
+  padding: 12px 16px;
+  color: var(--block-body-color);
+  font-size: 18px;
+  line-height: 1.45;
+  border-radius: 0 0 6px 6px;
+}
+
+/* Bloco Exemplo / Estudo de Caso */
+.exampleblock .block-title,
+.example-block .block-title {
+  background: var(--example-header-bg);
+  color: var(--example-header-color);
+  padding: 6px 14px;
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.exampleblock .block-content,
+.example-block .block-content {
+  background: var(--example-body-bg);
+  border: 1px solid var(--example-body-border);
+  border-top: none;
+  padding: 12px 16px;
+  color: var(--example-body-color);
+  font-size: 18px;
+  line-height: 1.45;
+  border-radius: 0 0 6px 6px;
+}
+
+/* Bloco Alerta / Complexidade Crítica */
+.alertblock .block-title,
+.alert-block .block-title {
+  background: var(--alert-header-bg);
+  color: var(--alert-header-color);
+  padding: 6px 14px;
+  font-weight: 700;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.alertblock .block-content,
+.alert-block .block-content {
+  background: var(--alert-body-bg);
+  border: 1px solid var(--alert-body-border);
+  border-top: none;
+  padding: 12px 16px;
+  color: var(--alert-body-color);
+  font-size: 18px;
+  line-height: 1.45;
+  border-radius: 0 0 6px 6px;
+}
+
+/* ============================================================
+   ESTILOS DE CONTEÚDO E TIPOGRAFIA
+   ============================================================ */
+
+.slide-body {
+  flex: 1;
+  font-size: 18.5px;
+  line-height: 1.5;
+  color: var(--text-main);
+}
+
+.slide-body p {
+  margin: 8px 0;
+}
+
+.slide-body ul, .slide-body ol {
+  margin: 8px 0 12px 24px;
+  padding: 0;
+}
+
+.slide-body li {
+  margin-bottom: 6px;
+  line-height: 1.45;
+}
+
+/* Destaques e Boxes Especiais */
+.math-highlight {
+  display: block;
+  text-align: center;
+  margin: 12px 0;
+  padding: 8px 16px;
+  background: rgba(0, 51, 102, 0.07);
+  border-left: 4px solid var(--warsaw-primary);
+  border-radius: 4px;
+  font-size: 20px;
+}
+
+body.dark-mode .math-highlight {
+  background: rgba(56, 189, 248, 0.1);
+  border-left-color: var(--warsaw-accent);
+}
+
+.boxed-result {
+  display: inline-block;
+  padding: 4px 14px;
+  border: 2px solid var(--warsaw-primary);
+  border-radius: 6px;
+  font-weight: bold;
+  background: var(--warsaw-light);
+  color: var(--warsaw-primary);
+  margin: 4px 0;
+}
+
+body.dark-mode .boxed-result {
+  border-color: var(--warsaw-accent);
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+}
+
+/* Tabelas Beamer (Estilo booktabs) */
+.beamer-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0 16px 0;
+  font-size: 17px;
+  background: var(--slide-bg);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.beamer-table th {
+  background: var(--warsaw-primary);
+  color: #ffffff;
+  padding: 8px 14px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid var(--warsaw-dark);
+}
+
+.beamer-table td {
+  padding: 7px 14px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.beamer-table tr:nth-child(even) {
+  background: rgba(0,0,0,0.02);
+}
+
+body.dark-mode .beamer-table tr:nth-child(even) {
+  background: rgba(255,255,255,0.03);
+}
+
+/* ============================================================
+   PSEUDOCÓDIGO COM NUMERAÇÃO E DESTAQUE
+   ============================================================ */
+
+.code-container {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin: 10px 0;
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, Monaco, monospace;
+  font-size: 14.5px;
+  line-height: 1.45;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+  overflow-x: auto;
+}
+
+.code-line {
+  display: flex;
+  white-space: pre;
+}
+
+.line-num {
+  width: 28px;
+  color: var(--code-line-num);
+  text-align: right;
+  padding-right: 12px;
+  user-select: none;
+  font-size: 12.5px;
+  opacity: 0.8;
+}
+
+.line-content {
+  flex: 1;
+  color: var(--code-var);
+}
+
+.kw {
+  color: var(--code-keyword);
+  font-weight: bold;
+}
+
+.cm {
+  color: var(--code-comment);
+  font-style: italic;
+}
+
+.fn {
+  color: #7c3aed;
+  font-weight: 600;
+}
+body.dark-mode .fn { color: #a78bfa; }
+
+.num {
+  color: var(--code-num);
+}
+
+.op {
+  color: #db2777;
+  font-weight: 600;
+}
+body.dark-mode .op { color: #f472b6; }
+
+/* ============================================================
+   LAYOUT DUAS COLUNAS (USO PONTUAL)
+   ============================================================ */
+
+.two-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+  width: 100%;
+}
+
+.two-cols-40-60 {
+  display: grid;
+  grid-template-columns: 42% 58%;
+  gap: 18px;
+  align-items: start;
+  width: 100%;
+}
+
+.two-cols-60-40 {
+  display: grid;
+  grid-template-columns: 58% 42%;
+  gap: 18px;
+  align-items: start;
+  width: 100%;
+}
+
+/* ============================================================
+   SLIDE DE TÍTULO / CAPA
+   ============================================================ */
+
+.title-slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.title-box {
+  background: linear-gradient(180deg, var(--warsaw-primary) 0%, var(--warsaw-secondary) 100%);
+  color: white;
+  padding: 24px 36px;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  width: 85%;
+  margin-bottom: 28px;
+}
+
+.title-box h1 {
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
+  line-height: 1.25;
+}
+
+.title-box .subtitle {
+  font-size: 19px;
+  color: #cbd5e1;
+  font-weight: 500;
+}
+
+.author-box {
+  background: var(--slide-bg);
+  border: 1px solid var(--border-color);
+  padding: 16px 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  width: 60%;
+}
+
+.author-name {
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--warsaw-primary);
+  margin-bottom: 4px;
+}
+body.dark-mode .author-name {
+  color: var(--warsaw-accent);
+}
+
+.institute-name {
+  font-size: 16px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.date-tag {
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+  display: inline-block;
+  background: rgba(0,0,0,0.04);
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+body.dark-mode .date-tag {
+  background: rgba(255,255,255,0.06);
+  color: #94a3b8;
+}
+
+/* ============================================================
+   ROTEIRO DA AULA
+   ============================================================ */
+
+.agenda-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.agenda-card {
+  background: var(--slide-bg);
+  border: 1px solid var(--border-color);
+  border-left: 5px solid var(--warsaw-primary);
+  border-radius: 6px;
+  padding: 12px 14px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.agenda-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  border-left-color: var(--warsaw-accent);
+}
+
+.agenda-card .agenda-num {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--warsaw-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.agenda-card .agenda-title {
+  font-size: 16.5px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 2px 0 4px 0;
+}
+
+.agenda-card .agenda-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+/* ============================================================
+   ESTILOS DOS SIMULADORES E DEMOS INTERATIVAS
+   ============================================================ */
+
+.demo-wrapper {
+  background: var(--canvas-bg);
+  border: 1px solid var(--canvas-border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin: 10px 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.demo-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.demo-btn {
+  background: var(--warsaw-primary);
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.15s ease;
+}
+
+.demo-btn:hover {
+  background: var(--warsaw-secondary);
+  transform: translateY(-1px);
+}
+
+.demo-btn.btn-secondary {
+  background: #64748b;
+}
+.demo-btn.btn-secondary:hover {
+  background: #475569;
+}
+
+.demo-btn.btn-accent {
+  background: #16a34a;
+}
+.demo-btn.btn-accent:hover {
+  background: #15803d;
+}
+
+.demo-btn.btn-danger {
+  background: #dc2626;
+}
+.demo-btn.btn-danger:hover {
+  background: #b91c1c;
+}
+
+.demo-slider-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.demo-slider {
+  cursor: pointer;
+  accent-color: var(--warsaw-primary);
+}
+
+.demo-stats {
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+  background: rgba(0,0,0,0.03);
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-left: auto;
+}
+
+body.dark-mode .demo-stats {
+  background: rgba(255,255,255,0.05);
+}
+
+.demo-canvas {
+  width: 100%;
+  height: 180px;
+  display: block;
+  border-radius: 4px;
+  background: transparent;
+}
+
+.demo-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.legend-color {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+/* ============================================================
+   EXERCÍCIOS E BOTÕES DE GABARITO INTERATIVO
+   ============================================================ */
+
+.exercise-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.exercise-badge {
+  background: var(--warsaw-primary);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.toggle-solution-btn {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: var(--warsaw-primary);
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggle-solution-btn:hover {
+  background: var(--warsaw-primary);
+  color: white;
+}
+
+body.dark-mode .toggle-solution-btn {
+  background: #1e293b;
+  border-color: #334155;
+  color: #38bdf8;
+}
+body.dark-mode .toggle-solution-btn:hover {
+  background: #38bdf8;
+  color: #0f172a;
+}
+
+.solution-box {
+  display: none;
+  background: var(--example-body-bg);
+  border: 1px solid var(--example-body-border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-top: 8px;
+  color: var(--example-body-color);
+  animation: fadeIn 0.25s ease;
+}
+
+.solution-box.show {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Animação suave para scroll */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.3);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.5);
+}

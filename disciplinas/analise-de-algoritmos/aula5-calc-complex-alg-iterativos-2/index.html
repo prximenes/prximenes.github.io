@@ -1,0 +1,1882 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Análise de Algoritmos — Aula 5: Complexidade de Algoritmos Iterativos II</title>
+  <meta name="description" content="Apresentação interativa dos slides da Aula 5 de Análise de Algoritmos da UNICAP (Tema Beamer Warsaw em Reveal.js)">
+
+  <!-- Reveal.js CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/theme/white.css" id="theme">
+
+  <!-- KaTeX CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+  <!-- Estilos Customizados Warsaw Beamer -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       CABEÇALHO FIXO WARSAW (DUPLA BARRA)
+       ============================================================ -->
+  <header id="warsaw-header">
+    <div class="warsaw-section-bar">
+      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-right:8px;">
+        <a href="../../../courses.html" style="color:#ffffff;text-decoration:none;font-size:10.5px;font-weight:700;padding:1px 7px;background:rgba(255,255,255,0.18);border-radius:3px;display:inline-flex;align-items:center;gap:3px;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.32)'" onmouseout="this.style.background='rgba(255,255,255,0.18)'" title="Voltar para a página de Cursos &amp; Disciplinas">← Courses</a>
+        <span style="font-weight:800;color:#60a5fa;letter-spacing:0.5px;font-size:10.5px;">UNICAP</span>
+      </div>
+      <nav class="warsaw-sections-list" id="warsaw-sections-list">
+        <!-- Links de seções preenchidos dinamicamente por app.js -->
+      </nav>
+      <div class="warsaw-tools">
+        <button id="theme-toggle-btn" class="theme-toggle-btn" title="Alternar Modo Escuro/Claro">🌙 Escuro</button>
+      </div>
+    </div>
+    <div class="warsaw-subsection-bar">
+      <span id="warsaw-subsection-title">Análise de Algoritmos — Aula 5</span>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       SLIDES REVEAL.JS (CONTAINER PRINCIPAL)
+       ============================================================ -->
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- SLIDE 0: CAPA / TÍTULO -->
+      <section data-section="" data-subsection="Apresentação">
+        <div class="beamer-slide">
+          <div class="title-slide">
+            <div class="title-box">
+              <h1>Cálculo da Complexidade<br>de Algoritmos Iterativos — Parte 2</h1>
+              <div class="subtitle">Análise de Algoritmos • Aula 5</div>
+            </div>
+            <div class="author-box">
+              <div class="author-name">Pedro Ximenes</div>
+              <div class="institute-name">Universidade Católica de Pernambuco (UNICAP)</div>
+              <div class="date-tag">Semestre Letivo 2026.1</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 1: ROTEIRO DA AULA -->
+      <section data-section="" data-subsection="Roteiro da Aula">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Roteiro da Aula</h2>
+            <div class="slide-subtitle">Sumário dos tópicos abordados nesta sessão</div>
+          </div>
+          <div class="slide-body">
+            <div class="agenda-grid">
+              <div class="agenda-card" onclick="Reveal.slide(2)">
+                <div class="agenda-num">Seção 1</div>
+                <div class="agenda-title">Revisão da Aula Anterior</div>
+                <div class="agenda-desc">Método dos 3 passos e tabela de padrões fundamentais.</div>
+              </div>
+              <div class="agenda-card" onclick="Reveal.slide(4)">
+                <div class="agenda-num">Seção 2</div>
+                <div class="agenda-title">Ordenação Quadrática</div>
+                <div class="agenda-desc">Selection Sort vs. Bubble Sort otimizado e somas triangulares.</div>
+              </div>
+              <div class="agenda-card" onclick="Reveal.slide(17)">
+                <div class="agenda-num">Seção 3</div>
+                <div class="agenda-title">Melhor, Pior e Caso Médio</div>
+                <div class="agenda-desc">Definições formais e o exemplo da Busca Linear.</div>
+              </div>
+              <div class="agenda-card" onclick="Reveal.slide(20)">
+                <div class="agenda-num">Seção 4</div>
+                <div class="agenda-title">Novos Padrões de Análise</div>
+                <div class="agenda-desc">Múltiplos parâmetros $O(n \cdot m)$ e primalidade em $O(\sqrt{n})$.</div>
+              </div>
+              <div class="agenda-card" onclick="Reveal.slide(26)">
+                <div class="agenda-num">Seção 5</div>
+                <div class="agenda-title">Técnicas Eficientes</div>
+                <div class="agenda-desc">A técnica dos Dois Ponteiros (Palíndromo e Two Sum em $O(n)$).</div>
+              </div>
+              <div class="agenda-card" onclick="Reveal.slide(31)">
+                <div class="agenda-num">Seções 6-10</div>
+                <div class="agenda-title">Resumo, Exercícios e Desafio</div>
+                <div class="agenda-desc">Tabela de reconhecimento, 10 exercícios com gabarito e mini-projeto.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 1: REVISÃO DA AULA ANTERIOR
+           ============================================================ -->
+
+      <!-- SLIDE 2: REVISÃO ESSENCIAL -->
+      <section data-section="revisao" data-subsection="Revisão > Mapa Mental">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Revisão essencial da Aula 4</h2>
+            <div class="slide-subtitle">Consolidação do método analítico</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📌 Método dos 3 passos</div>
+              <div class="block-content">
+                <ol>
+                  <li><strong>Identificar as operações primitivas:</strong> atribuições, comparações, acessos a arrays e operações aritméticas básicas executadas em tempo constante $O(1)$.</li>
+                  <li><strong>Contar quantas vezes cada operação acontece no pior caso:</strong> estruturar os limites de laços e condições de parada matematicamente.</li>
+                  <li><strong>Somar os custos e simplificar pela ordem de crescimento:</strong> descartar constantes multiplicativas e termos de menor ordem assintótica.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 3: PADRÕES JÁ CONHECIDOS -->
+      <section data-section="revisao" data-subsection="Revisão > Padrões Conhecidos">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Padrões já conhecidos</h2>
+            <div class="slide-subtitle">Classes assintóticas fundamentais de laços iterativos</div>
+          </div>
+          <div class="slide-body">
+            <table class="beamer-table">
+              <thead>
+                <tr>
+                  <th>Padrão</th>
+                  <th>Estrutura Típica</th>
+                  <th>Classe Assintótica</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Sem loop</strong></td>
+                  <td>Sequência simples de operações primitivas</td>
+                  <td>$O(1)$</td>
+                </tr>
+                <tr>
+                  <td><strong>1 loop simples</strong></td>
+                  <td>Percorrer vetor de tamanho $n$ uma vez</td>
+                  <td>$O(n)$</td>
+                </tr>
+                <tr>
+                  <td><strong>Loop com divisão por 2</strong></td>
+                  <td>Descartar metade do espaço a cada iteração</td>
+                  <td>$O(\log n)$</td>
+                </tr>
+                <tr>
+                  <td><strong>Dois loops aninhados</strong></td>
+                  <td>Comparar todos os pares possíveis ($n \times n$)</td>
+                  <td>$O(n^2)$</td>
+                </tr>
+                <tr>
+                  <td><strong>Três loops aninhados</strong></td>
+                  <td>Visitar todas as triplas ($n \times n \times n$)</td>
+                  <td>$O(n^3)$</td>
+                </tr>
+                <tr>
+                  <td><strong>Loops sequenciais</strong></td>
+                  <td>Somar os custos e tomar o termo dominante</td>
+                  <td>$O(\max(f(n), g(n)))$</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 2: ORDENAÇÃO QUADRÁTICA
+           ============================================================ -->
+
+      <!-- SLIDE 4: SELECTION SORT INTUIÇÃO -->
+      <section data-section="ordenacao" data-subsection="Ordenação Quadrática > Selection Sort">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Selection Sort: intuição</h2>
+            <div class="slide-subtitle">Estratégia gulosa de seleção sucessiva do mínimo</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">💡 Ideia do algoritmo</div>
+              <div class="block-content">
+                A cada rodada, procuramos o menor elemento da parte ainda não ordenada do vetor.
+                Depois disso, colocamos esse menor elemento na primeira posição disponível da porção desordenada.
+              </div>
+            </div>
+            <div class="exampleblock">
+              <div class="block-title">🔍 Como o vetor evolui</div>
+              <div class="block-content">
+                <ul>
+                  <li>O vetor vai sendo dividido em duas partes conceituais:</li>
+                  <li><strong>À esquerda:</strong> parte já organizada (prefixo ordenado definitivo).</li>
+                  <li><strong>À direita:</strong> parte ainda desorganizada (sufixo a ser varrido).</li>
+                  <li>Em cada rodada, exatamente um novo elemento entra na parte organizada.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 5: SELECTION SORT PSEUDOCÓDIGO -->
+      <section data-section="ordenacao" data-subsection="Ordenação Quadrática > Selection Sort">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Selection Sort: pseudocódigo</h2>
+            <div class="slide-subtitle">Implementação padrão com busca do menor elemento</div>
+          </div>
+          <div class="slide-body">
+            <div class="exampleblock">
+              <div class="block-title">💻 Pseudocódigo comentado</div>
+              <div class="block-content" style="padding:4px 10px;">
+                <div class="code-container">
+                  <div class="code-line"><span class="line-num">1</span><span class="line-content"><span class="kw">algoritmo</span> <span class="fn">SelectionSort</span>(V, n)</span></div>
+                  <div class="code-line"><span class="line-num">2</span><span class="line-content">    <span class="kw">para</span> i <span class="kw">de</span> <span class="num">0</span> <span class="kw">ate</span> n-<span class="num">2</span> <span class="kw">faca</span></span></div>
+                  <div class="code-line"><span class="line-num">3</span><span class="line-content">        <span class="cm">// No início da rodada, assume que o menor está em i</span></span></div>
+                  <div class="code-line"><span class="line-num">4</span><span class="line-content">        i_menor &lt;- i</span></div>
+                  <div class="code-line"><span class="line-num">5</span><span class="line-content">        <span class="kw">para</span> j <span class="kw">de</span> i+<span class="num">1</span> <span class="kw">ate</span> n-<span class="num">1</span> <span class="kw">faca</span></span></div>
+                  <div class="code-line"><span class="line-num">6</span><span class="line-content">            <span class="cm">// Se aparecer valor menor, atualiza a posição do menor</span></span></div>
+                  <div class="code-line"><span class="line-num">7</span><span class="line-content">            <span class="kw">se</span> V[j] &lt; V[i_menor] <span class="kw">entao</span></span></div>
+                  <div class="code-line"><span class="line-num">8</span><span class="line-content">                i_menor &lt;- j</span></div>
+                  <div class="code-line"><span class="line-num">9</span><span class="line-content">            <span class="kw">fim se</span></span></div>
+                  <div class="code-line"><span class="line-num">10</span><span class="line-content">        <span class="kw">fim para</span></span></div>
+                  <div class="code-line"><span class="line-num">11</span><span class="line-content">        <span class="cm">// Ao fim da rodada, coloca o menor valor na posição i</span></span></div>
+                  <div class="code-line"><span class="line-num">12</span><span class="line-content">        <span class="fn">troca</span>(V[i], V[i_menor])</span></div>
+                  <div class="code-line"><span class="line-num">13</span><span class="line-content">    <span class="kw">fim para</span></span></div>
+                  <div class="code-line"><span class="line-num">14</span><span class="line-content"><span class="kw">fim algoritmo</span></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 6: SELECTION SORT EXEMPLO 1 -->
+      <section data-section="ordenacao" data-subsection="Ordenação Quadrática > Selection Sort">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Selection Sort: exemplo de entrada</h2>
+            <div class="slide-subtitle">Rastreamento da Rodada 1</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📥 Entrada inicial</div>
+              <div class="block-content">
+                $$V = [7, 4, 5, 2]$$
+              </div>
+            </div>
+            <div class="exampleblock">
+              <div class="block-title">Rodada 1: $i = 0$</div>
+              <div class="block-content">
+                <ul>
+                  <li>Começamos assumindo que o menor está na posição $0$ ($i\_menor = 0$, valor $7$).</li>
+                  <li>Comparamos com $4$ em $j=1$: $4 < 7 \implies i\_menor = 1$.</li>
+                  <li>Comparamos com $5$ em $j=2$: $5 \not< 4 \implies i\_menor = 1$.</li>
+                  <li>Comparamos com $2$ em $j=3$: $2 < 4 \implies i\_menor = 3$.</li>
+                  <li>O menor encontrado ao final da rodada é $2$ na posição $3$.</li>
+                  <li>Efetuamos a troca: $\text{troca}(V[0], V[3])$ (troca $7$ com $2$).</li>
+                </ul>
+              </div>
+            </div>
+            <div class="math-highlight">
+              $$[7, 4, 5, 2] \longrightarrow [\mathbf{2}, 4, 5, 7]$$
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 7: SELECTION SORT EXEMPLO 2 -->
+      <section data-section="ordenacao" data-subsection="Ordenação Quadrática > Selection Sort">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Selection Sort: continuando o exemplo</h2>
+            <div class="slide-subtitle">Rastreamento das Rodadas 2 e 3</div>
+          </div>
+          <div class="slide-body">
+            <div class="exampleblock">
+              <div class="block-title">Rodada 2: $i = 1$</div>
+              <div class="block-content">
+                Agora olhamos apenas para a parte não ordenada $[4, 5, 7]$. O menor já é $4$ na posição $1$. Nenhuma troca altera posições.
+                $$[2, 4, 5, 7] \longrightarrow [2, \mathbf{4}, 5, 7]$$
+              </div>
+            </div>
+            <div class="exampleblock">
+              <div class="block-title">Rodada 3: $i = 2$</div>
+              <div class="block-content">
+                Olhamos apenas para a parte $[5, 7]$. O menor já é $5$ na posição $2$.
+                $$[2, 4, 5, 7] \longrightarrow [2, 4, \mathbf{5}, 7]$$
+              </div>
+            </div>
+            <div class="alertblock">
+              <div class="block-title">⚠️ Observação Crucial</div>
+              <div class="block-content">
+                Mesmo quando o vetor quase não muda ou já está ordenado, o algoritmo <strong>ainda realiza todas as comparações</strong> em busca do menor elemento.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 8: SELECTION SORT CONTAGEM -->
+      <section data-section="ordenacao" data-subsection="Ordenação Quadrática > Selection Sort">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Selection Sort: contando as comparações</h2>
+            <div class="slide-subtitle">Dedução formal da soma triangular</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📊 Quantas comparações acontecem?</div>
+              <div class="block-content">
+                <ul>
+                  <li>Na primeira rodada ($i = 0$): comparamos com $n-1$ elementos.</li>
+                  <li>Na segunda rodada ($i = 1$): comparamos com $n-2$ elementos.</li>
+                  <li>Na terceira rodada ($i = 2$): comparamos com $n-3$ elementos.</li>
+                  <li>...</li>
+                  <li>Na última rodada ($i = n-2$): resta apenas $1$ comparação.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="math-highlight">
+              $$\sum_{i=1}^{n-1} i = (n-1) + (n-2) + \dots + 1 = \frac{n(n-1)}{2} = \frac{n^2 - n}{2}$$
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 9: SELECTION SORT CONCLUSÃO -->
+      <section data-section="ordenacao" data-subsection="Ordenação Quadrática > Selection Sort">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Selection Sort: conclusão</h2>
+            <div class="slide-subtitle">Invariância de desempenho em todos os casos</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">🏗️ Estrutura de custo</div>
+              <div class="block-content">
+                O custo dominante <strong>não vem das trocas</strong> (que ocorrem no máximo $n-1$ vezes). O custo dominante vem da <strong>busca repetida pelo menor elemento</strong> em cada rodada.
+              </div>
+            </div>
+            <div class="alertblock">
+              <div class="block-title">🎯 Resultado Assintótico</div>
+              <div class="block-content" style="text-align:center;">
+                $$\boxed{\text{SelectionSort} \in \Theta(n^2)}$$
+              </div>
+            </div>
+            <div class="exampleblock">
+              <div class="block-title">📝 Conclusão</div>
+              <div class="block-content">
+                O Selection Sort <strong>sempre</strong> faz essencialmente a mesma quantidade de comparações $\frac{n(n-1)}{2}$, independente da disposição inicial dos dados. Por isso, <strong>melhor caso, pior caso e caso médio pertencem todos à mesma classe $\Theta(n^2)$</strong>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 10: SIMULADOR INTERATIVO SELECTION SORT -->
+      <section data-section="ordenacao" data-subsection="Ordenação Quadrática > Simulador Selection Sort">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Simulador Interativo: Selection Sort</h2>
+            <div class="slide-subtitle">Acompanhe visualmente a seleção do menor e a formação do prefixo ordenado</div>
+          </div>
+          <div class="slide-body">
+            <div class="demo-wrapper">
+              <div class="demo-controls">
+                <button id="ssort-play-btn" class="demo-btn" onclick="CanvasDemos.SelectionSortDemo.play()">▶ Iniciar</button>
+                <button class="demo-btn btn-secondary" onclick="CanvasDemos.SelectionSortDemo.step()">⏭ Passo a Passo</button>
+                <button class="demo-btn btn-secondary" onclick="CanvasDemos.SelectionSortDemo.reset('default')">🔄 Reset</button>
+                <button class="demo-btn btn-secondary" onclick="CanvasDemos.SelectionSortDemo.reset('reversed')">Pior Caso</button>
+                <button class="demo-btn btn-secondary" onclick="CanvasDemos.SelectionSortDemo.reset('sorted')">Melhor Caso</button>
+                <button class="demo-btn btn-secondary" onclick="CanvasDemos.SelectionSortDemo.reset('random')">Aleatório</button>
+                <div id="ssort-stats" class="demo-stats">
+                  <span>Rodada: <b>1/8</b></span>
+                  <span>Comparações: <b>0</b></span>
+                  <span>Trocas: <b>0</b></span>
+                </div>
+              </div>
+              <canvas id="ssort-canvas" class="demo-canvas"></canvas>
+              <div id="ssort-explanation" style="font-size:14px; font-weight:500; margin-top:6px; color:var(--text-main);">
+                Clique em Iniciar para observar o algoritmo encontrando o menor valor a cada passada.
+              </div>
+              <div class="demo-legend">
+                <span class="legend-item"><span class="legend-color" style="background:#16a34a;"></span> Já Ordenado</span>
+                <span class="legend-item"><span class="legend-color" style="background:#8b5cf6;"></span> Posição Atual ($i$)</span>
+                <span class="legend-item"><span class="legend-color" style="background:#dc2626;"></span> Menor Atual ($i\_menor$)</span>
+                <span class="legend-item"><span class="legend-color" style="background:#eab308;"></span> Comparando ($j$)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 11: BUBBLE SORT INTUIÇÃO -->
+      <section data-section="ordenacao" data-subsection="Ordenação Quadrática > Bubble Sort">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Bubble Sort: intuição</h2>
+            <div class="slide-subtitle">Propagação dos maiores elementos por trocas adjacentes</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">💡 Ideia do algoritmo</div>
+              <div class="block-content">
+                Comparamos pares adjacentes $(V[j], V[j+1])$. Quando um par está fora de ordem, fazemos uma troca imediata.
+                Ao final de cada passada, o maior elemento da porção não ordenada "flutua" para sua posição definitiva no final do vetor.
+              </div>
+            </div>
+            <div class="exampleblock">
+              <div class="block-title">🌊 Efeito de cada passada</div>
+              <div class="block-content">
+                <ul>
+                  <li>Depois da primeira passada: o maior valor já fica garantidamente no lugar certo.</li>
+                  <li>Depois da segunda passada: o segundo maior também fica na posição correta.</li>
+                  <li>A cada passada $i$, o laço interno precisa inspecionar apenas até $n-2-i$.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 12: BUBBLE SORT PSEUDOCÓDIGO -->
+      <section data-section="ordenacao" data-subsection="Ordenação Quadrática > Bubble Sort">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Bubble Sort otimizado: pseudocódigo</h2>
+            <div class="slide-subtitle">Detecção de término antecipado com flag booleana</div>
+          </div>
+          <div class="slide-body">
+            <div class="exampleblock">
+              <div class="block-title">💻 Pseudocódigo comentado</div>
+              <div class="block-content" style="padding:4px 10px;">
+                <div class="code-container">
+                  <div class="code-line"><span class="line-num">1</span><span class="line-content"><span class="kw">algoritmo</span> <span class="fn">BubbleSortOtimizado</span>(V, n)</span></div>
+                  <div class="code-line"><span class="line-num">2</span><span class="line-content">    <span class="kw">para</span> i <span class="kw">de</span> <span class="num">0</span> <span class="kw">ate</span> n-<span class="num">2</span> <span class="kw">faca</span></span></div>
+                  <div class="code-line"><span class="line-num">3</span><span class="line-content">        <span class="cm">// A flag registra se houve troca nesta passada</span></span></div>
+                  <div class="code-line"><span class="line-num">4</span><span class="line-content">        trocou &lt;- falso</span></div>
+                  <div class="code-line"><span class="line-num">5</span><span class="line-content">        <span class="kw">para</span> j <span class="kw">de</span> <span class="num">0</span> <span class="kw">ate</span> n-<span class="num">2</span>-i <span class="kw">faca</span></span></div>
+                  <div class="code-line"><span class="line-num">6</span><span class="line-content">            <span class="cm">// Se o par estiver fora de ordem, corrige localmente</span></span></div>
+                  <div class="code-line"><span class="line-num">7</span><span class="line-content">            <span class="kw">se</span> V[j] &gt; V[j+<span class="num">1</span>] <span class="kw">entao</span></span></div>
+                  <div class="code-line"><span class="line-num">8</span><span class="line-content">                <span class="fn">troca</span>(V[j], V[j+<span class="num">1</span>])</span></div>
+                  <div class="code-line"><span class="line-num">9</span><span class="line-content">                trocou &lt;- verdadeiro</span></div>
+                  <div class="code-line"><span class="line-num">10</span><span class="line-content">            <span class="kw">fim se</span></span></div>
+                  <div class="code-line"><span class="line-num">11</span><span class="line-content">        <span class="kw">fim para</span></span></div>
+                  <div class="code-line"><span class="line-num">12</span><span class="line-content">        <span class="cm">// Se nada mudou, o vetor ja estava ordenado</span></span></div>
+                  <div class="code-line"><span class="line-num">13</span><span class="line-content">        <span class="kw">se</span> trocou = falso <span class="kw">entao</span></span></div>
+                  <div class="code-line"><span class="line-num">14</span><span class="line-content">            <span class="kw">retorne</span></span></div>
+                  <div class="code-line"><span class="line-num">15</span><span class="line-content">        <span class="kw">fim se</span></span></div>
+                  <div class="code-line"><span class="line-num">16</span><span class="line-content">    <span class="kw">fim para</span></span></div>
+                  <div class="code-line"><span class="line-num">17</span><span class="line-content"><span class="kw">fim algoritmo</span></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 13: BUBBLE SORT EXEMPLO 1 -->
+      <section data-section="ordenacao" data-subsection="Ordenação Quadrática > Bubble Sort">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Bubble Sort: exemplo de entrada</h2>
+            <div class="slide-subtitle">Rastreamento da Passada 1</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📥 Entrada inicial</div>
+              <div class="block-content">
+                $$V = [5, 3, 4, 1]$$
+              </div>
+            </div>
+            <div class="exampleblock">
+              <div class="block-title">Passada 1 ($i = 0$)</div>
+              <div class="block-content">
+                <ul>
+                  <li>Compara $V[0]=5$ e $V[1]=3$: $5 > 3 \implies$ <strong>troca</strong> $\to [3, 5, 4, 1]$</li>
+                  <li>Compara $V[1]=5$ e $V[2]=4$: $5 > 4 \implies$ <strong>troca</strong> $\to [3, 4, 5, 1]$</li>
+                  <li>Compara $V[2]=5$ e $V[3]=1$: $5 > 1 \implies$ <strong>troca</strong> $\to [3, 4, 1, 5]$</li>
+                </ul>
+              </div>
+            </div>
+            <div class="math-highlight">
+              $$[5, 3, 4, 1] \longrightarrow [3, 4, 1, \mathbf{5}]$$
+            </div>
+            <div class="alertblock">
+              <div class="block-title">📌 Leitura</div>
+              <div class="block-content">
+                Ao fim da primeira passada, o maior elemento ($5$) já está em sua posição definitiva no final do vetor.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 14: BUBBLE SORT EXEMPLO 2 E 3 -->
+      <section data-section="ordenacao" data-subsection="Ordenação Quadrática > Bubble Sort">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Bubble Sort: continuando o exemplo</h2>
+            <div class="slide-subtitle">Rastreamento das Passadas 2 e 3</div>
+          </div>
+          <div class="slide-body">
+            <div class="exampleblock">
+              <div class="block-title">Passada 2 ($i = 1$)</div>
+              <div class="block-content">
+                <ul>
+                  <li>Compara $3$ e $4$: $3 \le 4 \implies$ não troca.</li>
+                  <li>Compara $4$ e $1$: $4 > 1 \implies$ troca $\to [3, 1, 4, 5]$.</li>
+                </ul>
+                $$[3, 4, 1, 5] \longrightarrow [3, 1, \mathbf{4}, \mathbf{5}]$$
+              </div>
+            </div>
+            <div class="exampleblock">
+              <div class="block-title">Passada 3 ($i = 2$)</div>
+              <div class="block-content">
+                <ul>
+                  <li>Compara $3$ e $1$: $3 > 1 \implies$ troca $\to [1, 3, 4, 5]$.</li>
+                </ul>
+                $$[3, 1, 4, 5] \longrightarrow [\mathbf{1}, \mathbf{3}, \mathbf{4}, \mathbf{5}]$$
+              </div>
+            </div>
+            <div class="alertblock">
+              <div class="block-title">📌 Leitura</div>
+              <div class="block-content">
+                Após $3$ passadas, o vetor inteiro está perfeitamente ordenado.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 15: BUBBLE SORT PIOR E MELHOR CASO -->
+      <section data-section="ordenacao" data-subsection="Ordenação Quadrática > Bubble Sort">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Bubble Sort: análise de casos</h2>
+            <div class="slide-subtitle">Diferença marcante entre Pior Caso e Melhor Caso</div>
+          </div>
+          <div class="slide-body">
+            <div class="two-cols">
+              <div class="alertblock">
+                <div class="block-title">⚠️ Pior Caso (Decrescente)</div>
+                <div class="block-content">
+                  Quando o vetor começa em ordem inversa, toda comparação gera troca:
+                  $$(n-1) + (n-2) + \dots + 1 = \frac{n(n-1)}{2}$$
+                  $$\boxed{\text{Pior Caso} \in \Theta(n^2)}$$
+                </div>
+              </div>
+              <div class="exampleblock">
+                <div class="block-title">✨ Melhor Caso (Já Ordenado)</div>
+                <div class="block-content">
+                  Com a versão otimizada:
+                  <ul>
+                    <li>Faz $1$ passada de $n-1$ comparações.</li>
+                    <li>Nenhuma troca ocorre ($\text{trocou} = \text{falso}$).</li>
+                    <li>O laço encerra imediatamente!</li>
+                  </ul>
+                  $$\boxed{\text{Melhor Caso} \in \Theta(n)}$$
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 16: SELECTION SORT X BUBBLE SORT COMPARAÇÃO -->
+      <section data-section="ordenacao" data-subsection="Ordenação Quadrática > Comparativo">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Selection Sort $\times$ Bubble Sort</h2>
+            <div class="slide-subtitle">Quadro comparativo de complexidade</div>
+          </div>
+          <div class="slide-body">
+            <table class="beamer-table">
+              <thead>
+                <tr>
+                  <th>Algoritmo</th>
+                  <th>Melhor Caso</th>
+                  <th>Caso Médio</th>
+                  <th>Pior Caso</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Selection Sort</strong></td>
+                  <td>$\Theta(n^2)$</td>
+                  <td>$\Theta(n^2)$</td>
+                  <td>$\Theta(n^2)$</td>
+                </tr>
+                <tr>
+                  <td><strong>Bubble Sort Otimizado</strong></td>
+                  <td>$\Theta(n)$</td>
+                  <td>$\Theta(n^2)$</td>
+                  <td>$\Theta(n^2)$</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="alertblock">
+              <div class="block-title">💡 Comparação Importante</div>
+              <div class="block-content">
+                Dois algoritmos podem parecer estruturalmente semelhantes porque ambos utilizam dois laços aninhados, mas <strong>detalhes de controle de fluxo interno (como flags de parada antecipada) mudam drasticamente a classe do melhor caso</strong>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 16B: SIMULADOR INTERATIVO BUBBLE SORT -->
+      <section data-section="ordenacao" data-subsection="Ordenação Quadrática > Simulador Bubble Sort">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Simulador Interativo: Bubble Sort</h2>
+            <div class="slide-subtitle">Compare o comportamento do flag de parada no Melhor Caso vs Pior Caso</div>
+          </div>
+          <div class="slide-body">
+            <div class="demo-wrapper">
+              <div class="demo-controls">
+                <button id="bsort-play-btn" class="demo-btn" onclick="CanvasDemos.BubbleSortDemo.play()">▶ Iniciar</button>
+                <button class="demo-btn btn-secondary" onclick="CanvasDemos.BubbleSortDemo.step()">⏭ Passo</button>
+                <button class="demo-btn btn-secondary" onclick="CanvasDemos.BubbleSortDemo.reset('default')">🔄 Reset</button>
+                <button class="demo-btn btn-accent" onclick="CanvasDemos.BubbleSortDemo.reset('sorted')">Testar Melhor Caso (Ordenado)</button>
+                <button class="demo-btn btn-danger" onclick="CanvasDemos.BubbleSortDemo.reset('reversed')">Testar Pior Caso (Invertido)</button>
+                <div id="bsort-stats" class="demo-stats">
+                  <span>Passada: <b>1/7</b></span>
+                  <span>Comparações: <b>0</b></span>
+                  <span>Trocas: <b>0</b></span>
+                </div>
+              </div>
+              <canvas id="bsort-canvas" class="demo-canvas"></canvas>
+              <div id="bsort-explanation" style="font-size:14px; font-weight:500; margin-top:6px; color:var(--text-main);">
+                Clique em Iniciar ou selecione "Testar Melhor Caso" para ver a parada em 1 passada.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 3: MELHOR, PIOR E CASO MÉDIO
+           ============================================================ -->
+
+      <!-- SLIDE 17: DEFINIÇÕES DE CASOS -->
+      <section data-section="casos" data-subsection="Casos > Definições">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Por que falamos em casos diferentes?</h2>
+            <div class="slide-subtitle">Entendendo a sensibilidade dos algoritmos à configuração da entrada</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📚 Definições Formais</div>
+              <div class="block-content">
+                <ul>
+                  <li><strong>Melhor caso:</strong> a entrada de tamanho $n$ mais favorável possível, que minimiza a quantidade de operações executadas.</li>
+                  <li><strong>Pior caso:</strong> a entrada de tamanho $n$ mais custosa possível, que maximiza o tempo de execução e estabelece um teto de custo seguro.</li>
+                  <li><strong>Caso médio:</strong> o comportamento esperado considerando uma distribuição estatística de probabilidade sobre as entradas possíveis.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="alertblock">
+              <div class="block-title">🎯 Foco Central da Análise</div>
+              <div class="block-content">
+                O foco principal da análise assintótica continua sendo o <strong>pior caso</strong>, porque ele fornece uma <strong>garantia matemática inequívoca</strong> sobre o limite superior de desempenho do sistema sob qualquer circunstância.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 18: BUSCA LINEAR MELHOR CASO -->
+      <section data-section="casos" data-subsection="Casos > Busca Linear">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exemplo simples: busca linear</h2>
+            <div class="slide-subtitle">Melhor Caso: elemento encontrado na primeira posição</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">🔍 Problema</div>
+              <div class="block-content">
+                Procurar o valor $x = 8$ em um vetor de $n$ posições.
+              </div>
+            </div>
+            <div class="exampleblock">
+              <div class="block-title">Entrada Favorável (Melhor Caso)</div>
+              <div class="block-content">
+                $$V = [\mathbf{8}, 4, 3, 1]$$
+                <ul>
+                  <li>O algoritmo inspeciona a primeira posição ($i = 0$).</li>
+                  <li>Já encontra o valor procurado ($V[0] == 8$).</li>
+                  <li>Retorna imediatamente após $1$ única comparação.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="math-highlight">
+              $$\boxed{\text{Melhor Caso da Busca Linear} \in \Theta(1)}$$
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 19: BUSCA LINEAR PIOR E MÉDIO CASO -->
+      <section data-section="casos" data-subsection="Casos > Busca Linear">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Busca linear: pior caso e caso médio</h2>
+            <div class="slide-subtitle">Quando o alvo está no final ou não pertence ao vetor</div>
+          </div>
+          <div class="slide-body">
+            <div class="two-cols">
+              <div class="exampleblock">
+                <div class="block-title">Entrada 2: Alvo no Final</div>
+                <div class="block-content">
+                  $$V = [4, 3, 1, \mathbf{8}]$$
+                  O algoritmo realiza $n$ comparações até atingir a última posição.
+                </div>
+              </div>
+              <div class="alertblock">
+                <div class="block-title">Entrada 3: Alvo Ausente</div>
+                <div class="block-content">
+                  $$V = [4, 3, 1, 2], \quad x = 8$$
+                  O algoritmo percorre todas as $n$ posições sem encontrar o elemento.
+                </div>
+              </div>
+            </div>
+            <div class="math-highlight">
+              $$\boxed{\text{Pior Caso da Busca Linear} \in \Theta(n)}$$
+            </div>
+            <div class="block">
+              <div class="block-title">📊 Caso Médio</div>
+              <div class="block-content">
+                Assumindo probabilidade uniforme de encontrar o elemento em qualquer posição, a média é $\approx \frac{n+1}{2} = \Theta(n)$.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 19B: SIMULADOR BUSCA LINEAR -->
+      <section data-section="casos" data-subsection="Casos > Simulador Busca Linear">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Simulador Interativo: Busca Linear</h2>
+            <div class="slide-subtitle">Experimente os diferentes cenários de busca em tempo real</div>
+          </div>
+          <div class="slide-body">
+            <div class="demo-wrapper">
+              <div class="demo-controls">
+                <button class="demo-btn btn-accent" onclick="CanvasDemos.LinearSearchDemo.setCase('best')">Melhor Caso (x = 8 na 1ª pos)</button>
+                <button class="demo-btn btn-secondary" onclick="CanvasDemos.LinearSearchDemo.setCase('average')">Caso Médio (x = 1 no meio)</button>
+                <button class="demo-btn btn-danger" onclick="CanvasDemos.LinearSearchDemo.setCase('worst')">Pior Caso (x = 5 no fim)</button>
+                <button class="demo-btn btn-danger" onclick="CanvasDemos.LinearSearchDemo.setCase('absent')">Pior Caso (x = 99 ausente)</button>
+              </div>
+              <div id="lsearch-container"></div>
+              <div id="lsearch-exp" style="font-size:15px; font-weight:500; margin-top:10px; color:var(--text-main); text-align:center;">
+                Selecione um caso acima para iniciar a demonstração.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 4: NOVOS PADRÕES DE ANÁLISE
+           ============================================================ -->
+
+      <!-- SLIDE 20: DOIS PARÂMETROS INTRO -->
+      <section data-section="novos-padroes" data-subsection="Novos Padrões > Dois Parâmetros">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Quando a entrada tem dois tamanhos</h2>
+            <div class="slide-subtitle">Análise multivariável em matrizes e grafos</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📌 Situação</div>
+              <div class="block-content">
+                Nem sempre uma entrada é descrita apenas por um único parâmetro $n$.
+                Uma matriz bidimensional, por exemplo, possui $n$ linhas e $m$ colunas.
+              </div>
+            </div>
+            <div class="alertblock">
+              <div class="block-title">❓ A Pergunta Certa</div>
+              <div class="block-content">
+                Se o algoritmo percorre uma matriz completa, o custo total depende simultaneamente de <strong>quantas linhas existem</strong> ($n$) e de <strong>quantas colunas existem</strong> ($m$). Não podemos assumir $n=m$ sem especificação prévia!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 21: BUSCA EM MATRIZ PSEUDOCÓDIGO -->
+      <section data-section="novos-padroes" data-subsection="Novos Padrões > Dois Parâmetros">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exemplo simples: busca em matriz</h2>
+            <div class="slide-subtitle">Varredura linha por linha em matriz $n \times m$</div>
+          </div>
+          <div class="slide-body">
+            <div class="exampleblock">
+              <div class="block-title">💻 Pseudocódigo comentado</div>
+              <div class="block-content" style="padding:4px 10px;">
+                <div class="code-container">
+                  <div class="code-line"><span class="line-num">1</span><span class="line-content"><span class="kw">algoritmo</span> <span class="fn">BuscaMatriz</span>(M, n, m, x)</span></div>
+                  <div class="code-line"><span class="line-num">2</span><span class="line-content">    <span class="cm">// Percorre as n linhas da matriz</span></span></div>
+                  <div class="code-line"><span class="line-num">3</span><span class="line-content">    <span class="kw">para</span> i <span class="kw">de</span> <span class="num">0</span> <span class="kw">ate</span> n-<span class="num">1</span> <span class="kw">faca</span></span></div>
+                  <div class="code-line"><span class="line-num">4</span><span class="line-content">        <span class="cm">// Percorre as m colunas da linha atual</span></span></div>
+                  <div class="code-line"><span class="line-num">5</span><span class="line-content">        <span class="kw">para</span> j <span class="kw">de</span> <span class="num">0</span> <span class="kw">ate</span> m-<span class="num">1</span> <span class="kw">faca</span></span></div>
+                  <div class="code-line"><span class="line-num">6</span><span class="line-content">            <span class="cm">// Testa se o valor procurado foi encontrado</span></span></div>
+                  <div class="code-line"><span class="line-num">7</span><span class="line-content">            <span class="kw">se</span> M[i][j] = x <span class="kw">entao</span></span></div>
+                  <div class="code-line"><span class="line-num">8</span><span class="line-content">                <span class="kw">retorne verdadeiro</span></span></div>
+                  <div class="code-line"><span class="line-num">9</span><span class="line-content">            <span class="kw">fim se</span></span></div>
+                  <div class="code-line"><span class="line-num">10</span><span class="line-content">        <span class="kw">fim para</span></span></div>
+                  <div class="code-line"><span class="line-num">11</span><span class="line-content">    <span class="kw">fim para</span></span></div>
+                  <div class="code-line"><span class="line-num">12</span><span class="line-content">    <span class="kw">retorne falso</span></span></div>
+                  <div class="code-line"><span class="line-num">13</span><span class="line-content"><span class="kw">fim algoritmo</span></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 22: BUSCA EM MATRIZ EXEMPLO -->
+      <section data-section="novos-padroes" data-subsection="Novos Padrões > Dois Parâmetros">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Busca em matriz: exemplo de entrada</h2>
+            <div class="slide-subtitle">Rastreamento com matriz $2 \times 3$</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📥 Entrada</div>
+              <div class="block-content">
+                $$M = \begin{bmatrix} 1 & 4 & 7 \\ 2 & 5 & 8 \end{bmatrix}, \quad x = 9$$
+              </div>
+            </div>
+            <div class="exampleblock">
+              <div class="block-title">Análise das iterações</div>
+              <div class="block-content">
+                <ul>
+                  <li>A matriz tem $n = 2$ linhas.</li>
+                  <li>Cada linha tem $m = 3$ colunas.</li>
+                  <li>Como $x = 9$ não pertence à matriz, o algoritmo visita todas as posições:</li>
+                </ul>
+                <div class="math-highlight">
+                  $$2 \cdot 3 = 6 \text{ células inspecionadas}$$
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 23: BUSCA EM MATRIZ CONCLUSÃO -->
+      <section data-section="novos-padroes" data-subsection="Novos Padrões > Dois Parâmetros">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Busca em matriz: conclusão</h2>
+            <div class="slide-subtitle">Formalização da complexidade bivariada</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📊 Leitura da Estrutura</div>
+              <div class="block-content">
+                <ul>
+                  <li>Loop externo: executa $n$ vezes (uma para cada linha).</li>
+                  <li>Loop interno: executa $m$ vezes para cada uma das $n$ linhas.</li>
+                  <li>Total de iterações do corpo: $\sum_{i=0}^{n-1} m = n \cdot m$.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="math-highlight">
+              $$\boxed{f(n, m) \in O(n \cdot m)}$$
+            </div>
+            <div class="exampleblock">
+              <div class="block-title">💡 Observação importante</div>
+              <div class="block-content">
+                Se a matriz for <strong>quadrada</strong> ($n = m$), recuperamos a conhecida classe quadrática $O(n^2)$.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 23B: SIMULADOR BUSCA EM MATRIZ -->
+      <section data-section="novos-padroes" data-subsection="Novos Padrões > Simulador Matriz">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Simulador Interativo: Busca em Matriz $n \times m$</h2>
+            <div class="slide-subtitle">Observe a varredura das $n \cdot m$ posições em tempo real</div>
+          </div>
+          <div class="slide-body">
+            <div class="demo-wrapper">
+              <div class="demo-controls">
+                <button class="demo-btn" onclick="CanvasDemos.MatrixSearchDemo.scan()">▶ Escanear Matriz</button>
+                <button class="demo-btn btn-secondary" onclick="CanvasDemos.MatrixSearchDemo.reset()">🔄 Reset</button>
+                <div id="matrix-stats" class="demo-stats">
+                  Dimensão: <b>3 × 4</b> | Células Visitadas: <b>0 / 12</b>
+                </div>
+              </div>
+              <canvas id="matrix-canvas" class="demo-canvas" style="height:150px;"></canvas>
+              <div id="matrix-explanation" style="font-size:14px; font-weight:500; margin-top:6px; color:var(--text-main);">
+                Clique em "Escanear Matriz" para acompanhar a visita $O(n \cdot m)$.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 24: PRIMALIDADE PSEUDOCÓDIGO -->
+      <section data-section="novos-padroes" data-subsection="Novos Padrões > Primalidade O(√n)">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exemplo simples: teste de primalidade</h2>
+            <div class="slide-subtitle">Algoritmo otimizado com condição de parada $i^2 \le n$</div>
+          </div>
+          <div class="slide-body">
+            <div class="exampleblock">
+              <div class="block-title">💻 Pseudocódigo comentado</div>
+              <div class="block-content" style="padding:4px 10px;">
+                <div class="code-container">
+                  <div class="code-line"><span class="line-num">1</span><span class="line-content"><span class="kw">algoritmo</span> <span class="fn">EhPrimo</span>(n)</span></div>
+                  <div class="code-line"><span class="line-num">2</span><span class="line-content">    <span class="cm">// Elimina os casos menores que 2</span></span></div>
+                  <div class="code-line"><span class="line-num">3</span><span class="line-content">    <span class="kw">se</span> n &lt; <span class="num">2</span> <span class="kw">entao</span></span></div>
+                  <div class="code-line"><span class="line-num">4</span><span class="line-content">        <span class="kw">retorne falso</span></span></div>
+                  <div class="code-line"><span class="line-num">5</span><span class="line-content">    <span class="kw">fim se</span></span></div>
+                  <div class="code-line"><span class="line-num">6</span><span class="line-content">    i &lt;- <span class="num">2</span></span></div>
+                  <div class="code-line"><span class="line-num">7</span><span class="line-content">    <span class="kw">enquanto</span> i * i &lt;= n <span class="kw">faca</span></span></div>
+                  <div class="code-line"><span class="line-num">8</span><span class="line-content">        <span class="cm">// Se achou um divisor exato, n nao e primo</span></span></div>
+                  <div class="code-line"><span class="line-num">9</span><span class="line-content">        <span class="kw">se</span> n <span class="kw">mod</span> i = <span class="num">0</span> <span class="kw">entao</span></span></div>
+                  <div class="code-line"><span class="line-num">10</span><span class="line-content">            <span class="kw">retorne falso</span></span></div>
+                  <div class="code-line"><span class="line-num">11</span><span class="line-content">        <span class="kw">fim se</span></span></div>
+                  <div class="code-line"><span class="line-num">12</span><span class="line-content">        <span class="cm">// Passa ao proximo candidato a divisor</span></span></div>
+                  <div class="code-line"><span class="line-num">13</span><span class="line-content">        i &lt;- i + <span class="num">1</span></span></div>
+                  <div class="code-line"><span class="line-num">14</span><span class="line-content">    <span class="kw">fim enquanto</span></span></div>
+                  <div class="code-line"><span class="line-num">15</span><span class="line-content">    <span class="kw">retorne verdadeiro</span></span></div>
+                  <div class="code-line"><span class="line-num">16</span><span class="line-content"><span class="kw">fim algoritmo</span></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 25: PROVA PRIMALIDADE E O(√n) -->
+      <section data-section="novos-padroes" data-subsection="Novos Padrões > Primalidade O(√n)">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Análise — Verificação de Primalidade</h2>
+            <div class="slide-subtitle">Prova matemática da raiz quadrada e análise de complexidade</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📐 Por que só verificar divisores até $\sqrt{n}$?</div>
+              <div class="block-content">
+                Se $n$ é um número composto, então existem inteiros $a, b > 1$ tais que $n = a \times b$. Sem perda de generalidade, assuma $a \le b$.
+                $$a \le \sqrt{n} \le b$$
+                <em>(Se ambos fossem estritamente maiores que $\sqrt{n}$, teríamos $a \times b > \sqrt{n} \times \sqrt{n} = n$, uma contradição evidente!)</em><br>
+                Logo, <strong>todo número composto possui pelo menos um divisor não trivial menor ou igual a $\sqrt{n}$</strong>.
+              </div>
+            </div>
+            <div class="math-highlight">
+              $$\text{Condição } i^2 \le n \iff i \le \sqrt{n} \implies \boxed{f(n) \in O(\sqrt{n})}$$
+            </div>
+            <div class="alertblock">
+              <div class="block-title">⚡ Impacto Prático de Eficiência</div>
+              <div class="block-content">
+                Para $n = 1.000.000$: a busca ingênua faria $1.000.000$ iterações. Com a condição $i^2 \le n$, o laço executa apenas $\approx 1.000$ iterações!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 25B: PRIMALIDADE EXEMPLO E DE ONDE APARECE -->
+      <section data-section="novos-padroes" data-subsection="Novos Padrões > Primalidade O(√n)">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>De onde aparece o padrão $O(\sqrt{n})$?</h2>
+            <div class="slide-subtitle">Sinais de alerta em laços com progressões quadráticas</div>
+          </div>
+          <div class="slide-body">
+            <div class="two-cols">
+              <div class="exampleblock">
+                <div class="block-title">Exemplos Numéricos</div>
+                <div class="block-content">
+                  <ul>
+                    <li><strong>$n = 29$ (primo):</strong> testamos apenas $i \in \{2, 3, 4, 5\}$ ($\sqrt{29} \approx 5{,}38$).</li>
+                    <li><strong>$n = 30$ (composto):</strong> pára imediatamente em $i = 2$.</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="alertblock">
+                <div class="block-title">🚨 Sinal de Alerta</div>
+                <div class="block-content">
+                  Sempre que o laço incrementar linearmente ($i \leftarrow i + 1$), mas sua condição de parada for $i^2 \le n$ (ou $i \times i \le n$), suspeite imediatamente de $O(\sqrt{n})$.
+                </div>
+              </div>
+            </div>
+            <div class="demo-wrapper" style="margin-top:10px;">
+              <div class="demo-controls">
+                <span style="font-size:13px; font-weight:bold;">Testar valor de $n$:</span>
+                <button class="demo-btn btn-secondary" onclick="CanvasDemos.PrimalityDemo.test(29)">n = 29</button>
+                <button class="demo-btn btn-secondary" onclick="CanvasDemos.PrimalityDemo.test(30)">n = 30</button>
+                <button class="demo-btn btn-secondary" onclick="CanvasDemos.PrimalityDemo.test(997)">n = 997</button>
+                <button class="demo-btn btn-secondary" onclick="CanvasDemos.PrimalityDemo.test(1000003)">n = 1.000.003</button>
+                <div id="prime-stats" class="demo-stats"></div>
+              </div>
+              <canvas id="prime-canvas" class="demo-canvas" style="height:120px;"></canvas>
+              <div id="prime-exp" style="font-size:13.5px; font-weight:500; margin-top:4px;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 5: TÉCNICAS EFICIENTES (DOIS PONTEIROS)
+           ============================================================ -->
+
+      <!-- SLIDE 26: DOIS PONTEIROS CONCEITO -->
+      <section data-section="tecnicas" data-subsection="Técnicas Eficientes > Dois Ponteiros">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Técnica dos Dois Ponteiros</h2>
+            <div class="slide-subtitle">Reduzindo complexidade de $O(n^2)$ para $O(n)$</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">💡 O que é a Técnica?</div>
+              <div class="block-content">
+                Uma técnica algorítmica elegante que utiliza <strong>dois índices (ponteiros)</strong> que se movem pelo vetor de forma estritamente coordenada, transformando problemas que ingenuamente exigiriam dois loops aninhados $O(n^2)$ em soluções lineares $O(n)$.
+              </div>
+            </div>
+            <div class="exampleblock">
+              <div class="block-title">🔄 Variações Mais Comuns</div>
+              <div class="block-content">
+                <ul>
+                  <li><strong>Ponteiros convergentes (início e fim):</strong> um começa no índice $0$ e outro em $n-1$, movendo-se um em direção ao outro (ex.: palíndromo, Two Sum).</li>
+                  <li><strong>Ponteiros direcionais (lento e rápido / janela deslizante):</strong> ambos avançam na mesma direção em velocidades ou critérios distintos.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 27: DOIS PONTEIROS PALÍNDROMO -->
+      <section data-section="tecnicas" data-subsection="Técnicas Eficientes > Palíndromo">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exemplo 1: verificação de palíndromo</h2>
+            <div class="slide-subtitle">Pseudocódigo e análise da convergência</div>
+          </div>
+          <div class="slide-body">
+            <div class="exampleblock">
+              <div class="block-title">💻 Pseudocódigo comentado</div>
+              <div class="block-content" style="padding:4px 10px;">
+                <div class="code-container">
+                  <div class="code-line"><span class="line-num">1</span><span class="line-content"><span class="kw">algoritmo</span> <span class="fn">EhPalindromo</span>(S, n)</span></div>
+                  <div class="code-line"><span class="line-num">2</span><span class="line-content">    esq &lt;- <span class="num">0</span></span></div>
+                  <div class="code-line"><span class="line-num">3</span><span class="line-content">    dir &lt;- n - <span class="num">1</span></span></div>
+                  <div class="code-line"><span class="line-num">4</span><span class="line-content">    <span class="kw">enquanto</span> esq &lt; dir <span class="kw">faca</span></span></div>
+                  <div class="code-line"><span class="line-num">5</span><span class="line-content">        <span class="cm">// Se os extremos diferem, a palavra nao e palindromo</span></span></div>
+                  <div class="code-line"><span class="line-num">6</span><span class="line-content">        <span class="kw">se</span> S[esq] != S[dir] <span class="kw">entao</span></span></div>
+                  <div class="code-line"><span class="line-num">7</span><span class="line-content">            <span class="kw">retorne falso</span></span></div>
+                  <div class="code-line"><span class="line-num">8</span><span class="line-content">        <span class="kw">fim se</span></span></div>
+                  <div class="code-line"><span class="line-num">9</span><span class="line-content">        <span class="cm">// Aproxima os ponteiros do centro</span></span></div>
+                  <div class="code-line"><span class="line-num">10</span><span class="line-content">        esq &lt;- esq + <span class="num">1</span></span></div>
+                  <div class="code-line"><span class="line-num">11</span><span class="line-content">        dir &lt;- dir - <span class="num">1</span></span></div>
+                  <div class="code-line"><span class="line-num">12</span><span class="line-content">    <span class="kw">fim enquanto</span></span></div>
+                  <div class="code-line"><span class="line-num">13</span><span class="line-content">    <span class="kw">retorne verdadeiro</span></span></div>
+                  <div class="code-line"><span class="line-num">14</span><span class="line-content"><span class="kw">fim algoritmo</span></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 28: SIMULADOR PALÍNDROMO -->
+      <section data-section="tecnicas" data-subsection="Técnicas Eficientes > Simulador Palíndromo">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Palíndromo: exemplo e simulação</h2>
+            <div class="slide-subtitle">Rastreamento com a palavra <em>radar</em> ($O(n)$)</div>
+          </div>
+          <div class="slide-body">
+            <div class="demo-wrapper">
+              <div class="demo-controls">
+                <button class="demo-btn" onclick="CanvasDemos.TwoPointersDemo.playPal()">▶ Verificar</button>
+                <button class="demo-btn btn-secondary" onclick="CanvasDemos.TwoPointersDemo.resetPal('radar')">radar</button>
+                <button class="demo-btn btn-secondary" onclick="CanvasDemos.TwoPointersDemo.resetPal('arara')">arara</button>
+                <button class="demo-btn btn-secondary" onclick="CanvasDemos.TwoPointersDemo.resetPal('algoritmo')">algoritmo</button>
+              </div>
+              <div id="pal-container"></div>
+              <div id="pal-exp" style="font-size:14px; font-weight:500; margin-top:8px; text-align:center;"></div>
+            </div>
+            <div class="math-highlight">
+              $$\text{Total de comparações} \le \lfloor n/2 \rfloor \implies \boxed{f(n) \in O(n)}$$
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 29: TWO SUM EM VETOR ORDENADO -->
+      <section data-section="tecnicas" data-subsection="Técnicas Eficientes > Two Sum">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exemplo 2: Two Sum em vetor ordenado</h2>
+            <div class="slide-subtitle">Busca de par com soma alvo $k$</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">🎯 Problema</div>
+              <div class="block-content">
+                Dado um vetor já <strong>ordenado</strong> $V$, determinar se existem dois índices distintos $i, j$ tais que $V[i] + V[j] = k$.
+              </div>
+            </div>
+            <div class="exampleblock">
+              <div class="block-title">💻 Pseudocódigo comentado</div>
+              <div class="block-content" style="padding:4px 10px;">
+                <div class="code-container">
+                  <div class="code-line"><span class="line-num">1</span><span class="line-content"><span class="kw">algoritmo</span> <span class="fn">TwoSum</span>(V, n, k)</span></div>
+                  <div class="code-line"><span class="line-num">2</span><span class="line-content">    esq &lt;- <span class="num">0</span>,  dir &lt;- n - <span class="num">1</span></span></div>
+                  <div class="code-line"><span class="line-num">3</span><span class="line-content">    <span class="kw">enquanto</span> esq &lt; dir <span class="kw">faca</span></span></div>
+                  <div class="code-line"><span class="line-num">4</span><span class="line-content">        soma &lt;- V[esq] + V[dir]</span></div>
+                  <div class="code-line"><span class="line-num">5</span><span class="line-content">        <span class="kw">se</span> soma = k <span class="kw">entao</span>  <span class="kw">retorne verdadeiro</span></span></div>
+                  <div class="code-line"><span class="line-num">6</span><span class="line-content">        <span class="kw">senao se</span> soma &lt; k <span class="kw">entao</span>  esq &lt;- esq + <span class="num">1</span></span></div>
+                  <div class="code-line"><span class="line-num">7</span><span class="line-content">        <span class="kw">senao</span>  dir &lt;- dir - <span class="num">1</span></span></div>
+                  <div class="code-line"><span class="line-num">8</span><span class="line-content">    <span class="kw">fim enquanto</span></span></div>
+                  <div class="code-line"><span class="line-num">9</span><span class="line-content">    <span class="kw">retorne falso</span></span></div>
+                  <div class="code-line"><span class="line-num">10</span><span class="line-content"><span class="kw">fim algoritmo</span></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 30: SIMULADOR TWO SUM -->
+      <section data-section="tecnicas" data-subsection="Técnicas Eficientes > Simulador Two Sum">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Two Sum: rastreamento e simulação</h2>
+            <div class="slide-subtitle">Vetor ordenado $V = [1, 3, 5, 7, 9, 11, 14, 18]$ e $k = 16$</div>
+          </div>
+          <div class="slide-body">
+            <div class="demo-wrapper">
+              <div class="demo-controls">
+                <button class="demo-btn" onclick="CanvasDemos.TwoPointersDemo.playTwoSum()">▶ Buscar Par</button>
+                <button class="demo-btn btn-secondary" onclick="CanvasDemos.TwoPointersDemo.stepTwoSum()">⏭ Passo</button>
+                <button class="demo-btn btn-secondary" onclick="CanvasDemos.TwoPointersDemo.resetTwoSum(16)">Alvo k = 16</button>
+                <button class="demo-btn btn-secondary" onclick="CanvasDemos.TwoPointersDemo.resetTwoSum(8)">Alvo k = 8</button>
+                <button class="demo-btn btn-secondary" onclick="CanvasDemos.TwoPointersDemo.resetTwoSum(32)">Alvo k = 32</button>
+              </div>
+              <div id="twosum-container"></div>
+              <div id="twosum-exp" style="font-size:14px; font-weight:500; margin-top:8px; text-align:center;"></div>
+            </div>
+            <div class="alertblock">
+              <div class="block-title">📌 Leitura da Complexidade</div>
+              <div class="block-content">
+                A cada iteração do laço, ou <code>esq</code> avança para a direita ou <code>dir</code> recua para a esquerda. Como a distância total inicial é $n-1$, o laço executa <strong>no máximo $n-1$ passos</strong>.
+                $$\boxed{f(n) \in O(n)}$$
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 6: RESUMO DA AULA
+           ============================================================ -->
+
+      <!-- SLIDE 31: RESUMO OPERACIONAL -->
+      <section data-section="resumo" data-subsection="Resumo > Síntese Operacional">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Resumo operacional da aula</h2>
+            <div class="slide-subtitle">Guia rápido de identificação de padrões iterativos</div>
+          </div>
+          <div class="slide-body">
+            <table class="beamer-table">
+              <thead>
+                <tr>
+                  <th>Padrão</th>
+                  <th>Como Reconhecer no Código</th>
+                  <th>Classe Assintótica</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Selection Sort</strong></td>
+                  <td>Busca repetida de menor: soma triangular constante</td>
+                  <td>$\Theta(n^2)$</td>
+                </tr>
+                <tr>
+                  <td><strong>Bubble Sort (Pior Caso)</strong></td>
+                  <td>Trocas consecutivas em vetor inverso</td>
+                  <td>$\Theta(n^2)$</td>
+                </tr>
+                <tr>
+                  <td><strong>Bubble Sort (Melhor Caso)</strong></td>
+                  <td>Flag <code>trocou</code> encerra na 1ª passada</td>
+                  <td>$\Theta(n)$</td>
+                </tr>
+                <tr>
+                  <td><strong>Dois Parâmetros</strong></td>
+                  <td>Laços aninhados de dimensões independentes</td>
+                  <td>$O(n \cdot m)$</td>
+                </tr>
+                <tr>
+                  <td><strong>Raiz Quadrada</strong></td>
+                  <td>Condição de parada do laço com $i^2 \le n$</td>
+                  <td>$O(\sqrt{n})$</td>
+                </tr>
+                <tr>
+                  <td><strong>Dois Ponteiros</strong></td>
+                  <td>Dois índices convergindo em passos unitários</td>
+                  <td>$O(n)$</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="alertblock">
+              <div class="block-title">🎯 Fechamento</div>
+              <div class="block-content">
+                Os padrões apresentados nesta sessão cobrem os casos mais frequentes de algoritmos iterativos e constituem os blocos construtores para a análise de algoritmos avançados.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 32: COMPARADOR GRÁFICO GERAL -->
+      <section data-section="resumo" data-subsection="Resumo > Comparador Gráfico">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Comparativo Gráfico de Complexidade</h2>
+            <div class="slide-subtitle">Curvas de crescimento das principais classes estudadas</div>
+          </div>
+          <div class="slide-body">
+            <div class="two-cols-60-40">
+              <div class="demo-wrapper">
+                <div class="demo-controls">
+                  <div class="demo-slider-group">
+                    <label for="comp-n-slider">Tamanho $n$:</label>
+                    <input id="comp-n-slider" type="range" class="demo-slider" min="2" max="30" value="16" oninput="CanvasDemos.ComplexityChart.setN(this.value)">
+                  </div>
+                </div>
+                <canvas id="complexity-canvas" class="demo-canvas" style="height:210px;"></canvas>
+              </div>
+              <div>
+                <table class="beamer-table" style="font-size:15px; margin-top:0;">
+                  <thead>
+                    <tr>
+                      <th>Classe</th>
+                      <th>Custo ($n = 16$)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="comp-table-body">
+                    <!-- Preenchido dinamicamente -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 7: EXERCÍCIOS
+           ============================================================ -->
+
+      <!-- SLIDE 33: EXERCÍCIOS ORIENTAÇÃO -->
+      <section data-section="exercicios" data-subsection="Exercícios > Orientações">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercícios: orientações</h2>
+            <div class="slide-subtitle">Estratégia de resolução sistemática</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📝 Estratégia de Resolução Recomendada</div>
+              <div class="block-content">
+                <ol>
+                  <li><strong>Identificar o padrão dominante de repetição:</strong> laço com divisão por $2$, laço com saltos de tamanho $i$, somatório triangular ou produto cartesiano.</li>
+                  <li><strong>Contar o custo de cada laço e montar a soma matemática:</strong> escrever explicitamente $\sum (\dots)$ sem omitir limites inferiores e superiores.</li>
+                  <li><strong>Simplificar pela ordem de crescimento:</strong> classificar na notação adequada ($\Theta$, $O$ ou $\Omega$) e confrontar com o gabarito.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 34: EXERCÍCIO 1 -->
+      <section data-section="exercicios" data-subsection="Exercícios > Exercício 1">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício 1</h2>
+            <div class="slide-subtitle">Determine a complexidade do algoritmo abaixo</div>
+          </div>
+          <div class="slide-body">
+            <div class="code-container">
+              <div class="code-line"><span class="line-num">1</span><span class="line-content"><span class="kw">algoritmo</span> <span class="fn">Exercicio1</span>(n)</span></div>
+              <div class="code-line"><span class="line-num">2</span><span class="line-content">    i &lt;- n</span></div>
+              <div class="code-line"><span class="line-num">3</span><span class="line-content">    <span class="kw">enquanto</span> i &gt;= <span class="num">1</span> <span class="kw">faca</span></span></div>
+              <div class="code-line"><span class="line-num">4</span><span class="line-content">        <span class="kw">para</span> j <span class="kw">de</span> <span class="num">1</span> <span class="kw">ate</span> n <span class="kw">faca</span></span></div>
+              <div class="code-line"><span class="line-num">5</span><span class="line-content">            <span class="cm">// Operação O(1)</span></span></div>
+              <div class="code-line"><span class="line-num">6</span><span class="line-content">        <span class="kw">fim para</span></span></div>
+              <div class="code-line"><span class="line-num">7</span><span class="line-content">        i &lt;- i / <span class="num">2</span></span></div>
+              <div class="code-line"><span class="line-num">8</span><span class="line-content">    <span class="kw">fim enquanto</span></span></div>
+              <div class="code-line"><span class="line-num">9</span><span class="line-content"><span class="kw">fim algoritmo</span></span></div>
+            </div>
+            <button class="toggle-solution-btn" data-target="sol-ex1">Mostrar Resolução Passo a Passo</button>
+            <div id="sol-ex1" class="solution-box">
+              <strong>Resolução:</strong> O laço <code>enquanto</code> divide $i$ sucessivamente por $2$, executando $\lfloor\log_2 n\rfloor + 1$ vezes. Em cada rodada, o <code>para</code> executa $n$ operações. Custo total: $n \times \Theta(\log n) = \boxed{\Theta(n \log n)}$.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 35: EXERCÍCIO 2 -->
+      <section data-section="exercicios" data-subsection="Exercícios > Exercício 2">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício 2</h2>
+            <div class="slide-subtitle">Determine a complexidade do algoritmo abaixo</div>
+          </div>
+          <div class="slide-body">
+            <div class="code-container">
+              <div class="code-line"><span class="line-num">1</span><span class="line-content"><span class="kw">algoritmo</span> <span class="fn">Exercicio2</span>(n)</span></div>
+              <div class="code-line"><span class="line-num">2</span><span class="line-content">    <span class="kw">para</span> i <span class="kw">de</span> <span class="num">1</span> <span class="kw">ate</span> n <span class="kw">faca</span></span></div>
+              <div class="code-line"><span class="line-num">3</span><span class="line-content">        j &lt;- <span class="num">1</span></span></div>
+              <div class="code-line"><span class="line-num">4</span><span class="line-content">        <span class="kw">enquanto</span> j &lt; i <span class="kw">faca</span></span></div>
+              <div class="code-line"><span class="line-num">5</span><span class="line-content">            j &lt;- j * <span class="num">2</span></span></div>
+              <div class="code-line"><span class="line-num">6</span><span class="line-content">        <span class="kw">fim enquanto</span></span></div>
+              <div class="code-line"><span class="line-num">7</span><span class="line-content">    <span class="kw">fim para</span></span></div>
+              <div class="code-line"><span class="line-num">8</span><span class="line-content"><span class="kw">fim algoritmo</span></span></div>
+            </div>
+            <button class="toggle-solution-btn" data-target="sol-ex2">Mostrar Resolução Passo a Passo</button>
+            <div id="sol-ex2" class="solution-box">
+              <strong>Resolução:</strong> Para cada $i$, o laço <code>enquanto</code> dobra $j$, custando $\Theta(\log i)$ iterações. A soma total é $\sum_{i=1}^n \log i = \log(n!) = \boxed{\Theta(n \log n)}$ (pela fórmula de Stirling).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 36: EXERCÍCIO 3 -->
+      <section data-section="exercicios" data-subsection="Exercícios > Exercício 3">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício 3</h2>
+            <div class="slide-subtitle">Determine a complexidade com parâmetros $n$ e $m$</div>
+          </div>
+          <div class="slide-body">
+            <div class="code-container">
+              <div class="code-line"><span class="line-num">1</span><span class="line-content"><span class="kw">algoritmo</span> <span class="fn">Exercicio3</span>(n, m)</span></div>
+              <div class="code-line"><span class="line-num">2</span><span class="line-content">    <span class="kw">para</span> i <span class="kw">de</span> <span class="num">0</span> <span class="kw">ate</span> n-<span class="num">1</span> <span class="kw">faca</span></span></div>
+              <div class="code-line"><span class="line-num">3</span><span class="line-content">        <span class="kw">para</span> j <span class="kw">de</span> <span class="num">0</span> <span class="kw">ate</span> m-<span class="num">1</span> <span class="kw">faca</span></span></div>
+              <div class="code-line"><span class="line-num">4</span><span class="line-content">            <span class="kw">para</span> k <span class="kw">de</span> <span class="num">0</span> <span class="kw">ate</span> n-<span class="num">1</span> <span class="kw">faca</span></span></div>
+              <div class="code-line"><span class="line-num">5</span><span class="line-content">                <span class="cm">// Operação O(1)</span></span></div>
+              <div class="code-line"><span class="line-num">6</span><span class="line-content">            <span class="kw">fim para</span></span></div>
+              <div class="code-line"><span class="line-num">7</span><span class="line-content">        <span class="kw">fim para</span></span></div>
+              <div class="code-line"><span class="line-num">8</span><span class="line-content">    <span class="kw">fim para</span></span></div>
+              <div class="code-line"><span class="line-num">9</span><span class="line-content"><span class="kw">fim algoritmo</span></span></div>
+            </div>
+            <button class="toggle-solution-btn" data-target="sol-ex3">Mostrar Resolução Passo a Passo</button>
+            <div id="sol-ex3" class="solution-box">
+              <strong>Resolução:</strong> Três laços aninhados independentes: $n \times m \times n = \boxed{O(n^2 \cdot m)}$.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 37: EXERCÍCIO 4 -->
+      <section data-section="exercicios" data-subsection="Exercícios > Exercício 4">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício 4</h2>
+            <div class="slide-subtitle">Determine a complexidade do algoritmo abaixo</div>
+          </div>
+          <div class="slide-body">
+            <div class="code-container">
+              <div class="code-line"><span class="line-num">1</span><span class="line-content"><span class="kw">algoritmo</span> <span class="fn">Exercicio4</span>(V, n)</span></div>
+              <div class="code-line"><span class="line-num">2</span><span class="line-content">    <span class="kw">para</span> i <span class="kw">de</span> <span class="num">0</span> <span class="kw">ate</span> n-<span class="num">1</span> <span class="kw">faca</span></span></div>
+              <div class="code-line"><span class="line-num">3</span><span class="line-content">        <span class="kw">para</span> j <span class="kw">de</span> <span class="num">0</span> <span class="kw">ate</span> n-<span class="num">1</span>-i <span class="kw">faca</span></span></div>
+              <div class="code-line"><span class="line-num">4</span><span class="line-content">            <span class="kw">se</span> V[j] &gt; V[j+<span class="num">1</span>] <span class="kw">entao</span></span></div>
+              <div class="code-line"><span class="line-num">5</span><span class="line-content">                <span class="fn">troca</span>(V[j], V[j+<span class="num">1</span>])</span></div>
+              <div class="code-line"><span class="line-num">6</span><span class="line-content">            <span class="kw">fim se</span></span></div>
+              <div class="code-line"><span class="line-num">7</span><span class="line-content">        <span class="kw">fim para</span></span></div>
+              <div class="code-line"><span class="line-num">8</span><span class="line-content">    <span class="kw">fim para</span></span></div>
+              <div class="code-line"><span class="line-num">9</span><span class="line-content"><span class="kw">fim algoritmo</span></span></div>
+            </div>
+            <button class="toggle-solution-btn" data-target="sol-ex4">Mostrar Resolução Passo a Passo</button>
+            <div id="sol-ex4" class="solution-box">
+              <strong>Resolução:</strong> Trata-se da estrutura do Bubble Sort clássico sem flag. O laço interno executa $(n-1) + (n-2) + \dots + 1 = \frac{n(n-1)}{2} = \boxed{\Theta(n^2)}$.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 38: EXERCÍCIO 5 -->
+      <section data-section="exercicios" data-subsection="Exercícios > Exercício 5">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício 5</h2>
+            <div class="slide-subtitle">Qual é a complexidade no pior caso?</div>
+          </div>
+          <div class="slide-body">
+            <div class="code-container">
+              <div class="code-line"><span class="line-num">1</span><span class="line-content"><span class="kw">algoritmo</span> <span class="fn">Exercicio5</span>(V, n)</span></div>
+              <div class="code-line"><span class="line-num">2</span><span class="line-content">    <span class="kw">para</span> i <span class="kw">de</span> <span class="num">0</span> <span class="kw">ate</span> n-<span class="num">1</span> <span class="kw">faca</span></span></div>
+              <div class="code-line"><span class="line-num">3</span><span class="line-content">        j &lt;- i</span></div>
+              <div class="code-line"><span class="line-num">4</span><span class="line-content">        <span class="kw">enquanto</span> j &gt; <span class="num">0</span> <span class="kw">e</span> V[j] &lt; V[j-<span class="num">1</span>] <span class="kw">faca</span></span></div>
+              <div class="code-line"><span class="line-num">5</span><span class="line-content">            <span class="fn">troca</span>(V[j], V[j-<span class="num">1</span>])</span></div>
+              <div class="code-line"><span class="line-num">6</span><span class="line-content">            j &lt;- j - <span class="num">1</span></span></div>
+              <div class="code-line"><span class="line-num">7</span><span class="line-content">        <span class="kw">fim enquanto</span></span></div>
+              <div class="code-line"><span class="line-num">8</span><span class="line-content">    <span class="kw">fim para</span></span></div>
+              <div class="code-line"><span class="line-num">9</span><span class="line-content"><span class="kw">fim algoritmo</span></span></div>
+            </div>
+            <button class="toggle-solution-btn" data-target="sol-ex5">Mostrar Resolução Passo a Passo</button>
+            <div id="sol-ex5" class="solution-box">
+              <strong>Resolução:</strong> Padrão do <strong>Insertion Sort</strong>. No pior caso (vetor em ordem decrescente), o <code>enquanto</code> recua $i$ posições para cada $i$, gerando $\sum_{i=1}^{n-1} i = \boxed{\text{Pior Caso } \Theta(n^2)}$.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 39: EXERCÍCIO 6 -->
+      <section data-section="exercicios" data-subsection="Exercícios > Exercício 6">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício 6</h2>
+            <div class="slide-subtitle">Determine a complexidade do algoritmo abaixo</div>
+          </div>
+          <div class="slide-body">
+            <div class="code-container">
+              <div class="code-line"><span class="line-num">1</span><span class="line-content"><span class="kw">algoritmo</span> <span class="fn">Exercicio6</span>(n)</span></div>
+              <div class="code-line"><span class="line-num">2</span><span class="line-content">    s &lt;- <span class="num">0</span></span></div>
+              <div class="code-line"><span class="line-num">3</span><span class="line-content">    <span class="kw">para</span> i <span class="kw">de</span> <span class="num">1</span> <span class="kw">ate</span> n <span class="kw">faca</span></span></div>
+              <div class="code-line"><span class="line-num">4</span><span class="line-content">        <span class="kw">para</span> j <span class="kw">de</span> <span class="num">1</span> <span class="kw">ate</span> i*i <span class="kw">faca</span></span></div>
+              <div class="code-line"><span class="line-num">5</span><span class="line-content">            s &lt;- s + <span class="num">1</span></span></div>
+              <div class="code-line"><span class="line-num">6</span><span class="line-content">        <span class="kw">fim para</span></span></div>
+              <div class="code-line"><span class="line-num">7</span><span class="line-content">    <span class="kw">fim para</span></span></div>
+              <div class="code-line"><span class="line-num">8</span><span class="line-content">    <span class="kw">retorne</span> s</span></div>
+              <div class="code-line"><span class="line-num">9</span><span class="line-content"><span class="kw">fim algoritmo</span></span></div>
+            </div>
+            <button class="toggle-solution-btn" data-target="sol-ex6">Mostrar Resolução Passo a Passo</button>
+            <div id="sol-ex6" class="solution-box">
+              <strong>Resolução:</strong> Para cada $i$, o laço interno executa $i^2$ vezes. Custo total: $\sum_{i=1}^n i^2 = \frac{n(n+1)(2n+1)}{6} = \frac{2n^3 + 3n^2 + n}{6} = \boxed{\Theta(n^3)}$.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 40: EXERCÍCIO 7 -->
+      <section data-section="exercicios" data-subsection="Exercícios > Exercício 7">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício 7</h2>
+            <div class="slide-subtitle">Determine a complexidade do algoritmo abaixo</div>
+          </div>
+          <div class="slide-body">
+            <div class="code-container">
+              <div class="code-line"><span class="line-num">1</span><span class="line-content"><span class="kw">algoritmo</span> <span class="fn">Proposto1</span>(n)</span></div>
+              <div class="code-line"><span class="line-num">2</span><span class="line-content">    <span class="kw">para</span> i <span class="kw">de</span> n <span class="kw">ate</span> <span class="num">1</span> (decrementando) <span class="kw">faca</span></span></div>
+              <div class="code-line"><span class="line-num">3</span><span class="line-content">        <span class="kw">para</span> j <span class="kw">de</span> i <span class="kw">ate</span> n <span class="kw">faca</span></span></div>
+              <div class="code-line"><span class="line-num">4</span><span class="line-content">            <span class="cm">// Operação O(1)</span></span></div>
+              <div class="code-line"><span class="line-num">5</span><span class="line-content">        <span class="kw">fim para</span></span></div>
+              <div class="code-line"><span class="line-num">6</span><span class="line-content">    <span class="kw">fim para</span></span></div>
+              <div class="code-line"><span class="line-num">7</span><span class="line-content"><span class="kw">fim algoritmo</span></span></div>
+            </div>
+            <button class="toggle-solution-btn" data-target="sol-ex7">Mostrar Resolução Passo a Passo</button>
+            <div id="sol-ex7" class="solution-box">
+              <strong>Resolução:</strong> Quando $i = n \implies 1$ vez; $i = n-1 \implies 2$ vezes; ... até $i = 1 \implies n$ vezes. Soma: $1 + 2 + \dots + n = \frac{n(n+1)}{2} = \boxed{\Theta(n^2)}$.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 41: EXERCÍCIO 8 -->
+      <section data-section="exercicios" data-subsection="Exercícios > Exercício 8">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício 8</h2>
+            <div class="slide-subtitle">Determine a complexidade do algoritmo abaixo</div>
+          </div>
+          <div class="slide-body">
+            <div class="code-container">
+              <div class="code-line"><span class="line-num">1</span><span class="line-content"><span class="kw">algoritmo</span> <span class="fn">Proposto2</span>(n)</span></div>
+              <div class="code-line"><span class="line-num">2</span><span class="line-content">    i &lt;- <span class="num">1</span></span></div>
+              <div class="code-line"><span class="line-num">3</span><span class="line-content">    <span class="kw">enquanto</span> i*i*i &lt;= n <span class="kw">faca</span></span></div>
+              <div class="code-line"><span class="line-num">4</span><span class="line-content">        i &lt;- i + <span class="num">1</span></span></div>
+              <div class="code-line"><span class="line-num">5</span><span class="line-content">    <span class="kw">fim enquanto</span></span></div>
+              <div class="code-line"><span class="line-num">6</span><span class="line-content"><span class="kw">fim algoritmo</span></span></div>
+            </div>
+            <button class="toggle-solution-btn" data-target="sol-ex8">Mostrar Resolução Passo a Passo</button>
+            <div id="sol-ex8" class="solution-box">
+              <strong>Resolução:</strong> O laço executa enquanto $i^3 \le n \iff i \le \sqrt[3]{n}$. Como $i$ cresce de $1$ em $1$, o número de iterações é $\approx n^{1/3} \implies \boxed{\Theta(n^{1/3})}$.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 42: EXERCÍCIO 9 -->
+      <section data-section="exercicios" data-subsection="Exercícios > Exercício 9">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício 9</h2>
+            <div class="slide-subtitle">Determine a complexidade do algoritmo abaixo</div>
+          </div>
+          <div class="slide-body">
+            <div class="code-container">
+              <div class="code-line"><span class="line-num">1</span><span class="line-content"><span class="kw">algoritmo</span> <span class="fn">Proposto3</span>(n)</span></div>
+              <div class="code-line"><span class="line-num">2</span><span class="line-content">    <span class="kw">para</span> i <span class="kw">de</span> <span class="num">1</span> <span class="kw">ate</span> n <span class="kw">faca</span></span></div>
+              <div class="code-line"><span class="line-num">3</span><span class="line-content">        j &lt;- n</span></div>
+              <div class="code-line"><span class="line-num">4</span><span class="line-content">        <span class="kw">enquanto</span> j &gt; i <span class="kw">faca</span></span></div>
+              <div class="code-line"><span class="line-num">5</span><span class="line-content">            j &lt;- j - i</span></div>
+              <div class="code-line"><span class="line-num">6</span><span class="line-content">        <span class="kw">fim enquanto</span></span></div>
+              <div class="code-line"><span class="line-num">7</span><span class="line-content">    <span class="kw">fim para</span></span></div>
+              <div class="code-line"><span class="line-num">8</span><span class="line-content"><span class="kw">fim algoritmo</span></span></div>
+            </div>
+            <button class="toggle-solution-btn" data-target="sol-ex9">Mostrar Resolução Passo a Passo</button>
+            <div id="sol-ex9" class="solution-box">
+              <strong>Resolução:</strong> O <code>enquanto</code> diminui $j$ em passos de tamanho $i$, executando $\approx \frac{n-i}{i} \approx \frac{n}{i} - 1$ vezes. Somando para todos os $i$: $\sum_{i=1}^n \frac{n}{i} = n \sum_{i=1}^n \frac{1}{i} = n H_n \approx n(\ln n + \gamma) = \boxed{\Theta(n \log n)}$.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 43: EXERCÍCIO 10 -->
+      <section data-section="exercicios" data-subsection="Exercícios > Exercício 10">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício 10</h2>
+            <div class="slide-subtitle">Determine a complexidade do algoritmo abaixo</div>
+          </div>
+          <div class="slide-body">
+            <div class="code-container">
+              <div class="code-line"><span class="line-num">1</span><span class="line-content"><span class="kw">algoritmo</span> <span class="fn">Proposto4</span>(n)</span></div>
+              <div class="code-line"><span class="line-num">2</span><span class="line-content">    <span class="kw">para</span> i <span class="kw">de</span> <span class="num">1</span> <span class="kw">ate</span> n <span class="kw">faca</span></span></div>
+              <div class="code-line"><span class="line-num">3</span><span class="line-content">        <span class="kw">para</span> j <span class="kw">de</span> <span class="num">1</span> <span class="kw">ate</span> n (<span class="kw">passo</span> i) <span class="kw">faca</span></span></div>
+              <div class="code-line"><span class="line-num">4</span><span class="line-content">            <span class="cm">// Operação O(1)</span></span></div>
+              <div class="code-line"><span class="line-num">5</span><span class="line-content">        <span class="kw">fim para</span></span></div>
+              <div class="code-line"><span class="line-num">6</span><span class="line-content">    <span class="kw">fim para</span></span></div>
+              <div class="code-line"><span class="line-num">7</span><span class="line-content"><span class="kw">fim algoritmo</span></span></div>
+            </div>
+            <button class="toggle-solution-btn" data-target="sol-ex10">Mostrar Resolução Passo a Passo</button>
+            <div id="sol-ex10" class="solution-box">
+              <strong>Resolução:</strong> O laço interno visita $\lceil n/i \rceil$ posições a cada valor de $i$. A soma total resulta na série harmônica: $\sum_{i=1}^n \frac{n}{i} = n H_n = \boxed{\Theta(n \log n)}$.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 8: GABARITO DOS EXERCÍCIOS
+           ============================================================ -->
+
+      <!-- SLIDE 44: GABARITOS 1 E 2 -->
+      <section data-section="gabarito" data-subsection="Gabaritos > Exercícios 1 e 2">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Gabarito: Exercícios 1 e 2</h2>
+            <div class="slide-subtitle">Dedução formal detalhada</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">Gabarito 1: Laço com divisão sucessiva</div>
+              <div class="block-content">
+                <ul>
+                  <li>O laço <code>enquanto</code> divide $i$ por $2$ a cada rodada: $\Theta(\log n)$ iterações.</li>
+                  <li>O loop interno <code>para</code> executa sempre $n$ vezes a cada rodada do while.</li>
+                </ul>
+                <div class="math-highlight">$$\boxed{\Theta(n \log n)}$$</div>
+              </div>
+            </div>
+            <div class="block">
+              <div class="block-title">Gabarito 2: Laço com multiplicação por 2</div>
+              <div class="block-content">
+                <ul>
+                  <li>Para cada $i$, o <code>enquanto</code> dobra $j$ até atingir $i$, com custo $\Theta(\log i)$.</li>
+                  <li>Somando para todos os valores: $\sum_{i=1}^n \log i = \log(n!) = \Theta(n \log n)$.</li>
+                </ul>
+                <div class="math-highlight">$$\boxed{\Theta(n \log n)}$$</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 45: GABARITOS 3 E 4 -->
+      <section data-section="gabarito" data-subsection="Gabaritos > Exercícios 3 e 4">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Gabarito: Exercícios 3 e 4</h2>
+            <div class="slide-subtitle">Dedução formal detalhada</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">Gabarito 3: Três loops multivariáveis</div>
+              <div class="block-content">
+                <ul>
+                  <li>Primeiro loop: $n$ vezes.</li>
+                  <li>Segundo loop: $m$ vezes.</li>
+                  <li>Terceiro loop: $n$ vezes.</li>
+                </ul>
+                <div class="math-highlight">$$\boxed{O(n^2 \cdot m)}$$</div>
+              </div>
+            </div>
+            <div class="block">
+              <div class="block-title">Gabarito 4: Padrão do Bubble Sort</div>
+              <div class="block-content">
+                <ul>
+                  <li>O loop interno executa $(n-1) + (n-2) + \dots + 1 = \frac{n(n-1)}{2}$.</li>
+                </ul>
+                <div class="math-highlight">$$\boxed{\Theta(n^2)}$$</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 46: GABARITOS 5 E 6 -->
+      <section data-section="gabarito" data-subsection="Gabaritos > Exercícios 5 e 6">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Gabarito: Exercícios 5 e 6</h2>
+            <div class="slide-subtitle">Dedução formal detalhada</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">Gabarito 5: Insertion Sort Pior Caso</div>
+              <div class="block-content">
+                <ul>
+                  <li>No pior caso, o <code>enquanto</code> recua $i$ posições a cada $i$, gerando $1 + 2 + \dots + (n-1)$.</li>
+                </ul>
+                <div class="math-highlight">$$\boxed{\text{Pior Caso } \Theta(n^2)}$$</div>
+              </div>
+            </div>
+            <div class="block">
+              <div class="block-title">Gabarito 6: Soma dos Quadrados</div>
+              <div class="block-content">
+                <ul>
+                  <li>Para cada $i$, o laço executa $i^2$ vezes. Soma total: $\sum_{i=1}^n i^2 = \frac{n(n+1)(2n+1)}{6}$.</li>
+                </ul>
+                <div class="math-highlight">$$\boxed{\Theta(n^3)}$$</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 47: GABARITOS 7 E 8 -->
+      <section data-section="gabarito" data-subsection="Gabaritos > Exercícios 7 e 8">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Gabarito: Exercícios 7 e 8</h2>
+            <div class="slide-subtitle">Dedução formal detalhada</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">Gabarito 7: Loop com limite inferior dinâmico</div>
+              <div class="block-content">
+                <ul>
+                  <li>O loop interno executa $n - i + 1$ vezes, produzindo outra soma triangular clássica.</li>
+                </ul>
+                <div class="math-highlight">$$\boxed{\Theta(n^2)}$$</div>
+              </div>
+            </div>
+            <div class="block">
+              <div class="block-title">Gabarito 8: Raiz Cúbica</div>
+              <div class="block-content">
+                <ul>
+                  <li>O laço pára quando $i^3 > n \iff i > \sqrt[3]{n}$.</li>
+                </ul>
+                <div class="math-highlight">$$\boxed{\Theta(n^{1/3})}$$</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 48: GABARITOS 9 E 10 -->
+      <section data-section="gabarito" data-subsection="Gabaritos > Exercícios 9 e 10">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Gabarito: Exercícios 9 e 10</h2>
+            <div class="slide-subtitle">Aparecimento da Série Harmônica</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">Gabarito 9: Saltos de tamanho $i$</div>
+              <div class="block-content">
+                <ul>
+                  <li>O custo por valor de $i$ é $\approx n/i$. A soma total resulta em $n \sum \frac{1}{i} = n H_n$.</li>
+                </ul>
+                <div class="math-highlight">$$\boxed{\Theta(n \log n)}$$</div>
+              </div>
+            </div>
+            <div class="block">
+              <div class="block-title">Gabarito 10: Laço com passo $i$</div>
+              <div class="block-content">
+                <ul>
+                  <li>O laço visita $n/i$ posições. Somando para todos os $i \in [1, n]$, obtemos $\Theta(n \log n)$.</li>
+                </ul>
+                <div class="math-highlight">$$\boxed{\Theta(n \log n)}$$</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 9: DESAFIO -- MINI-PROJETO
+           ============================================================ -->
+
+      <!-- SLIDE 49: DESAFIO ESPECIFICAÇÃO -->
+      <section data-section="desafio" data-subsection="Desafio > Mini-Projeto">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Desafio: Mini-Projeto de Análise</h2>
+            <div class="slide-subtitle">Problema do Two Sum sob 3 paradigmas algorítmicos</div>
+          </div>
+          <div class="slide-body">
+            <div class="alertblock">
+              <div class="block-title">🎯 Objetivo</div>
+              <div class="block-content">
+                Implementar, instrumentar e analisar <strong>três soluções distintas</strong> para o problema de verificar se um array contém dois elementos cuja soma é igual a um valor $k$:
+                <ol style="margin-top:6px;">
+                  <li><strong>Força Bruta ($O(n^2)$):</strong> testar todos os pares possíveis com dois loops aninhados.</li>
+                  <li><strong>Ordenação + Dois Ponteiros ($O(n \log n)$ ou $O(n)$):</strong> ordenar o vetor e convergir os ponteiros.</li>
+                  <li><strong>Tabela Hash ($O(n)$ tempo / $O(n)$ memória):</strong> busca de complementos $k - V[i]$ em tempo constante médio.</li>
+                </ol>
+              </div>
+            </div>
+            <div class="block">
+              <div class="block-title">📦 O que entregar</div>
+              <div class="block-content">
+                <ol>
+                  <li>Código-fonte completo (Python, C, Java, Rust ou JavaScript).</li>
+                  <li>Relatório analítico comparando a dedução teórica passo a passo com medições empíricas de tempo para $n \in [10^2, 10^5]$ e gráfico comparativo.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 50: DESAFIO CRITÉRIOS -->
+      <section data-section="desafio" data-subsection="Desafio > Critérios">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Critérios de Avaliação do Desafio</h2>
+            <div class="slide-subtitle">Rigor metodológico e clareza na discussão dos trade-offs</div>
+          </div>
+          <div class="slide-body">
+            <div class="exampleblock">
+              <div class="block-title">📋 Checklist de Avaliação</div>
+              <div class="block-content">
+                <ul>
+                  <li><strong>Corretude:</strong> implementar e testar com rigor as $3$ abordagens com casos de teste representativos.</li>
+                  <li><strong>Análise Teórica:</strong> deduzir a complexidade de tempo e memória de cada solução passo a passo.</li>
+                  <li><strong>Validação Experimental:</strong> confrontar a curva teórica com os tempos reais cronometrados.</li>
+                  <li><strong>Discussão de Trade-offs:</strong> explicar o compromisso entre <em>tempo de execução</em> e <em>consumo de memória auxiliar</em>.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 10: FECHAMENTO
+           ============================================================ -->
+
+      <!-- SLIDE 51: PRÓXIMA AULA -->
+      <section data-section="fechamento" data-subsection="Fechamento > Próxima Aula">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Próxima Aula</h2>
+            <div class="slide-subtitle">Transição para o paradigma recursivo</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">🚀 Aula 6 — Algoritmos Recursivos e Relações de Recorrência</div>
+              <div class="block-content">
+                <ul>
+                  <li>Como expressar custos de algoritmos de Divisão e Conquista: <strong>Relações de Recorrência</strong>.</li>
+                  <li><strong>Método da Substituição:</strong> prova indutiva de limites assintóticos.</li>
+                  <li><strong>Método da Árvore de Recursão:</strong> visualização do trabalho por nível e número de folhas.</li>
+                  <li><strong>Teorema Mestre:</strong> fórmula geral para resolver recorrências da forma $T(n) = aT(n/b) + f(n)$.</li>
+                </ul>
+              </div>
+            </div>
+            <div style="text-align:center; margin-top:30px;">
+              <h1 style="color:var(--warsaw-primary); font-size:36px; font-weight:800;">Dúvidas?</h1>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 52: REFERÊNCIAS -->
+      <section data-section="fechamento" data-subsection="Fechamento > Referências">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Referências Bibliográficas</h2>
+            <div class="slide-subtitle">Fontes fundamentais de estudo</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📚 Bibliografia Recomendada</div>
+              <div class="block-content">
+                <ul>
+                  <li>
+                    <strong>T. H. Cormen, C. E. Leiserson, R. L. Rivest, C. Stein.</strong><br>
+                    <em>Algoritmos: Teoria e Prática</em>. 3ª edição, Elsevier / Campus, 2012. Capítulos 2 e 3.
+                  </li>
+                  <li style="margin-top:10px;">
+                    <strong>J. A. B. Monteiro.</strong><br>
+                    <em>Notas de Aula — Estruturas de Dados e Algoritmos</em>.<br>
+                    Disponível em: <a href="https://joaoarthurbm.github.io/eda" target="_blank" style="color:var(--warsaw-accent); text-decoration:underline;">joaoarthurbm.github.io/eda</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- ============================================================
+       RODAPÉ FIXO WARSAW (FOOTLINE)
+       ============================================================ -->
+  <footer id="warsaw-footline">
+    <div class="foot-left">
+      <span>Pedro Ximenes · UNICAP</span>
+    </div>
+    <div class="foot-mid">
+      <span>Análise de Algoritmos — Aula 5: Complexidade Iterativa II</span>
+    </div>
+    <div class="foot-right">
+      <span id="slide-counter-text">1 / 53</span>
+      <button id="foot-prev-btn" class="foot-btn" title="Slide Anterior">◀</button>
+      <button id="foot-next-btn" class="foot-btn" title="Próximo Slide">▶</button>
+      <button id="foot-fullscreen-btn" class="foot-btn" title="Tela Cheia">⛶</button>
+    </div>
+  </footer>
+
+  <!-- Scripts Reveal.js e Aplicação -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/reveal.js"></script>
+  <script src="js/canvas-demos.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
