@@ -468,23 +468,38 @@ body.theme-light .pub-card:hover {
     line-height: 1.4;
 }
 
-.pub-title a {
-    color: inherit;
+.pub-title a,
+.pub-title a:link,
+.pub-title a:visited {
     text-decoration: none;
-    transition: color 0.2s;
+    transition: color 0.2s ease;
 }
 
 .pub-title a:hover {
-    color: #e53935;
+    color: #ef5350 !important;
     text-decoration: underline;
 }
 
-body.theme-dark .pub-title {
-    color: #ffffff;
+body.theme-dark .pub-title,
+body.theme-dark .pub-title a,
+body.theme-dark .pub-title a:link,
+body.theme-dark .pub-title a:visited {
+    color: #ffffff !important;
 }
 
-body.theme-light .pub-title {
-    color: #1e293b;
+body.theme-dark .pub-title a:hover {
+    color: #ef5350 !important;
+}
+
+body.theme-light .pub-title,
+body.theme-light .pub-title a,
+body.theme-light .pub-title a:link,
+body.theme-light .pub-title a:visited {
+    color: #1e293b !important;
+}
+
+body.theme-light .pub-title a:hover {
+    color: #e53935 !important;
 }
 
 .pub-authors {
