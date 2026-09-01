@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transformações Geométricas Bidimensionais — Computação Gráfica | UNICAP</title>
+  
+  <!-- Reveal.js CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+  
+  <!-- KaTeX CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  
+  <!-- Custom Warsaw Beamer CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="theme-light">
+
+  <!-- ============================================================ -->
+  <!-- BARRA DUPLA DE NAVEGAÇÃO SUPERIOR (WARSAW THEME HEADLINE) -->
+  <!-- ============================================================ -->
+  <header class="warsaw-headline">
+    <div class="headline-section-row">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <a href="../../../disciplinas.html" style="color:#ffffff;text-decoration:none;font-size:0.75rem;font-weight:600;padding:3px 8px;background:rgba(255,255,255,0.15);border-radius:4px;display:inline-flex;align-items:center;gap:4px;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'" title="Back to Courses page">← Courses</a>
+        <span style="font-weight:800;color:#60a5fa;letter-spacing:0.5px;">UNICAP</span>
+        <span id="headline-section-text" style="font-weight:600;">Transformações Geométricas 2D</span>
+      </div>
+      <button class="theme-toggle-btn" id="theme-toggle-btn" title="Alternar entre Tema Claro e Escuro">
+        <span>🌙</span> <span>Tema Escuro</span>
+      </button>
+    </div>
+    <div class="headline-subsection-row">
+      <span id="headline-subsection-text">› Introdução</span>
+      <span style="opacity:0.8;font-size:0.7rem;">Computação Gráfica • Prof. Pedro Ximenes</span>
+    </div>
+  </header>
+
+  <!-- ============================================================ -->
+  <!-- CONTAINER REVEAL.JS -->
+  <!-- ============================================================ -->
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 1: Título / Capa -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="hero-container">
+          <div class="hero-box">
+            <h1>Transformações Geométricas Bidimensionais</h1>
+            <h2>Computação Gráfica — Conceitos Fundamentais e Formulação Matricial</h2>
+          </div>
+          
+          <div class="hero-author-card">
+            <p><strong>Prof. Pedro Ximenes</strong></p>
+            <p>Universidade Católica de Pernambuco (UNICAP)</p>
+          </div>
+
+          <div style="margin-top: 10px;">
+            <button class="btn" style="padding:8px 18px;font-size:0.9rem;" onclick="Reveal.next()">
+              Iniciar Aula ➔
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 2: Sumário -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Sumário</h2>
+          <span class="section-badge">Visão Geral</span>
+        </div>
+
+        <div class="toc-list">
+          <div class="toc-item" onclick="Reveal.slide(2)">
+            <div class="toc-badge">1</div>
+            <div><strong>Introdução:</strong> O que são Transformações Geométricas? Aplicações práticas.</div>
+          </div>
+          <div class="toc-item" onclick="Reveal.slide(4)">
+            <div class="toc-badge">2</div>
+            <div><strong>Transformações Básicas:</strong> Translação, Rotação e Escala (Equações e Matrizes $2 \times 2$).</div>
+          </div>
+          <div class="toc-item" onclick="Reveal.slide(20)">
+            <div class="toc-badge">3</div>
+            <div><strong>Coordenadas Homogêneas:</strong> Motivação, formulação unificada $3 \times 3$ e composição linear.</div>
+          </div>
+          <div class="toc-item" onclick="Reveal.slide(27)">
+            <div class="toc-badge">4</div>
+            <div><strong>Laboratório & Material Complementar:</strong> Playground interativo e referências.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 3: O que são Transformações Geométricas? -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Transformações Geométricas — Visão Geral</h2>
+          <span class="section-badge">1. Introdução</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Definição</div>
+          <div class="block-body">
+            Transformações geométricas são <strong>operações matemáticas</strong> aplicadas à descrição geométrica de um objeto para <strong>alterar</strong> sua posição, orientação ou tamanho.
+          </div>
+        </div>
+
+        <ul class="styled-list" style="margin:8px 0;">
+          <li><strong>Translação</strong> — muda a <strong>posição</strong> do objeto no plano.</li>
+          <li><strong>Rotação</strong> — muda a <strong>orientação</strong> do objeto em torno de um ponto.</li>
+          <li><strong>Escala</strong> — muda o <strong>tamanho</strong> do objeto.</li>
+        </ul>
+
+        <div class="beamer-block example">
+          <div class="block-header">Aplicações Práticas</div>
+          <div class="block-body" style="padding:10px 14px;font-size:0.88rem;">
+            <ul class="styled-list" style="margin:0;">
+              <li>Animação de objetos em jogos e simulações digitais.</li>
+              <li>Posicionamento de modelos e câmeras em cenas 3D.</li>
+              <li>Manipulação interativa de objetos (arrastar, girar, redimensionar em interfaces).</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="beamer-block alert" style="margin-top:8px;">
+          <div class="block-header">Outras transformações (próximas aulas)</div>
+          <div class="block-body" style="padding:6px 12px;font-size:0.85rem;">
+            Reflexão e Cisalhamento (shear) — não serão abordados nesta aula.
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 4: Ilustração das Transformações + Canvas 2D -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Transformações Geométricas — Ilustração</h2>
+          <span class="section-badge">1. Introdução • Canvas 2D</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="canvas-card">
+              <div class="canvas-header">
+                <span style="color:var(--text-main);font-weight:700;">Demonstração Interativa Canvas 2D</span>
+                <div class="btn-group btn-ov-group">
+                  <button class="btn btn-sec btn-active" id="btn-ov-all">Todas</button>
+                  <button class="btn btn-sec" id="btn-ov-trans">Translação</button>
+                  <button class="btn btn-sec" id="btn-ov-rot">Rotação</button>
+                  <button class="btn btn-sec" id="btn-ov-scale">Escala</button>
+                  <button class="btn btn-sec" id="btn-ov-orig">Original</button>
+                </div>
+              </div>
+              <canvas id="canvas-overview" width="500" height="290"></canvas>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block def">
+              <div class="block-header">Código JavaScript Canvas 2D</div>
+              <div class="block-body" style="padding:6px;">
+                <div class="code-card">
+                  <div class="code-card-header">
+                    <span>canvas_transform.js</span>
+                    <span>HTML5 2D API</span>
+                  </div>
+                  <pre id="code-ov-preview"></pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="beamer-block example" style="margin:0;">
+              <div class="block-header">Aplicações</div>
+              <div class="block-body" style="font-size:0.85rem;">
+                <ul class="styled-list" style="margin:0;">
+                  <li>Animação de objetos em jogos e simulações</li>
+                  <li>Posicionamento de modelos em cenas 3D</li>
+                  <li>Manipulação interativa de objetos (arrastar, girar, redimensionar)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 5: Translação — Equações -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Translação — Equações</h2>
+          <span class="section-badge">2. Transformações Básicas • Translação</span>
+        </div>
+
+        <p style="margin-top:0;">A translação consiste em <strong>adicionar distâncias fixas</strong> às coordenadas de cada ponto do objeto.</p>
+
+        <div class="beamer-block def">
+          <div class="block-header">Equações de Translação</div>
+          <div class="block-body">
+            Dado um ponto $(x, y)$ e os <strong>fatores de translação</strong> $t_x$ e $t_y$:
+            <div class="math-box highlight" style="margin:6px 0;">
+              $$x' = x + t_x \qquad y' = y + t_y$$
+            </div>
+          </div>
+        </div>
+
+        <ul class="styled-list" style="margin:8px 0;">
+          <li>$t_x$ — deslocamento na direção $x$ (horizontal)</li>
+          <li>$t_y$ — deslocamento na direção $y$ (vertical)</li>
+          <li>$(x', y')$ — coordenadas do ponto <strong>depois</strong> da translação ("$x$ linha" e "$y$ linha")</li>
+        </ul>
+
+        <div class="beamer-block alert" style="margin-top:10px;">
+          <div class="block-header">Observação</div>
+          <div class="block-body" style="padding:8px 14px;">
+            A mesma translação ($t_x, t_y$) é aplicada a <strong>todos</strong> os vértices do objeto geométrico.
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 6: Translação — Notação Matricial -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Translação — Notação Matricial</h2>
+          <span class="section-badge">2. Transformações Básicas • Translação</span>
+        </div>
+
+        <p style="margin-top:0;">Para facilitar cálculos futuros, escrevemos a translação usando <strong>matrizes</strong>:</p>
+
+        <div class="beamer-block def">
+          <div class="block-header">Forma Matricial</div>
+          <div class="block-body">
+            <div class="math-box highlight" style="margin:4px 0;">
+              $$\begin{pmatrix} x' \\ y' \end{pmatrix} = \begin{pmatrix} x \\ y \end{pmatrix} + \begin{pmatrix} t_x \\ t_y \end{pmatrix}$$
+            </div>
+            <p style="text-align:center;margin:6px 0 0 0;font-size:0.9rem;color:var(--text-main);">
+              Ou seja: <strong>Ponto transladado</strong> = <strong>Ponto original</strong> + <strong>Vetor de translação</strong>
+            </p>
+          </div>
+        </div>
+
+        <div class="beamer-block example" style="margin-top:12px;">
+          <div class="block-header">Importante</div>
+          <div class="block-body">
+            <ul class="styled-list" style="margin:0;">
+              <li>A translação é uma <strong>soma</strong> de duas matrizes (vetores coluna).</li>
+              <li>Parâmetros: $t_x$ e $t_y$ (podem ser positivos ou negativos).</li>
+              <li>Se $t_x = 0$ e $t_y = 0$, o objeto <strong>não se move</strong>.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 7: Translação — Exemplo Numérico + Canvas 2D -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Translação — Exemplo Numérico</h2>
+          <span class="section-badge">2. Transformações Básicas • Translação</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="canvas-card">
+              <div class="canvas-header">
+                <span>Plano Cartesiano 2D</span>
+                <span>Ponto Inicial: <strong>(3, 2)</strong></span>
+              </div>
+              <canvas id="canvas-translation" width="500" height="290"></canvas>
+              
+              <div class="canvas-controls">
+                <div class="control-row">
+                  <label>Deslocamento $t_x$:</label>
+                  <input type="range" id="tx-slider" min="-3" max="4" step="1" value="1">
+                  <span class="value-badge" id="val-tx">+1</span>
+                </div>
+                <div class="control-row">
+                  <label>Deslocamento $t_y$:</label>
+                  <input type="range" id="ty-slider" min="-2" max="4" step="1" value="3">
+                  <span class="value-badge" id="val-ty">+3</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <p style="margin:0 0 4px 0;font-size:0.88rem;"><strong>Problema:</strong> Transladar o ponto $(3, 2)$ com $t_x = 1$ e $t_y = 3$.</p>
+
+            <div class="beamer-block def">
+              <div class="block-header">Cálculo Passo a Passo</div>
+              <div class="block-body" id="math-trans-calc" style="padding:8px 12px;font-size:0.88rem;">
+                $$\begin{aligned}
+                \begin{pmatrix} x' \\ y' \end{pmatrix} &= \begin{pmatrix} x \\ y \end{pmatrix} + \begin{pmatrix} t_x \\ t_y \end{pmatrix} = \begin{pmatrix} 3 \\ 2 \end{pmatrix} + \begin{pmatrix} 1 \\ 3 \end{pmatrix} \\
+                &= \begin{pmatrix} 3 + 1 \\ 2 + 3 \end{pmatrix} = \begin{pmatrix} \mathbf{4} \\ \mathbf{5} \end{pmatrix} \implies P' = (4, 5)
+                \end{aligned}$$
+              </div>
+            </div>
+
+            <ul class="styled-list" style="font-size:0.85rem;">
+              <li>Na direção $x$: deslocou 1 unidade ($3 \to 4$)</li>
+              <li>Na direção $y$: deslocou 3 unidades ($2 \to 5$)</li>
+              <li>Valores negativos de $t_x$ ou $t_y$ movem na direção oposta</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 8: Translação — Aplicando a Objetos + Canvas 2D -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Translação — Aplicando a Objetos</h2>
+          <span class="section-badge">2. Transformações Básicas • Translação</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="canvas-card">
+              <div class="canvas-header">
+                <span>Translação de Linha</span>
+                <span>Linha $P_1(1,2) \to P_2(4,3)$</span>
+              </div>
+              <canvas id="canvas-trans-object" width="500" height="290"></canvas>
+
+              <div class="canvas-controls">
+                <div class="control-row">
+                  <label>$t_x$ da Linha:</label>
+                  <input type="range" id="obj-tx-slider" min="-2" max="4" step="1" value="2">
+                  <span class="value-badge" id="obj-val-tx">+2</span>
+                </div>
+                <div class="control-row">
+                  <label>$t_y$ da Linha:</label>
+                  <input type="range" id="obj-ty-slider" min="-2" max="3" step="1" value="1">
+                  <span class="value-badge" id="obj-val-ty">+1</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <p style="margin:0 0 4px 0;font-size:0.85rem;">Para transladar um objeto inteiro (ex: uma linha), aplique a <strong>mesma translação a cada vértice</strong>:</p>
+
+            <div class="beamer-block example">
+              <div class="block-header">Exemplo — Translação de uma linha ($t_x = 2, t_y = 1$)</div>
+              <div class="block-body" style="padding:8px 12px;font-size:0.84rem;">
+                $$P_1' = \begin{pmatrix} 1 \\ 2 \end{pmatrix} + \begin{pmatrix} 2 \\ 1 \end{pmatrix} = \begin{pmatrix} 1 + 2 \\ 2 + 1 \end{pmatrix} = \begin{pmatrix} \mathbf{3} \\ \mathbf{3} \end{pmatrix} \implies P_1' = (3, 3)$$
+                $$P_2' = \begin{pmatrix} 4 \\ 3 \end{pmatrix} + \begin{pmatrix} 2 \\ 1 \end{pmatrix} = \begin{pmatrix} 4 + 2 \\ 3 + 1 \end{pmatrix} = \begin{pmatrix} \mathbf{6} \\ \mathbf{4} \end{pmatrix} \implies P_2' = (6, 4)$$
+                <div id="trans-vertex-table" style="margin-top:6px;"></div>
+              </div>
+            </div>
+
+            <p style="font-size:0.82rem;color:var(--text-muted);margin:0;">
+              Se fosse um quadrado (4 vértices), triângulo (3 vértices), etc., o mesmo processo se repete para cada vértice.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 9: Rotação — Conceitos Básicos -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Rotação — Conceitos Básicos</h2>
+          <span class="section-badge">2. Transformações Básicas • Rotação</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="canvas-card">
+              <div class="canvas-header">
+                <span>Rotação em Torno do Pivô $(x_r, y_r)$</span>
+                <button class="btn btn-sec" id="btn-anim-rot-concept" style="padding:2px 8px;font-size:0.75rem;">▶ Animar</button>
+              </div>
+              <canvas id="canvas-rot-concepts" width="500" height="290"></canvas>
+
+              <div class="canvas-controls">
+                <div class="control-row">
+                  <label>Ângulo de Rotação $\theta$:</label>
+                  <input type="range" id="rot-concept-theta-slider" min="-180" max="180" step="5" value="50">
+                  <span class="value-badge" id="val-rot-concept-theta">50°</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block def" style="margin-bottom:8px;">
+              <div class="block-header">Parâmetros da Rotação</div>
+              <div class="block-body" style="padding:8px 14px;font-size:0.86rem;">
+                <ul class="styled-list" style="margin:0;">
+                  <li><strong>Ponto de rotação</strong> $(x_r, y_r)$ — o ponto fixo ao redor do qual o objeto gira</li>
+                  <li><strong>Ângulo de rotação</strong> $\theta$ — quanto o objeto gira (em graus)</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="beamer-block example" style="margin-bottom:8px;">
+              <div class="block-header">Analogia do Prego e Barbante</div>
+              <div class="block-body" style="padding:8px 14px;font-size:0.84rem;">
+                <ul class="styled-list" style="margin:0;">
+                  <li>Imagine um <strong>prego</strong> no ponto $(x_r, y_r)$ e um <strong>barbante</strong> esticado até o vértice</li>
+                  <li>Ao girar, o barbante mantém seu comprimento constante (raio $r$)</li>
+                  <li>O mesmo processo é aplicado a todos os vértices</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="beamer-block alert" style="margin:0;">
+              <div class="block-header">Convenção de sinal</div>
+              <div class="block-body" style="padding:6px 14px;font-size:0.82rem;">
+                <strong>$\theta > 0$</strong>: sentido <strong>anti-horário</strong> &nbsp;&bull;&nbsp;
+                <strong>$\theta < 0$</strong>: sentido <strong>horário</strong>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 10: Rotação — Dedução (Parte 1) + Canvas 2D -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Rotação — Dedução (Parte 1)</h2>
+          <span class="section-badge">2. Transformações Básicas • Rotação</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="canvas-card">
+              <div class="canvas-header">
+                <span>Círculo Trigonométrico & Polares</span>
+                <span>Origem $(0, 0)$</span>
+              </div>
+              <canvas id="canvas-rot-polar" width="500" height="290"></canvas>
+
+              <div class="canvas-controls">
+                <div class="control-row">
+                  <label>Ângulo $\phi$:</label>
+                  <input type="range" id="rot-phi-slider" min="10" max="60" step="5" value="20">
+                  <span class="value-badge" id="val-phi">20°</span>
+                </div>
+                <div class="control-row">
+                  <label>Giro $\theta$:</label>
+                  <input type="range" id="rot-theta-slider" min="0" max="75" step="5" value="35">
+                  <span class="value-badge" id="val-theta">35°</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <p style="margin:0;">Para simplificar, consideramos o <strong>ponto de rotação na origem</strong> ($x_r = 0, y_r = 0$).</p>
+
+            <div class="beamer-block def">
+              <div class="block-header">Coordenadas Polares</div>
+              <div class="block-body" style="font-size:0.85rem;">
+                O ponto original $(x,y)$ pode ser escrito como:
+                $$x = r \cos\phi \qquad y = r \sin\phi$$
+                onde $r$ é a distância à origem e $\phi$ é o ângulo original com o eixo $x$.
+                <br><br>
+                Após a rotação por $\theta$, o novo ponto fica:
+                <div class="math-box highlight">
+                  $$x' = r \cos(\phi + \theta) \qquad y' = r \sin(\phi + \theta)$$
+                </div>
+                O raio $r$ é <strong>constante</strong> (não muda).
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 11: Rotação — Dedução (Coordenadas Polares) -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Rotação — Dedução (Coordenadas Polares)</h2>
+          <span class="section-badge">2. Transformações Básicas • Rotação</span>
+        </div>
+
+        <ul class="styled-list" style="margin-top:0;">
+          <li>Considere o triângulo retângulo formado pelo ponto $(x,y)$:</li>
+        </ul>
+
+        <div class="math-box">
+          $$\cos\phi = \frac{\text{cateto adjacente}}{\text{hipotenusa}} = \frac{x}{r} \implies x = r\cos\phi$$
+        </div>
+
+        <ul class="styled-list" style="margin-top:6px;">
+          <li>Da mesma forma, para a coordenada vertical $y$:</li>
+        </ul>
+
+        <div class="math-box">
+          $$\sin\phi = \frac{\text{cateto oposto}}{\text{hipotenusa}} = \frac{y}{r} \implies y = r\sin\phi$$
+        </div>
+
+        <div class="beamer-block def" style="margin-top:10px;">
+          <div class="block-header">Conclusão</div>
+          <div class="block-body" style="text-align:center;padding:8px 14px;">
+            <div class="math-box highlight" style="font-size:1.05rem;margin:0;">
+              $$(x, y) = (r\cos\phi,\; r\sin\phi)$$
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 12: Rotação — Dedução (Parte 2: Identidades) -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Rotação — Dedução (Parte 2): Identidades Trigonométricas</h2>
+          <span class="section-badge">2. Transformações Básicas • Rotação</span>
+        </div>
+
+        <p style="margin-top:0;font-size:0.88rem;">Agora precisamos nos livrar de $\phi$ e $r$. Usamos as <strong>identidades trigonométricas</strong> de soma de ângulos:</p>
+
+        <div class="beamer-block def">
+          <div class="block-header">Identidades de soma de ângulos</div>
+          <div class="block-body" style="font-size:0.85rem;padding:8px 12px;">
+            $$\cos(\alpha + \beta) = \cos\alpha\;\cos\beta - \sin\alpha\;\sin\beta \qquad \sin(\alpha + \beta) = \cos\alpha\;\sin\beta + \sin\alpha\;\cos\beta$$
+          </div>
+        </div>
+
+        <p style="font-size:0.84rem;margin:4px 0;">Multiplicando pelo raio constante $r$ em cada termo:</p>
+        <div class="math-box" style="font-size:0.82rem;padding:6px 10px;">
+          $$\begin{aligned}
+          x' &= r\cos(\phi+\theta) = r(\cos\phi\cos\theta - \sin\phi\sin\theta) = (\underbrace{r\cos\phi}_{x})\cos\theta - (\underbrace{r\sin\phi}_{y})\sin\theta \\
+          y' &= r\sin(\phi+\theta) = r(\cos\phi\sin\theta + \sin\phi\cos\theta) = (\underbrace{r\cos\phi}_{x})\sin\theta + (\underbrace{r\sin\phi}_{y})\cos\theta
+          \end{aligned}$$
+        </div>
+
+        <div class="beamer-block example" style="margin-top:8px;">
+          <div class="block-header">Equações finais da Rotação 2D</div>
+          <div class="block-body" style="padding:8px 14px;">
+            <div class="math-box highlight" style="font-size:0.95rem;margin:0;">
+              $$\boxed{x' = x\cos\theta - y\sin\theta \qquad y' = x\sin\theta + y\cos\theta}$$
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 13: Rotação — Forma Matricial (2x2) -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Rotação — Forma Matricial ($2 \times 2$)</h2>
+          <span class="section-badge">2. Transformações Básicas • Rotação</span>
+        </div>
+
+        <p style="margin-top:0;font-size:0.88rem;">Transformando as equações de rotação em <strong>notação matricial</strong>:</p>
+
+        <div class="beamer-block def">
+          <div class="block-header">Matriz de Rotação ($2 \times 2$)</div>
+          <div class="block-body" style="padding:8px 12px;">
+            <div class="math-box highlight" style="font-size:0.92rem;margin:0;">
+              $$\begin{pmatrix} x' \\ y' \end{pmatrix} = \begin{pmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} (\cos\theta \cdot x) + (-\sin\theta \cdot y) \\ (\sin\theta \cdot x) + (\cos\theta \cdot y) \end{pmatrix}$$
+            </div>
+          </div>
+        </div>
+
+        <ul class="styled-list" style="font-size:0.86rem;margin:8px 0;">
+          <li>A diagonal principal contém $\cos\theta$</li>
+          <li>A diagonal secundária contém $\sin\theta$, com sinal <strong>negativo na primeira linha</strong></li>
+          <li>A rotação é uma <strong>multiplicação</strong> de matrizes (diferente da translação que era soma!)</li>
+        </ul>
+
+        <div class="beamer-block alert" style="margin-top:8px;">
+          <div class="block-header">Cuidado!</div>
+          <div class="block-body" style="font-size:0.84rem;padding:8px 12px;">
+            <ul class="styled-list" style="margin:0;">
+              <li>A multiplicação de matrizes <strong>NÃO é comutativa</strong>: $A \times B \neq B \times A$</li>
+              <li>Não troque a ordem das matrizes! Esta matriz só vale quando a rotação é em torno da <strong>origem</strong> $(0,0)$.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 14: Rotação — Exemplo Numérico + Canvas 2D -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Rotação — Exemplo Numérico</h2>
+          <span class="section-badge">2. Transformações Básicas • Rotação</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="canvas-card">
+              <div class="canvas-header">
+                <span>Rotação no Plano</span>
+                <span>Ponto Inicial: $(3, 2)$</span>
+              </div>
+              <canvas id="canvas-rot-numeric" width="500" height="290"></canvas>
+
+              <div class="canvas-controls">
+                <div class="control-row">
+                  <label>Ângulo de Giro $\theta$:</label>
+                  <input type="range" id="rot-num-theta-slider" min="-180" max="180" step="5" value="30">
+                  <span class="value-badge" id="val-rot-num-theta">30°</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <p style="margin:0 0 2px 0;font-size:0.85rem;"><strong>Problema:</strong> Rotacionar o ponto $(3, 2)$ por $\theta = 30^\circ$ ao redor da origem.</p>
+            <p style="margin:0 0 4px 0;font-size:0.8rem;color:var(--text-muted);">Lembrando: $\cos 30^\circ = \frac{\sqrt{3}}{2} \approx 0{,}866$ &nbsp;e&nbsp; $\sin 30^\circ = \frac{1}{2} = 0{,}500$</p>
+
+            <div class="beamer-block def">
+              <div class="block-header">Cálculo Matricial Passo a Passo</div>
+              <div class="block-body" id="math-rot-calc" style="font-size:0.8rem;padding:8px 10px;">
+                $$\begin{aligned}
+                \begin{pmatrix} x' \\ y' \end{pmatrix} &= \begin{pmatrix} \cos 30^\circ & -\sin 30^\circ \\ \sin 30^\circ & \cos 30^\circ \end{pmatrix} \begin{pmatrix} 3 \\ 2 \end{pmatrix} = \begin{pmatrix} 0{,}866 & -0{,}500 \\ 0{,}500 & 0{,}866 \end{pmatrix} \begin{pmatrix} 3 \\ 2 \end{pmatrix} \\
+                &= \begin{pmatrix} (3 \cdot 0{,}866) + (2 \cdot (-0{,}500)) \\ (3 \cdot 0{,}500) + (2 \cdot 0{,}866) \end{pmatrix} = \begin{pmatrix} 2{,}598 - 1{,}000 \\ 1{,}500 + 1{,}732 \end{pmatrix} = \begin{pmatrix} \mathbf{1{,}60} \\ \mathbf{3{,}23} \end{pmatrix}
+                \end{aligned}$$
+              </div>
+            </div>
+
+            <div class="beamer-block example">
+              <div class="block-header">Observações</div>
+              <div class="block-body" style="font-size:0.8rem;padding:6px 12px;">
+                <ul class="styled-list" style="margin:0;">
+                  <li>O ponto se moveu no sentido anti-horário (pois $\theta > 0$)</li>
+                  <li>A distância à origem permaneceu constante: $r = \sqrt{3^2 + 2^2} \approx 3{,}60$</li>
+                  <li>Em provas: <strong>podem usar calculadora!</strong> Configure para graus</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 15: Rotação — Ponto de Rotação Arbitrário -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Rotação — Ponto de Rotação Arbitrário</h2>
+          <span class="section-badge">2. Transformações Básicas • Rotação</span>
+        </div>
+
+        <div class="beamer-block alert">
+          <div class="block-header">Limitação atual</div>
+          <div class="block-body">
+            A matriz de rotação que aprendemos só funciona quando o ponto de rotação está na <strong>origem</strong> $(0, 0)$.
+          </div>
+        </div>
+
+        <ul class="styled-list" style="margin:10px 0;">
+          <li>E se quisermos rotacionar ao redor de um <strong>ponto qualquer</strong> $(x_r, y_r)$?</li>
+          <li>Seria possível deduzir uma fórmula direta para isso, mas seria trabalhoso.</li>
+          <li>Existe uma forma <strong>mais elegante</strong> de resolver esse problema!</li>
+        </ul>
+
+        <div class="beamer-block example" style="margin-top:12px;">
+          <div class="block-header">Solução (mais adiante)</div>
+          <div class="block-body">
+            Usando <strong>coordenadas homogêneas</strong> e <strong>composição de transformações</strong> (próximas aulas), poderemos compor uma sequência de translação + rotação + translação inversa para obter a rotação em torno de qualquer ponto arbitrário.
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 16: Transformações de Corpo Rígido -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Transformações de Corpo Rígido</h2>
+          <span class="section-badge">2. Transformações Básicas</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Definição</div>
+          <div class="block-body">
+            <strong>Translação</strong> e <strong>Rotação</strong> juntas formam as chamadas <strong>transformações de corpo rígido</strong>.
+          </div>
+        </div>
+
+        <p style="margin:8px 0 4px 0;">Isso significa que elas:</p>
+        <ul class="styled-list" style="margin:0 0 10px 0;">
+          <li><strong>Não deformam</strong> o objeto</li>
+          <li><strong>Preservam</strong> os ângulos internos do objeto</li>
+          <li><strong>Preservam</strong> as distâncias entre os vértices</li>
+          <li>Apenas mudam a <strong>posição</strong> (translação) e a <strong>orientação</strong> (rotação)</li>
+        </ul>
+
+        <div class="beamer-block alert">
+          <div class="block-header">E a escala?</div>
+          <div class="block-body">
+            A escala <strong>não é</strong> uma transformação de corpo rígido, pois ela <strong>altera o tamanho</strong> do objeto. Vamos estudá-la a seguir.
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 17: Escala — Equações e Parâmetros -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Escala — Equações e Parâmetros</h2>
+          <span class="section-badge">2. Transformações Básicas • Escala</span>
+        </div>
+
+        <p style="margin-top:0;font-size:0.9rem;">A escala altera o <strong>tamanho</strong> do objeto, multiplicando as coordenadas por fatores de escala.</p>
+
+        <div class="beamer-block def">
+          <div class="block-header">Equações de Escala</div>
+          <div class="block-body" style="padding:8px 12px;">
+            <div class="math-box highlight" style="margin:4px 0;">
+              $$x' = s_x \cdot x \qquad y' = s_y \cdot y$$
+            </div>
+            <ul class="styled-list" style="margin:6px 0 0 0;font-size:0.86rem;">
+              <li>$s_x$ — fator de escala na direção $x$</li>
+              <li>$s_y$ — fator de escala na direção $y$</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="beamer-block def" style="margin-top:10px;">
+          <div class="block-header">Forma Matricial ($2 \times 2$)</div>
+          <div class="block-body" style="padding:8px 12px;">
+            $$\begin{pmatrix} x' \\ y' \end{pmatrix} = \begin{pmatrix} s_x & 0 \\ 0 & s_y \end{pmatrix} \begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} s_x \cdot x + 0 \cdot y \\ 0 \cdot x + s_y \cdot y \end{pmatrix} = \begin{pmatrix} s_x \cdot x \\ s_y \cdot y \end{pmatrix}$$
+            <p style="font-size:0.84rem;margin:6px 0 0 0;color:var(--text-muted);">
+              Fatores de escala ficam na <strong>diagonal principal</strong>, com zeros nas demais posições.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 18: Escala — Regras dos Fatores -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Escala — Regras dos Fatores</h2>
+          <span class="section-badge">2. Transformações Básicas • Escala</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Restrições dos fatores $s_x$ e $s_y$</div>
+          <div class="block-body" style="padding:8px 14px;">
+            <ul class="styled-list" style="margin:0;">
+              <li>Devem ser <strong>positivos</strong> ($> 0$) e <strong>diferentes de zero</strong></li>
+              <li>Valores negativos geram outra transformação (reflexão — próximas aulas)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="two-cols ratio-5-5" style="margin:10px 0;">
+          <div class="col">
+            <div class="beamer-block example" style="margin:0;">
+              <div class="block-header">Efeito dos valores</div>
+              <div class="block-body" style="font-size:0.86rem;padding:8px 12px;">
+                <ul class="styled-list" style="margin:0;">
+                  <li>$s > 1 \implies$ <strong>aumenta</strong> o objeto</li>
+                  <li>$0 < s < 1 \implies$ <strong>diminui</strong> o objeto</li>
+                  <li>$s = 1 \implies$ <strong>não altera</strong> naquela direção</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block alert" style="margin:0;">
+              <div class="block-header">Tipos de escala</div>
+              <div class="block-body" style="font-size:0.86rem;padding:8px 12px;">
+                <ul class="styled-list" style="margin:0;">
+                  <li><strong>Uniforme</strong>: $s_x = s_y$ (mantém proporções)</li>
+                  <li><strong>Diferencial</strong>: $s_x \neq s_y$ (alonga/achata o objeto)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p style="font-size:0.82rem;color:var(--text-muted);margin:6px 0 0 0;">
+          <strong>Exemplos:</strong> $s_x = s_y = 2 \implies$ duplica o tamanho; $s_x = s_y = 0{,}5 \implies$ metade do tamanho; $s_x = 2, s_y = 3 \implies$ escala diferencial.
+        </p>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 19: Escala — Exemplo Numérico + Canvas 2D -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Escala — Exemplo Numérico</h2>
+          <span class="section-badge">2. Transformações Básicas • Escala</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="canvas-card">
+              <div class="canvas-header">
+                <span>Escala e Linhas de Projeção</span>
+                <div class="btn-group">
+                  <button class="btn btn-sec" id="btn-scale-uniform">Uniforme (0.5x)</button>
+                  <button class="btn btn-sec" id="btn-scale-diff">Diferencial</button>
+                </div>
+              </div>
+              <canvas id="canvas-scale" width="500" height="290"></canvas>
+
+              <div class="canvas-controls">
+                <div class="control-row">
+                  <label>Fator $s_x$:</label>
+                  <input type="range" id="scale-sx-slider" min="0.2" max="2.0" step="0.1" value="0.5">
+                  <span class="value-badge" id="val-scale-sx">0.50x</span>
+                </div>
+                <div class="control-row">
+                  <label>Fator $s_y$:</label>
+                  <input type="range" id="scale-sy-slider" min="0.2" max="2.0" step="0.1" value="0.5">
+                  <span class="value-badge" id="val-scale-sy">0.50x</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <p style="margin:0 0 2px 0;font-size:0.85rem;"><strong>Problema:</strong> Escalar a reta $P_1 = (2, 4)$ e $P_2 = (4, 5)$ com $s_x = 0{,}5$ e $s_y = 0{,}5$.</p>
+
+            <div class="beamer-block def">
+              <div class="block-header">Cálculos Passo a Passo</div>
+              <div class="block-body" id="math-scale-calc" style="font-size:0.8rem;padding:6px 10px;">
+                $$\begin{aligned}
+                P_1' &= \begin{pmatrix} 0{,}5 & 0 \\ 0 & 0{,}5 \end{pmatrix} \begin{pmatrix} 2 \\ 4 \end{pmatrix} = \begin{pmatrix} (0{,}5 \cdot 2) + 0 \\ 0 + (0{,}5 \cdot 4) \end{pmatrix} = \begin{pmatrix} \mathbf{1{,}0} \\ \mathbf{2{,}0} \end{pmatrix} \\\\[2pt]
+                P_2' &= \begin{pmatrix} 0{,}5 & 0 \\ 0 & 0{,}5 \end{pmatrix} \begin{pmatrix} 4 \\ 5 \end{pmatrix} = \begin{pmatrix} (0{,}5 \cdot 4) + 0 \\ 0 + (0{,}5 \cdot 5) \end{pmatrix} = \begin{pmatrix} \mathbf{2{,}0} \\ \mathbf{2{,}5} \end{pmatrix}
+                \end{aligned}$$
+              </div>
+            </div>
+
+            <div class="beamer-block alert">
+              <div class="block-header">Efeito colateral!</div>
+              <div class="block-body" style="font-size:0.8rem;padding:6px 12px;">
+                A escala <strong>diminuiu</strong> a linha pela metade, mas <strong>também mudou sua posição</strong>!
+                Isso ocorre porque a escala tem como centro de referência a <strong>origem $(0,0)$</strong>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 20: Escala — Ponto Fixo -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Escala — Ponto Fixo</h2>
+          <span class="section-badge">2. Transformações Básicas • Escala</span>
+        </div>
+
+        <div class="beamer-block alert">
+          <div class="block-header">Problema da escala básica</div>
+          <div class="block-body">
+            Assim como na rotação, a escala que aprendemos tem a <strong>origem $(0,0)$</strong> como referência. Ao escalar, o objeto <strong>muda de tamanho E de posição</strong> simultaneamente.
+          </div>
+        </div>
+
+        <ul class="styled-list" style="margin:10px 0;">
+          <li>Muitas vezes queremos escalar o objeto <strong>sem movê-lo</strong> (escala com ponto fixo arbitrário).</li>
+          <li>É possível deduzir uma fórmula direta, mas seria complexa e pouco prática.</li>
+        </ul>
+
+        <div class="beamer-block example" style="margin-top:12px;">
+          <div class="block-header">Solução (mais adiante)</div>
+          <div class="block-body">
+            Assim como a rotação em torno de ponto arbitrário, a <strong>escala com ponto fixo</strong> será resolvida de forma muito mais fácil usando <strong>coordenadas homogêneas</strong> e <strong>composição de transformações</strong> (próximas aulas).
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 21: Por que Coordenadas Homogêneas? -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Por que Coordenadas Homogêneas?</h2>
+          <span class="section-badge">3. Coordenadas Homogêneas • Motivação</span>
+        </div>
+
+        <p style="margin-top:0;font-size:0.88rem;">Vimos que as três transformações básicas podem ser escritas na forma geral:</p>
+        
+        <div class="math-box highlight" style="margin:4px 0;">
+          $$P' = M_1 \cdot P + M_2$$
+        </div>
+
+        <div class="two-cols ratio-5-5" style="margin:8px 0;">
+          <div class="col">
+            <div class="beamer-block def" style="margin:0;">
+              <div class="block-header">$M_1$ (Matriz $2 \times 2$)</div>
+              <div class="block-body" style="font-size:0.85rem;padding:8px 12px;">
+                Fatores <strong>multiplicativos</strong>:<br>
+                • Rotação<br>
+                • Escala
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="beamer-block example" style="margin:0;">
+              <div class="block-header">$M_2$ (Vetor coluna $2 \times 1$)</div>
+              <div class="block-body" style="font-size:0.85rem;padding:8px 12px;">
+                Termos de <strong>translação</strong>:<br>
+                • $t_x$ e $t_y$ (soma vetorial)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="beamer-block alert" style="margin-top:8px;">
+          <div class="block-header">O problema</div>
+          <div class="block-body" style="font-size:0.84rem;padding:8px 14px;">
+            <ul class="styled-list" style="margin:0;">
+              <li>A translação usa <strong>adição</strong>, enquanto rotação e escala usam <strong>multiplicação</strong>.</li>
+              <li>Quando precisamos fazer <strong>sequências</strong> de transformações (3, 4, 5 seguidas), alternar entre soma e multiplicação é computacionalmente ineficiente.</li>
+              <li>Gostaríamos de representar <strong>tudo como multiplicação de matrizes</strong>!</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 22: Coordenadas Homogêneas — Definição -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Coordenadas Homogêneas — Definição</h2>
+          <span class="section-badge">3. Coordenadas Homogêneas • Definição</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Ideia Central</div>
+          <div class="block-body" style="padding:10px 14px;">
+            Expandimos as matrizes de $2 \times 2$ para $3 \times 3$, adicionando uma <strong>terceira coordenada</strong> chamada de <strong>parâmetro homogêneo $h$</strong>.
+            <div class="math-box highlight" style="margin:6px 0;">
+              $$(x_h, \; y_h, \; h)$$
+            </div>
+          </div>
+        </div>
+
+        <div class="beamer-block example" style="margin-top:10px;">
+          <div class="block-header">Regras e Convenção</div>
+          <div class="block-body" style="font-size:0.88rem;padding:8px 14px;">
+            <ul class="styled-list" style="margin:0;">
+              <li>$h$ pode ser qualquer valor $\neq 0$, mas por conveniência padrão adotamos <strong>$h = 1$</strong>.</li>
+              <li>Com $h = 1$: o ponto 2D fica simplesmente <strong>$(x, y, 1)$</strong>.</li>
+              <li>Projeção para o sistema cartesiano: $x = x_h / h$, \; $y = y_h / h$.</li>
+            </ul>
+          </div>
+        </div>
+
+        <p style="font-size:0.86rem;color:var(--text-muted);margin:8px 0 0 0;">
+          <strong>Exemplos:</strong> O ponto $(2, 3)$ fica $(2, 3, 1)$. O ponto $(4, 5)$ fica $(4, 5, 1)$.
+        </p>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 23: Translação em Coordenadas Homogêneas (Dedução) -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Translação em Coordenadas Homogêneas (Dedução)</h2>
+          <span class="section-badge">3. Coordenadas Homogêneas • Translação</span>
+        </div>
+
+        <ul class="styled-list" style="margin-top:0;">
+          <li>A translação no espaço homogêneo é expressa pelo sistema linear:</li>
+        </ul>
+
+        <div class="math-box" style="font-size:0.95rem;text-align:left;padding-left:30px;margin:8px 0;">
+          $$\begin{aligned}
+          x'_h &= 1\cdot x_h + 0\cdot y_h + t_x\cdot h \\
+          y'_h &= 0\cdot x_h + 1\cdot y_h + t_y\cdot h \\
+          h' &= 0\cdot x_h + 0\cdot y_h + 1\cdot h
+          \end{aligned}$$
+        </div>
+
+        <div class="beamer-block def" style="margin-top:12px;">
+          <div class="block-header">Coordenadas cartesianas correspondentes</div>
+          <div class="block-body" style="text-align:center;padding:10px 14px;">
+            <div class="math-box highlight" style="font-size:1.05rem;margin:0;">
+              $$x' = x + t_x \qquad y' = y + t_y$$
+            </div>
+            <p style="font-size:0.85rem;margin:6px 0 0 0;color:var(--text-muted);">
+              Com $h=1$, a terceira coordenada preserva rigorosamente o valor $1$.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 24: Translação em Coordenadas Homogêneas (Matriz 3x3) -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Translação em Coordenadas Homogêneas</h2>
+          <span class="section-badge">3. Coordenadas Homogêneas • Translação</span>
+        </div>
+
+        <p style="margin-top:0;font-size:0.88rem;">Com coordenadas homogêneas, a translação <strong>vira uma multiplicação de matrizes!</strong></p>
+
+        <div class="beamer-block def">
+          <div class="block-header">Matriz de Translação ($3 \times 3$)</div>
+          <div class="block-body" style="padding:8px 10px;">
+            <div class="math-box highlight" style="font-size:0.85rem;margin:0;">
+              $$\begin{pmatrix} x' \\ y' \\ 1 \end{pmatrix} = \underbrace{\begin{pmatrix} 1 & 0 & t_x \\ 0 & 1 & t_y \\ 0 & 0 & 1 \end{pmatrix}}_{T(t_x, t_y)} \begin{pmatrix} x \\ y \\ 1 \end{pmatrix} = \begin{pmatrix} 1\cdot x + 0\cdot y + t_x\cdot 1 \\ 0\cdot x + 1\cdot y + t_y\cdot 1 \\ 0\cdot x + 0\cdot y + 1\cdot 1 \end{pmatrix} = \begin{pmatrix} x + t_x \\ y + t_y \\ 1 \end{pmatrix}$$
+            </div>
+          </div>
+        </div>
+
+        <div class="beamer-block example" style="margin-top:10px;">
+          <div class="block-header">Propriedades</div>
+          <div class="block-body" style="font-size:0.86rem;padding:8px 14px;">
+            <ul class="styled-list" style="margin:0;">
+              <li>Por conveniência, $h=1$.</li>
+              <li>Os fatores $t_x$ e $t_y$ ficam na <strong>terceira coluna</strong>.</li>
+              <li>O restante funciona como a matriz identidade: diagonal 1, demais 0.</li>
+              <li><strong>Verificação:</strong> $x' = x + t_x$, $y' = y + t_y$, $1 = 1$ ✓</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 25: Rotação em Coordenadas Homogêneas -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Rotação em Coordenadas Homogêneas</h2>
+          <span class="section-badge">3. Coordenadas Homogêneas • Rotação</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Matriz de Rotação ($3 \times 3$)</div>
+          <div class="block-body" style="padding:8px 10px;">
+            <div class="math-box highlight" style="font-size:0.82rem;margin:0;">
+              $$\begin{pmatrix} x' \\ y' \\ 1 \end{pmatrix} = \underbrace{\begin{pmatrix} \cos\theta & -\sin\theta & 0 \\ \sin\theta & \cos\theta & 0 \\ 0 & 0 & 1 \end{pmatrix}}_{R(\theta)} \begin{pmatrix} x \\ y \\ 1 \end{pmatrix} = \begin{pmatrix} (\cos\theta\cdot x) - (\sin\theta\cdot y) + 0 \\ (\sin\theta\cdot x) + (\cos\theta\cdot y) + 0 \\ 0 + 0 + 1\cdot 1 \end{pmatrix} = \begin{pmatrix} x\cos\theta - y\sin\theta \\ x\sin\theta + y\cos\theta \\ 1 \end{pmatrix}$$
+            </div>
+          </div>
+        </div>
+
+        <ul class="styled-list" style="font-size:0.88rem;margin:10px 0;">
+          <li>Por conveniência, $h=1$.</li>
+          <li>A <strong>terceira coluna</strong> é $(0, 0, 1)^T$ (sem componente de translação).</li>
+          <li>A sub-matriz $2 \times 2$ no <strong>canto superior esquerdo</strong> é a mesma matriz de rotação anterior.</li>
+          <li>$\theta > 0$: anti-horário &nbsp;&bull;&nbsp; $\theta < 0$: horário.</li>
+          <li>Ponto de rotação fixado na <strong>origem $(0,0)$</strong>.</li>
+        </ul>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 26: Escala em Coordenadas Homogêneas -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Escala em Coordenadas Homogêneas</h2>
+          <span class="section-badge">3. Coordenadas Homogêneas • Escala</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Matriz de Escala ($3 \times 3$)</div>
+          <div class="block-body" style="padding:8px 10px;">
+            <div class="math-box highlight" style="font-size:0.85rem;margin:0;">
+              $$\begin{pmatrix} x' \\ y' \\ 1 \end{pmatrix} = \underbrace{\begin{pmatrix} s_x & 0 & 0 \\ 0 & s_y & 0 \\ 0 & 0 & 1 \end{pmatrix}}_{S(s_x, s_y)} \begin{pmatrix} x \\ y \\ 1 \end{pmatrix} = \begin{pmatrix} (s_x\cdot x) + 0 + 0 \\ 0 + (s_y\cdot y) + 0 \\ 0 + 0 + 1\cdot 1 \end{pmatrix} = \begin{pmatrix} s_x\cdot x \\ s_y\cdot y \\ 1 \end{pmatrix}$$
+            </div>
+          </div>
+        </div>
+
+        <ul class="styled-list" style="font-size:0.86rem;margin:8px 0;">
+          <li>Por conveniência, $h=1$.</li>
+          <li>A <strong>terceira coluna</strong> é $(0, 0, 1)^T$ (sem translação).</li>
+          <li>Fatores de escala $s_x$ e $s_y$ na <strong>diagonal principal</strong> ($s_x, s_y > 0$).</li>
+        </ul>
+
+        <div class="beamer-block alert" style="margin-top:8px;">
+          <div class="block-header">Ordem das matrizes — vale para todas!</div>
+          <div class="block-body" style="font-size:0.84rem;padding:6px 12px;">
+            Se trocar a ordem das matrizes, <strong>nem sempre é possível multiplicar</strong> e, quando é, o resultado pode ser completamente diferente. A ordem importa!
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 27: Resumo — As Três Matrizes 3x3 -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Resumo — As Três Matrizes em Coordenadas Homogêneas</h2>
+          <span class="section-badge">3. Coordenadas Homogêneas • Síntese</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="beamer-block def" style="margin-bottom:6px;">
+              <div class="block-header">Translação $T(t_x, t_y)$</div>
+              <div class="block-body" style="padding:6px 12px;font-size:0.85rem;">
+                $$T = \begin{pmatrix} 1 & 0 & t_x \\ 0 & 1 & t_y \\ 0 & 0 & 1 \end{pmatrix} \quad t_x, t_y \in \mathbb{R}$$
+              </div>
+            </div>
+
+            <div class="beamer-block example" style="margin-bottom:6px;">
+              <div class="block-header">Rotação $R(\theta)$ (na origem)</div>
+              <div class="block-body" style="padding:6px 12px;font-size:0.85rem;">
+                $$R = \begin{pmatrix} \cos\theta & -\sin\theta & 0 \\ \sin\theta & \cos\theta & 0 \\ 0 & 0 & 1 \end{pmatrix} \quad \theta \text{ em graus}$$
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block alert">
+              <div class="block-header">Escala $S(s_x, s_y)$</div>
+              <div class="block-body" style="padding:6px 12px;font-size:0.85rem;">
+                $$S = \begin{pmatrix} s_x & 0 & 0 \\ 0 & s_y & 0 \\ 0 & 0 & 1 \end{pmatrix} \quad s_x, s_y > 0$$
+              </div>
+            </div>
+
+            <div class="math-box highlight" style="font-size:0.85rem;margin:0;">
+              <strong>Todas as matrizes:</strong> última linha = $(0\;\;0\;\;1)$ e ponto = $(x,\;y,\;1)^T$
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 28: Laboratório Interativo (Canvas 2D Playground) -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Laboratório Interativo — Composição & Matriz $3 \times 3$</h2>
+          <span class="section-badge">4. Playground • Canvas 2D</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="canvas-card">
+              <div class="canvas-header">
+                <span>Canvas 2D Interativo</span>
+                <div style="display:flex;gap:6px;align-items:center;">
+                  <select id="play-shape" style="background:var(--math-box-bg);color:var(--text-main);border:1px solid var(--math-box-border);padding:2px 6px;border-radius:4px;font-size:0.75rem;">
+                    <option value="f">Letra F</option>
+                    <option value="house">Casinha</option>
+                    <option value="star">Estrela</option>
+                  </select>
+                  <button class="btn btn-sec" id="play-reset" style="padding:2px 8px;font-size:0.75rem;">Reset</button>
+                </div>
+              </div>
+              <canvas id="canvas-playground" width="500" height="270"></canvas>
+
+              <div class="canvas-controls" style="gap:4px;padding:6px 10px;">
+                <div class="control-row">
+                  <label>Translação $t_x, t_y$:</label>
+                  <input type="range" id="play-tx" min="-100" max="100" step="5" value="0">
+                  <span class="value-badge" id="val-play-tx">0px</span>
+                  <input type="range" id="play-ty" min="-80" max="80" step="5" value="0">
+                  <span class="value-badge" id="val-play-ty">0px</span>
+                </div>
+                <div class="control-row">
+                  <label>Rotação $\theta$:</label>
+                  <input type="range" id="play-rot" min="-180" max="180" step="5" value="0">
+                  <span class="value-badge" id="val-play-rot">0°</span>
+                </div>
+                <div class="control-row">
+                  <label>Escala $s_x, s_y$:</label>
+                  <input type="range" id="play-sx" min="0.2" max="2.5" step="0.1" value="1">
+                  <span class="value-badge" id="val-play-sx">1.0x</span>
+                  <input type="range" id="play-sy" min="0.2" max="2.5" step="0.1" value="1">
+                  <span class="value-badge" id="val-play-sy">1.0x</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block def" style="margin-bottom:6px;">
+              <div class="block-header">Matriz $3 \times 3$ Composta Resultante</div>
+              <div class="block-body" id="play-matrix-math" style="padding:6px;font-size:0.85rem;"></div>
+            </div>
+
+            <div class="beamer-block example" style="margin:0;">
+              <div class="block-header">Código Canvas 2D</div>
+              <div class="block-body" style="padding:6px;">
+                <div class="code-card">
+                  <pre id="play-code-preview" style="font-size:0.75rem;padding:6px 8px;"></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 29: Vantagem das Coordenadas Homogêneas -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Vantagem: Sequências de Transformações como Multiplicações</h2>
+          <span class="section-badge">3. Coordenadas Homogêneas • Vantagens</span>
+        </div>
+
+        <div class="beamer-block example">
+          <div class="block-header">A grande vantagem</div>
+          <div class="block-body" style="padding:10px 14px;">
+            Agora <strong>todas</strong> as transformações (incluindo a translação!) são representadas por <strong>multiplicações de matrizes</strong> $3 \times 3$.
+          </div>
+        </div>
+
+        <p style="margin:8px 0 4px 0;">Isso permite:</p>
+        <ul class="styled-list" style="margin:0 0 10px 0;">
+          <li>Compor <strong>várias transformações</strong> em uma <strong>única matriz resultante</strong>.</li>
+          <li>Aplicar sequências de transformações de forma muito mais rápida e eficiente.</li>
+          <li>Resolver problemas geométricos complexos, tais como:
+            <ul style="margin-top:4px;list-style:disc;margin-left:20px;">
+              <li>Rotação ao redor de um ponto arbitrário $(x_r, y_r)$</li>
+              <li>Escala com ponto fixo arbitrário $(x_f, y_f)$</li>
+            </ul>
+          </li>
+        </ul>
+
+        <div class="beamer-block alert" style="margin-top:8px;">
+          <div class="block-header">Próximas aulas</div>
+          <div class="block-body" style="padding:8px 14px;">
+            Veremos como <strong>compor</strong> (multiplicar) essas matrizes na ordem correta para criar transformações complexas!
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 30: Material Complementar & Referências -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Ferramentas, Dicas e Referências</h2>
+          <span class="section-badge">4. Material Complementar</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="beamer-block def">
+              <div class="block-header">Dicas de estudo</div>
+              <div class="block-body" style="font-size:0.85rem;">
+                <ul class="styled-list" style="margin:0;">
+                  <li>Se teve dificuldade com <strong>seno e cosseno</strong>, revise trigonometria básica</li>
+                  <li>Se teve dificuldade com <strong>coordenadas polares</strong>, consulte as suas anotações de álgebra linear ou geometria analítica</li>
+                  <li><strong>Pratique</strong> a multiplicação de matrizes: é uma habilidade essencial!</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block example">
+              <div class="block-header">Referências Bibliográficas</div>
+              <div class="block-body" style="font-size:0.82rem;line-height:1.6;">
+                1. <strong>Angel, E.; Shreiner, D.</strong> <em>Interactive Computer Graphics: A Top-Down Approach with WebGL</em>. 8th edition. Capítulo 5.<br><br>
+                2. <strong>Mount, D.</strong> <em>CMSC 427 — Computer Graphics Lecture Notes</em>. University of Maryland. Aula 8.<br><br>
+                3. <strong>Material de Introdução à Computação Gráfica</strong> — IME-USP. Disponível em: <span style="color:#2563eb;">panda.ime.usp.br/introcg</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- RODAPÉ ESTILO BEAMER WARSAW (FOOTLINE) -->
+  <!-- ============================================================ -->
+  <footer class="warsaw-footline">
+    <div class="footline-author">
+      Pedro Ximenes (UNICAP) • Transformações Geométricas Bidimensionais
+    </div>
+    <div class="footline-keys">
+      <span>Navegar: <kbd>◄</kbd> <kbd>►</kbd> ou <kbd>Espaço</kbd></span>
+      <span>Tela Cheia: <kbd>F</kbd></span>
+      <span>Visão Geral: <kbd>O</kbd></span>
+    </div>
+  </footer>
+
+  <!-- Scripts: Reveal.js, KaTeX e Demos -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+  
+  <script src="js/canvas-demos.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

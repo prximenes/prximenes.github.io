@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses &amp; Materials | Pedro Rafael</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style-dark.css" id="theme-link">
+    <link rel="stylesheet" href="assets/css/disciplinas.css">
+</head>
+<body class="theme-dark disciplinas-page">
+    <div class="theme-toggle">
+        <button id="toggle-button">☀️ Light Mode</button>
+    </div>
+
+    <main class="container disciplinas-container">
+        <header class="nav-header">
+            <a href="index.html" class="back-link">← Back to Home</a>
+            <span style="font-weight: 700; font-size: 14px; opacity: 0.85;">Pedro Rafael</span>
+        </header>
+
+        <section class="content">
+            <h1 class="disciplinas-title">Courses &amp; Teaching Materials</h1>
+            <p class="disciplinas-intro">
+                Lecture notes, interactive slide decks, and academic resources prepared for undergraduate and graduate courses.
+            </p>
+
+            <!-- Course 1: Computer Graphics -->
+            <article class="discipline-section">
+                <div class="discipline-header">
+                    <h2 class="discipline-name">🎨 Computer Graphics</h2>
+                    <span class="badge-tag badge-red">Undergraduate</span>
+                </div>
+                <p class="discipline-desc">
+                    Fundamental principles of 2D and 3D computer graphics, vector representations, homogeneous transformation matrices, projections, and real-time graphics pipelines.
+                </p>
+
+                <div class="materials-grid">
+                    <div class="material-card">
+                        <div class="material-card-content">
+                            <div class="material-meta">
+                                <span class="badge-tag badge-red">Interactive Lecture</span>
+                                <span class="badge-tag badge-blue">Reveal.js + Canvas</span>
+                            </div>
+                            <h3 class="material-title">2D Geometric Transformations (Part 1)</h3>
+                            <p class="material-description">
+                                Mathematical formulation, homogeneous coordinate matrices, and interactive dynamic simulations of translation, scaling, rotation, and shearing.
+                            </p>
+                        </div>
+                        <a href="disciplinas/computacao-grafica/transf2d-p1/index.html" class="material-btn">
+                            ▶ Open Interactive Presentation
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Course 2: Analysis of Algorithms -->
+            <article class="discipline-section">
+                <div class="discipline-header">
+                    <h2 class="discipline-name">⚡ Analysis of Algorithms</h2>
+                    <span class="badge-tag badge-blue">Undergraduate</span>
+                </div>
+                <p class="discipline-desc">
+                    Asymptotic time and space complexity analysis, Big-O notation, recurrence relations, algorithmic paradigms (divide-and-conquer, greedy methods, dynamic programming), and graph algorithms.
+                </p>
+
+                <div class="materials-grid">
+                    <div class="material-card material-card-placeholder">
+                        <div class="material-card-content">
+                            <div class="material-meta">
+                                <span class="badge-tag badge-gray">Coming Soon</span>
+                            </div>
+                            <h3 class="material-title">Lecture Notes &amp; Problem Sets</h3>
+                            <p class="material-description">
+                                Learning modules, practical exercises, and code implementations are currently in preparation for this course.
+                            </p>
+                        </div>
+                        <span class="badge-tag badge-gray" style="text-align: center; padding: 8px;">
+                            Content in development
+                        </span>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

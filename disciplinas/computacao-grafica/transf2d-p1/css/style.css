@@ -1,0 +1,698 @@
+/* ==========================================================================
+   Tema e Estilos da Apresentação - Transformações Geométricas 2D
+   Fidelidade ao LaTeX Beamer (Tema Warsaw) com suporte a Tema Claro e Escuro
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
+
+/* ==========================================================================
+   Variáveis de Cores e Temas
+   ========================================================================== */
+
+/* Tema Claro (Padrão LaTeX Beamer Warsaw) */
+body.theme-light {
+  --bg-page: #f0f3f8;
+  --bg-slide: #ffffff;
+  --bg-headline-top: #0e1e3e;
+  --bg-headline-bot: #1b356b;
+  --bg-footline: #112244;
+  --text-headline: #ffffff;
+  --text-headline-muted: #9bb3de;
+  
+  --title-gradient-start: #1b356b;
+  --title-gradient-end: #2d55a1;
+  --title-text: #ffffff;
+  
+  --text-main: #1e293b;
+  --text-muted: #475569;
+  --text-dim: #64748b;
+  
+  /* Blocos Beamer */
+  --block-def-head-bg: linear-gradient(90deg, #1b356b 0%, #264a91 100%);
+  --block-def-head-text: #ffffff;
+  --block-def-body-bg: #edf3fc;
+  --block-def-border: #9bb9e8;
+  
+  --block-ex-head-bg: linear-gradient(90deg, #165b33 0%, #217a46 100%);
+  --block-ex-head-text: #ffffff;
+  --block-ex-body-bg: #eaf6ef;
+  --block-ex-border: #9bd3b2;
+  
+  --block-alert-head-bg: linear-gradient(90deg, #88181e 0%, #ab232b 100%);
+  --block-alert-head-text: #ffffff;
+  --block-alert-body-bg: #faebee;
+  --block-alert-border: #f0a8ad;
+  
+  /* Canvas */
+  --canvas-bg: #ffffff;
+  --canvas-border: #cbd5e1;
+  --canvas-card-bg: #f8fafc;
+  --canvas-ctrl-bg: #edf2f9;
+  --code-bg: #1e293b;
+  --code-text: #f8fafc;
+  
+  --math-box-bg: #f1f5f9;
+  --math-box-border: #cbd5e1;
+  --math-box-hl-bg: #e0f2fe;
+  --math-box-hl-border: #38bdf8;
+  
+  --table-head-bg: #1b356b;
+  --table-head-text: #ffffff;
+  --table-border: #cbd5e1;
+  --table-row-hover: #f1f5f9;
+}
+
+/* Tema Escuro (Warsaw Dark Tech) */
+body.theme-dark {
+  --bg-page: #060a14;
+  --bg-slide: #0b1120;
+  --bg-headline-top: #060d1f;
+  --bg-headline-bot: #0f1d3d;
+  --bg-footline: #060d1f;
+  --text-headline: #e2e8f0;
+  --text-headline-muted: #64748b;
+  
+  --title-gradient-start: #172554;
+  --title-gradient-end: #1e3a8a;
+  --title-text: #ffffff;
+  
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  
+  /* Blocos Beamer */
+  --block-def-head-bg: linear-gradient(90deg, #1e3a8a 0%, #2563eb 100%);
+  --block-def-head-text: #ffffff;
+  --block-def-body-bg: rgba(30, 58, 138, 0.2);
+  --block-def-border: rgba(59, 130, 246, 0.4);
+  
+  --block-ex-head-bg: linear-gradient(90deg, #065f46 0%, #059669 100%);
+  --block-ex-head-text: #ffffff;
+  --block-ex-body-bg: rgba(6, 95, 70, 0.2);
+  --block-ex-border: rgba(16, 185, 129, 0.4);
+  
+  --block-alert-head-bg: linear-gradient(90deg, #881337 0%, #e11d48 100%);
+  --block-alert-head-text: #ffffff;
+  --block-alert-body-bg: rgba(136, 19, 55, 0.2);
+  --block-alert-border: rgba(244, 63, 94, 0.4);
+  
+  /* Canvas */
+  --canvas-bg: #070c18;
+  --canvas-border: rgba(99, 140, 255, 0.25);
+  --canvas-card-bg: #0f172a;
+  --canvas-ctrl-bg: #141e33;
+  --code-bg: #070c18;
+  --code-text: #e2e8f0;
+  
+  --math-box-bg: rgba(15, 23, 42, 0.7);
+  --math-box-border: rgba(96, 165, 250, 0.25);
+  --math-box-hl-bg: rgba(14, 116, 144, 0.25);
+  --math-box-hl-border: #38bdf8;
+  
+  --table-head-bg: #1e293b;
+  --table-head-text: #38bdf8;
+  --table-border: rgba(255, 255, 255, 0.1);
+  --table-row-hover: rgba(59, 130, 246, 0.1);
+}
+
+/* ---------------- Global Reset & Typography ---------------- */
+* {
+  box-sizing: border-box;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* ---------------- Warsaw Headline (Cabeçalho duplo Beamer) ---------------- */
+.warsaw-headline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.headline-section-row {
+  background: var(--bg-headline-top);
+  color: var(--text-headline);
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.headline-section-nav {
+  display: flex;
+  gap: 16px;
+}
+
+.headline-section-nav span {
+  color: var(--text-headline-muted);
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.headline-section-nav span:hover {
+  color: #ffffff;
+}
+
+.headline-section-nav span.active {
+  color: #60a5fa;
+  font-weight: 700;
+}
+
+.headline-subsection-row {
+  background: var(--bg-headline-bot);
+  color: var(--text-headline);
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  font-size: 0.74rem;
+}
+
+.theme-toggle-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  padding: 1px 8px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* ---------------- Warsaw Footline (Rodapé Beamer) ---------------- */
+.warsaw-footline {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  background: var(--bg-footline);
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  font-size: 0.72rem;
+  z-index: 100;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.footline-author {
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.footline-keys kbd {
+  background: rgba(255,255,255,0.12);
+  color: #93c5fd;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.65rem;
+}
+
+/* ---------------- Reveal.js Overrides ---------------- */
+.reveal {
+  background: var(--bg-slide);
+  color: var(--text-main);
+  font-size: 23px;
+}
+
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal .slides section {
+  padding: 46px 28px 28px 28px;
+  box-sizing: border-box;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* ---------------- Frame Title (Estilo Beamer Warsaw) ---------------- */
+.frame-title-banner {
+  background: linear-gradient(90deg, var(--title-gradient-start) 0%, var(--title-gradient-end) 100%);
+  color: var(--title-text);
+  padding: 8px 16px;
+  border-radius: 6px;
+  margin-bottom: 14px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.frame-title-banner h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.48rem;
+  font-weight: 700;
+  margin: 0;
+  color: #ffffff;
+  letter-spacing: -0.3px;
+}
+
+.frame-title-banner .section-badge {
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  background: rgba(255,255,255,0.2);
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* ---------------- Beamer Blocks ---------------- */
+.beamer-block {
+  border-radius: 7px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  border: 1px solid transparent;
+}
+
+.beamer-block .block-header {
+  padding: 7px 14px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.beamer-block .block-body {
+  padding: 12px 16px;
+  font-size: 0.94rem;
+  line-height: 1.6;
+}
+
+/* Padrão (Definição / Teorema - Azul) */
+.beamer-block.def {
+  border-color: var(--block-def-border);
+}
+.beamer-block.def .block-header {
+  background: var(--block-def-head-bg);
+  color: var(--block-def-head-text);
+}
+.beamer-block.def .block-body {
+  background: var(--block-def-body-bg);
+  color: var(--text-main);
+}
+
+/* Exemplo (Verde) */
+.beamer-block.example {
+  border-color: var(--block-ex-border);
+}
+.beamer-block.example .block-header {
+  background: var(--block-ex-head-bg);
+  color: var(--block-ex-head-text);
+}
+.beamer-block.example .block-body {
+  background: var(--block-ex-body-bg);
+  color: var(--text-main);
+}
+
+/* Alerta / Atenção (Vermelho) */
+.beamer-block.alert {
+  border-color: var(--block-alert-border);
+}
+.beamer-block.alert .block-header {
+  background: var(--block-alert-head-bg);
+  color: var(--block-alert-head-text);
+}
+.beamer-block.alert .block-body {
+  background: var(--block-alert-body-bg);
+  color: var(--text-main);
+}
+
+/* ---------------- Layout Columns ---------------- */
+.two-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: stretch;
+  flex: 1;
+}
+
+.two-cols.ratio-6-4 {
+  grid-template-columns: 1.25fr 0.75fr;
+}
+
+.two-cols.ratio-4-6 {
+  grid-template-columns: 0.75fr 1.25fr;
+}
+
+.two-cols.ratio-5-5 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+/* ---------------- Typography & Lists ---------------- */
+ul.styled-list {
+  list-style: none;
+  padding: 0;
+  margin: 6px 0;
+}
+
+ul.styled-list li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 7px;
+  line-height: 1.5;
+  font-size: 0.92rem;
+}
+
+ul.styled-list li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #2563eb;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+body.theme-dark ul.styled-list li::before {
+  color: #38bdf8;
+}
+
+/* ---------------- Math Boxes ---------------- */
+.math-box {
+  background: var(--math-box-bg);
+  border: 1px solid var(--math-box-border);
+  border-radius: 5px;
+  padding: 8px 12px;
+  text-align: center;
+  margin: 6px 0;
+}
+
+.math-box.highlight {
+  background: var(--math-box-hl-bg);
+  border-color: var(--math-box-hl-border);
+  font-weight: 500;
+}
+
+/* ---------------- Canvas Interactive Card ---------------- */
+.canvas-card {
+  background: var(--canvas-card-bg);
+  border: 1px solid var(--canvas-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+  height: 100%;
+}
+
+.canvas-card .canvas-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.canvas-card canvas {
+  background: var(--canvas-bg);
+  border: 1px solid var(--canvas-border);
+  border-radius: 5px;
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.canvas-controls {
+  width: 100%;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--canvas-ctrl-bg);
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 1px solid var(--canvas-border);
+  flex-shrink: 0;
+}
+
+.control-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.8rem;
+}
+
+.control-row label {
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--text-main);
+}
+
+.control-row input[type="range"] {
+  flex: 1;
+  accent-color: #2563eb;
+  cursor: pointer;
+}
+
+.control-row .value-badge {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.78rem;
+  background: var(--math-box-bg);
+  border: 1px solid var(--math-box-border);
+  color: #2563eb;
+  padding: 2px 6px;
+  border-radius: 4px;
+  min-width: 44px;
+  text-align: center;
+  font-weight: 600;
+}
+
+body.theme-dark .control-row .value-badge {
+  color: #38bdf8;
+}
+
+.btn-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  background: #1b356b;
+  border: 1px solid #2d55a1;
+  color: #ffffff;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn:hover {
+  background: #2563eb;
+}
+
+.btn.btn-sec {
+  background: var(--math-box-bg);
+  border-color: var(--math-box-border);
+  color: var(--text-main);
+}
+
+.btn.btn-sec:hover {
+  background: #cbd5e1;
+}
+
+.btn.btn-active {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #3b82f6;
+}
+
+/* ---------------- Code Snippets ---------------- */
+.code-card {
+  background: var(--code-bg);
+  color: var(--code-text);
+  border-radius: 5px;
+  overflow: hidden;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.78rem;
+  border: 1px solid var(--canvas-border);
+}
+
+.code-card-header {
+  background: rgba(0,0,0,0.25);
+  padding: 5px 10px;
+  font-size: 0.7rem;
+  color: #94a3b8;
+  display: flex;
+  justify-content: space-between;
+}
+
+.code-card pre {
+  margin: 0;
+  padding: 8px 12px;
+  line-height: 1.45;
+  overflow-x: auto;
+}
+
+.code-card .kw { color: #f43f5e; font-weight: 600; }
+.code-card .fn { color: #38bdf8; }
+.code-card .str { color: #34d399; }
+.code-card .num { color: #fbbf24; }
+.code-card .cmt { color: #64748b; font-style: italic; }
+
+/* ---------------- Table of Contents ---------------- */
+.toc-list {
+  background: var(--canvas-card-bg);
+  border: 1px solid var(--canvas-border);
+  border-radius: 8px;
+  padding: 16px 24px;
+  margin-top: 15px;
+}
+
+.toc-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--canvas-border);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.toc-item:last-child {
+  border-bottom: none;
+}
+
+.toc-item:hover {
+  transform: translateX(6px);
+  color: #2563eb;
+}
+
+.toc-badge {
+  background: #1b356b;
+  color: #ffffff;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+/* ---------------- Matrix Summary Table ---------------- */
+.matrix-summary-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--canvas-card-bg);
+  border: 1px solid var(--table-border);
+  border-radius: 6px;
+  overflow: hidden;
+  font-size: 0.88rem;
+}
+
+.matrix-summary-table th {
+  background: var(--table-head-bg);
+  color: var(--table-head-text);
+  font-weight: 700;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.matrix-summary-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--table-border);
+  color: var(--text-main);
+}
+
+.matrix-summary-table tr:last-child td {
+  border-bottom: none;
+}
+
+.matrix-summary-table tr:hover td {
+  background: var(--table-row-hover);
+}
+
+/* ---------------- Title Slide Hero ---------------- */
+.hero-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  gap: 16px;
+}
+
+.hero-box {
+  background: linear-gradient(135deg, var(--title-gradient-start) 0%, var(--title-gradient-end) 100%);
+  color: #ffffff;
+  padding: 24px 36px;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  max-width: 900px;
+}
+
+.hero-box h1 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0 0 10px 0;
+  color: #ffffff;
+}
+
+.hero-box h2 {
+  font-size: 1.1rem;
+  font-weight: 400;
+  margin: 0;
+  color: #dbeafe;
+}
+
+.hero-author-card {
+  margin-top: 14px;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
