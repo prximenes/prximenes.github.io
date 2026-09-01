@@ -3,86 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Courses &amp; Materials | Pedro Rafael</title>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Courses &amp; Teaching Materials | Pedro Rafael</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style-dark.css" id="theme-link">
-    <link rel="stylesheet" href="assets/css/disciplinas.css">
+    <link rel="stylesheet" href="assets/css/home.css">
+    <link rel="stylesheet" href="assets/css/courses.css">
 </head>
-<body class="theme-dark disciplinas-page">
-    <div class="theme-toggle">
-        <button id="toggle-button">☀️ Light Mode</button>
+<body class="theme-dark home-body">
+
+    <!-- Top Navigation Header -->
+    <header class="site-header">
+        <a href="index.html" class="brand-title">
+            <span>Pedro Rafael</span>
+        </a>
+        <nav class="nav-menu" aria-label="Main Navigation">
+            <a href="index.html#about">About</a>
+            <a href="courses.html" style="color: #e53935; font-weight: 700;">Courses</a>
+            <a href="index.html#news">News</a>
+            <a href="index.html#publications">Publications</a>
+            <a href="index.html" class="back-link" style="padding: 4px 10px; font-size: 13px;">← Back to Home</a>
+        </nav>
+        <div class="theme-toggle" style="position: static;">
+            <button id="toggle-button">☀️ Light Mode</button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="disciplinas-page" style="width: 100%; max-width: 1000px; margin: 20px auto 40px auto;">
+        <main class="container disciplinas-container">
+            <div class="nav-header">
+                <div>
+                    <h1 class="disciplinas-title" style="margin: 0;">📚 Courses &amp; Teaching Materials</h1>
+                    <span style="font-size: 14px; opacity: 0.85;">Universidade Católica de Pernambuco (UNICAP)</span>
+                </div>
+                <a href="index.html" class="back-link">← Back to Home</a>
+            </div>
+
+            <section class="content">
+                <p class="disciplinas-intro">
+                    Lecture notes, interactive slide decks, and academic resources prepared for undergraduate and graduate computer science courses.
+                </p>
+
+                <!-- Course 1: Computer Graphics -->
+                <article class="discipline-section">
+                    <div class="discipline-header">
+                        <h2 class="discipline-name">🎨 Computer Graphics</h2>
+                        <span class="badge-tag badge-red">Undergraduate • UNICAP</span>
+                    </div>
+                    <p class="discipline-desc">
+                        Fundamental principles of 2D and 3D computer graphics, vector representations, homogeneous transformation matrices, projections, rasterization, and real-time graphics pipelines.
+                    </p>
+
+                    <div class="materials-grid">
+                        <div class="material-card">
+                            <div class="material-card-content">
+                                <div class="material-meta">
+                                    <span class="badge-tag badge-red">Interactive Lecture</span>
+                                    <span class="badge-tag badge-blue">Reveal.js + Canvas</span>
+                                </div>
+                                <h3 class="material-title">2D Geometric Transformations (Part 1)</h3>
+                                <p class="material-description">
+                                    Mathematical formulation, 3x3 homogeneous coordinate matrices, and interactive dynamic simulations of translation, scaling, rotation, and shearing with live Canvas manipulation.
+                                </p>
+                            </div>
+                            <a href="disciplinas/computacao-grafica/transf2d-p1/index.html" class="material-btn">
+                                ▶ Open Interactive Presentation
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Course 2: Analysis of Algorithms -->
+                <article class="discipline-section">
+                    <div class="discipline-header">
+                        <h2 class="discipline-name">⚡ Analysis of Algorithms</h2>
+                        <span class="badge-tag badge-blue">Undergraduate • UNICAP</span>
+                    </div>
+                    <p class="discipline-desc">
+                        Asymptotic time and space complexity analysis, Big-O / Big-Omega / Big-Theta notation, recurrence relations (Master Theorem), algorithmic design paradigms (divide-and-conquer, greedy methods, dynamic programming), and graph algorithms.
+                    </p>
+
+                    <div class="materials-grid">
+                        <div class="material-card material-card-placeholder">
+                            <div class="material-card-content">
+                                <div class="material-meta">
+                                    <span class="badge-tag badge-gray">Coming Soon</span>
+                                </div>
+                                <h3 class="material-title">Lecture Notes, Slides &amp; Problem Sets</h3>
+                                <p class="material-description">
+                                    Course modules, interactive algorithm visualizations, practical problem sets, and code implementations are currently in preparation.
+                                </p>
+                            </div>
+                            <span class="badge-tag badge-gray" style="text-align: center; padding: 8px;">
+                                Content in development
+                            </span>
+                        </div>
+                    </div>
+                </article>
+            </section>
+        </main>
     </div>
 
-    <main class="container disciplinas-container">
-        <header class="nav-header">
-            <a href="index.html" class="back-link">← Back to Home</a>
-            <span style="font-weight: 700; font-size: 14px; opacity: 0.85;">Pedro Rafael</span>
-        </header>
-
-        <section class="content">
-            <h1 class="disciplinas-title">Courses &amp; Teaching Materials</h1>
-            <p class="disciplinas-intro">
-                Lecture notes, interactive slide decks, and academic resources prepared for undergraduate and graduate courses.
-            </p>
-
-            <!-- Course 1: Computer Graphics -->
-            <article class="discipline-section">
-                <div class="discipline-header">
-                    <h2 class="discipline-name">🎨 Computer Graphics</h2>
-                    <span class="badge-tag badge-red">Undergraduate</span>
-                </div>
-                <p class="discipline-desc">
-                    Fundamental principles of 2D and 3D computer graphics, vector representations, homogeneous transformation matrices, projections, and real-time graphics pipelines.
-                </p>
-
-                <div class="materials-grid">
-                    <div class="material-card">
-                        <div class="material-card-content">
-                            <div class="material-meta">
-                                <span class="badge-tag badge-red">Interactive Lecture</span>
-                                <span class="badge-tag badge-blue">Reveal.js + Canvas</span>
-                            </div>
-                            <h3 class="material-title">2D Geometric Transformations (Part 1)</h3>
-                            <p class="material-description">
-                                Mathematical formulation, homogeneous coordinate matrices, and interactive dynamic simulations of translation, scaling, rotation, and shearing.
-                            </p>
-                        </div>
-                        <a href="disciplinas/computacao-grafica/transf2d-p1/index.html" class="material-btn">
-                            ▶ Open Interactive Presentation
-                        </a>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Course 2: Analysis of Algorithms -->
-            <article class="discipline-section">
-                <div class="discipline-header">
-                    <h2 class="discipline-name">⚡ Analysis of Algorithms</h2>
-                    <span class="badge-tag badge-blue">Undergraduate</span>
-                </div>
-                <p class="discipline-desc">
-                    Asymptotic time and space complexity analysis, Big-O notation, recurrence relations, algorithmic paradigms (divide-and-conquer, greedy methods, dynamic programming), and graph algorithms.
-                </p>
-
-                <div class="materials-grid">
-                    <div class="material-card material-card-placeholder">
-                        <div class="material-card-content">
-                            <div class="material-meta">
-                                <span class="badge-tag badge-gray">Coming Soon</span>
-                            </div>
-                            <h3 class="material-title">Lecture Notes &amp; Problem Sets</h3>
-                            <p class="material-description">
-                                Learning modules, practical exercises, and code implementations are currently in preparation for this course.
-                            </p>
-                        </div>
-                        <span class="badge-tag badge-gray" style="text-align: center; padding: 8px;">
-                            Content in development
-                        </span>
-                    </div>
-                </div>
-            </article>
-        </section>
-    </main>
+    <!-- Site Footer -->
+    <footer class="site-footer">
+        <p>&copy; 2026 Pedro Rafael Ximenes. All rights reserved. • Hosted on GitHub Pages</p>
+    </footer>
 
     <script src="assets/js/script.js"></script>
 </body>
