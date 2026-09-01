@@ -429,30 +429,54 @@ body.theme-light .timeline-text {
 }
 
 .pub-card {
-    padding: 18px;
+    padding: 20px;
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    transition: all 0.2s;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 body.theme-dark .pub-card {
-    background-color: rgba(30, 32, 34, 0.7);
+    background-color: rgba(30, 32, 34, 0.85);
 }
 
 body.theme-light .pub-card {
     background-color: #f8fafc;
-    border-color: rgba(0, 0, 0, 0.06);
+    border-color: rgba(0, 0, 0, 0.08);
 }
 
 .pub-card:hover {
-    border-color: rgba(229, 57, 53, 0.3);
+    transform: translateY(-3px);
+}
+
+body.theme-dark .pub-card:hover {
+    border-color: rgba(229, 57, 53, 0.45);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+body.theme-light .pub-card:hover {
+    border-color: rgba(229, 57, 53, 0.45);
+    box-shadow: 0 6px 20px rgba(229, 57, 53, 0.12);
 }
 
 .pub-title {
-    font-size: 15.5px;
+    font-size: 16px;
     font-weight: 700;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     line-height: 1.4;
+}
+
+.pub-title a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.pub-title a:hover {
+    color: #e53935;
+    text-decoration: underline;
 }
 
 body.theme-dark .pub-title {
@@ -464,8 +488,9 @@ body.theme-light .pub-title {
 }
 
 .pub-authors {
-    font-size: 13px;
-    margin-bottom: 6px;
+    font-size: 13.5px;
+    margin-bottom: 10px;
+    line-height: 1.4;
 }
 
 body.theme-dark .pub-authors {
@@ -479,7 +504,7 @@ body.theme-light .pub-authors {
 .pub-venue-row {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
     font-size: 12.5px;
 }
@@ -513,6 +538,37 @@ body.theme-light .pub-venue {
     border-radius: 4px;
     font-weight: 700;
     font-size: 11.5px;
+}
+
+.pub-award-badge {
+    background: linear-gradient(135deg, rgba(234, 179, 8, 0.2) 0%, rgba(202, 138, 4, 0.3) 100%);
+    color: #facc15;
+    border: 1px solid rgba(250, 204, 21, 0.4);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 11.5px;
+}
+
+.pub-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #e53935 !important;
+    text-decoration: none;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: rgba(229, 57, 53, 0.1);
+    border: 1px solid rgba(229, 57, 53, 0.25);
+    transition: all 0.2s;
+    margin-left: auto;
+}
+
+.pub-link-btn:hover {
+    background: #e53935;
+    color: #ffffff !important;
 }
 
 /* Footer */
