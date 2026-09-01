@@ -44,11 +44,20 @@
                     Lecture notes, interactive slide decks, and academic resources prepared for undergraduate and graduate computer science courses.
                 </p>
 
+                <!-- Course Quick Jump Bar -->
+                <div style="display: flex; gap: 8px; margin: 16px 0 24px 0; flex-wrap: wrap;">
+                    <a href="#computacao-grafica" class="filter-pill">🎨 Computer Graphics</a>
+                    <a href="#analise-de-algoritmos" class="filter-pill">⚡ Analysis of Algorithms</a>
+                </div>
+
                 <!-- Course 1: Computer Graphics -->
-                <article class="discipline-section">
+                <article class="discipline-section" id="computacao-grafica">
                     <div class="discipline-header">
                         <h2 class="discipline-name">🎨 Computer Graphics</h2>
                         <span class="badge-tag badge-red">Undergraduate • UNICAP</span>
+                        <button class="share-discipline-btn" onclick="copyDisciplineLink('computacao-grafica', this)" title="Copy direct link for students">
+                            🔗 <span>Copy Link</span>
+                        </button>
                     </div>
                     <p class="discipline-desc">
                         Fundamental principles of 2D and 3D computer graphics, vector representations, homogeneous transformation matrices, projections, rasterization, and real-time graphics pipelines.
@@ -66,18 +75,26 @@
                                     Mathematical formulation, 3x3 homogeneous coordinate matrices, and interactive dynamic simulations of translation, scaling, rotation, and shearing with live Canvas manipulation.
                                 </p>
                             </div>
-                            <a href="disciplinas/computacao-grafica/transf2d-p1/index.html" class="material-btn">
-                                ▶ Open Interactive Presentation
-                            </a>
+                            <div class="material-card-actions">
+                                <a href="courses/computacao-grafica/transf2d-p1/index.html" class="material-btn">
+                                    ▶ Open Interactive Presentation
+                                </a>
+                                <a href="courses/computacao-grafica/transf2d-p1/transf2d-p1.pdf" class="material-btn material-btn-secondary" download target="_blank" title="Download PDF Slides">
+                                    📄 Download PDF
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </article>
 
                 <!-- Course 2: Analysis of Algorithms -->
-                <article class="discipline-section">
+                <article class="discipline-section" id="analise-de-algoritmos">
                     <div class="discipline-header">
                         <h2 class="discipline-name">⚡ Analysis of Algorithms</h2>
                         <span class="badge-tag badge-blue">Undergraduate • UNICAP</span>
+                        <button class="share-discipline-btn" onclick="copyDisciplineLink('analise-de-algoritmos', this)" title="Copy direct link for students">
+                            🔗 <span>Copy Link</span>
+                        </button>
                     </div>
                     <p class="discipline-desc">
                         Asymptotic time and space complexity analysis, Big-O / Big-Omega / Big-Theta notation, recurrence relations (Master Theorem), algorithmic design paradigms (divide-and-conquer, greedy methods, dynamic programming), and graph algorithms.
@@ -96,9 +113,14 @@
                                     3-step complexity calculation method, quadratic sorting analysis (Selection Sort &amp; optimized Bubble Sort with triangular sums), best/worst/average cases (Linear Search), $O(n \cdot m)$ nested loops, $O(\sqrt{n})$ primality testing, Two Pointers technique, and 10 solved exercises with interactive live step simulators.
                                 </p>
                             </div>
-                            <a href="disciplinas/analise-de-algoritmos/aula5-calc-complex-alg-iterativos-2/index.html" class="material-btn">
-                                ▶ Open Interactive Presentation
-                            </a>
+                            <div class="material-card-actions">
+                                <a href="courses/analise-de-algoritmos/aula5-calc-complex-alg-iterativos-2/index.html" class="material-btn">
+                                    ▶ Open Interactive Presentation
+                                </a>
+                                <a href="courses/analise-de-algoritmos/aula5-calc-complex-alg-iterativos-2/aula5.pdf" class="material-btn material-btn-secondary" download target="_blank" title="Download PDF Slides">
+                                    📄 Download PDF
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </article>
@@ -112,5 +134,25 @@
     </footer>
 
     <script src="assets/js/script.js"></script>
+    <script>
+        function copyDisciplineLink(id, btn) {
+            const url = window.location.origin + window.location.pathname + '#' + id;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(() => {
+                    const originalHtml = btn.innerHTML;
+                    btn.innerHTML = '✓ <span>Copied!</span>';
+                    btn.style.color = '#22c55e';
+                    setTimeout(() => {
+                        btn.innerHTML = originalHtml;
+                        btn.style.color = '';
+                    }, 2000);
+                }).catch(() => {
+                    prompt('Copy this link:', url);
+                });
+            } else {
+                prompt('Copy this link:', url);
+            }
+        }
+    </script>
 </body>
 </html>

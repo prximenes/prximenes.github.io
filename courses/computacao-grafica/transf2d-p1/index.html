@@ -26,9 +26,19 @@
         <span style="font-weight:800;color:#60a5fa;letter-spacing:0.5px;">UNICAP</span>
         <span id="headline-section-text" style="font-weight:600;">Transformações Geométricas 2D</span>
       </div>
-      <button class="theme-toggle-btn" id="theme-toggle-btn" title="Alternar entre Tema Claro e Escuro">
-        <span>🌙</span> <span>Tema Escuro</span>
-      </button>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <div class="font-zoom-controls" style="display:flex;align-items:center;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:4px;overflow:hidden;" title="Ajustar Tamanho da Fonte (+ / -)">
+          <button id="font-decrease-btn" class="font-ctrl-btn" title="Diminuir Fonte (-)" style="background:transparent;border:none;color:#fff;padding:1px 6px;font-size:0.72rem;font-weight:700;cursor:pointer;">A-</button>
+          <span id="font-zoom-label" title="Tamanho atual (Clique para redefinir)" style="font-size:0.68rem;font-weight:600;color:#93c5fd;padding:0 4px;user-select:none;min-width:32px;text-align:center;cursor:pointer;">100%</span>
+          <button id="font-increase-btn" class="font-ctrl-btn" title="Aumentar Fonte (+)" style="background:transparent;border:none;color:#fff;padding:1px 6px;font-size:0.72rem;font-weight:700;cursor:pointer;">A+</button>
+        </div>
+        <a href="transf2d-p1.pdf" download class="theme-toggle-btn" style="color:#ffffff;text-decoration:none;display:inline-flex;align-items:center;gap:4px;" title="Baixar Apresentação em PDF">
+          <span>📄</span> <span>PDF</span>
+        </a>
+        <button class="theme-toggle-btn" id="theme-toggle-btn" title="Alternar entre Tema Claro e Escuro">
+          <span>🌙</span> <span>Tema Escuro</span>
+        </button>
+      </div>
     </div>
     <div class="headline-subsection-row">
       <span id="headline-subsection-text">› Introdução</span>

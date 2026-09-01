@@ -38,7 +38,81 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
-  // 2. Inicialização do Reveal.js (Proporção 4:3 idêntica ao LaTeX Beamer original)
+  // 2. Gerenciador de Zoom de Fonte (Projetor / Sala de Aula)
+  const ZOOM_LEVELS = [0.85, 1.0, 1.15, 1.30, 1.45, 1.60];
+  let currentZoomIdx = 1; // 1.0 (100%) padrão
+
+  function initFontZoomManager() {
+    const savedZoom = parseFloat(localStorage.getItem('lecture_font_zoom'));
+    if (!isNaN(savedZoom)) {
+      const idx = ZOOM_LEVELS.findIndex(lvl => Math.abs(lvl - savedZoom) < 0.05);
+      if (idx !== -1) currentZoomIdx = idx;
+    }
+    applyFontZoom();
+
+    const decBtn = document.getElementById('font-decrease-btn');
+    const incBtn = document.getElementById('font-increase-btn');
+    const label = document.getElementById('font-zoom-label');
+
+    if (decBtn) {
+      decBtn.addEventListener('click', () => {
+        if (currentZoomIdx > 0) {
+          currentZoomIdx--;
+          applyFontZoom();
+        }
+      });
+    }
+
+    if (incBtn) {
+      incBtn.addEventListener('click', () => {
+        if (currentZoomIdx < ZOOM_LEVELS.length - 1) {
+          currentZoomIdx++;
+          applyFontZoom();
+        }
+      });
+    }
+
+    if (label) {
+      label.addEventListener('click', () => {
+        if (currentZoomIdx === 1) {
+          currentZoomIdx = 2; // 115%
+        } else {
+          currentZoomIdx = 1; // 100%
+        }
+        applyFontZoom();
+      });
+    }
+
+    // Atalhos de teclado: '+' ou '=' para aumentar, '-' para diminuir, '0' para resetar
+    window.addEventListener('keydown', e => {
+      if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+      if (e.key === '+' || e.key === '=' || e.key === ']') {
+        if (currentZoomIdx < ZOOM_LEVELS.length - 1) {
+          currentZoomIdx++;
+          applyFontZoom();
+        }
+      } else if (e.key === '-' || e.key === '_' || e.key === '[') {
+        if (currentZoomIdx > 0) {
+          currentZoomIdx--;
+          applyFontZoom();
+        }
+      }
+    });
+  }
+
+  function applyFontZoom() {
+    const zoomVal = ZOOM_LEVELS[currentZoomIdx];
+    document.documentElement.style.setProperty('--font-zoom', zoomVal);
+    localStorage.setItem('lecture_font_zoom', zoomVal);
+    const label = document.getElementById('font-zoom-label');
+    if (label) {
+      label.textContent = `${Math.round(zoomVal * 100)}%`;
+    }
+  }
+
+  initFontZoomManager();
+
+  // 3. Inicialização do Reveal.js (Proporção 4:3 idêntica ao LaTeX Beamer original)
   Reveal.initialize({
     controls: true,
     progress: true,

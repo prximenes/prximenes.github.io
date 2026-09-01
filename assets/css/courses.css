@@ -70,6 +70,16 @@ body.theme-light .disciplinas-intro {
 /* Seção de cada disciplina */
 .discipline-section {
     margin-bottom: 45px;
+    scroll-margin-top: 30px;
+    padding: 16px;
+    border-radius: 12px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.discipline-section:target {
+    background: rgba(59, 130, 246, 0.06);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+    border-radius: 12px;
 }
 
 .discipline-header {
@@ -85,6 +95,74 @@ body.theme-light .disciplinas-intro {
     font-weight: 700;
     color: inherit;
     margin: 0;
+}
+
+.share-discipline-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    font-size: 11.5px;
+    font-weight: 600;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.06);
+    color: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-left: auto;
+}
+
+body.theme-light .share-discipline-btn {
+    border-color: rgba(0, 0, 0, 0.12);
+    background: rgba(0, 0, 0, 0.04);
+    color: #4b5563;
+}
+
+body.theme-dark .share-discipline-btn {
+    border-color: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.06);
+    color: #cbd5e1;
+}
+
+.share-discipline-btn:hover {
+    background: rgba(59, 130, 246, 0.15);
+    border-color: rgba(59, 130, 246, 0.4);
+    color: #3b82f6 !important;
+}
+
+.filter-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 20px;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+    color: inherit;
+    transition: all 0.2s ease;
+}
+
+body.theme-light .filter-pill {
+    border-color: rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+    color: #374151;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+body.theme-dark .filter-pill {
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(30, 32, 34, 0.8);
+    color: #e2e8f0;
+}
+
+.filter-pill:hover {
+    border-color: #e53935;
+    color: #e53935 !important;
+    transform: translateY(-1px);
 }
 
 .badge-tag {
@@ -236,13 +314,43 @@ body.theme-light .material-description {
     font-weight: 700;
     font-size: 14px;
     border-radius: 6px;
-    transition: background-color 0.25s ease, transform 0.15s ease;
+    transition: background-color 0.25s ease, transform 0.15s ease, border-color 0.25s ease, color 0.25s ease;
     text-align: center;
 }
 
 .material-btn:hover {
     background-color: #c62828;
     transform: scale(1.02);
+}
+
+.material-card-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.material-btn-secondary {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+body.theme-light .material-btn-secondary {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #374151 !important;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+body.theme-dark .material-btn-secondary {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #e5e7eb !important;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.material-btn-secondary:hover {
+    background-color: rgba(229, 57, 53, 0.15);
+    border-color: rgba(229, 57, 53, 0.4);
+    color: #e53935 !important;
 }
 
 /* Card placeholder / em breve */
