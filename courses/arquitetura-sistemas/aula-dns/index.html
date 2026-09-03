@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nomeação em Sistemas Distribuídos — DNS (Beamer Warsaw)</title>
+  <meta name="description" content="Apresentação interativa sobre Nomeação Estruturada, Camadas do DNS e Resolução de Nomes em Sistemas Distribuídos. UNICAP.">
+  <meta name="author" content="Pedro Ximenes">
+
+  <!-- Reveal.js 5.1.0 CSS via CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
+  
+  <!-- Font Awesome para ícones profissionais -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Estilo Customizado Beamer Warsaw -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- =========================================================================
+       MOLDURA FIXA DO BEAMER WARSAW (HEADLINE & FOOTLINE)
+       ========================================================================= -->
+
+  <!-- Cabeçalho Superior Beamer Warsaw (Barra Dupla) -->
+  <header id="beamer-headline">
+    <!-- Linha 1: 4 Seções Principais da Aula e Controles -->
+    <div class="headline-sections">
+      <nav class="headline-nav" aria-label="Seções da Apresentação">
+        <div class="nav-section-item" data-sec="1" id="nav-sec-1">
+          <i class="fa-solid fa-sitemap"></i> &nbsp;1. Nomeação Estruturada
+        </div>
+        <div class="nav-section-item" data-sec="2" id="nav-sec-2">
+          <i class="fa-solid fa-layer-group"></i> &nbsp;2. DNS e Camadas
+        </div>
+        <div class="nav-section-item" data-sec="3" id="nav-sec-3">
+          <i class="fa-solid fa-network-wired"></i> &nbsp;3. Resolução de Nomes
+        </div>
+        <div class="nav-section-item" data-sec="4" id="nav-sec-4">
+          <i class="fa-solid fa-globe"></i> &nbsp;4. DNS em Operação
+        </div>
+      </nav>
+
+      <div class="headline-controls">
+        <!-- Controle de Zoom de Fonte [ A- | 100% | A+ ] -->
+        <div class="font-zoom-group" title="Zoom da fonte (+ / -)">
+          <button id="font-decrease-btn" class="font-zoom-btn" title="Diminuir fonte (-)">A-</button>
+          <span id="font-zoom-label" class="font-zoom-label" title="Clique para redefinir para 100%">100%</span>
+          <button id="font-increase-btn" class="font-zoom-btn" title="Aumentar fonte (+)">A+</button>
+        </div>
+
+        <button id="btnThemeToggle" class="btn-ctrl" title="Alternar tema claro/escuro">
+          <i class="fa-solid fa-moon"></i> Escuro
+        </button>
+        <button id="btnFullscreen" class="btn-ctrl" title="Tela Cheia">
+          <i class="fa-solid fa-expand"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Linha 2: Subseção Ativa -->
+    <div class="headline-subsections">
+      <span>Subseção:</span>
+      <span id="active-subsection-name">§ Introdução</span>
+    </div>
+  </header>
+
+  <!-- Rodapé Fixo Beamer Warsaw (Footline) -->
+  <footer id="beamer-footline">
+    <div class="footline-author">
+      <i class="fa-solid fa-user-tie"></i> Pedro Ximenes | UNICAP
+    </div>
+    <div class="footline-title">
+      Nomeação em Sistemas Distribuídos — DNS
+    </div>
+    <div class="footline-number">
+      Slide <span id="footline-current-slide">1</span> / <span id="footline-total-slides">20</span>
+    </div>
+  </footer>
+
+  <!-- =========================================================================
+       CONTAINER DE SLIDES REVEAL.JS (PROPORÇÃO 4:3 1024x768)
+       ========================================================================= -->
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- =====================================================================
+           SLIDE 1: TÍTULO / CAPA DA AULA
+           ===================================================================== -->
+      <section data-section="0" data-subsection="Capa">
+        <div class="slide-body title-slide-container">
+          <div class="title-card">
+            <h1>Nomeação em Sistemas Distribuídos</h1>
+            <h2 class="subtitle">Domain Name System (DNS)</h2>
+
+            <div class="title-meta">
+              <div class="title-author">
+                <i class="fa-solid fa-chalkboard-user"></i> Prof. Pedro Ximenes
+              </div>
+              <div class="title-inst">
+                <i class="fa-solid fa-building-columns"></i> Universidade Católica de Pernambuco (UNICAP)
+              </div>
+              <div style="font-size: 0.85rem; color: var(--beamer-text-muted); margin-top: 4px;">
+                Arquitetura de Sistemas Distribuídos
+              </div>
+            </div>
+
+            <button id="btnStartPresentation" class="start-btn">
+              <i class="fa-solid fa-play"></i> Iniciar Apresentação
+            </button>
+
+            <div style="margin-top: 14px; font-size: 0.8rem; color: var(--beamer-text-muted);">
+              Use as teclas <strong>Espaço</strong> ou <strong>Setas</strong> para navegar • Tecla <strong>F</strong> para tela cheia
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SLIDE 2: ROTEIRO (AGENDA)
+           ===================================================================== -->
+      <section data-section="0" data-subsection="Roteiro">
+        <div class="slide-header">
+          <h2><i class="fa-solid fa-list-ol"></i> Roteiro da Apresentação</h2>
+          <span class="slide-tag">Visão Geral</span>
+        </div>
+        <div class="slide-body">
+          <div class="agenda-grid">
+            <div class="agenda-card" data-goto="1">
+              <div class="agenda-num">1</div>
+              <div class="agenda-info">
+                <h3>Nomeação Estruturada</h3>
+                <p>Do identificador ao nome hierárquico, árvores e leitura reversa de FQDN.</p>
+              </div>
+            </div>
+
+            <div class="agenda-card" data-goto="2">
+              <div class="agenda-num">2</div>
+              <div class="agenda-info">
+                <h3>DNS e Camadas</h3>
+                <p>O que o DNS resolve, camadas Global, Administrativa e Gerencial, e comparativo.</p>
+              </div>
+            </div>
+
+            <div class="agenda-card" data-goto="3">
+              <div class="agenda-num">3</div>
+              <div class="agenda-info">
+                <h3>Resolução de Nomes</h3>
+                <p>Resolução Iterativa vs. Recursiva, papel vital do Cache e custo de comunicação.</p>
+              </div>
+            </div>
+
+            <div class="agenda-card" data-goto="4">
+              <div class="agenda-num">4</div>
+              <div class="agenda-info">
+                <h3>DNS em Operação</h3>
+                <p>Servidores raiz mundiais, Anycast, protocolo UDP e robustez na Web.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SEÇÃO 1: NOMEAÇÃO ESTRUTURADA
+           ===================================================================== -->
+
+      <!-- SLIDE 3: Do identificador ao nome estruturado -->
+      <section id="sec-1-slide-1" data-section="1" data-subsection="Identificadores e Estrutura">
+        <div class="slide-header">
+          <h2><i class="fa-solid fa-fingerprint"></i> Do identificador ao nome estruturado</h2>
+          <span class="slide-tag">Seção 1</span>
+        </div>
+        <div class="slide-body">
+          <div class="block block-definition">
+            <div class="block-title"><i class="fa-solid fa-lightbulb"></i> Nomeação Estruturada: Motivação</div>
+            <div class="block-body">
+              <p>Identificadores como <strong>IP</strong>, <strong>CPF</strong> ou códigos internos são precisos para sistemas computacionais, mas nem sempre são amigáveis para a memória humana.</p>
+            </div>
+          </div>
+
+          <div class="block block-alert">
+            <div class="block-title"><i class="fa-solid fa-bullseye"></i> Ideia Central</div>
+            <div class="block-body">
+              <p>A <strong>nomeação estruturada</strong> organiza nomes em uma hierarquia lógica, permitindo que pessoas localizem recursos por caminhos intuitivos e ordenados.</p>
+            </div>
+          </div>
+
+          <ul class="beamer-list">
+            <li>Espaço de nomes modelado matematicamente como uma <strong>árvore de rótulos</strong>.</li>
+            <li>Existe um <strong>nó raiz</strong> (<em>root</em>) no topo e múltiplos nós internos intermediários.</li>
+            <li>O recurso desejado (serviço, arquivo ou máquina) costuma estar localizado em um <strong>nó folha</strong>.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- SLIDE 4: Exemplo 1: Sistema de arquivos -->
+      <section data-section="1" data-subsection="Exemplo: Sistema de Arquivos">
+        <div class="slide-header">
+          <h2><i class="fa-solid fa-folder-tree"></i> Exemplo 1: Sistema de arquivos</h2>
+          <span class="slide-tag">Seção 1</span>
+        </div>
+        <div class="slide-body">
+          <div class="block block-example">
+            <div class="block-title"><i class="fa-solid fa-file-lines"></i> Caminho hierárquico clássico</div>
+            <div class="block-body">
+              <code>/home/user/unicap/arq-sistemas/aulas/aula11.pdf</code>
+            </div>
+          </div>
+
+          <ul class="beamer-list">
+            <li>O caminho completo pode ser longo, mas <strong>cada nível acrescenta contexto semântico</strong> delimitado.</li>
+            <li>A estrutura modular facilita a memorização e a descoberta progressiva do arquivo final.</li>
+            <li>A resolução ocorre percorrendo diretórios desde a raiz (<code>/</code>) até a folha (<code>aula11.pdf</code>).</li>
+          </ul>
+
+          <div class="block block-definition">
+            <div class="block-title"><i class="fa-solid fa-shield-halved"></i> Redução de Ambiguidade</div>
+            <div class="block-body">
+              <p>A hierarquia reduz ambiguidade: cada etapa do caminho restringe progressivamente o conjunto possível de resultados.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 5: Exemplo 2: Nomes de hosts na Internet & Leitura Reversa -->
+      <section data-section="1" data-subsection="Hosts e Leitura Reversa">
+        <div class="slide-header">
+          <h2><i class="fa-solid fa-globe"></i> Exemplo 2: Nomes de hosts na Internet</h2>
+          <span class="slide-tag">Seção 1</span>
+        </div>
+        <div class="slide-body">
+          <div class="two-cols">
+            <div class="col">
+              <div class="block block-example">
+                <div class="block-title"><i class="fa-solid fa-server"></i> Exemplo de host FQDN</div>
+                <div class="block-body">
+                  <code>www.c3.unicap.br</code>
+                </div>
+              </div>
+
+              <ul class="beamer-list">
+                <li><strong>Leitura da direita para a esquerda:</strong> <code>br</code> &rarr; <code>unicap</code> &rarr; <code>c3</code> &rarr; <code>www</code>.</li>
+                <li>Cada rótulo representa um nível distinto da hierarquia de autoridade.</li>
+                <li>O formato padronizado torna o nome previsível e globalmente reconhecível.</li>
+              </ul>
+
+              <div class="block block-alert">
+                <div class="block-title"><i class="fa-solid fa-bolt"></i> Papel do DNS</div>
+                <div class="block-body">
+                  <p>O <strong>DNS</strong> utiliza essa estrutura para mapear nomes legíveis em endereços IP de destino na rede.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <!-- Componente Interativo de Leitura Reversa -->
+              <div class="fqdn-interactive">
+                <div style="font-weight: 700; font-size: 0.92rem; color: var(--warsaw-navy);">
+                  <i class="fa-solid fa-hand-pointer"></i> Clique nos blocos para inspecionar a leitura:
+                </div>
+
+                <div class="fqdn-chips">
+                  <div class="fqdn-chip active" data-part="br">
+                    <span class="chip-step">Passo 1</span>
+                    br
+                  </div>
+                  <div class="fqdn-arrow">&larr;</div>
+                  <div class="fqdn-chip" data-part="unicap">
+                    <span class="chip-step">Passo 2</span>
+                    unicap
+                  </div>
+                  <div class="fqdn-arrow">&larr;</div>
+                  <div class="fqdn-chip" data-part="c3">
+                    <span class="chip-step">Passo 3</span>
+                    c3
+                  </div>
+                  <div class="fqdn-arrow">&larr;</div>
+                  <div class="fqdn-chip" data-part="www">
+                    <span class="chip-step">Passo 4</span>
+                    www
+                  </div>
+                </div>
+
+                <div class="fqdn-desc-box" id="fqdnDescText">
+                  <strong>1º Nível (TLD Nacional - .br):</strong> Administrado pelo Registro.br (CGI.br). Identifica o país e pertence à <em>Camada Global</em>.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SEÇÃO 2: DNS E CAMADAS
+           ===================================================================== -->
+
+      <!-- SLIDE 6: O que o DNS resolve? -->
+      <section id="sec-2-slide-1" data-section="2" data-subsection="O que o DNS Resolve">
+        <div class="slide-header">
+          <h2><i class="fa-solid fa-question-circle"></i> O que o DNS resolve?</h2>
+          <span class="slide-tag">Seção 2</span>
+        </div>
+        <div class="slide-body">
+          <div class="block block-definition">
+            <div class="block-title"><i class="fa-solid fa-book"></i> Definição</div>
+            <div class="block-body">
+              <p>O <strong>Domain Name System (DNS)</strong> realiza resolução de nomes: dado um nome legível por humanos, retorna o endereço IP do servidor responsável pelo serviço.</p>
+            </div>
+          </div>
+
+          <ul class="beamer-list">
+            <li><strong>Entrada:</strong> nome de domínio qualificado, como <code>google.com.br</code> ou <code>unicap.br</code>.</li>
+            <li><strong>Saída:</strong> endereço IP (IPv4 / IPv6) ou conjunto balanceado de IPs para contato direto com o serviço.</li>
+            <li><strong>Objetivo primordial:</strong> desacoplar o nome humano estável da localização física/lógica na rede.</li>
+          </ul>
+
+          <div class="block block-example">
+            <div class="block-title"><i class="fa-solid fa-check-circle"></i> Consequência Prática</div>
+            <div class="block-body">
+              <p>O usuário recorda o nome com facilidade; a infraestrutura distribuída descobre o endereço IP correto de forma transparente e tolerante a mudanças de provedor ou datacenter.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 7: Camadas do espaço de nomes do DNS -->
+      <section data-section="2" data-subsection="Camadas do Espaço de Nomes">
+        <div class="slide-header">
+          <h2><i class="fa-solid fa-layer-group"></i> Camadas do espaço de nomes do DNS</h2>
+          <span class="slide-tag">Seção 2</span>
+        </div>
+        <div class="slide-body">
+          <div class="two-cols">
+            <div class="col">
+              <ul class="beamer-list">
+                <li>
+                  <strong>Camada Global:</strong> porção superior da hierarquia (ex.: nós raiz <code>.</code>, gTLDs como <code>.com</code>, <code>.org</code> e ccTLDs como <code>.br</code>, <code>.nl</code>).
+                </li>
+                <li>
+                  <strong>Camada Administrativa:</strong> organizações, universidades e empresas (ex.: <code>unicap.br</code>, <code>uol.com.br</code>, <code>globo.com</code>, <code>vu.nl</code>).
+                </li>
+                <li>
+                  <strong>Camada Gerencial:</strong> partes mais próximas dos recursos e máquinas (subdomínios de departamento, serviços e registros que mudam frequentemente).
+                </li>
+              </ul>
+
+              <div class="block block-definition">
+                <div class="block-title"><i class="fa-solid fa-diagram-project"></i> Divisão Lógica</div>
+                <div class="block-body">
+                  <p>Essa partição tripla organiza o DNS tanto em termos de autoridade administrativa quanto de requisitos técnicos de desempenho e cache.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="slide-figure fit-height">
+                <img src="images/06-14.png" alt="Camadas do Espaço de Nomes DNS (Figura 6-14 Tanenbaum)">
+                <div class="figure-caption">Figura 6-14: Divisão do espaço de nomes do DNS em três camadas (Tanenbaum & Van Steen).</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 8: Visualizador Interativo da Árvore de Nomes DNS -->
+      <section data-section="2" data-subsection="Visualizador da Árvore DNS">
+        <div class="slide-header">
+          <h2><i class="fa-solid fa-tree"></i> Explorador da Hierarquia DNS</h2>
+          <span class="slide-tag">Módulo Interativo</span>
+        </div>
+        <div class="slide-body">
+          <div class="tree-demo-container">
+            <div class="tree-filters">
+              <span style="font-size: 0.8rem; font-weight: bold; color: var(--beamer-text-muted);">Filtrar Camada:</span>
+              <button class="tree-filter-btn active" data-filter="all">Todas as Camadas</button>
+              <button class="tree-filter-btn filter-global" data-filter="global">Camada Global (.br, .com, .nl)</button>
+              <button class="tree-filter-btn filter-adm" data-filter="adm">Camada Administrativa (unicap, vu)</button>
+              <button class="tree-filter-btn filter-gerencial" data-filter="gerencial">Camada Gerencial (c3, cs, ftp)</button>
+            </div>
+
+            <div class="tree-canvas-wrapper">
+              <canvas id="dnsTreeCanvas"></canvas>
+            </div>
+
+            <div class="tree-info-panel" id="treeNodeDetails">
+              <div>
+                <strong>Clique em um nó na árvore</strong> acima para inspecionar sua autoridade, escala e camada correspondente.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 9: Comparando as camadas na prática (Tabela Comparativa) -->
+      <section data-section="2" data-subsection="Comparando as Camadas">
+        <div class="slide-header">
+          <h2><i class="fa-solid fa-table-columns"></i> Comparando as camadas na prática</h2>
+          <span class="slide-tag">Seção 2</span>
+        </div>
+        <div class="slide-body">
+          <div class="two-cols">
+            <div class="col">
+              <!-- Tabela Comparativa Oficial do Livro -->
+              <div class="table-container">
+                <table class="beamer-table">
+                  <thead>
+                    <tr>
+                      <th>Critério</th>
+                      <th><span class="layer-tag tag-global">Global</span></th>
+                      <th><span class="layer-tag tag-adm">Administrativa</span></th>
+                      <th><span class="layer-tag tag-gerencial">Gerencial</span></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Escala Geográfica</strong></td>
+                      <td>Mundial</td>
+                      <td>Por Organização</td>
+                      <td>Por Depto / Prédio</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Qtd. de Nós</strong></td>
+                      <td>Poucos (dezenas)</td>
+                      <td>Muitos (milhares)</td>
+                      <td>Vasto (milhões)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Responsividade</strong></td>
+                      <td>Segundos (c/ cache)</td>
+                      <td>Milissegundos</td>
+                      <td>Imediata (&lt; ms)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Propagação Updates</strong></td>
+                      <td>Lenta (horas/dias)</td>
+                      <td>Rápida (seg/min)</td>
+                      <td>Imediata</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Número de Réplicas</strong></td>
+                      <td>Muitas</td>
+                      <td>Algumas (2 a 3)</td>
+                      <td>Poucas / Nenhuma</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Caching é Efetivo?</strong></td>
+                      <td>Sim, essencial!</td>
+                      <td>Sim</td>
+                      <td>Raramente / Sob demanda</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="block block-definition" style="margin-top: 4px;">
+                <div class="block-title"><i class="fa-solid fa-scale-balanced"></i> Escala e Responsabilidade</div>
+                <div class="block-body">
+                  <p>A camada global tem poucos nós e escopo mundial; a administrativa atende cada organização; a gerencial lida com o volume massivo de mudanças diárias.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="slide-figure fit-height">
+                <img src="images/06-15.png" alt="Comparação das Camadas DNS (Figura 6-15 Tanenbaum)">
+                <div class="figure-caption">Figura 6-15: Comparação entre as camadas de nós no DNS (Tanenbaum & Van Steen).</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 10: Disponibilidade, réplicas e propagação -->
+      <section data-section="2" data-subsection="Disponibilidade e Réplicas">
+        <div class="slide-header">
+          <h2><i class="fa-solid fa-copy"></i> Disponibilidade, réplicas e propagação</h2>
+          <span class="slide-tag">Seção 2</span>
+        </div>
+        <div class="slide-body">
+          <ul class="beamer-list">
+            <li>Na <strong>camada global</strong>, falhas têm impacto catastrófico mundial, tornando a <strong>replicação em larga escala</strong> mandatória.</li>
+            <li>Atualizações globais podem propagar lentamente devido ao volume e à necessidade de consistência entre réplicas.</li>
+            <li>Na <strong>camada administrativa</strong>, atualizações precisam ser mais ágeis (ex.: ativação de novos servidores ou troca de provedor de e-mail).</li>
+            <li>Na <strong>camada gerencial</strong>, mudanças ocorrem com altíssima frequência, exigindo controle rígido de cache por <strong>TTL (Time To Live)</strong>.</li>
+          </ul>
+
+          <div class="block block-alert">
+            <div class="block-title"><i class="fa-solid fa-circle-question"></i> Pergunta Comum</div>
+            <div class="block-body">
+              <p>Se a camada global pode tolerar respostas mais lentas, por que um site famoso costuma abrir em menos de 1 segundo?</p>
+            </div>
+          </div>
+
+          <div class="block block-example">
+            <div class="block-title"><i class="fa-solid fa-check-double"></i> Resposta Didática</div>
+            <div class="block-body">
+              <p>Porque <strong>consultas anteriores ficam em cache</strong> tanto no cliente quanto nos servidores resolvedores locais (ISP/campus), evitando repetir a travessia completa da hierarquia a cada clique.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SEÇÃO 3: RESOLUÇÃO DE NOMES
+           ===================================================================== -->
+
+      <!-- SLIDE 11: Problema de resolução -->
+      <section id="sec-3-slide-1" data-section="3" data-subsection="Problema de Resolução">
+        <div class="slide-header">
+          <h2><i class="fa-solid fa-compass"></i> Problema de resolução</h2>
+          <span class="slide-tag">Seção 3</span>
+        </div>
+        <div class="slide-body">
+          <div class="block block-definition">
+            <div class="block-title"><i class="fa-solid fa-bullseye"></i> Objetivo Prático</div>
+            <div class="block-body">
+              <p>Resolver o caminho: <code>ftp://ftp.cs.vu.nl/pub/globe/index.html</code> até obter o endereço IP do servidor responsável.</p>
+            </div>
+          </div>
+
+          <ul class="beamer-list">
+            <li>A busca sempre parte de <strong>níveis superiores</strong> (raiz) e desce gradativamente na hierarquia.</li>
+            <li>Em cada passo, um servidor informa quem conhece melhor o próximo nível (delegação por registros NS).</li>
+            <li>Existem duas estratégias clássicas de coordenação de resolução: <strong>iterativa</strong> e <strong>recursiva</strong>.</li>
+          </ul>
+
+          <div class="block block-example">
+            <div class="block-title"><i class="fa-solid fa-route"></i> O Trade-off Central</div>
+            <div class="block-body">
+              <p>Quem deve gastar processamento e manter estado aberto durante a resolução: o <strong>cliente/resolver local</strong> ou a <strong>cadeia de servidores intermediários</strong>?</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 12: Resolução iterativa: ideia geral -->
+      <section data-section="3" data-subsection="Resolução Iterativa">
+        <div class="slide-header">
+          <h2><i class="fa-solid fa-arrow-rotate-right"></i> Resolução iterativa: ideia geral</h2>
+          <span class="slide-tag">Seção 3</span>
+        </div>
+        <div class="slide-body">
+          <div class="two-cols">
+            <div class="col">
+              <div class="block block-definition">
+                <div class="block-title"><i class="fa-solid fa-list-check"></i> Fluxo Iterativo</div>
+                <div class="block-body">
+                  <ol class="beamer-list">
+                    <li>Cliente/Resolver pergunta ao servidor raiz (<code>.</code>).</li>
+                    <li>Raiz devolve uma referência (<em>referral</em>) para o servidor de <code>.nl</code>.</li>
+                    <li>Cliente pergunta ao servidor de <code>.nl</code> e recebe referência de <code>vu.nl</code>.</li>
+                    <li>Cliente chega ao servidor autoritativo final (<code>cs.vu.nl</code>) e obtém o IP.</li>
+                  </ol>
+                </div>
+              </div>
+
+              <div class="block block-alert">
+                <div class="block-title"><i class="fa-solid fa-key"></i> Característica Principal</div>
+                <div class="block-body">
+                  <p>O <strong>cliente (ou resolvedor local)</strong> controla o passo a passo de cada salto da travessia. Os servidores apenas respondem "não sei o IP final, mas pergunte a fulano".</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="slide-figure fit-height">
+                <img src="images/06-16.png" alt="Resolução Iterativa (Figura 6-16 Tanenbaum)">
+                <div class="figure-caption">Figura 6-16: Princípio da resolução de nomes iterativa (Tanenbaum & Van Steen).</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 13: Iterativa com cache no cliente -->
+      <section data-section="3" data-subsection="Iterativa com Cache">
+        <div class="slide-header">
+          <h2><i class="fa-solid fa-bolt-lightning"></i> Iterativa com cache no cliente</h2>
+          <span class="slide-tag">Seção 3</span>
+        </div>
+        <div class="slide-body">
+          <ul class="beamer-list">
+            <li>Após resolver <code>ftp.cs.vu.nl</code>, o cliente guarda em sua tabela de cache local as referências dos servidores intermediários (<code>.nl</code>, <code>vu.nl</code>, <code>cs.vu.nl</code>).</li>
+            <li>Em uma nova consulta subsequente para <code>mail.cs.vu.nl</code>, o cliente pode <strong>cortar caminho</strong> e começar a consulta a partir do servidor de <code>cs.vu.nl</code> já conhecido!</li>
+            <li>Isso reduz expressivamente a latência percebida pelo usuário e alivia a carga de trabalho nos servidores de topo.</li>
+          </ul>
+
+          <div class="block block-example">
+            <div class="block-title"><i class="fa-solid fa-chart-line"></i> Efeito Prático</div>
+            <div class="block-body">
+              <p>A raiz DNS tende a ser consultada muito poucas vezes para domínios acessados com frequência, pois o cache reaproveita respostas anteriores de forma extremamente eficiente.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 14: Resolução recursiva: ideia geral -->
+      <section data-section="3" data-subsection="Resolução Recursiva">
+        <div class="slide-header">
+          <h2><i class="fa-solid fa-link"></i> Resolução recursiva: ideia geral</h2>
+          <span class="slide-tag">Seção 3</span>
+        </div>
+        <div class="slide-body">
+          <div class="two-cols">
+            <div class="col">
+              <div class="block block-definition">
+                <div class="block-title"><i class="fa-solid fa-arrows-split-up-and-left"></i> Fluxo Recursivo</div>
+                <div class="block-body">
+                  <ol class="beamer-list">
+                    <li>Cliente envia uma consulta recursiva única ao servidor inicial.</li>
+                    <li>Esse servidor repassa a consulta para o próximo, e assim por diante em cadeia.</li>
+                    <li>A resposta final completa retorna fazendo o caminho reverso pela cadeia de servidores até o cliente.</li>
+                  </ol>
+                </div>
+              </div>
+
+              <div class="block block-alert">
+                <div class="block-title"><i class="fa-solid fa-brain"></i> Característica Principal</div>
+                <div class="block-body">
+                  <p>O <strong>cliente faz menos trabalho direto</strong>; os servidores assumem a coordenação, mantendo conexões ativas até obter a resposta final.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="slide-figure fit-height">
+                <img src="images/06-17.png" alt="Resolução Recursiva (Figura 6-17 Tanenbaum)">
+                <div class="figure-caption">Figura 6-17: Princípio da resolução de nomes recursiva (Tanenbaum & Van Steen).</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 15: Recursiva: vantagens e limitações -->
+      <section data-section="3" data-subsection="Recursiva: Vantagens e Limitações">
+        <div class="slide-header">
+          <h2><i class="fa-solid fa-scale-balanced"></i> Recursiva: vantagens e limitações</h2>
+          <span class="slide-tag">Seção 3</span>
+        </div>
+        <div class="slide-body">
+          <div class="two-cols">
+            <div class="col">
+              <div class="block block-example">
+                <div class="block-title"><i class="fa-solid fa-thumbs-up"></i> Vantagens</div>
+                <div class="block-body">
+                  <ul class="beamer-list" style="margin: 0; padding: 0;">
+                    <li>Menor carga de processamento e rede no cliente simples.</li>
+                    <li>Melhor aproveitamento de cache compartilhado ao longo dos servidores.</li>
+                    <li>Pode reduzir o custo de comunicação em links de longa distância.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="block block-alert">
+                <div class="block-title"><i class="fa-solid fa-triangle-exclamation"></i> Limitações Críticas</div>
+                <div class="block-body">
+                  <ul class="beamer-list" style="margin: 0; padding: 0;">
+                    <li><strong>Maior consumo de memória e estado</strong> nos servidores intermediários (manter sockets abertos para cada cliente pendente).</li>
+                    <li>Pode sobrecarregar servidores de topo; por isso, <strong>servidores raiz rejeitam consultas recursivas</strong> na Internet real!</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="slide-figure fit-height">
+                <img src="images/06-18.png" alt="Recursiva com Cache (Figura 6-18 Tanenbaum)">
+                <div class="figure-caption">Figura 6-18: Resolução recursiva com caching intermediário (Tanenbaum & Van Steen).</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 16: Iterativa vs. recursiva: custo de comunicação -->
+      <section data-section="3" data-subsection="Custo de Comunicação">
+        <div class="slide-header">
+          <h2><i class="fa-solid fa-network-wired"></i> Iterativa vs. recursiva: custo de comunicação</h2>
+          <span class="slide-tag">Seção 3</span>
+        </div>
+        <div class="slide-body">
+          <div class="two-cols">
+            <div class="col">
+              <ul class="beamer-list">
+                <li>Em cenário <strong>iterativo</strong>, o cliente conversa separadamente com mais servidores de nomes através de enlaces WAN potencialmente longos.</li>
+                <li>Em cenário <strong>recursivo</strong>, parte substancial da comunicação acontece entre servidores que podem estar geograficamente mais próximos entre si.</li>
+                <li>Isso pode diminuir o tempo de propagação e o tráfego nos enlaces de acesso do cliente.</li>
+              </ul>
+
+              <div class="block block-definition">
+                <div class="block-title"><i class="fa-solid fa-puzzle-piece"></i> Arquitetura Híbrida Real</div>
+                <div class="block-body">
+                  <p>O cliente final faz consulta <strong>recursiva</strong> ao seu resolvedor local (ISP ou 8.8.8.8), e o resolvedor local executa resolução <strong>iterativa</strong> com os servidores raiz e autoritativos mundiais.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="slide-figure fit-height">
+                <img src="images/06-19.png" alt="Comparação de Custos de Comunicação (Figura 6-19 Tanenbaum)">
+                <div class="figure-caption">Figura 6-19: Comparação de custos de comunicação entre iterativa e recursiva (Tanenbaum).</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 17: SIMULADOR INTERATIVO (Two-cols: Controles + Canvas) -->
+      <section data-section="3" data-subsection="Simulador Interativo">
+        <div class="slide-header">
+          <h2><i class="fa-solid fa-gamepad"></i> Simulador: Resolução Iterativa vs. Recursiva</h2>
+          <span class="slide-tag">Laboratório Interativo</span>
+        </div>
+        <div class="slide-body">
+          <div class="two-cols ratio-40-60">
+            <!-- Coluna da Esquerda: Controles e Logs -->
+            <div class="col">
+              <div class="dns-sim-container">
+                <div class="sim-toolbar">
+                  <!-- Seletor de Modo -->
+                  <div class="sim-mode-toggle">
+                    <button id="btnModeIterative" class="sim-mode-btn active">Modo Iterativo</button>
+                    <button id="btnModeRecursive" class="sim-mode-btn">Modo Recursivo</button>
+                  </div>
+
+                  <!-- Cache Toggle -->
+                  <label class="sim-cache-option" title="Ativar para demonstrar o efeito de cache (no resolver no modo iterativo e nos servidores intermediários no modo recursivo)">
+                    <input type="checkbox" id="chkSimCache">
+                    <span>Ativar Cache</span>
+                  </label>
+                </div>
+
+                <!-- Botões de Ação -->
+                <div class="sim-controls-group">
+                  <button id="btnSimPlay" class="sim-action-btn btn-primary">
+                    <i class="fa-solid fa-play"></i> Iniciar
+                  </button>
+                  <button id="btnSimStep" class="sim-action-btn">
+                    <i class="fa-solid fa-forward-step"></i> Passo a Passo
+                  </button>
+                  <button id="btnSimReset" class="sim-action-btn">
+                    <i class="fa-solid fa-rotate-left"></i> Reiniciar
+                  </button>
+                </div>
+
+                <!-- Log de Execução em Tempo Real -->
+                <div style="font-size: 0.78rem; font-weight: bold; color: var(--beamer-text-muted); margin-top: 4px;">
+                  <i class="fa-solid fa-terminal"></i> Log de Tráfego de Pacotes UDP:
+                </div>
+                <div class="sim-log-box" id="simLogBox">
+                  <div class="sim-log-entry">Pronto para simulação. Escolha o modo e clique em Iniciar.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Coluna da Direita: Canvas com os Servidores e Pacotes Animados -->
+            <div class="col">
+              <div class="dns-sim-container">
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: bold; color: var(--warsaw-navy);">
+                  <span>Topologia de Resolução (Host Alvo: <code>cs.vu.nl</code>)</span>
+                  <span style="font-size: 0.72rem; color: #16a34a;"><i class="fa-solid fa-circle"></i> UDP Porta 53</span>
+                </div>
+                <div class="sim-canvas-wrapper">
+                  <canvas id="dnsSimCanvas"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SEÇÃO 4: DNS EM OPERAÇÃO
+           ===================================================================== -->
+
+      <!-- SLIDE 18: DNS em operação -->
+      <section id="sec-4-slide-1" data-section="4" data-subsection="Servidores Raiz">
+        <div class="slide-header">
+          <h2><i class="fa-solid fa-earth-americas"></i> DNS em operação: Servidores Raiz</h2>
+          <span class="slide-tag">Seção 4</span>
+        </div>
+        <div class="slide-body">
+          <div class="two-cols">
+            <div class="col">
+              <div class="block block-definition">
+                <div class="block-title"><i class="fa-solid fa-server"></i> 13 Identidades de Servidores Raiz</div>
+                <div class="block-body">
+                  <p>Existem 13 identidades lógicas de servidores raiz (de <code>a.root-servers.net</code> até <code>m.root-servers.net</code>), mantidas por 12 operadoras globais independentes.</p>
+                </div>
+              </div>
+
+              <div class="block block-example">
+                <div class="block-title"><i class="fa-solid fa-network-wired"></i> Anycast IP</div>
+                <div class="block-body">
+                  <p>Embora existam apenas 13 endereços IP conceituais, há <strong>mais de 1.700 instâncias físicas espalhadas pelo mundo</strong> respondendo pelos mesmos IPs via roteamento Anycast BGP!</p>
+                </div>
+              </div>
+
+              <ul class="beamer-list">
+                <li>Garante tolerância a desastres físicos e ataques de negação de serviço (DDoS).</li>
+                <li>Roteamento BGP encaminha o cliente automaticamente para a réplica física mais próxima.</li>
+              </ul>
+            </div>
+
+            <div class="col">
+              <div class="slide-figure fit-height">
+                <img src="images/dns.png" alt="Servidores Raiz do DNS no Mundo (root-servers.org)">
+                <div class="figure-caption">Servidores raiz do DNS, que formam a base da hierarquia global: <a href="https://root-servers.org/" target="_blank" style="color: var(--warsaw-blue);">root-servers.org</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 19: Comportamento observado na Web -->
+      <section data-section="4" data-subsection="Comportamento na Web">
+        <div class="slide-header">
+          <h2><i class="fa-solid fa-bolt"></i> Comportamento observado na Web</h2>
+          <span class="slide-tag">Seção 4</span>
+        </div>
+        <div class="slide-body">
+          <ul class="beamer-list">
+            <li>O DNS costuma operar prioritariamente com consultas leves, rápidas e sem estado.</li>
+            <li>Em muitos cenários, consultas DNS usam <strong>UDP (porta 53)</strong>, eliminando o overhead de 3-way handshake do TCP.</li>
+            <li><strong>Perdas de datagrama podem ocorrer:</strong> a pilha DNS do cliente implementa temporizadores simples e reenvia após timeout curto.</li>
+            <li>Em navegação real, o usuário ou o navegador realiza tentativas automáticas que rapidamente compensam eventuais perdas transitórias de pacotes.</li>
+          </ul>
+
+          <div class="block block-alert">
+            <div class="block-title"><i class="fa-solid fa-shield-halved"></i> Pilar da Escalabilidade</div>
+            <div class="block-body">
+              <p>A fantástica escalabilidade global do DNS depende da combinação harmoniosa entre <strong>hierarquia estrita, replicação estratégica (Anycast) e cache agressivo em múltiplas camadas</strong>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 20: Resumo da aula -->
+      <section data-section="4" data-subsection="Resumo e Conclusão">
+        <div class="slide-header">
+          <h2><i class="fa-solid fa-graduation-cap"></i> Resumo da aula</h2>
+          <span class="slide-tag">Conclusão</span>
+        </div>
+        <div class="slide-body">
+          <div class="block block-definition">
+            <div class="block-title"><i class="fa-solid fa-clipboard-check"></i> O que vimos</div>
+            <div class="block-body">
+              <ul class="beamer-list" style="margin: 0; padding-left: 10px;">
+                <li><strong>Nomeação estruturada:</strong> base lógica essencial para descoberta de recursos em larga escala.</li>
+                <li><strong>DNS:</strong> principal exemplo prático e operacional de sistema de nomes hierárquico na Internet.</li>
+                <li><strong>Camadas Global, Administrativa e Gerencial:</strong> divisão clara de requisitos, escala e dinâmicas de atualização.</li>
+                <li><strong>Resolução Iterativa vs. Recursiva:</strong> trade-offs diretos de sobrecarga de estado vs. conveniência do cliente.</li>
+                <li><strong>Papel central do Cache:</strong> viabiliza respostas sub-segundo e protege a infraestrutura de topo de saturação.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="block block-example" style="margin-top: 10px;">
+            <div class="block-title"><i class="fa-solid fa-medal"></i> O que aprendemos?</div>
+            <div class="block-body">
+              <p>Nomes fornecem uma <strong>abstração estável, expressiva e memorável</strong> para o usuário; o DNS transforma com elegância essa abstração em <strong>localização física de rede</strong> de maneira resiliente, descentralizada e globalmente escalável.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Reveal.js 5.1.0 Scripts via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+
+  <!-- Módulos da Apresentação -->
+  <script src="js/dns-demos.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
