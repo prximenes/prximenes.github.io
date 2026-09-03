@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transformações Geométricas 2D — Parte 2 | Computação Gráfica UNICAP</title>
+  
+  <!-- Reveal.js CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+  
+  <!-- KaTeX CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  
+  <!-- Custom Warsaw Beamer CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="theme-light">
+
+  <!-- ============================================================ -->
+  <!-- BARRA DUPLA DE NAVEGAÇÃO SUPERIOR (WARSAW THEME HEADLINE) -->
+  <!-- ============================================================ -->
+  <header class="warsaw-headline">
+    <div class="headline-section-row">
+      <div class="headline-left-nav">
+        <a href="../../../courses.html" class="nav-back-link">← Courses</a>
+        <span style="font-weight:800;color:#60a5fa;letter-spacing:0.5px;">UNICAP</span>
+        <span id="headline-section-text" style="font-weight:600;">Transformações Geométricas 2D — Parte 2</span>
+      </div>
+
+      <nav class="headline-section-nav">
+        <span data-section="Transformações Inversas" onclick="Reveal.slide(2)">1. Inversas</span>
+        <span data-section="Transformações Compostas" onclick="Reveal.slide(7)">2. Compostas</span>
+        <span data-section="Outras Transformações 2D" onclick="Reveal.slide(26)">3. Outras</span>
+        <span data-section="Laboratório & Prática" onclick="Reveal.slide(36)">4. Lab</span>
+      </nav>
+
+      <div class="headline-right-tools">
+        <!-- Controle de Zoom de Fonte -->
+        <div class="font-zoom-group">
+          <button id="font-decrease-btn" class="font-zoom-btn" title="Diminuir Fonte (-)">A-</button>
+          <span id="font-zoom-label" class="font-zoom-label">100%</span>
+          <button id="font-increase-btn" class="font-zoom-btn" title="Aumentar Fonte (+)">A+</button>
+        </div>
+
+        <!-- Download do PDF original -->
+        <a href="transf2d-p2.pdf" class="nav-pdf-btn" download title="Baixar Versão em PDF">📄 PDF</a>
+
+        <!-- Alternador de Tema -->
+        <button class="theme-toggle-btn" id="theme-toggle-btn" title="Alternar entre Tema Claro e Escuro">
+          <span>🌙</span> <span>Tema Escuro</span>
+        </button>
+      </div>
+    </div>
+    
+    <div class="headline-subsection-row">
+      <span id="headline-subsection-text">› Introdução</span>
+      <span style="opacity:0.8;font-size:0.7rem;">Computação Gráfica • Prof. Pedro Ximenes</span>
+    </div>
+  </header>
+
+  <!-- ============================================================ -->
+  <!-- CONTAINER REVEAL.JS -->
+  <!-- ============================================================ -->
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 1: Capa (Titlepage) -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="hero-container">
+          <div class="hero-box">
+            <h1>Transformações Geométricas 2D — Parte 2</h1>
+            <h2>Computação Gráfica — Matrizes Compostas, Transformações Inversas, Reflexão e Cisalhamento</h2>
+          </div>
+          
+          <div class="hero-author-card">
+            <p><strong>Prof. Pedro Ximenes</strong></p>
+            <p>Universidade Católica de Pernambuco (UNICAP)</p>
+          </div>
+
+          <div style="margin-top: 10px;">
+            <button class="btn" style="padding:8px 22px;font-size:0.92rem;" onclick="Reveal.next()">
+              Iniciar Aula ➔
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 2: Sumário -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Sumário</h2>
+          <span class="section-badge">Visão Geral</span>
+        </div>
+
+        <div class="toc-list">
+          <div class="toc-item" onclick="Reveal.slide(2)">
+            <div class="toc-badge">1</div>
+            <div><strong>Transformações Inversas:</strong> O que são, notação matricial ${}^{-1}$, translação, rotação e escala inversas.</div>
+          </div>
+          <div class="toc-item" onclick="Reveal.slide(7)">
+            <div class="toc-badge">2</div>
+            <div><strong>Transformações 2D Compostas:</strong> Ordem das matrizes (pós-multiplicação), associatividade, rotação com ponto arbitrário e escala com ponto fixo.</div>
+          </div>
+          <div class="toc-item" onclick="Reveal.slide(19)">
+            <div class="toc-badge">3</div>
+            <div><strong>Não-Comutatividade & Exemplo Completo:</strong> O caso clássico da Casa 2D e dedução completa da rotação de um quadrado.</div>
+          </div>
+          <div class="toc-item" onclick="Reveal.slide(26)">
+            <div class="toc-badge">4</div>
+            <div><strong>Outras Transformações 2D:</strong> Reflexões no eixo $x$, eixo $y$ e origem; Cisalhamento horizontal ($SH_x$) e vertical ($SH_y$).</div>
+          </div>
+          <div class="toc-item" onclick="Reveal.slide(35)">
+            <div class="toc-badge">5</div>
+            <div><strong>Resumo & Playground Interativo:</strong> Tabela de todas as matrizes $3 \times 3$, sandbox com pilha de operações e referências.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ############################################################ -->
+      <!-- SEÇÃO 1: TRANSFORMAÇÕES INVERSAS -->
+      <!-- ############################################################ -->
+
+      <!-- SLIDE 3: Transformações Inversas -- Introdução -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Transformações Inversas — Introdução</h2>
+          <span class="section-badge">1. Transformações Inversas</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">O que são?</div>
+          <div class="block-body">
+            Para cada transformação geométrica básica (translação, rotação, escala) que aprendemos na aula passada, existe uma <strong>versão inversa</strong> — como se fosse o processo de <strong>“desfazer”</strong> a operação geométrica aplicada.
+          </div>
+        </div>
+
+        <ul class="styled-list">
+          <li>A transformação inversa é representada formalmente com o símbolo <strong>${}^{-1}$</strong> na matriz: $M^{-1}$.</li>
+          <li><strong>Exemplo intuitivo:</strong> se você transladou um objeto 2 unidades para a direita ($t_x = +2$), a translação inversa move 2 unidades para a <strong>esquerda</strong> ($t_x = -2$).</li>
+          <li>São essenciais e extensamente aplicadas na construção de <strong>transformações compostas</strong> (o tema central desta aula!).</li>
+        </ul>
+
+        <div class="beamer-block example">
+          <div class="block-header">Resumo das Inversas</div>
+          <div class="block-body">
+            <ul class="styled-list" style="margin:0;">
+              <li><strong>Translação inversa:</strong> inverte o sinal algébrico de $t_x$ e $t_y$ ($T^{-1}(t_x, t_y) = T(-t_x, -t_y)$).</li>
+              <li><strong>Rotação inversa:</strong> inverte o sinal do ângulo $\theta$ ($R^{-1}(\theta) = R(-\theta)$).</li>
+              <li><strong>Escala inversa:</strong> utiliza o <strong>recíproco</strong> multiplicativo dos fatores ($1/s_x, 1/s_y$).</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 4: Translação Inversa -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Translação Inversa</h2>
+          <span class="section-badge">1. Transformações Inversas</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="beamer-block def">
+              <div class="block-header">Ideia Geométrica</div>
+              <div class="block-body">
+                Para “desfazer” uma translação com $(t_x, t_y)$, basta aplicar uma translação com $(-t_x, -t_y)$.
+              </div>
+            </div>
+
+            <div class="math-box">
+              $$T^{-1}(t_x, t_y) = \begin{pmatrix} 1 & 0 & -t_x \\ 0 & 1 & -t_y \\ 0 & 0 & 1 \end{pmatrix}$$
+            </div>
+
+            <div class="beamer-block alert">
+              <div class="block-header">Cuidado com os Sinais!</div>
+              <div class="block-body">
+                Se o valor original de $t_x$ já era <strong>negativo</strong> (ex: $t_x = -3$), o inverso fica <strong>positivo</strong>:
+                $$-(-3) = +3$$
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="canvas-card">
+              <canvas id="canvas-trans-inversa"></canvas>
+              <div style="font-size:0.75rem;margin-top:6px;color:var(--text-muted);text-align:center;">
+                Ponto original $(1,1) \xrightarrow{T(2,2)} (3,3)$ e retorno via $T^{-1}(-2,-2)$
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 5: Rotação Inversa -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Rotação Inversa</h2>
+          <span class="section-badge">1. Transformações Inversas</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Ideia Geométrica</div>
+          <div class="block-body">
+            Para “desfazer” uma rotação de ângulo $\theta$, basta rotacionar pelo ângulo oposto <strong>$-\theta$</strong> no sentido contrário.
+          </div>
+        </div>
+
+        <div class="math-box">
+          $$R^{-1}(\theta) = R(-\theta) = \begin{pmatrix} \cos(-\theta) & -\sin(-\theta) & 0 \\ \sin(-\theta) & \cos(-\theta) & 0 \\ 0 & 0 & 1 \end{pmatrix} = \begin{pmatrix} \cos\theta & \sin\theta & 0 \\ -\sin\theta & \cos\theta & 0 \\ 0 & 0 & 1 \end{pmatrix}$$
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="beamer-block example">
+              <div class="block-header">Por que o cosseno não muda de sinal?</div>
+              <div class="block-body">
+                Lembrem-se da trigonometria básica:
+                <ul class="styled-list" style="margin:4px 0;">
+                  <li>$\cos(-\theta) = \cos\theta$ \quad (função <strong>par</strong>, o cosseno não é afetado)</li>
+                  <li>$\sin(-\theta) = -\sin\theta$ \quad (função <strong>ímpar</strong>, o sinal do seno inverte)</li>
+                </ul>
+                Portanto, ao negativar $\theta$, somente os termos com seno trocam de posição!
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block alert">
+              <div class="block-header">Propriedade Fundamental: Transposta!</div>
+              <div class="block-body">
+                A matriz de rotação inversa é rigorosamente igual à <strong>transposta</strong> da matriz de rotação original:
+                $$R^{-1}(\theta) = R^T(\theta)$$
+                Compare as duas matrizes e perceba que basta trocar as linhas pelas colunas! Em computação gráfica, matrizes com essa propriedade chamam-se <strong>ortogonais</strong>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 6: Escala Inversa -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Escala Inversa</h2>
+          <span class="section-badge">1. Transformações Inversas</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Ideia Geométrica</div>
+          <div class="block-body">
+            Para “desfazer” uma escala com fatores $(s_x, s_y)$, utilizamos os fatores <strong>recíprocos</strong>: $(1/s_x, \; 1/s_y)$.
+          </div>
+        </div>
+
+        <div class="math-box">
+          $$S^{-1}(s_x, s_y) = \begin{pmatrix} 1/s_x & 0 & 0 \\ 0 & 1/s_y & 0 \\ 0 & 0 & 1 \end{pmatrix}, \quad (s_x \neq 0, \; s_y \neq 0)$$
+        </div>
+
+        <div class="beamer-block example">
+          <div class="block-header">Exemplo Numérico Passo a Passo</div>
+          <div class="block-body">
+            Se a escala direta duplicou o tamanho do objeto ($s_x = 2, \; s_y = 2$):
+            $$\text{Fatores inversos: } s_x^{-1} = \frac{1}{2} = 0{,}5, \quad s_y^{-1} = \frac{1}{2} = 0{,}5$$
+            Multiplicando as matrizes direta e inversa:
+            $$S(2, 2) \cdot S^{-1}(2, 2) = \begin{pmatrix} 2 & 0 & 0 \\ 0 & 2 & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} 1/2 & 0 & 0 \\ 0 & 1/2 & 0 \\ 0 & 0 & 1 \end{pmatrix} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix} = I$$
+            O objeto é reduzido à metade e retorna perfeitamente ao seu tamanho original!
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 7: Laboratório Interativo -- Inversas -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Laboratório Interativo — Transformações Inversas</h2>
+          <span class="section-badge">1. Transformações Inversas</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="canvas-card">
+              <canvas id="canvas-inversas-lab"></canvas>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="interactive-controls">
+              <div class="ctrl-row">
+                <label for="inv-type-select">Transformação:</label>
+                <select id="inv-type-select" style="padding:4px 8px;border-radius:4px;font-size:0.78rem;">
+                  <option value="T">Translação T(tx, ty)</option>
+                  <option value="R">Rotação R(θ)</option>
+                  <option value="S">Escala S(sx, sy)</option>
+                </select>
+              </div>
+
+              <div class="ctrl-row">
+                <label id="inv-lbl-x">tx:</label>
+                <input type="range" id="inv-slider-x" min="-4" max="4" step="1" value="2">
+                <span class="ctrl-val" id="inv-val-x">2</span>
+              </div>
+
+              <div class="ctrl-row">
+                <label id="inv-lbl-y">ty:</label>
+                <input type="range" id="inv-slider-y" min="-4" max="4" step="1" value="2">
+                <span class="ctrl-val" id="inv-val-y">2</span>
+              </div>
+
+              <div class="btn-group">
+                <button class="btn" id="inv-btn-dir">1. Aplicar Direta</button>
+                <button class="btn btn-secondary" id="inv-btn-inv">2. Desfazer (Inversa)</button>
+              </div>
+            </div>
+
+            <div class="math-box" id="inversas-math-output" style="margin-top:10px;min-height:90px;">
+              <!-- Atualizado via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ############################################################ -->
+      <!-- SEÇÃO 2: TRANSFORMAÇÕES 2D COMPOSTAS -->
+      <!-- ############################################################ -->
+
+      <!-- SLIDE 8: Transformações Compostas -- Por quê? -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Transformações Compostas — Por quê?</h2>
+          <span class="section-badge">2. Transformações Compostas</span>
+        </div>
+
+        <p style="margin:4px 0 10px 0;font-size:0.86rem;">
+          Na aula passada, ficaram dois problemas práticos em aberto na formulação padrão:
+        </p>
+
+        <div class="beamer-block alert">
+          <div class="block-header">Problema 1 — Rotação com Ponto Arbitrário</div>
+          <div class="block-body">
+            A matriz de rotação básica $R(\theta)$ <strong>só funciona</strong> quando o centro de rotação está fixo na <strong>origem $(0,0)$</strong>. Como rotacionar um objeto em torno de seu próprio centro ou de qualquer outro ponto no espaço?
+          </div>
+        </div>
+
+        <div class="beamer-block alert">
+          <div class="block-header">Problema 2 — Escala com Ponto Fixo (Âncora)</div>
+          <div class="block-body">
+            A escala básica $S(s_x, s_y)$, além de alterar o <strong>tamanho</strong>, tem o efeito colateral indesejado de <strong>mover</strong> o objeto (aproximando ou afastando todos os vértices da origem). Como redimensionar sem tirá-lo do lugar?
+          </div>
+        </div>
+
+        <div class="beamer-block example">
+          <div class="block-header">Solução: Transformações Compostas!</div>
+          <div class="block-body">
+            Ambos os problemas são resolvidos encadeando uma <strong>sequência de transformações</strong> (translação $\to$ operação geométrica $\to$ translação inversa), combinadas em uma <strong>única matriz composta $3 \times 3$</strong>. Graças às coordenadas homogêneas, toda a sequência vira apenas <strong>multiplicação de matrizes</strong>!
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 9: Ordem das Matrizes -- De Trás para Frente -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Ordem das Matrizes — De Trás para Frente</h2>
+          <span class="section-badge">2. Transformações Compostas</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Regra Fundamental de Pós-Multiplicação</div>
+          <div class="block-body">
+            Quando temos uma sequência de transformações aplicadas a um ponto $P$, as matrizes são <strong>pós-multiplicadas</strong>: a <strong>primeira</strong> operação física a ser aplicada ao objeto é a <strong>última matriz</strong> (a mais à direita) na equação.
+          </div>
+        </div>
+
+        <div class="math-box" style="text-align:center;padding:12px;">
+          $$P' = \underbrace{M_3}_{\text{3ª operação}} \;\cdot\; \underbrace{M_2}_{\text{2ª operação}} \;\cdot\; \underbrace{M_1}_{\text{1ª operação}} \;\cdot\; P$$
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="beamer-block alert">
+              <div class="block-header">Multiplicação de Matrizes NÃO é Comutativa!</div>
+              <div class="block-body">
+                $$M_1 \cdot M_2 \neq M_2 \cdot M_1 \quad \text{(em geral)}$$
+                Se você trocar a ordem de escrita das matrizes, o resultado geométrico será completamente diferente!
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block example">
+              <div class="block-header">A Multiplicação de Matrizes É Associativa</div>
+              <div class="block-body">
+                $$(M_3 \cdot M_2) \cdot M_1 = M_3 \cdot (M_2 \cdot M_1)$$
+                Você pode pré-multiplicar as matrizes entre si para formar uma <strong>matriz única $M$</strong>, desde que <strong>nunca inverta a posição</strong> delas!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 10: Associatividade -- Cuidado com a Ordem! -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Associatividade — Cuidado com a Ordem!</h2>
+          <span class="section-badge">2. Transformações Compostas</span>
+        </div>
+
+        <p style="margin:4px 0 8px 0;font-size:0.86rem;">
+          Dadas três matrizes $M_3, M_2, M_1$ na ordem correta ($M = M_3 \cdot M_2 \cdot M_1$), você pode efetuar o cálculo de duas maneiras válidas:
+        </p>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="beamer-block example">
+              <div class="block-header">Opção A (Esquerda para Direita)</div>
+              <div class="block-body">
+                <ol style="margin:4px 0;padding-left:18px;">
+                  <li>Calcule $R_1 = M_3 \times M_2$</li>
+                  <li>Calcule $M = R_1 \times M_1$</li>
+                </ol>
+                Ambas as multiplicações respeitam a ordem posicional: $M_3$ à esquerda de $M_2$, e $R_1$ à esquerda de $M_1$.
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block example">
+              <div class="block-header">Opção B (Direita para Esquerda)</div>
+              <div class="block-body">
+                <ol style="margin:4px 0;padding-left:18px;">
+                  <li>Calcule $R_2 = M_2 \times M_1$</li>
+                  <li>Calcule $M = M_3 \times R_2$</li>
+                </ol>
+                $M_2$ permanece à esquerda de $M_1$, e $M_3$ permanece rigorosamente à esquerda de $R_2$.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="beamer-block alert">
+          <div class="block-header">Erros Comuns (O que NUNCA fazer!)</div>
+          <div class="block-body">
+            <ul class="styled-list" style="margin:0;">
+              <li><strong>NÃO:</strong> $M_2 \times M_3$ (trocou a ordem dos fatores!).</li>
+              <li><strong>NÃO:</strong> $M_1 \times M_2$ (trocou a ordem dos fatores!).</li>
+              <li><strong>NÃO:</strong> $R_2 \times M_3$ (colocou a matriz $M_3$ no lado direito em vez do esquerdo!).</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 11: Sequência de Translações -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Sequência de Mesma Operação — Translações</h2>
+          <span class="section-badge">2. Transformações Compostas</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Composição de Duas Translações</div>
+          <div class="block-body">
+            Quando combinamos duas translações consecutivas, o efeito acumulado equivale a <strong>somar</strong> algebricamente os fatores de deslocamento:
+          </div>
+        </div>
+
+        <div class="math-box">
+          $$T(t_{2x}, t_{2y}) \cdot T(t_{1x}, t_{1y}) = \begin{pmatrix} 1 & 0 & t_{2x} \\ 0 & 1 & t_{2y} \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} 1 & 0 & t_{1x} \\ 0 & 1 & t_{1y} \\ 0 & 0 & 1 \end{pmatrix} = \begin{pmatrix} 1 & 0 & t_{1x} + t_{2x} \\ 0 & 1 & t_{1y} + t_{2y} \\ 0 & 0 & 1 \end{pmatrix}$$
+        </div>
+
+        <div class="math-box-hl">
+          $$T(t_{2x}, t_{2y}) \cdot T(t_{1x}, t_{1y}) = T(t_{1x} + t_{2x}, \; t_{1y} + t_{2y})$$
+        </div>
+
+        <div class="beamer-block example">
+          <div class="block-header">Exemplo Numérico</div>
+          <div class="block-body">
+            $$T(3, 2) \cdot T(1, 4) = T(1 + 3, \; 4 + 2) = T(4, 6)$$
+            Transladar por $(1, 4)$ e logo em seguida transladar por $(3, 2)$ é rigorosamente idêntico a transladar diretamente pelo vetor soma $(4, 6)$!
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 12: Sequência de Rotações -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Sequência de Mesma Operação — Rotações</h2>
+          <span class="section-badge">2. Transformações Compostas</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Composição de Duas Rotações</div>
+          <div class="block-body">
+            Quando combinamos duas rotações sucessivas em torno da mesma origem, o efeito acumulado equivale a <strong>somar os ângulos</strong>:
+          </div>
+        </div>
+
+        <div class="math-box" style="font-size:0.80rem;">
+          $$R(\theta_2) \cdot R(\theta_1) = \begin{pmatrix} c_2 & -s_2 & 0 \\ s_2 & c_2 & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} c_1 & -s_1 & 0 \\ s_1 & c_1 & 0 \\ 0 & 0 & 1 \end{pmatrix} = \begin{pmatrix} c_1 c_2 - s_1 s_2 & -(s_1 c_2 + c_1 s_2) & 0 \\ s_1 c_2 + c_1 s_2 & c_1 c_2 - s_1 s_2 & 0 \\ 0 & 0 & 1 \end{pmatrix}$$
+        </div>
+
+        <p style="font-size:0.82rem;margin:4px 0;">
+          Pelas identidades trigonométricas fundamentais de soma de arcos:
+          $$\cos(\theta_1 + \theta_2) = c_1 c_2 - s_1 s_2 \quad \text{e} \quad \sin(\theta_1 + \theta_2) = s_1 c_2 + c_1 s_2$$
+        </p>
+
+        <div class="math-box-hl">
+          $$R(\theta_2) \cdot R(\theta_1) = R(\theta_1 + \theta_2)$$
+        </div>
+
+        <div class="beamer-block example">
+          <div class="block-header">Exemplo Numérico</div>
+          <div class="block-body">
+            $$R(30^\circ) \cdot R(20^\circ) = R(20^\circ + 30^\circ) = R(50^\circ)$$
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 13: Sequência de Escalas -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Sequência de Mesma Operação — Escalas</h2>
+          <span class="section-badge">2. Transformações Compostas</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Composição de Duas Escalas</div>
+          <div class="block-body">
+            Quando combinamos duas escalas sucessivas em relação à origem, basta <strong>multiplicar</strong> os fatores de cada eixo:
+          </div>
+        </div>
+
+        <div class="math-box">
+          $$S(s_{2x}, s_{2y}) \cdot S(s_{1x}, s_{1y}) = \begin{pmatrix} s_{2x} & 0 & 0 \\ 0 & s_{2y} & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} s_{1x} & 0 & 0 \\ 0 & s_{1y} & 0 \\ 0 & 0 & 1 \end{pmatrix} = \begin{pmatrix} s_{1x} \cdot s_{2x} & 0 & 0 \\ 0 & s_{1y} \cdot s_{2y} & 0 \\ 0 & 0 & 1 \end{pmatrix}$$
+        </div>
+
+        <div class="math-box-hl">
+          $$S(s_{2x}, s_{2y}) \cdot S(s_{1x}, s_{1y}) = S(s_{1x} \cdot s_{2x}, \; s_{1y} \cdot s_{2y})$$
+        </div>
+
+        <div class="beamer-block example">
+          <div class="block-header">Exemplo Numérico</div>
+          <div class="block-body">
+            $$S(3, 3) \cdot S(2, 2) = S(2 \cdot 3, \; 2 \cdot 3) = S(6, 6)$$
+            Escalar por $(2,2)$ (duplicar) e depois por $(3,3)$ (triplicar) equivale a escalar diretamente por $(6,6)$ (fator de 6 vezes).
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 14: Rotação com Ponto Arbitrário -- 3 Passos -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Rotação com Ponto Arbitrário — Os 3 Passos</h2>
+          <span class="section-badge">2. Transformações Compostas</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">O Problema</div>
+          <div class="block-body">
+            Queremos rotacionar um objeto por um ângulo $\theta$ em torno de um ponto <strong>pivô $(x_r, y_r)$</strong> que <strong>não</strong> está na origem.
+          </div>
+        </div>
+
+        <!-- Grade de 4 passos com mini-canvases -->
+        <div class="four-steps-grid">
+          <div class="step-box">
+            <canvas id="canvas-step-rot-1"></canvas>
+            <span class="step-title">(a) Posição Original</span>
+            <span class="step-desc">Objeto e ponto pivô $(x_r, y_r)$.</span>
+          </div>
+
+          <div class="step-box">
+            <canvas id="canvas-step-rot-2"></canvas>
+            <span class="step-title">(b) Translada à Origem</span>
+            <span class="step-desc">Aplica $T(-x_r, -y_r)$. Pivô vai para $(0,0)$.</span>
+          </div>
+
+          <div class="step-box">
+            <canvas id="canvas-step-rot-3"></canvas>
+            <span class="step-title">(c) Rotação na Origem</span>
+            <span class="step-desc">Aplica $R(\theta)$ com segurança na origem.</span>
+          </div>
+
+          <div class="step-box">
+            <canvas id="canvas-step-rot-4"></canvas>
+            <span class="step-title">(d) Translada de Volta</span>
+            <span class="step-desc">Aplica $T(x_r, y_r)$ restaurando a posição do pivô.</span>
+          </div>
+        </div>
+
+        <div class="beamer-block example" style="margin-top:6px;">
+          <div class="block-header">Algoritmo em 3 Passos</div>
+          <div class="block-body">
+            1. <strong>Mover</strong> o pivô para a origem: $T(-x_r, -y_r)$ &nbsp;•&nbsp; 
+            2. <strong>Rotacionar</strong> pelo ângulo desejado: $R(\theta)$ &nbsp;•&nbsp; 
+            3. <strong>Mover</strong> o pivô de volta à posição original: $T(x_r, y_r)$.
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 15: Rotação com Ponto Arbitrário -- Matriz Composta -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Rotação com Ponto Arbitrário — Matriz Composta</h2>
+          <span class="section-badge">2. Transformações Compostas</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Equação da Matriz Composta (De Trás para Frente!)</div>
+          <div class="block-body">
+            $$R(x_r, y_r, \theta) = \underbrace{T(x_r, y_r)}_{\text{3ª operação (volta)}} \;\cdot\; \underbrace{R(\theta)}_{\text{2ª operação (gira)}} \;\cdot\; \underbrace{T(-x_r, -y_r)}_{\text{1ª operação (vai para origem)}}$$
+          </div>
+        </div>
+
+        <div class="math-box">
+          $$\begin{pmatrix} 1 & 0 & x_r \\ 0 & 1 & y_r \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} \cos\theta & -\sin\theta & 0 \\ \sin\theta & \cos\theta & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} 1 & 0 & -x_r \\ 0 & 1 & -y_r \\ 0 & 0 & 1 \end{pmatrix}$$
+        </div>
+
+        <div class="beamer-block example">
+          <div class="block-header">Resultado Analítico da Matriz Composta</div>
+          <div class="block-body">
+            Efetuando a multiplicação matricial das três componentes:
+            $$R(x_r, y_r, \theta) = \begin{pmatrix} \cos\theta & -\sin\theta & x_r(1 - \cos\theta) + y_r\sin\theta \\ \sin\theta & \cos\theta & y_r(1 - \cos\theta) - x_r\sin\theta \\ 0 & 0 & 1 \end{pmatrix}$$
+          </div>
+        </div>
+
+        <div class="beamer-block alert">
+          <div class="block-header">Lembrete Crucial</div>
+          <div class="block-body">
+            A 1ª operação aplicada ao objeto geométrico ($T(-x_r, -y_r)$) é sempre o <strong>último termo</strong> à direita na multiplicação matricial.
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 16: Laboratório Interativo -- Rotação com Pivô -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Laboratório Interativo — Rotação em Torno do Pivô</h2>
+          <span class="section-badge">2. Transformações Compostas</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="canvas-card">
+              <canvas id="canvas-rot-pivo-lab"></canvas>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="interactive-controls">
+              <div style="display:flex;gap:4px;margin-bottom:4px;">
+                <button class="btn btn-secondary btn-sm rot-step-btn" id="btn-rot-step-1">1. Original</button>
+                <button class="btn btn-secondary btn-sm rot-step-btn" id="btn-rot-step-2">2. T(-xr)</button>
+                <button class="btn btn-secondary btn-sm rot-step-btn" id="btn-rot-step-3">3. R(θ)</button>
+                <button class="btn btn-sm rot-step-btn active" id="btn-rot-step-4">4. Final</button>
+              </div>
+
+              <div class="ctrl-row">
+                <label>Pivô xr:</label>
+                <input type="range" id="rot-slider-xr" min="0" max="5" step="0.5" value="2">
+                <span class="ctrl-val" id="rot-val-xr">2</span>
+              </div>
+
+              <div class="ctrl-row">
+                <label>Pivô yr:</label>
+                <input type="range" id="rot-slider-yr" min="0" max="5" step="0.5" value="2">
+                <span class="ctrl-val" id="rot-val-yr">2</span>
+              </div>
+
+              <div class="ctrl-row">
+                <label>Ângulo θ:</label>
+                <input type="range" id="rot-slider-deg" min="-180" max="180" step="5" value="45">
+                <span class="ctrl-val" id="rot-val-deg">45°</span>
+              </div>
+            </div>
+
+            <div class="math-box" id="rot-pivo-math-output" style="margin-top:8px;">
+              <!-- Atualizado via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 17: Escala com Ponto Fixo -- Diagrama dos 4 Passos -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Escala com Ponto Fixo — Os 4 Passos</h2>
+          <span class="section-badge">2. Transformações Compostas</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">O Problema da Escala Convencional</div>
+          <div class="block-body">
+            A escala básica altera o tamanho, mas <strong>afasta ou aproxima</strong> o objeto da origem. Queremos escalá-lo sem que ele se mova de sua posição, usando um <strong>ponto fixo âncora $(x_f, y_f)$</strong>.
+          </div>
+        </div>
+
+        <!-- Grade de 4 passos com mini-canvases -->
+        <div class="four-steps-grid">
+          <div class="step-box">
+            <canvas id="canvas-step-scale-1"></canvas>
+            <span class="step-title">(a) Posição Original</span>
+            <span class="step-desc">Objeto e ponto fixo âncora $(x_f, y_f)$.</span>
+          </div>
+
+          <div class="step-box">
+            <canvas id="canvas-step-scale-2"></canvas>
+            <span class="step-title">(b) Translada à Origem</span>
+            <span class="step-desc">Aplica $T(-x_f, -y_f)$. Ponto fixo vai para $(0,0)$.</span>
+          </div>
+
+          <div class="step-box">
+            <canvas id="canvas-step-scale-3"></canvas>
+            <span class="step-title">(c) Escala na Origem</span>
+            <span class="step-desc">Aplica $S(s_x, s_y)$ com a âncora na origem.</span>
+          </div>
+
+          <div class="step-box">
+            <canvas id="canvas-step-scale-4"></canvas>
+            <span class="step-title">(d) Translada de Volta</span>
+            <span class="step-desc">Aplica $T(x_f, y_f)$ trazendo a âncora de volta.</span>
+          </div>
+        </div>
+
+        <div class="beamer-block example" style="margin-top:6px;">
+          <div class="block-header">Solução em 3 Passos (Idêntica à rotação com pivô!)</div>
+          <div class="block-body">
+            1. <strong>Mover</strong> o ponto fixo para a origem: $T(-x_f, -y_f)$ &nbsp;•&nbsp; 
+            2. <strong>Escalar</strong> com os fatores desejados: $S(s_x, s_y)$ &nbsp;•&nbsp; 
+            3. <strong>Mover</strong> o ponto fixo de volta à posição original: $T(x_f, y_f)$.
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 18: Escala com Ponto Fixo -- Formulação e Matriz -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Escala com Ponto Fixo — Matriz Composta</h2>
+          <span class="section-badge">2. Transformações Compostas</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Equação da Matriz Composta</div>
+          <div class="block-body">
+            $$S(x_f, y_f, s_x, s_y) = \underbrace{T(x_f, y_f)}_{\text{3ª op. (volta)}} \;\cdot\; \underbrace{S(s_x, s_y)}_{\text{2ª op. (escala)}} \;\cdot\; \underbrace{T(-x_f, -y_f)}_{\text{1ª op. (vai à origem)}}$$
+          </div>
+        </div>
+
+        <div class="math-box">
+          $$\begin{pmatrix} 1 & 0 & x_f \\ 0 & 1 & y_f \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} s_x & 0 & 0 \\ 0 & s_y & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} 1 & 0 & -x_f \\ 0 & 1 & -y_f \\ 0 & 0 & 1 \end{pmatrix}$$
+        </div>
+
+        <div class="beamer-block example">
+          <div class="block-header">Resultado da Multiplicação (Fórmula Fechada)</div>
+          <div class="block-body">
+            Efetuando o produto das 3 matrizes:
+            $$S(x_f, y_f, s_x, s_y) = \begin{pmatrix} s_x & 0 & x_f(1 - s_x) \\ 0 & s_y & y_f(1 - s_y) \\ 0 & 0 & 1 \end{pmatrix}$$
+          </div>
+        </div>
+
+        <div class="beamer-block alert">
+          <div class="block-header">Regra de Validação</div>
+          <div class="block-body">
+            Observe: a última linha continua sendo estritamente $(0 \;\; 0 \;\; 1)$. Se ao calcular você obtiver qualquer valor diferente na 3ª linha, <strong>houve um erro aritmético</strong>!
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 19: Laboratório Interativo -- Escala com Âncora -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Laboratório Interativo — Escala com Âncora Fixa</h2>
+          <span class="section-badge">2. Transformações Compostas</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="canvas-card">
+              <canvas id="canvas-scale-pivo-lab"></canvas>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="interactive-controls">
+              <div class="ctrl-row">
+                <label>Âncora xf:</label>
+                <input type="range" id="scale-slider-xf" min="0" max="6" step="0.5" value="2">
+                <span class="ctrl-val" id="scale-val-xf">2</span>
+              </div>
+
+              <div class="ctrl-row">
+                <label>Âncora yf:</label>
+                <input type="range" id="scale-slider-yf" min="0" max="6" step="0.5" value="2">
+                <span class="ctrl-val" id="scale-val-yf">2</span>
+              </div>
+
+              <div class="ctrl-row">
+                <label>Fator sx:</label>
+                <input type="range" id="scale-slider-sx" min="0.4" max="2.5" step="0.1" value="1.5">
+                <span class="ctrl-val" id="scale-val-sx">1.5</span>
+              </div>
+
+              <div class="ctrl-row">
+                <label>Fator sy:</label>
+                <input type="range" id="scale-slider-sy" min="0.4" max="2.5" step="0.1" value="1.5">
+                <span class="ctrl-val" id="scale-val-sy">1.5</span>
+              </div>
+
+              <div style="margin-top:4px;">
+                <label style="font-size:0.75rem;cursor:pointer;display:flex;align-items:center;gap:6px;">
+                  <input type="checkbox" id="scale-chk-compare">
+                  <span>Comparar com Escala na Origem (sem âncora)</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="math-box" id="scale-pivo-math-output" style="margin-top:8px;">
+              <!-- Atualizado via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 20: Multiplicação NÃO é Comutativa -- Caso da Casa -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Multiplicação de Matrizes NÃO é Comutativa</h2>
+          <span class="section-badge">2. Transformações Compostas</span>
+        </div>
+
+        <div class="beamer-block alert">
+          <div class="block-header">Teorema da Não-Comutatividade</div>
+          <div class="block-body">
+            No caso geral das transformações geométricas:
+            $$M_2 \cdot M_1 \neq M_1 \cdot M_2$$
+            Inverter a ordem física de aplicação das transformações produz resultados finais completamente diferentes no espaço!
+          </div>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="beamer-block example">
+              <div class="block-header">Caminho (a): Translação ➔ Rotação</div>
+              <div class="block-body">
+                $$M_A = R(45^\circ) \cdot T(t_x, 0)$$
+                <ul class="styled-list" style="margin:4px 0;">
+                  <li>1º: O objeto é transladado para a direita.</li>
+                  <li>2º: O objeto transladado é rotacionado de $45^\circ$ em torno da <strong>origem</strong> $(0,0)$.</li>
+                  <li><strong>Efeito:</strong> O objeto sobe ao longo do arco de circunferência da origem!</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block example">
+              <div class="block-header">Caminho (b): Rotação ➔ Translação</div>
+              <div class="block-body">
+                $$M_B = T(t_x, 0) \cdot R(45^\circ)$$
+                <ul class="styled-list" style="margin:4px 0;">
+                  <li>1º: O objeto é rotacionado de $45^\circ$ na sua posição original.</li>
+                  <li>2º: O objeto já rotacionado é transladado horizontalmente para a direita.</li>
+                  <li><strong>Efeito:</strong> O objeto permanece na faixa horizontal inferior, apenas inclinado!</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 21: Laboratório Interativo -- Casinha 2D -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Laboratório Interativo — Não-Comutatividade da Casa</h2>
+          <span class="section-badge">2. Transformações Compostas</span>
+        </div>
+
+        <div class="two-cols ratio-6-4">
+          <div class="col">
+            <div class="canvas-card">
+              <canvas id="canvas-house-demo"></canvas>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="interactive-controls">
+              <span style="font-weight:700;">Visualizar Caminhos:</span>
+              <div style="display:flex;gap:6px;margin-top:4px;">
+                <button class="btn btn-secondary btn-sm house-btn" id="btn-house-path-a">Caminho (a): T ➔ R</button>
+                <button class="btn btn-secondary btn-sm house-btn" id="btn-house-path-b">Caminho (b): R ➔ T</button>
+                <button class="btn btn-sm house-btn active" id="btn-house-path-both">Ambos (Comparação)</button>
+              </div>
+            </div>
+
+            <div class="math-box" id="house-math-output" style="margin-top:8px;">
+              <!-- Atualizado via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 22: Exemplo Completo -- Rotação de um Quadrado -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Exemplo Completo — Rotação de um Quadrado</h2>
+          <span class="section-badge">2. Transformações Compostas</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="beamer-block def">
+              <div class="block-header">Enunciado do Problema</div>
+              <div class="block-body">
+                Considere um quadrado com os quatro vértices:
+                $$P_1 = (4, 4), \quad P_2 = (6, 4), \quad P_3 = (4, 6), \quad P_4 = (6, 6)$$
+                Deseja-se rotacionar o quadrado em <strong>$\theta = 45^\circ$</strong> utilizando o seu <strong>centroide</strong> como ponto de rotação.
+              </div>
+            </div>
+
+            <div class="beamer-block example">
+              <div class="block-header">Cálculo Analítico do Centroide</div>
+              <div class="block-body">
+                O centroide é o ponto médio geométrico do quadrado:
+                $$x_r = \frac{x_{\min} + x_{\max}}{2} = \frac{4 + 6}{2} = \frac{10}{2} = 5$$
+                $$y_r = \frac{y_{\min} + y_{\max}}{2} = \frac{4 + 6}{2} = \frac{10}{2} = 5$$
+                Logo, o pivô de rotação é o ponto <strong>$(x_r, y_r) = (5, 5)$</strong>.
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block alert">
+              <div class="block-header">Constantes Trigonométricas Úteis</div>
+              <div class="block-body">
+                Para o ângulo de $45^\circ$:
+                $$\cos 45^\circ = \sin 45^\circ = \frac{\sqrt{2}}{2} \approx 0{,}7071$$
+                $$-\sin 45^\circ = -\frac{\sqrt{2}}{2} \approx -0{,}7071$$
+              </div>
+            </div>
+
+            <div class="math-box-hl" style="margin-top:12px;">
+              <strong>Objetivo:</strong> Montar a sequência $T(5,5) \cdot R(45^\circ) \cdot T(-5,-5)$ e calcular as novas coordenadas de cada um dos quatro vértices.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 23: Exemplo Completo -- Montando as Matrizes -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Exemplo Completo — Montando as Matrizes</h2>
+          <span class="section-badge">2. Transformações Compostas</span>
+        </div>
+
+        <p style="margin:4px 0 8px 0;font-size:0.86rem;">
+          Montamos individualmente as 3 matrizes $3 \times 3$ em coordenadas homogêneas:
+        </p>
+
+        <div class="math-box">
+          <strong>Passo 1:</strong> Translação para levar o centroide à origem: $T(-5, -5)$
+          $$T(-5, -5) = \begin{pmatrix} 1 & 0 & -5 \\ 0 & 1 & -5 \\ 0 & 0 & 1 \end{pmatrix}$$
+        </div>
+
+        <div class="math-box">
+          <strong>Passo 2:</strong> Rotação de $45^\circ$ em torno da origem: $R(45^\circ)$
+          $$R(45^\circ) = \begin{pmatrix} 0{,}7071 & -0{,}7071 & 0 \\ 0{,}7071 & 0{,}7071 & 0 \\ 0 & 0 & 1 \end{pmatrix}$$
+        </div>
+
+        <div class="math-box">
+          <strong>Passo 3:</strong> Translação para retornar o centroide à posição original: $T(5, 5)$
+          $$T(5, 5) = \begin{pmatrix} 1 & 0 & 5 \\ 0 & 1 & 5 \\ 0 & 0 & 1 \end{pmatrix}$$
+        </div>
+
+        <div class="beamer-block alert">
+          <div class="block-header">Ordem de Pós-Multiplicação na Equação</div>
+          <div class="block-body">
+            $$M = T(5, 5) \;\cdot\; R(45^\circ) \;\cdot\; T(-5, -5) \quad \text{(rigorosamente de trás para frente!)}$$
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 24: Exemplo Completo -- Matriz Composta e Cálculo dos Vértices -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Exemplo Completo — Multiplicação Passo a Passo</h2>
+          <span class="section-badge">2. Transformações Compostas</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="math-box" style="font-size:0.76rem;">
+              <strong>1ª Etapa: $T(5,5) \times R(45^\circ) = R_1$</strong>
+              $$R_1 = \begin{pmatrix} 1 & 0 & 5 \\ 0 & 1 & 5 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} 0{,}7071 & -0{,}7071 & 0 \\ 0{,}7071 & 0{,}7071 & 0 \\ 0 & 0 & 1 \end{pmatrix} = \begin{pmatrix} 0{,}7071 & -0{,}7071 & 5{,}0000 \\ 0{,}7071 & 0{,}7071 & 5{,}0000 \\ 0 & 0 & 1 \end{pmatrix}$$
+            </div>
+
+            <div class="math-box" style="font-size:0.76rem;">
+              <strong>2ª Etapa: $R_1 \times T(-5,-5) = M$</strong>
+              $$\text{Termo } m_{02} = 0{,}7071(-5) - 0{,}7071(-5) + 5 = -3{,}5355 + 3{,}5355 + 5 = \mathbf{5{,}0000}$$
+              $$\text{Termo } m_{12} = 0{,}7071(-5) + 0{,}7071(-5) + 5 = -7{,}0711 + 5 = \mathbf{-2{,}0711}$$
+              $$M = \begin{pmatrix} 0{,}7071 & -0{,}7071 & 5{,}0000 \\ 0{,}7071 & 0{,}7071 & -2{,}0711 \\ 0 & 0 & 1 \end{pmatrix}$$
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block example">
+              <div class="block-header">Aplicação aos 4 Vértices ($P_i' = M \cdot P_i$)</div>
+              <div class="block-body" style="padding:6px 10px;">
+                <table class="beamer-table" style="font-size:0.74rem;">
+                  <thead>
+                    <tr>
+                      <th>Vértice</th>
+                      <th>Original</th>
+                      <th>Cálculo Detalhado</th>
+                      <th>Após Rotação $45^\circ$</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>$P_1$</strong></td>
+                      <td>$(4, 4)$</td>
+                      <td>$x'=5{,}0000, \; y'=5{,}6568-2{,}0711$</td>
+                      <td><strong>$(5{,}0000;\; 3{,}5858)$</strong></td>
+                    </tr>
+                    <tr>
+                      <td><strong>$P_2$</strong></td>
+                      <td>$(6, 4)$</td>
+                      <td>$x'=1{,}4142+5, \; y'=7{,}0710-2{,}0711$</td>
+                      <td><strong>$(6{,}4142;\; 5{,}0000)$</strong></td>
+                    </tr>
+                    <tr>
+                      <td><strong>$P_3$</strong></td>
+                      <td>$(4, 6)$</td>
+                      <td>$x'=-1{,}4142+5, \; y'=7{,}0710-2{,}0711$</td>
+                      <td><strong>$(3{,}5858;\; 5{,}0000)$</strong></td>
+                    </tr>
+                    <tr>
+                      <td><strong>$P_4$</strong></td>
+                      <td>$(6, 6)$</td>
+                      <td>$x'=5{,}0000, \; y'=8{,}4852-2{,}0711$</td>
+                      <td><strong>$(5{,}0000;\; 6{,}4142)$</strong></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <span style="font-size:0.70rem;color:var(--text-muted);">
+                  *A coordenada homogênea $w'=1$ em todos os vértices confirma o cálculo.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 25: Exemplo Completo -- Resultado Gráfico e Análise -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Exemplo Completo — Resultado Gráfico e Análise</h2>
+          <span class="section-badge">2. Transformações Compostas</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="canvas-card">
+              <canvas id="canvas-square-example"></canvas>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block def">
+              <div class="block-header">Propriedades Geométricas Verificadas</div>
+              <div class="block-body">
+                <ul class="styled-list">
+                  <li><strong>Preservação de distâncias:</strong> O comprimento dos lados originais era $L = 2$. No quadrado transformado:
+                  $$L' = \sqrt{(6{,}4142 - 5{,}0000)^2 + (5{,}0000 - 3{,}5858)^2} = \sqrt{1{,}4142^2 + 1{,}4142^2} = \sqrt{2 + 2} = 2{,}00$$</li>
+                  <li><strong>Preservação de ângulos:</strong> Os lados continuam perpendiculares ($90^\circ$).</li>
+                  <li><strong>Corpo Rígido:</strong> A rotação é uma transformação isométrica (não distorce o objeto).</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="beamer-block example">
+              <div class="block-header">Eficiência Computacional</div>
+              <div class="block-body">
+                A <strong>mesma matriz composta $M$</strong> é pré-calculada uma única vez e multiplicada para todos os vértices do modelo, economizando milhares de operações trigonométricas na GPU!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 26: Propriedade Importante no OpenGL / WebGL -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Propriedade Importante no OpenGL / WebGL</h2>
+          <span class="section-badge">2. Transformações Compostas</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Pipeline Gráfico e Matrizes Pós-Multiplicadas</div>
+          <div class="block-body">
+            As matrizes em APIs gráficas como <strong>OpenGL</strong>, <strong>WebGL</strong> e motores modernos (Three.js, Vulkan) são todas <strong>pós-multiplicadas</strong> pela ordem da pilha de matrizes.
+          </div>
+        </div>
+
+        <div class="beamer-block example">
+          <div class="block-header">O que isso significa na prática da programação?</div>
+          <div class="block-body">
+            No código de shaders ou no pipeline clássico, as funções de transformação devem ser escritas na <strong>ordem inversa</strong> em que você deseja que elas ocorram fisicamente:
+            <pre style="background:var(--code-bg);color:var(--code-text);padding:10px;border-radius:6px;font-size:0.76rem;margin:8px 0;line-height:1.4;">
+// Para rotacionar em torno de (xr, yr):
+// Queremos: 1º Translada(-xr) -> 2º Rotaciona(θ) -> 3º Translada(+xr)
+
+mat4 model = mat4(1.0);
+model = translate(model, vec3(xr, yr, 0.0));  // 3ª escrita no código = 3ª aplicada
+model = rotate(model, radians(theta), vec3(0,0,1)); // 2ª escrita = 2ª aplicada
+model = translate(model, vec3(-xr, -yr, 0.0)); // 1ª escrita no código = 1ª aplicada!</pre>
+          </div>
+        </div>
+
+        <div class="beamer-block alert">
+          <div class="block-header">Atenção Redobrada!</div>
+          <div class="block-body">
+            A última transformação escrita no código é a <strong>primeira</strong> a atuar sobre as coordenadas do vértice ($P' = M_3 \cdot M_2 \cdot M_1 \cdot P$). É exatamente a mesma lógica matricial que estudamos nesta aula!
+          </div>
+        </div>
+      </section>
+
+      <!-- ############################################################ -->
+      <!-- SEÇÃO 3: OUTRAS TRANSFORMAÇÕES 2D -->
+      <!-- ############################################################ -->
+
+      <!-- SLIDE 27: Outras Transformações 2D -- Reflexão -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Reflexão — Conceito</h2>
+          <span class="section-badge">3. Outras Transformações 2D</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">O que é a Reflexão?</div>
+          <div class="block-body">
+            A reflexão produz uma imagem <strong>“espelhada”</strong> do objeto geométrico em relação a um <strong>eixo de reflexão</strong> (ou ponto de referência). É exatamente o efeito de posicionar um espelho plano sobre a reta escolhida.
+          </div>
+        </div>
+
+        <p style="margin:6px 0;font-size:0.86rem;">Existem três casos fundamentais no plano cartesiano $2D$:</p>
+
+        <ol class="styled-list">
+          <li><strong>Reflexão em relação ao eixo $x$</strong> ($y = 0$): espelhamento vertical (cima $\leftrightarrow$ baixo).</li>
+          <li><strong>Reflexão em relação ao eixo $y$</strong> ($x = 0$): espelhamento horizontal (esquerda $\leftrightarrow$ direita).</li>
+          <li><strong>Reflexão em relação à origem</strong> ($x = 0$ e $y = 0$): espelhamento em ambas as direções simultâneas.</li>
+        </ol>
+
+        <div class="beamer-block example">
+          <div class="block-header">Facilidade Algébrica</div>
+          <div class="block-body">
+            A reflexão é uma das transformações mais eficientes da computação gráfica: em coordenadas homogêneas, ela não exige senos nem cossenos — basta <strong>inverter o sinal algébrico</strong> da coordenada perpendicular ao espelho!
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 28: Reflexão no Eixo x (y = 0) -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Reflexão em Relação ao Eixo $x$ ($y = 0$)</h2>
+          <span class="section-badge">3. Outras Transformações 2D</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Equações Algébricas</div>
+          <div class="block-body">
+            Refletir em torno do eixo $x$ preserva a posição horizontal $x$ e <strong>inverte o sinal da coordenada $y$</strong>:
+            $$x' = x, \qquad y' = -y$$
+          </div>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="beamer-block example">
+              <div class="block-header">Matriz de Reflexão $F_x$</div>
+              <div class="block-body">
+                $$F_x = \begin{pmatrix} 1 & 0 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & 1 \end{pmatrix}$$
+                Multiplicação vetorial:
+                $$\begin{pmatrix} x' \\ y' \\ 1 \end{pmatrix} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} x \\ y \\ 1 \end{pmatrix} = \begin{pmatrix} x \\ -y \\ 1 \end{pmatrix}$$
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block example">
+              <div class="block-header">Exemplo Numérico</div>
+              <div class="block-body">
+                Dado o ponto $P = (3, 5)$:
+                $$P' = F_x \cdot \begin{pmatrix} 3 \\ 5 \\ 1 \end{pmatrix} = \begin{pmatrix} 3 \\ -5 \\ 1 \end{pmatrix}$$
+                O ponto refletido é <strong>$(3, -5)$</strong>. Basta trocar o sinal de $y$!
+              </div>
+            </div>
+
+            <div class="beamer-block alert">
+              <div class="block-header">Determinante</div>
+              <div class="block-body">
+                $\det(F_x) = -1$. Um determinante negativo indica que a transformação <strong>inverteu a orientação</strong> dos vértices (de anti-horário para horário).
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 29: Reflexão no Eixo y (x = 0) -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Reflexão em Relação ao Eixo $y$ ($x = 0$)</h2>
+          <span class="section-badge">3. Outras Transformações 2D</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Equações Algébricas</div>
+          <div class="block-body">
+            Refletir em torno do eixo $y$ preserva a altura vertical $y$ e <strong>inverte o sinal da coordenada $x$</strong>:
+            $$x' = -x, \qquad y' = y$$
+          </div>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="beamer-block example">
+              <div class="block-header">Matriz de Reflexão $F_y$</div>
+              <div class="block-body">
+                $$F_y = \begin{pmatrix} -1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix}$$
+                Multiplicação vetorial:
+                $$\begin{pmatrix} x' \\ y' \\ 1 \end{pmatrix} = \begin{pmatrix} -1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} x \\ y \\ 1 \end{pmatrix} = \begin{pmatrix} -x \\ y \\ 1 \end{pmatrix}$$
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block example">
+              <div class="block-header">Exemplo Numérico</div>
+              <div class="block-body">
+                Dado o ponto $P = (3, 5)$:
+                $$P' = F_y \cdot \begin{pmatrix} 3 \\ 5 \\ 1 \end{pmatrix} = \begin{pmatrix} -3 \\ 5 \\ 1 \end{pmatrix}$$
+                O ponto refletido é <strong>$(-3, 5)$</strong>. Basta trocar o sinal de $x$!
+              </div>
+            </div>
+
+            <div class="beamer-block alert">
+              <div class="block-header">Auto-Inversa</div>
+              <div class="block-body">
+                $F_y \cdot F_y = I$. Aplicar a reflexão duas vezes consecutivas retorna o objeto perfeitamente à sua posição inicial ($F_y^{-1} = F_y$).
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 30: Reflexão em Relação à Origem -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Reflexão em Relação à Origem</h2>
+          <span class="section-badge">3. Outras Transformações 2D</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Equações Algébricas</div>
+          <div class="block-body">
+            Refletir em torno do ponto central da origem significa <strong>inverter os sinais de ambas</strong> as coordenadas simultaneamente:
+            $$x' = -x, \qquad y' = -y$$
+          </div>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="beamer-block example">
+              <div class="block-header">Matriz de Reflexão na Origem $F_o$</div>
+              <div class="block-body">
+                $$F_o = \begin{pmatrix} -1 & 0 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & 1 \end{pmatrix}$$
+                Multiplicação vetorial:
+                $$\begin{pmatrix} x' \\ y' \\ 1 \end{pmatrix} = \begin{pmatrix} -1 & 0 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} x \\ y \\ 1 \end{pmatrix} = \begin{pmatrix} -x \\ -y \\ 1 \end{pmatrix}$$
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block alert">
+              <div class="block-header">Relação com Rotação de 180°!</div>
+              <div class="block-body">
+                Lembrem-se da matriz de rotação $R(180^\circ)$:
+                $$R(180^\circ) = \begin{pmatrix} \cos 180^\circ & -\sin 180^\circ & 0 \\ \sin 180^\circ & \cos 180^\circ & 0 \\ 0 & 0 & 1 \end{pmatrix} = \begin{pmatrix} -1 & 0 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & 1 \end{pmatrix} = F_o$$
+                Portanto, a reflexão na origem é <strong>rigorosamente equivalente</strong> a uma rotação de meia-volta ($180^\circ$)!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 31: Laboratório Interativo -- Reflexões 2D -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Laboratório Interativo — Reflexões 2D</h2>
+          <span class="section-badge">3. Outras Transformações 2D</span>
+        </div>
+
+        <div class="two-cols ratio-6-4">
+          <div class="col">
+            <div class="canvas-card">
+              <canvas id="canvas-reflexao-demo"></canvas>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="interactive-controls">
+              <span style="font-weight:700;">Escolha o Eixo de Espelhamento:</span>
+              <div style="display:flex;gap:4px;margin-top:6px;">
+                <button class="btn btn-sm ref-axis-btn active" id="btn-ref-x">Eixo X (y=0)</button>
+                <button class="btn btn-secondary btn-sm ref-axis-btn" id="btn-ref-y">Eixo Y (x=0)</button>
+                <button class="btn btn-secondary btn-sm ref-axis-btn" id="btn-ref-origin">Origem (0,0)</button>
+              </div>
+            </div>
+
+            <div class="math-box" id="reflexao-math-output" style="margin-top:10px;">
+              <!-- Atualizado via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 32: Cisalhamento (Shear) -- Conceito -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Cisalhamento (Shear) — Conceito</h2>
+          <span class="section-badge">3. Outras Transformações 2D</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">O que é o Cisalhamento?</div>
+          <div class="block-body">
+            O cisalhamento é uma transformação que <strong>distorce a forma</strong> do objeto ao longo de uma direção preferencial ($x$ ou $y$), deslizando camadas paralelas como um maço de cartas de baralho. Transforma, por exemplo, um retângulo em um <strong>paralelogramo</strong> mantendo sua área constante!
+          </div>
+        </div>
+
+        <ul class="styled-list">
+          <li>O fator de cisalhamento é denotado pela sigla <strong>$sh$</strong> (da palavra em inglês <em>shear</em>).</li>
+          <li>Existem dois tipos fundamentais:
+            <ul>
+              <li><strong>Cisalhamento na direção $x$ ($sh_x$):</strong> deslocamento horizontal proporcional à coordenada vertical $y$.</li>
+              <li><strong>Cisalhamento na direção $y$ ($sh_y$):</strong> deslocamento vertical proporcional à coordenada horizontal $x$.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <div class="beamer-block example">
+          <div class="block-header">Aplicações Práticas</div>
+          <div class="block-body">
+            Geração de texto em <em>itálico</em> sintetizado, renderização de sombras projetadas falsas (shadow shear), deformações elásticas de animação e renderização isométrica de jogos 2D.
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 33: Cisalhamento na Direção x -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Cisalhamento na Direção $x$ ($SH_x$)</h2>
+          <span class="section-badge">3. Outras Transformações 2D</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Equações de Movimento</div>
+          <div class="block-body">
+            A coordenada $y$ <strong>não se altera</strong>. A coordenada $x$ é deslocada proporcionalmente à altura $y$:
+            $$x' = x + sh_x \cdot y, \qquad y' = y$$
+          </div>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="beamer-block example">
+              <div class="block-header">Matriz $SH_x$</div>
+              <div class="block-body">
+                $$SH_x = \begin{pmatrix} 1 & sh_x & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix}$$
+                Multiplicação vetorial:
+                $$\begin{pmatrix} x' \\ y' \\ 1 \end{pmatrix} = \begin{pmatrix} 1 & sh_x & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} x \\ y \\ 1 \end{pmatrix} = \begin{pmatrix} x + sh_x y \\ y \\ 1 \end{pmatrix}$$
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block example">
+              <div class="block-header">Exemplo Passo a Passo com $sh_x = 2$</div>
+              <div class="block-body">
+                Para um quadrado unitário com vértices $(0,0)$, $(1,0)$, $(1,1)$, $(0,1)$:
+                <ul class="styled-list" style="margin:4px 0;">
+                  <li>$(0,0) \to (0 + 2\cdot 0, \; 0) = \mathbf{(0, 0)}$ (base fixa!)</li>
+                  <li>$(1,0) \to (1 + 2\cdot 0, \; 0) = \mathbf{(1, 0)}$ (base fixa!)</li>
+                  <li>$(0,1) \to (0 + 2\cdot 1, \; 1) = \mathbf{(2, 1)}$ (topo deslocou!)</li>
+                  <li>$(1,1) \to (1 + 2\cdot 1, \; 1) = \mathbf{(3, 1)}$ (topo deslocou!)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 34: Cisalhamento na Direção y -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Cisalhamento na Direção $y$ ($SH_y$)</h2>
+          <span class="section-badge">3. Outras Transformações 2D</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Equações de Movimento</div>
+          <div class="block-body">
+            A coordenada $x$ <strong>não se altera</strong>. A coordenada $y$ é deslocada proporcionalmente à distância horizontal $x$:
+            $$x' = x, \qquad y' = y + sh_y \cdot x$$
+          </div>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="beamer-block example">
+              <div class="block-header">Matriz $SH_y$</div>
+              <div class="block-body">
+                $$SH_y = \begin{pmatrix} 1 & 0 & 0 \\ sh_y & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix}$$
+                Multiplicação vetorial:
+                $$\begin{pmatrix} x' \\ y' \\ 1 \end{pmatrix} = \begin{pmatrix} 1 & 0 & 0 \\ sh_y & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} x \\ y \\ 1 \end{pmatrix} = \begin{pmatrix} x \\ y + sh_y x \\ 1 \end{pmatrix}$$
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block example">
+              <div class="block-header">Exemplo Passo a Passo com $sh_y = 2$</div>
+              <div class="block-body">
+                Para um quadrado unitário com vértices $(0,0)$, $(1,0)$, $(1,1)$, $(0,1)$:
+                <ul class="styled-list" style="margin:4px 0;">
+                  <li>$(0,0) \to (0, \; 0 + 2\cdot 0) = \mathbf{(0, 0)}$ (lateral fixa!)</li>
+                  <li>$(0,1) \to (0, \; 1 + 2\cdot 0) = \mathbf{(0, 1)}$ (lateral fixa!)</li>
+                  <li>$(1,0) \to (1, \; 0 + 2\cdot 1) = \mathbf{(1, 2)}$ (lateral deslocou!)</li>
+                  <li>$(1,1) \to (1, \; 1 + 2\cdot 1) = \mathbf{(1, 3)}$ (lateral deslocou!)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 35: Laboratório Interativo -- Cisalhamento -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Laboratório Interativo — Cisalhamento 2D</h2>
+          <span class="section-badge">3. Outras Transformações 2D</span>
+        </div>
+
+        <div class="two-cols ratio-6-4">
+          <div class="col">
+            <div class="canvas-card">
+              <canvas id="canvas-shear-demo"></canvas>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="interactive-controls">
+              <div class="ctrl-row">
+                <label>Fator shx:</label>
+                <input type="range" id="shear-slider-shx" min="-3" max="3" step="0.2" value="1.5">
+                <span class="ctrl-val" id="shear-val-shx">1.5</span>
+              </div>
+
+              <div class="ctrl-row">
+                <label>Fator shy:</label>
+                <input type="range" id="shear-slider-shy" min="-3" max="3" step="0.2" value="0.0">
+                <span class="ctrl-val" id="shear-val-shy">0.0</span>
+              </div>
+            </div>
+
+            <div class="math-box" id="shear-math-output" style="margin-top:10px;">
+              <!-- Atualizado via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ############################################################ -->
+      <!-- SEÇÃO 4: RESUMO & PLAYGROUND -->
+      <!-- ############################################################ -->
+
+      <!-- SLIDE 36: Resumo -- Todas as Matrizes 2D -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Resumo — Todas as Matrizes 2D em Coord. Homogêneas</h2>
+          <span class="section-badge">Resumo Geral</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="beamer-block def">
+              <div class="block-header">Transformações Básicas</div>
+              <div class="block-body" style="font-size:0.76rem;">
+                $$T = \begin{pmatrix} 1 & 0 & t_x \\ 0 & 1 & t_y \\ 0 & 0 & 1 \end{pmatrix}, \quad S = \begin{pmatrix} s_x & 0 & 0 \\ 0 & s_y & 0 \\ 0 & 0 & 1 \end{pmatrix}$$
+                $$R = \begin{pmatrix} \cos\theta & -\sin\theta & 0 \\ \sin\theta & \cos\theta & 0 \\ 0 & 0 & 1 \end{pmatrix}$$
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block example">
+              <div class="block-header">Reflexão e Cisalhamento</div>
+              <div class="block-body" style="font-size:0.76rem;">
+                $$F_x = \begin{pmatrix} 1 & 0 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & 1 \end{pmatrix}, \quad F_y = \begin{pmatrix} -1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix}$$
+                $$SH_x = \begin{pmatrix} 1 & sh_x & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix}, \quad SH_y = \begin{pmatrix} 1 & 0 & 0 \\ sh_y & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix}$$
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="beamer-block alert" style="margin-top:6px;">
+          <div class="block-header">Regra Universal da Computação Gráfica 2D</div>
+          <div class="block-body">
+            Todas as matrizes afins $2D$ são quadradas de dimensão $3 \times 3$, com a última linha <strong>sempre $(0 \;\; 0 \;\; 1)$</strong> e os pontos representados como vetores coluna homogêneos <strong>$(x, \; y, \; 1)^T$</strong>. Qualquer sequência complexa de transformações pode ser comprimida em uma única multiplicação matricial!
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 37: Playground Completo de Transformações Compostas -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Playground Completo de Transformações Compostas</h2>
+          <span class="section-badge">Laboratório & Prática</span>
+        </div>
+
+        <div class="two-cols ratio-6-4">
+          <div class="col">
+            <div class="canvas-card">
+              <canvas id="canvas-playground-demo"></canvas>
+            </div>
+            <div class="math-box" id="playground-matrix-output" style="margin-top:6px;">
+              <!-- Atualizado via JS -->
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="interactive-controls">
+              <span style="font-weight:700;">Adicionar Transformação à Pilha:</span>
+              <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;">
+                <button class="btn btn-sm" onclick="addPlaygroundOp('T')">+ Translação</button>
+                <button class="btn btn-sm" onclick="addPlaygroundOp('R')">+ Rotação</button>
+                <button class="btn btn-sm" onclick="addPlaygroundOp('S')">+ Escala</button>
+                <button class="btn btn-secondary btn-sm" onclick="addPlaygroundOp('Fx')">+ Refl. X</button>
+                <button class="btn btn-secondary btn-sm" onclick="addPlaygroundOp('Fy')">+ Refl. Y</button>
+                <button class="btn btn-secondary btn-sm" onclick="addPlaygroundOp('SHx')">+ Shear X</button>
+              </div>
+
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+                <span style="font-weight:700;">Ordem de Execução (1ª à última):</span>
+                <div style="display:flex;gap:4px;">
+                  <button class="btn btn-secondary btn-sm" onclick="invertPlaygroundStack()" title="Inverter Ordem da Pilha">⇄ Inverter Ordem</button>
+                  <button class="btn btn-secondary btn-sm" onclick="clearPlaygroundStack()" style="color:#ef4444;">Limpar</button>
+                </div>
+              </div>
+
+              <div class="stack-list" id="playground-stack-items" style="margin-top:4px;">
+                <!-- Preenchido via JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 38: Referências Bibliográficas -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Referências Bibliográficas</h2>
+          <span class="section-badge">Material Complementar</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="beamer-block def">
+              <div class="block-header">Livros-Texto Recomendados</div>
+              <div class="block-body" style="line-height:1.6;">
+                1. <strong>Angel, E.; Shreiner, D.</strong> <em>Interactive Computer Graphics: A Top-Down Approach with WebGL</em>. 8th edition. Pearson. Capítulo 5 (Geometric Objects and Transformations).<br><br>
+                2. <strong>Mount, D.</strong> <em>CMSC 427 — Computer Graphics Lecture Notes</em>. University of Maryland. Aulas 8 e 9 (Affine Transformations & Compositions).
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block example">
+              <div class="block-header">Material Digital & Dicas de Estudo</div>
+              <div class="block-body" style="line-height:1.6;">
+                1. <strong>Material de Introdução à Computação Gráfica</strong> — IME-USP. Disponível em: <span style="color:#2563eb;word-break:break-all;">https://panda.ime.usp.br/introcg/static/introcg</span><br><br>
+                2. <strong>Dica Prática:</strong> Pratique multiplicando matrizes $3 \times 3$ à mão e conferindo os resultados nos simuladores desta página para consolidar o entendimento da ordem de pós-multiplicação!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- RODAPÉ ESTILO BEAMER WARSAW (FOOTLINE) -->
+  <!-- ============================================================ -->
+  <footer class="warsaw-footline">
+    <div class="footline-author">
+      Pedro Ximenes (UNICAP) • Transformações Geométricas 2D — Parte 2
+    </div>
+    <div class="footline-keys">
+      <span>Navegar: <kbd>◄</kbd> <kbd>►</kbd> ou <kbd>Espaço</kbd></span>
+      <span>Zoom: <kbd>+</kbd> <kbd>-</kbd></span>
+      <span>Tela Cheia: <kbd>F</kbd></span>
+      <span>Visão Geral: <kbd>O</kbd></span>
+    </div>
+  </footer>
+
+  <!-- Scripts: Reveal.js, KaTeX e Módulos Canvas -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+  
+  <script src="js/canvas-demos.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
