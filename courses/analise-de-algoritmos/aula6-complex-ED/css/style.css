@@ -1,0 +1,918 @@
+/* ============================================================
+   AULA 6: COMPLEXIDADE DE ALGORITMOS ASSOCIADOS A ESTRUTURAS DE DADOS
+   Tema LaTeX Beamer Warsaw Fiel para Reveal.js
+   Autor: Pedro Ximenes (UNICAP)
+   ============================================================ */
+
+:root {
+  /* Escala de Zoom de Fonte */
+  --font-zoom: 1;
+
+  /* Paleta Beamer Warsaw Oficial (Tema Claro) */
+  --warsaw-dark: #001f3f;
+  --warsaw-primary: #003366;
+  --warsaw-secondary: #174276;
+  --warsaw-light: #e8f0fe;
+  --warsaw-accent: #2563eb;
+  
+  /* Cores dos Blocos Beamer */
+  --block-header-bg: linear-gradient(180deg, #003366 0%, #153e75 100%);
+  --block-header-color: #ffffff;
+  --block-body-bg: #f0f4f9;
+  --block-body-border: #d0dbe8;
+  --block-body-color: #1a202c;
+
+  --example-header-bg: linear-gradient(180deg, #1b5e20 0%, #2e7d32 100%);
+  --example-header-color: #ffffff;
+  --example-body-bg: #f0faf0;
+  --example-body-border: #c8e6c9;
+  --example-body-color: #1a331b;
+
+  --alert-header-bg: linear-gradient(180deg, #88181e 0%, #a8232a 100%);
+  --alert-header-color: #ffffff;
+  --alert-body-bg: #fdf2f2;
+  --alert-body-border: #f8d7da;
+  --alert-body-color: #4a0f12;
+
+  /* Superfície geral */
+  --bg-main: #f1f5f9;
+  --slide-bg: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+
+  /* Pseudocódigo */
+  --code-bg: #f8fafc;
+  --code-border: #cbd5e1;
+  --code-line-num: #94a3b8;
+  --code-keyword: #003366;
+  --code-comment: #15803d;
+  --code-var: #0f172a;
+  --code-num: #b45309;
+
+  /* Canvas / Simuladores */
+  --canvas-bg: #f8fafc;
+  --canvas-border: #cbd5e1;
+  --canvas-text: #1e293b;
+  --node-default: #3b82f6;
+  --node-active: #eab308;
+  --node-success: #22c55e;
+  --node-danger: #ef4444;
+  --node-highlight: #8b5cf6;
+}
+
+/* Modo Escuro */
+body.dark-mode {
+  --warsaw-dark: #060c18;
+  --warsaw-primary: #0f2b4c;
+  --warsaw-secondary: #1a3c66;
+  --warsaw-light: #1e293b;
+  --warsaw-accent: #38bdf8;
+
+  --block-header-bg: linear-gradient(180deg, #103159 0%, #1a4273 100%);
+  --block-header-color: #ffffff;
+  --block-body-bg: #0f1b2b;
+  --block-body-border: #1e3a5f;
+  --block-body-color: #e2e8f0;
+
+  --example-header-bg: linear-gradient(180deg, #144618 0%, #1e6324 100%);
+  --example-header-color: #ffffff;
+  --example-body-bg: #0d2111;
+  --example-body-border: #1a4b20;
+  --example-body-color: #e2e8f0;
+
+  --alert-header-bg: linear-gradient(180deg, #5c1115 0%, #7d191f 100%);
+  --alert-header-color: #ffffff;
+  --alert-body-bg: #260d10;
+  --alert-body-border: #52191e;
+  --alert-body-color: #fce7e7;
+
+  --bg-main: #0b0f17;
+  --slide-bg: #111827;
+  --text-main: #e2e8f0;
+  --text-muted: #94a3b8;
+  --border-color: #334155;
+
+  --code-bg: #090d14;
+  --code-border: #1e293b;
+  --code-line-num: #64748b;
+  --code-keyword: #38bdf8;
+  --code-comment: #4ade80;
+  --code-var: #f1f5f9;
+  --code-num: #fbbf24;
+
+  --canvas-bg: #0b0f17;
+  --canvas-border: #1e293b;
+  --canvas-text: #e2e8f0;
+}
+
+/* Reset e Base */
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  overflow: hidden;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* ============================================================
+   CABEÇALHO FIXO WARSAW (DUPLA BARRA)
+   ============================================================ */
+
+#warsaw-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  font-size: 11px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  user-select: none;
+}
+
+/* Barra 1: Seções e Ferramentas */
+.warsaw-section-bar {
+  background: var(--warsaw-dark);
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 14px;
+  height: 24px;
+  box-sizing: border-box;
+}
+
+.warsaw-sections-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex: 1;
+}
+.warsaw-sections-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.warsaw-nav-back {
+  color: #93c5fd;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(37, 99, 235, 0.25);
+  border: 1px solid rgba(147, 197, 253, 0.35);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.warsaw-nav-back:hover {
+  background: rgba(37, 99, 235, 0.5);
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+.warsaw-sec-item {
+  color: #cbd5e1;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 1px 7px;
+  border-radius: 3px;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+  font-weight: 500;
+  font-size: 10.5px;
+}
+.warsaw-sec-item:hover {
+  color: #ffffff;
+  background: rgba(255,255,255,0.16);
+}
+.warsaw-sec-item.active {
+  color: #ffffff;
+  background: var(--warsaw-primary);
+  font-weight: 700;
+}
+
+.warsaw-tools {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: 10px;
+}
+
+/* Grupo de Zoom de Fonte [ A- | 100% | A+ ] */
+.font-zoom-group {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.font-zoom-btn {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  padding: 1px 7px;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  line-height: 18px;
+}
+.font-zoom-btn:hover {
+  background: rgba(255,255,255,0.22);
+}
+
+#font-zoom-label {
+  padding: 0 6px;
+  font-size: 9.5px;
+  font-weight: 600;
+  color: #e2e8f0;
+  border-left: 1px solid rgba(255,255,255,0.15);
+  border-right: 1px solid rgba(255,255,255,0.15);
+  min-width: 32px;
+  text-align: center;
+  line-height: 18px;
+}
+
+.warsaw-tool-btn, .theme-toggle-btn {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.22);
+  color: #ffffff;
+  border-radius: 4px;
+  padding: 1px 8px;
+  font-size: 10.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  line-height: 18px;
+}
+.warsaw-tool-btn:hover, .theme-toggle-btn:hover {
+  background: rgba(255,255,255,0.25);
+  border-color: rgba(255,255,255,0.45);
+  color: #ffffff;
+}
+
+/* Barra 2: Subseção Ativa */
+.warsaw-subsection-bar {
+  background: var(--warsaw-primary);
+  color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  padding: 2px 18px;
+  height: 20px;
+  box-sizing: border-box;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* ============================================================
+   RODAPÉ FIXO INFERIOR (FOOTLINE WARSAW)
+   ============================================================ */
+
+#warsaw-footline {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 24px;
+  z-index: 1000;
+  display: grid;
+  grid-template-columns: 28% 46% 26%;
+  font-size: 11px;
+  color: #ffffff;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
+  user-select: none;
+}
+
+.foot-left {
+  background: var(--warsaw-dark);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.foot-mid {
+  background: var(--warsaw-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.foot-right {
+  background: var(--warsaw-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 14px;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.foot-btn {
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: white;
+  border-radius: 3px;
+  padding: 1px 6px;
+  font-size: 10px;
+  cursor: pointer;
+  line-height: 14px;
+  transition: background 0.15s ease;
+}
+.foot-btn:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+/* ============================================================
+   CONTAINER DO REVEAL.JS (1024 x 768)
+   ============================================================ */
+
+.reveal-viewport {
+  background: var(--bg-main) !important;
+}
+
+.reveal {
+  font-family: inherit !important;
+  color: var(--text-main) !important;
+  font-size: calc(20px * var(--font-zoom, 1));
+}
+
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal .slides > section,
+.reveal .slides > section > section {
+  padding: 0 !important;
+  box-sizing: border-box;
+  width: 1024px !important;
+  height: 768px !important;
+  top: 0 !important;
+}
+
+/* Slide Container Interno com Margens e Scroll seguro */
+.beamer-slide {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 46px 28px 28px 28px; /* 46px topo para acomodar as 2 barras superiores */
+  display: flex;
+  flex-direction: column;
+  background: var(--slide-bg);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Banner de Título do Slide */
+.slide-title-banner {
+  background: linear-gradient(180deg, var(--warsaw-primary) 0%, var(--warsaw-secondary) 100%);
+  color: #ffffff;
+  padding: 7px 18px;
+  margin: -4px -28px 14px -28px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+  border-radius: 0 0 5px 5px;
+}
+
+.slide-title-banner h2 {
+  font-size: calc(22px * var(--font-zoom, 1));
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  letter-spacing: -0.2px;
+}
+
+.slide-title-banner .slide-subtitle {
+  font-size: calc(12.5px * var(--font-zoom, 1));
+  color: #cbd5e1;
+  margin-top: 2px;
+  font-weight: 400;
+}
+
+/* ============================================================
+   BLOCOS BEAMER OFICIAIS
+   ============================================================ */
+
+.block, .beamer-block,
+.exampleblock, .example-block,
+.alertblock, .alert-block {
+  margin: 8px 0 12px 0;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Bloco Padrão / Definição / Teorema */
+.block .block-title,
+.beamer-block .block-title {
+  background: var(--block-header-bg);
+  color: var(--block-header-color);
+  padding: 6px 14px;
+  font-weight: 700;
+  font-size: calc(16.5px * var(--font-zoom, 1));
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: -0.2px;
+}
+
+.block .block-content,
+.beamer-block .block-content {
+  background: var(--block-body-bg);
+  border: 1px solid var(--block-body-border);
+  border-top: none;
+  padding: 10px 14px;
+  color: var(--block-body-color);
+  font-size: calc(17px * var(--font-zoom, 1));
+  line-height: 1.45;
+  border-radius: 0 0 6px 6px;
+}
+
+/* Bloco Exemplo / Estudo de Caso */
+.exampleblock .block-title,
+.example-block .block-title {
+  background: var(--example-header-bg);
+  color: var(--example-header-color);
+  padding: 6px 14px;
+  font-weight: 700;
+  font-size: calc(16.5px * var(--font-zoom, 1));
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.exampleblock .block-content,
+.example-block .block-content {
+  background: var(--example-body-bg);
+  border: 1px solid var(--example-body-border);
+  border-top: none;
+  padding: 10px 14px;
+  color: var(--example-body-color);
+  font-size: calc(17px * var(--font-zoom, 1));
+  line-height: 1.45;
+  border-radius: 0 0 6px 6px;
+}
+
+/* Bloco Alerta / Complexidade Crítica */
+.alertblock .block-title,
+.alert-block .block-title {
+  background: var(--alert-header-bg);
+  color: var(--alert-header-color);
+  padding: 6px 14px;
+  font-weight: 700;
+  font-size: calc(16.5px * var(--font-zoom, 1));
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.alertblock .block-content,
+.alert-block .block-content {
+  background: var(--alert-body-bg);
+  border: 1px solid var(--alert-body-border);
+  border-top: none;
+  padding: 10px 14px;
+  color: var(--alert-body-color);
+  font-size: calc(17px * var(--font-zoom, 1));
+  line-height: 1.45;
+  border-radius: 0 0 6px 6px;
+}
+
+/* ============================================================
+   ESTILOS DE CONTEÚDO E TIPOGRAFIA
+   ============================================================ */
+
+.slide-body {
+  flex: 1;
+  font-size: calc(17.5px * var(--font-zoom, 1));
+  line-height: 1.48;
+  color: var(--text-main);
+}
+
+.slide-body p {
+  margin: 6px 0;
+}
+
+.slide-body ul, .slide-body ol {
+  margin: 6px 0 10px 22px;
+  padding: 0;
+}
+
+.slide-body li {
+  margin-bottom: 5px;
+}
+
+.boxed-result {
+  display: inline-block;
+  background: var(--warsaw-light);
+  color: var(--warsaw-primary);
+  border: 2px solid var(--warsaw-primary);
+  border-radius: 6px;
+  padding: 5px 14px;
+  font-weight: 700;
+  margin: 8px 0;
+}
+body.dark-mode .boxed-result {
+  background: #10243d;
+  color: #38bdf8;
+  border-color: #38bdf8;
+}
+
+/* Tabelas estilo Booktabs */
+.beamer-table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin: 8px 0;
+}
+
+.beamer-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: calc(15.5px * var(--font-zoom, 1));
+  text-align: left;
+}
+
+.beamer-table th {
+  border-top: 2px solid var(--text-main);
+  border-bottom: 1.5px solid var(--text-main);
+  padding: 6px 10px;
+  font-weight: 700;
+  background: rgba(0,0,0,0.03);
+}
+body.dark-mode .beamer-table th {
+  background: rgba(255,255,255,0.05);
+  border-color: #94a3b8;
+}
+
+.beamer-table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: middle;
+}
+
+.beamer-table tr:last-child td {
+  border-bottom: 2px solid var(--text-main);
+}
+body.dark-mode .beamer-table tr:last-child td {
+  border-bottom-color: #94a3b8;
+}
+
+.beamer-table .check {
+  color: #16a34a;
+  font-weight: bold;
+}
+
+/* ============================================================
+   LAYOUTS: COLUNA ÚNICA (PADRÃO) E DUAS COLUNAS
+   ============================================================ */
+
+.two-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.two-cols-40-60 {
+  display: grid;
+  grid-template-columns: 4fr 6fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.two-cols-60-40 {
+  display: grid;
+  grid-template-columns: 6fr 4fr;
+  gap: 16px;
+  align-items: start;
+}
+
+/* ============================================================
+   PSEUDOCÓDIGO FORMATADO
+   ============================================================ */
+
+.code-container {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin: 8px 0;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', Courier, monospace;
+  font-size: calc(14px * var(--font-zoom, 1));
+  line-height: 1.4;
+  overflow-x: auto;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.code-container ol {
+  margin: 0;
+  padding-left: 28px;
+  color: var(--code-line-num);
+}
+
+.code-container li {
+  margin: 0;
+  padding-left: 4px;
+}
+
+.code-container li span {
+  color: var(--code-var);
+}
+
+.code-kw {
+  color: var(--code-keyword);
+  font-weight: 700;
+}
+
+.code-comment {
+  color: var(--code-comment);
+  font-style: italic;
+}
+
+.code-num {
+  color: var(--code-num);
+  font-weight: 600;
+}
+
+/* ============================================================
+   PAINÉIS DE SIMULAÇÃO E CANVAS DEMOS
+   ============================================================ */
+
+.demo-panel {
+  background: var(--canvas-bg);
+  border: 1px solid var(--canvas-border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin: 6px 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.demo-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.demo-btn {
+  background: var(--warsaw-primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: calc(12.5px * var(--font-zoom, 1));
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s ease;
+}
+.demo-btn:hover {
+  background: var(--warsaw-secondary);
+  transform: translateY(-1px);
+}
+.demo-btn.btn-secondary {
+  background: #475569;
+}
+.demo-btn.btn-secondary:hover {
+  background: #334155;
+}
+.demo-btn.btn-success {
+  background: #16a34a;
+}
+.demo-btn.btn-success:hover {
+  background: #15803d;
+}
+.demo-btn.btn-danger {
+  background: #dc2626;
+}
+.demo-btn.btn-danger:hover {
+  background: #b91c1c;
+}
+
+.demo-input {
+  background: var(--slide-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: calc(12.5px * var(--font-zoom, 1));
+  width: 70px;
+}
+
+.demo-canvas {
+  width: 100%;
+  background: var(--slide-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  display: block;
+}
+
+.demo-status {
+  margin-top: 8px;
+  padding: 6px 10px;
+  background: rgba(0,0,0,0.03);
+  border-radius: 4px;
+  font-size: calc(13px * var(--font-zoom, 1));
+  color: var(--text-main);
+  border-left: 3px solid var(--warsaw-accent);
+}
+body.dark-mode .demo-status {
+  background: rgba(255,255,255,0.04);
+}
+
+.demo-metrics {
+  display: flex;
+  gap: 12px;
+  font-size: calc(12px * var(--font-zoom, 1));
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+.demo-metrics span {
+  color: var(--text-main);
+}
+
+/* ============================================================
+   EXERCÍCIOS E GABARITOS (COLLAPSIBLES)
+   ============================================================ */
+
+.toggle-solution-btn {
+  background: var(--warsaw-light);
+  color: var(--warsaw-primary);
+  border: 1px solid var(--warsaw-accent);
+  border-radius: 4px;
+  padding: 5px 12px;
+  font-size: calc(13.5px * var(--font-zoom, 1));
+  font-weight: 600;
+  cursor: pointer;
+  margin: 8px 0;
+  transition: all 0.2s ease;
+}
+.toggle-solution-btn:hover {
+  background: var(--warsaw-primary);
+  color: #ffffff;
+}
+body.dark-mode .toggle-solution-btn {
+  background: #10243d;
+  color: #38bdf8;
+  border-color: #38bdf8;
+}
+body.dark-mode .toggle-solution-btn:hover {
+  background: #38bdf8;
+  color: #0b0f17;
+}
+
+.solution-box {
+  display: none;
+  background: var(--block-body-bg);
+  border: 1px solid var(--block-body-border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-top: 8px;
+  animation: fadeIn 0.25s ease;
+}
+.solution-box.show {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   SLIDE DE TÍTULO / CAPA
+   ============================================================ */
+
+.title-slide {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+}
+
+.title-box {
+  background: linear-gradient(135deg, var(--warsaw-primary) 0%, #0d2b52 100%);
+  color: #ffffff;
+  padding: 24px 32px;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  margin-bottom: 24px;
+  max-width: 820px;
+  width: 90%;
+}
+
+.title-box h1 {
+  font-size: calc(30px * var(--font-zoom, 1));
+  font-weight: 800;
+  margin: 0 0 10px 0;
+  color: #ffffff !important;
+  line-height: 1.25;
+}
+
+.title-box .subtitle {
+  font-size: calc(16.5px * var(--font-zoom, 1));
+  color: #93c5fd;
+  font-weight: 500;
+}
+
+.author-box {
+  background: var(--slide-bg);
+  border: 1px solid var(--border-color);
+  padding: 16px 28px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  max-width: 600px;
+  width: 80%;
+}
+
+.author-name {
+  font-size: calc(19px * var(--font-zoom, 1));
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.institute-name {
+  font-size: calc(14.5px * var(--font-zoom, 1));
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.date-tag {
+  font-size: calc(13px * var(--font-zoom, 1));
+  color: var(--warsaw-accent);
+  font-weight: 600;
+}
+
+/* Grid de Roteiro (Sumário) */
+.agenda-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.agenda-card {
+  background: var(--canvas-bg);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--warsaw-primary);
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.agenda-card:hover {
+  transform: translateY(-2px);
+  border-left-color: var(--warsaw-accent);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.agenda-num {
+  font-size: calc(11px * var(--font-zoom, 1));
+  font-weight: 700;
+  color: var(--warsaw-accent);
+  text-transform: uppercase;
+}
+
+.agenda-title {
+  font-size: calc(14.5px * var(--font-zoom, 1));
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 2px 0;
+}
+
+.agenda-desc {
+  font-size: calc(12.5px * var(--font-zoom, 1));
+  color: var(--text-muted);
+}

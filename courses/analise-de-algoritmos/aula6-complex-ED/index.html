@@ -1,0 +1,3149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Análise de Algoritmos — Aula 6: Complexidade de Algoritmos e Estruturas de Dados</title>
+  <meta name="description" content="Apresentação interativa em Reveal.js baseada no tema LaTeX Beamer Warsaw para a Aula 6 de Análise de Algoritmos da UNICAP.">
+
+  <!-- Reveal.js CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/theme/white.css" id="theme">
+
+  <!-- KaTeX CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+  <!-- Estilos Customizados Warsaw Beamer -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       CABEÇALHO FIXO WARSAW (DUPLA BARRA)
+       ============================================================ -->
+  <header id="warsaw-header">
+    <div class="warsaw-section-bar">
+      <div class="warsaw-sections-nav">
+        <a href="../../../courses.html" class="warsaw-nav-back" title="Voltar para a página de Cursos">← Courses</a>
+        <nav class="warsaw-sections-list" id="warsaw-sections-list">
+          <!-- Links de seções preenchidos dinamicamente por app.js -->
+        </nav>
+      </div>
+      <div class="warsaw-tools">
+        <!-- Controle de Zoom de Fonte [ A- | 100% | A+ ] -->
+        <div class="font-zoom-group">
+          <button id="font-decrease-btn" class="font-zoom-btn" title="Diminuir Fonte (-)">A-</button>
+          <span id="font-zoom-label">100%</span>
+          <button id="font-increase-btn" class="font-zoom-btn" title="Aumentar Fonte (+)">A+</button>
+        </div>
+        <!-- Botão de Download do PDF -->
+        <a href="aula6.pdf" download="aula6.pdf" class="warsaw-tool-btn" title="Baixar PDF dos Slides">📄 PDF</a>
+        <!-- Botão de Alternar Tema (Claro / Escuro) -->
+        <button id="theme-toggle-btn" class="theme-toggle-btn" title="Alternar Modo Escuro/Claro">🌙 Escuro</button>
+      </div>
+    </div>
+    <div class="warsaw-subsection-bar">
+      <span id="warsaw-subsection-title">Análise de Algoritmos — Aula 6</span>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       SLIDES REVEAL.JS (CONTAINER PRINCIPAL)
+       ============================================================ -->
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- SLIDE 0: CAPA / TÍTULO -->
+      <section data-section="" data-subsection="Capa">
+        <div class="beamer-slide">
+          <div class="title-slide">
+            <div class="title-box">
+              <h1>Complexidade de Algoritmos<br>Associados a Estruturas de Dados</h1>
+              <div class="subtitle">(Noções, Análises e Exemplos Práticos)</div>
+            </div>
+            <div class="author-box">
+              <div class="author-name">Pedro Ximenes</div>
+              <div class="institute-name">Universidade Católica de Pernambuco (UNICAP)</div>
+              <div class="date-tag">Análise de Algoritmos • Semestre Letivo 2026.1</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 1: ROTEIRO DA AULA -->
+      <section data-section="" data-subsection="Roteiro da Aula">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Roteiro da Aula</h2>
+            <div class="slide-subtitle">Sumário geral dos tópicos abordados nesta sessão</div>
+          </div>
+          <div class="slide-body">
+            <div class="agenda-grid">
+              <div class="agenda-card" onclick="Reveal.slide(2)">
+                <div class="agenda-num">Seção 0 & 1</div>
+                <div class="agenda-title">Revisão & Introdução</div>
+                <div class="agenda-desc">Revisão da Aula 5, motivação e o impacto da ED no desempenho.</div>
+              </div>
+              <div class="agenda-card" onclick="Reveal.slide(7)">
+                <div class="agenda-num">Seção 2 & 3</div>
+                <div class="agenda-title">ArrayList vs LinkedList</div>
+                <div class="agenda-desc">Acesso direto $O(1)$, shifts $O(n)$, resize amortizado e encadeamento.</div>
+              </div>
+              <div class="agenda-card" onclick="Reveal.slide(20)">
+                <div class="agenda-num">Seção 4 & 5</div>
+                <div class="agenda-title">Pilha & Fila Circular</div>
+                <div class="agenda-desc">Políticas LIFO e FIFO com operações estritas em $O(1)$ sem deslocamentos.</div>
+              </div>
+              <div class="agenda-card" onclick="Reveal.slide(26)">
+                <div class="agenda-num">Seção 6</div>
+                <div class="agenda-title">Árvore Binária de Pesquisa</div>
+                <div class="agenda-desc">Busca e inserção em $O(h)$; árvores balanceadas $O(\log n)$ vs degeneradas $O(n)$.</div>
+              </div>
+              <div class="agenda-card" onclick="Reveal.slide(34)">
+                <div class="agenda-num">Seção 7 & 8</div>
+                <div class="agenda-title">Heap & Tabela Hash</div>
+                <div class="agenda-desc">Fila de prioridade em array e hashing com colisões em $O(1)$ médio.</div>
+              </div>
+              <div class="agenda-card" onclick="Reveal.slide(47)">
+                <div class="agenda-num">Seções 9 a 13</div>
+                <div class="agenda-title">Comparativo, Exercícios & Gabarito</div>
+                <div class="agenda-desc">Grande tabela comparativa, 6 exercícios resolvidos e 5 propostos.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 0: REVISÃO DA AULA ANTERIOR
+           ============================================================ -->
+
+      <!-- SLIDE 2: REVISÃO DA AULA 5 -->
+      <section data-section="revisao" data-subsection="Revisão > Tópicos da Aula 5">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Revisão — Aula 5</h2>
+            <div class="slide-subtitle">Consolidação dos tópicos de algoritmos iterativos</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📌 Tópicos Abordados na Aula Anterior</div>
+              <div class="block-content">
+                <ol>
+                  <li>Análise completa do <strong>Selection Sort</strong> ($\Theta(n^2)$) e <strong>Bubble Sort</strong> ($O(n^2)$).</li>
+                  <li>Comparação rigorosa entre <strong>Melhor Caso</strong>, <strong>Pior Caso</strong> e <strong>Caso Médio</strong>.</li>
+                  <li>Complexidade com <strong>dois parâmetros</strong>: laços aninhados independentes com custo $O(n \cdot m)$.</li>
+                  <li>Padrão $O(\sqrt{n})$: verificação eficiente de primalidade e divisores.</li>
+                  <li><strong>Técnica dos dois ponteiros</strong>: otimização de laços aninhados de $O(n^2)$ para $O(n)$ linear.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 3: REVISÃO — PADRÕES DE COMPLEXIDADE -->
+      <section data-section="revisao" data-subsection="Revisão > Padrões Fundamentais">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Revisão — Padrões de Complexidade</h2>
+            <div class="slide-subtitle">Classes assintóticas fundamentais dos algoritmos iterativos</div>
+          </div>
+          <div class="slide-body">
+            <div class="beamer-table-container">
+              <table class="beamer-table">
+                <thead>
+                  <tr>
+                    <th>Padrão de Controle</th>
+                    <th>Exemplo Típico</th>
+                    <th>Complexidade</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sem loop</td>
+                    <td>Sequência de instruções primitivas</td>
+                    <td>$O(1)$</td>
+                  </tr>
+                  <tr>
+                    <td>1 loop simples</td>
+                    <td><code>para i de 0 ate n</code></td>
+                    <td>$O(n)$</td>
+                  </tr>
+                  <tr>
+                    <td>Loop com divisão</td>
+                    <td><code>enquanto n > 1: n &larr; n/2</code></td>
+                    <td>$O(\log n)$</td>
+                  </tr>
+                  <tr>
+                    <td>Loop até $\sqrt{n}$</td>
+                    <td><code>enquanto i*i &le; n</code></td>
+                    <td>$O(\sqrt{n})$</td>
+                  </tr>
+                  <tr>
+                    <td>2 loops aninhados</td>
+                    <td><code>para i + para j (dep. de i)</code></td>
+                    <td>$O(n^2)$</td>
+                  </tr>
+                  <tr>
+                    <td>Série harmônica</td>
+                    <td>$\sum_{i=1}^{n} n/i$</td>
+                    <td>$O(n \log n)$</td>
+                  </tr>
+                  <tr>
+                    <td>Dois ponteiros</td>
+                    <td>Two Sum (ordenado), Palíndromo</td>
+                    <td>$O(n)$</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="alertblock">
+              <div class="block-title">❓ Pergunta Central desta Aula</div>
+              <div class="block-content">
+                A complexidade de um algoritmo depende <strong>apenas</strong> do código do algoritmo? Ou a <strong>estrutura de dados</strong> escolhida para armazenar as informações também determina o custo computacional?
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 1: INTRODUÇÃO
+           ============================================================ -->
+
+      <!-- SLIDE 4: A ESCOLHA DA ED IMPORTA -->
+      <section data-section="intro" data-subsection="Introdução > Motivação">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>A Escolha da Estrutura de Dados Importa</h2>
+            <div class="slide-subtitle">O impacto direto da organização da memória no desempenho</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">💡 Ideia Central</div>
+              <div class="block-content">
+                A <strong>eficiência</strong> de um algoritmo depende diretamente da <strong>estrutura de dados</strong> utilizada. A exata mesma operação conceitual pode ter complexidades completamente diferentes dependendo da ED escolhida!
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">🔍 Exemplo Motivador: Buscar um Elemento</div>
+              <div class="block-content">
+                Considere a operação de verificar se um determinado valor está presente:
+                <ul>
+                  <li>Em um <strong>array não ordenado</strong>: $O(n)$ — busca linear obrigatória.</li>
+                  <li>Em um <strong>array ordenado</strong>: $O(\log n)$ — busca binária com acesso por índice.</li>
+                  <li>Em uma <strong>tabela hash</strong>: $O(1)$ — no caso médio por mapeamento direto.</li>
+                  <li>Em uma <strong>árvore binária de pesquisa balanceada</strong>: $O(\log n)$.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="alertblock">
+              <div class="block-title">🎯 Conclusão</div>
+              <div class="block-content">
+                A escolha da estrutura de dados certa pode transformar um algoritmo lento e impraticável em um algoritmo instantâneo!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 5: OPERAÇÕES FUNDAMENTAIS -->
+      <section data-section="intro" data-subsection="Introdução > Operações e Trade-offs">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Operações Fundamentais</h2>
+            <div class="slide-subtitle">As primitivas analisadas e o conceito inevitável de compromisso</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">⚙️ Operações que Analisaremos em Cada ED</div>
+              <div class="block-content">
+                <ol>
+                  <li><strong>Acesso / Busca:</strong> Recuperar um elemento (por índice posicional ou por valor de chave).</li>
+                  <li><strong>Inserção:</strong> Adicionar um novo elemento na estrutura.</li>
+                  <li><strong>Remoção:</strong> Excluir um elemento existente.</li>
+                </ol>
+              </div>
+            </div>
+
+            <div class="alertblock">
+              <div class="block-title">⚖️ Trade-off (Compromisso Arquitetural)</div>
+              <div class="block-content">
+                Nenhuma estrutura de dados é "perfeita" para <strong>todas</strong> as operações simultaneamente. Cada estrutura estabelece um compromisso:
+                <ul>
+                  <li><strong>Array:</strong> Acesso instantâneo por índice ($O(1)$), mas inserção e remoção lentas ($O(n)$) devido ao deslocamento de elementos.</li>
+                  <li><strong>Lista Encadeada:</strong> Inserção e remoção rápidas nas pontas ($O(1)$), mas acesso por índice lento ($O(n)$).</li>
+                  <li><strong>Tabela Hash:</strong> Operações em $O(1)$ médio, mas sem ordem e com custo de memória extra.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 6: ESTRUTURAS QUE ESTUDAREMOS -->
+      <section data-section="intro" data-subsection="Introdução > Visão Geral">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Estruturas que Estudaremos</h2>
+            <div class="slide-subtitle">Catálogo estruturado da sessão</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📋 Roteiro de Estruturas de Dados</div>
+              <div class="block-content">
+                <ol>
+                  <li><strong>Array / ArrayList:</strong> Listas baseadas em arrays dinâmicos contíguos.</li>
+                  <li><strong>LinkedList:</strong> Listas duplamente encadeadas baseadas em ponteiros.</li>
+                  <li><strong>Pilha (Stack):</strong> Acesso restrito LIFO (Last In, First Out).</li>
+                  <li><strong>Fila (Queue):</strong> Acesso restrito FIFO (First In, First Out) com anel circular.</li>
+                  <li><strong>Árvore Binária de Pesquisa (BST):</strong> Estrutura hierárquica baseada em ordenação.</li>
+                  <li><strong>Heap:</strong> Árvore quase-completa para filas de prioridade.</li>
+                  <li><strong>Tabela Hash:</strong> Mapeamento chave-valor por endereçamento direto ou encadeamento.</li>
+                </ol>
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">🎯 Objetivo Metodológico</div>
+              <div class="block-content">
+                Para cada ED: compreender a disposição física em memória, deduzir a complexidade de cada operação fundamental, demonstrar visualmente o algoritmo e comparar os custos com as demais alternativas.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 2: ARRAYS E ARRAYLIST
+           ============================================================ -->
+
+      <!-- SLIDE 7: O ARRAY BÁSICO -->
+      <section data-section="arraylist" data-subsection="Arrays > Definição e Memória">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>O Array — A Estrutura Mais Elementar</h2>
+            <div class="slide-subtitle">Armazenamento contíguo em memória e cálculo direto de endereço</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📌 Definição</div>
+              <div class="block-content">
+                Um <strong>array</strong> é uma coleção de elementos do mesmo tipo armazenados em posições <strong>estritamente contíguas</strong> de memória física, acessíveis instantaneamente através de um <strong>índice inteiro</strong>.
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">⚡ Propriedade Fundamental: Acesso em Tempo Constante $O(1)$</div>
+              <div class="block-content">
+                O acesso por índice <code>V[i]</code> é executado em $O(1)$ sem percorrer o vetor, pois a CPU calcula diretamente o endereço de memória via aritmética de ponteiros:
+                $$\text{endereço}(V[i]) = \text{endereço\_base} + i \times \text{tamanho\_do\_elemento}$$
+              </div>
+            </div>
+
+            <div class="alertblock">
+              <div class="block-title">⚠️ Consequência da Contiguidade</div>
+              <div class="block-content">
+                Como os elementos estão colados uns nos outros na memória, para abrir espaço para um novo elemento no início ou no meio é obrigatório <strong>empurrar (deslocar)</strong> todos os elementos seguintes!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 8: OPERAÇÕES EM ARRAY PURO -->
+      <section data-section="arraylist" data-subsection="Arrays > Complexidades">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Operações em Array Puro — Complexidades</h2>
+            <div class="slide-subtitle">Custo das operações primitivas sobre vetores estáticos</div>
+          </div>
+          <div class="slide-body">
+            <div class="beamer-table-container">
+              <table class="beamer-table">
+                <thead>
+                  <tr>
+                    <th>Operação</th>
+                    <th>Complexidade</th>
+                    <th>Razão Teórica</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Acesso por índice <code>V[i]</code></td>
+                    <td>$O(1)$</td>
+                    <td>Cálculo direto de endereço (base + $i \times$ size)</td>
+                  </tr>
+                  <tr>
+                    <td>Busca por valor (linear)</td>
+                    <td>$O(n)$</td>
+                    <td>Varredura elemento a elemento no pior caso</td>
+                  </tr>
+                  <tr>
+                    <td>Inserção no fim</td>
+                    <td>$O(1)$</td>
+                    <td>Atribuição direta se houver espaço pré-alocado</td>
+                  </tr>
+                  <tr>
+                    <td>Inserção na posição $i$</td>
+                    <td>$O(n)$</td>
+                    <td>Deslocamento (shift) de $n - i$ elementos à direita</td>
+                  </tr>
+                  <tr>
+                    <td>Remoção da posição $i$</td>
+                    <td>$O(n)$</td>
+                    <td>Deslocamento (shift) de $n - 1 - i$ elementos à esquerda</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="alertblock">
+              <div class="block-title">🚫 Limitações do Array Puro</div>
+              <div class="block-content">
+                <ul>
+                  <li><strong>Tamanho estático fixo:</strong> Definido no momento da alocação. Se encher, não aceita novos dados.</li>
+                  <li><strong>Custo de deslocamento:</strong> Inserções e remoções arbitrárias são custosas ($O(n)$).</li>
+                  <li>O desenvolvedor precisa controlar manualmente a variável de quantidade de elementos válidos.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 9: ARRAYLIST (LISTA DINÂMICA) -->
+      <section data-section="arraylist" data-subsection="ArrayList > Conceito e Resize">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>ArrayList — Lista Dinâmica Baseada em Array</h2>
+            <div class="slide-subtitle">Encapsulamento de array puro com política de redimensionamento dinâmico</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📦 O que é uma ArrayList?</div>
+              <div class="block-content">
+                Uma <strong>ArrayList</strong> encapsula internamente um array tradicional e expõe uma API rica de operações de lista, gerenciando automaticamente o redimensionamento dinâmico e o remanejamento dos elementos.
+                <ul>
+                  <li><code>lista[]</code>: O array contíguo que armazena fisicamente os elementos.</li>
+                  <li><code>tamanho</code>: Quantidade lógica atual de elementos inseridos.</li>
+                  <li><code>capacidade</code>: Tamanho físico alocado no vetor interno (ex: capacidade inicial de 4 ou 10).</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">🔄 O Mecanismo de Resize (Dobra de Capacidade)</div>
+              <div class="block-content">
+                Quando uma inserção ocorre e o array interno atinge a capacidade máxima (<code>tamanho == capacidade</code>):
+                <ol>
+                  <li>Aloca-se um novo array com o <strong>dobro da capacidade</strong> ($2 \times capacidade$).</li>
+                  <li>Copiam-se todos os $n$ elementos do array antigo para o novo array — custo de <strong>$O(n)$</strong>.</li>
+                  <li>O ponteiro interno passa a apontar para o novo vetor e o elemento é adicionado.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 10: ARRAYLIST — INSERÇÃO NO FIM COM SIMULADOR -->
+      <section data-section="arraylist" data-subsection="ArrayList > Inserção no Fim e Resize">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>ArrayList — Inserção no Fim (add)</h2>
+            <div class="slide-subtitle">Análise de custo comum vs. resize e o conceito de custo amortizado</div>
+          </div>
+          <div class="slide-body">
+            <div class="two-cols-60-40">
+              <div>
+                <div class="code-container">
+                  <ol>
+                    <li><span class="code-kw">algoritmo</span> add(lista, tamanho, elemento)</li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">se</span> tamanho = capacidade(lista) <span class="code-kw">entao</span></li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;novaLista &larr; <span class="code-kw">novo vetor</span>[<span class="code-num">2</span> * capacidade(lista)]</li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">para</span> i <span class="code-kw">de</span> <span class="code-num">0</span> <span class="code-kw">ate</span> tamanho-<span class="code-num">1</span> <span class="code-kw">faca</span></li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;novaLista[i] &larr; lista[i]</li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">fim para</span></li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lista &larr; novaLista <span class="code-comment">// resize: O(n)</span></li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">fim se</span></li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;lista[tamanho] &larr; elemento</li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;tamanho &larr; tamanho + <span class="code-num">1</span></li>
+                    <li><span class="code-kw">fim algoritmo</span></li>
+                  </ol>
+                </div>
+
+                <div class="alertblock">
+                  <div class="block-title">📊 Complexidade</div>
+                  <div class="block-content">
+                    <ul>
+                      <li><strong>Sem resize:</strong> $O(1)$ — o elemento é atribuído diretamente na próxima posição livre.</li>
+                      <li><strong>Com resize:</strong> $O(n)$ — quando a capacidade esgota, o array dobra de tamanho e copia os elementos.</li>
+                      <li><strong>Custo Amortizado: $O(1)$</strong> — O resize caro de $O(n)$ é raro porque a capacidade do vetor dobra a cada expansão ($4 \to 8 \to 16 \dots$). A imensa maioria das inserções é imediata ($O(1)$). Diluindo o custo acumulado de todas as cópias pelo total de $n$ inserções realizadas, o custo médio por operação é constante: $\boxed{O(1)}$.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Simulador ArrayList -->
+              <div>
+                <div class="demo-panel">
+                  <div class="demo-controls">
+                    <button class="demo-btn" onclick="CanvasDemos.ArrayListDemo.addEnd()">+ Add no Fim</button>
+                    <button class="demo-btn btn-secondary" onclick="CanvasDemos.ArrayListDemo.reset()">↺ Reset</button>
+                  </div>
+                  <canvas id="arraylist-canvas" class="demo-canvas" height="150"></canvas>
+                  <div id="arraylist-status" class="demo-status">ArrayList pronta. Capacidade: 4, Elementos: 3.</div>
+                  <div id="arraylist-metrics" class="demo-metrics"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 11: ARRAYLIST — INSERÇÃO EM POSIÇÃO ARBITRÁRIA -->
+      <section data-section="arraylist" data-subsection="ArrayList > Inserção Arbitrária">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>ArrayList — Inserção em Posição Arbitrária</h2>
+            <div class="slide-subtitle">O custo inevitável de deslocamento (shift) de elementos</div>
+          </div>
+          <div class="slide-body">
+            <div class="two-cols">
+              <div>
+                <div class="code-container">
+                  <ol>
+                    <li><span class="code-kw">algoritmo</span> addEmPosicao(lista, tamanho, index, elem)</li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">// Shift de elementos para a direita</span></li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">para</span> i <span class="code-kw">de</span> tamanho <span class="code-kw">ate</span> index+<span class="code-num">1</span> (dec) <span class="code-kw">faca</span></li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lista[i] &larr; lista[i-<span class="code-num">1</span>]</li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">fim para</span></li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;lista[index] &larr; elem</li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;tamanho &larr; tamanho + <span class="code-num">1</span></li>
+                    <li><span class="code-kw">fim algoritmo</span></li>
+                  </ol>
+                </div>
+
+                <div class="alertblock">
+                  <div class="block-title">⚠️ Análise do Pior Caso</div>
+                  <div class="block-content">
+                    Ao inserir no <strong>início</strong> (<code>index = 0</code>), todos os $n$ elementos atuais precisam ser deslocados uma posição para a direita:
+                    $$\boxed{\text{Pior Caso (index = 0): } O(n)}$$
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="block">
+                  <div class="block-title">📐 Esquema de Deslocamento</div>
+                  <div class="block-content">
+                    <p>Inserindo elemento <strong>5</strong> no índice <strong>2</strong>:</p>
+                    <p>Antes: <code>[9, 2, <mark>1</mark>, <mark>8</mark>, <mark>24</mark>, _]</code></p>
+                    <p>&darr; <em>Elementos nos índices 2, 3 e 4 movem-se 1 casa à direita</em></p>
+                    <p>Depois: <code>[9, 2, <strong style="color:#16a34a;">5</strong>, 1, 8, 24]</code></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 12: ARRAYLIST — REMOÇÃO -->
+      <section data-section="arraylist" data-subsection="ArrayList > Remoção">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>ArrayList — Remoção</h2>
+            <div class="slide-subtitle">Deslocamento à esquerda para fechamento de lacuna na memória</div>
+          </div>
+          <div class="slide-body">
+            <div class="two-cols">
+              <div>
+                <div class="code-container">
+                  <ol>
+                    <li><span class="code-kw">algoritmo</span> remove(lista, tamanho, index)</li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;elemento &larr; lista[index]</li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">// Shift de elementos para a esquerda</span></li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">para</span> i <span class="code-kw">de</span> index <span class="code-kw">ate</span> tamanho-<span class="code-num">2</span> <span class="code-kw">faca</span></li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lista[i] &larr; lista[i+<span class="code-num">1</span>]</li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">fim para</span></li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;tamanho &larr; tamanho - <span class="code-num">1</span></li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">retorne</span> elemento</li>
+                    <li><span class="code-kw">fim algoritmo</span></li>
+                  </ol>
+                </div>
+              </div>
+
+              <div>
+                <div class="alertblock">
+                  <div class="block-title">📊 Análise de Complexidade</div>
+                  <div class="block-content">
+                    <ul>
+                      <li><strong>Remover do início (index = 0):</strong> Desloca $n-1$ elementos uma casa para a esquerda &rArr; $\boxed{O(n)}$.</li>
+                      <li><strong>Remover do fim (index = tamanho - 1):</strong> Apenas decrementa o ponteiro <code>tamanho--</code>, sem deslocamentos &rArr; $\boxed{O(1)}$.</li>
+                      <li><strong>Remover do meio (index = k):</strong> Desloca $n - 1 - k$ elementos &rArr; $O(n)$.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 13: ARRAYLIST — BUSCA E RESUMO -->
+      <section data-section="arraylist" data-subsection="ArrayList > Resumo Geral">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>ArrayList — Busca e Resumo das Complexidades</h2>
+            <div class="slide-subtitle">Consolidação do comportamento assintótico de listas dinâmicas</div>
+          </div>
+          <div class="slide-body">
+            <div class="two-cols">
+              <div>
+                <div class="block">
+                  <div class="block-title">⚡ Busca por Índice: get(index)</div>
+                  <div class="block-content">
+                    Acesso direto à posição de memória: <code>lista[index]</code>
+                    $$\boxed{O(1)}$$
+                  </div>
+                </div>
+
+                <div class="block">
+                  <div class="block-title">🔍 Busca por Valor: indexOf(elem) / contains(elem)</div>
+                  <div class="block-content">
+                    Varredura linear comparando elemento a elemento:
+                    $$\boxed{O(n)}$$
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="exampleblock">
+                  <div class="block-title">📋 Resumo das Complexidades — ArrayList</div>
+                  <div class="block-content">
+                    <table class="beamer-table" style="font-size:14px;">
+                      <thead>
+                        <tr>
+                          <th>Operação</th>
+                          <th>Complexidade</th>
+                          <th>Observação</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><code>get(i)</code></td>
+                          <td>$O(1)$</td>
+                          <td>Acesso direto</td>
+                        </tr>
+                        <tr>
+                          <td><code>add(elem)</code> no fim</td>
+                          <td>$O(1)$ amort.</td>
+                          <td>Resize eventual $O(n)$</td>
+                        </tr>
+                        <tr>
+                          <td><code>add(i, elem)</code></td>
+                          <td>$O(n)$ pior caso</td>
+                          <td>Shift à direita</td>
+                        </tr>
+                        <tr>
+                          <td><code>remove(i)</code></td>
+                          <td>$O(n)$ pior caso</td>
+                          <td>Shift à esquerda</td>
+                        </tr>
+                        <tr>
+                          <td><code>indexOf(elem)</code></td>
+                          <td>$O(n)$</td>
+                          <td>Busca linear</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 3: LISTAS ENCADEADAS (LINKEDLIST)
+           ============================================================ -->
+
+      <!-- SLIDE 14: LINKEDLIST — ESTRUTURA -->
+      <section data-section="linkedlist" data-subsection="LinkedList > Estrutura em Memória">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>LinkedList — Estrutura</h2>
+            <div class="slide-subtitle">Nós dispersos na memória conectados por ponteiros de referência</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">🔗 Ideia do Encadeamento</div>
+              <div class="block-content">
+                Ao invés de alocar posições contíguas de memória, cada elemento reside em um <strong>nó independente</strong> disperso na memória Heap. Cada nó armazena seu dado e duas <strong>referências (ponteiros)</strong>: uma para o nó anterior (<code>prev</code>) e outra para o próximo nó (<code>next</code>).
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">📌 Características Anatômicas</div>
+              <div class="block-content">
+                <ul>
+                  <li>A lista mantém referências diretas para o primeiro nó (<code>head</code>) e para o último (<code>tail</code>).</li>
+                  <li>Os elementos <strong>não são contíguos na memória</strong> física.</li>
+                  <li><strong>Consequência crucial:</strong> É impossível calcular o endereço do $i$-ésimo elemento! Para alcançar o índice $i$, é obrigatório percorrer os ponteiros nó a nó desde a cabeça.</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Canvas LinkedList -->
+            <div class="demo-panel">
+              <canvas id="linkedlist-canvas" class="demo-canvas" height="110"></canvas>
+              <div id="linkedlist-status" class="demo-status">LinkedList duplamente encadeada pronta.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 15: LINKEDLIST — INSERÇÃO -->
+      <section data-section="linkedlist" data-subsection="LinkedList > Inserção">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>LinkedList — Inserção</h2>
+            <div class="slide-subtitle">Eficiência imediata nas pontas vs. navegação sequencial no meio</div>
+          </div>
+          <div class="slide-body">
+            <div class="two-cols">
+              <div>
+                <div class="block">
+                  <div class="block-title">⚡ addFirst(elem) e addLast(elem) — $O(1)$</div>
+                  <div class="block-content">
+                    <ul>
+                      <li><strong>addFirst:</strong> Cria o novo nó, aponta <code>novo.next = head</code>, atualiza <code>head.prev = novo</code> e redefine <code>head = novo</code>.</li>
+                      <li><strong>addLast:</strong> Cria o nó, aponta <code>tail.next = novo</code> e redefine <code>tail = novo</code>.</li>
+                      <li>Apenas reconfiguração de <strong>ponteiros em tempo constante</strong>. Não há nenhum deslocamento de dados!</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="alertblock">
+                  <div class="block-title">⏳ add(index, elem) — $O(n)$</div>
+                  <div class="block-content">
+                    Para inserir em posição arbitrária:
+                    <ol>
+                      <li>Percorrer $i$ nós a partir de <code>head</code>: <strong>$O(n)$</strong>.</li>
+                      <li>Manipular os 4 ponteiros vizinhos: <strong>$O(1)$</strong>.</li>
+                      <li>Custo total: $\boxed{O(n)}$.</li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="demo-panel">
+                  <div class="demo-controls">
+                    <button class="demo-btn btn-success" onclick="CanvasDemos.LinkedListDemo.addFirst()">+ addFirst (O(1))</button>
+                    <button class="demo-btn" onclick="CanvasDemos.LinkedListDemo.addLast()">+ addLast (O(1))</button>
+                    <button class="demo-btn btn-secondary" onclick="CanvasDemos.LinkedListDemo.traverseTo(2)">Percorrer até idx 2 (O(n))</button>
+                  </div>
+                  <div class="exampleblock" style="margin-top:10px;">
+                    <div class="block-title">✨ Vantagem sobre ArrayList</div>
+                    <div class="block-content">
+                      Inserções no início (<code>addFirst</code>) são sempre $O(1)$, sem necessidade de empurrar $n$ elementos nem redimensionar vetores!
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 16: LINKEDLIST — REMOÇÃO -->
+      <section data-section="linkedlist" data-subsection="LinkedList > Remoção">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>LinkedList — Remoção</h2>
+            <div class="slide-subtitle">Desligamento de ponteiros nas extremidades vs. busca prévia no meio</div>
+          </div>
+          <div class="slide-body">
+            <div class="two-cols">
+              <div>
+                <div class="block">
+                  <div class="block-title">⚡ removeFirst() e removeLast() — $O(1)$</div>
+                  <div class="block-content">
+                    <ul>
+                      <li><strong>removeFirst:</strong> Atualiza <code>head = head.next</code> e limpa a referência anterior. Custo: <strong>$O(1)$</strong>.</li>
+                      <li><strong>removeLast:</strong> Atualiza <code>tail = tail.prev</code> e limpa a referência seguinte. Custo: <strong>$O(1)$</strong>.</li>
+                      <li>Operação puramente de manipulação de referências de topo e cauda.</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="alertblock">
+                  <div class="block-title">⏳ remove(index) e remove(elem) — $O(n)$</div>
+                  <div class="block-content">
+                    Exige percorrer a lista desde a cabeça para localizar o nó correspondente:
+                    <ul>
+                      <li>Percorrer sequencialmente até o nó: $O(n)$.</li>
+                      <li>Desligar e religar referências dos vizinhos: $O(1)$.</li>
+                      <li>Total: $\boxed{O(n)}$.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="demo-panel">
+                  <div class="demo-controls">
+                    <button class="demo-btn btn-danger" onclick="CanvasDemos.LinkedListDemo.removeFirst()">removeFirst (O(1))</button>
+                    <button class="demo-btn btn-secondary" onclick="CanvasDemos.LinkedListDemo.removeLast()">removeLast (O(1))</button>
+                    <button class="demo-btn btn-secondary" onclick="CanvasDemos.LinkedListDemo.reset()">↺ Reset Lista</button>
+                  </div>
+                  <div style="font-size:13px; color:var(--text-muted); margin-top:8px;">
+                    Nas extremidades, a remoção é instantânea porque temos acesso direto aos nós através dos ponteiros fixos <code>head</code> e <code>tail</code>.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 17: LINKEDLIST — BUSCA -->
+      <section data-section="linkedlist" data-subsection="LinkedList > Busca">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>LinkedList — Busca</h2>
+            <div class="slide-subtitle">A ausência de acesso posicional direto</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">⏳ get(index), indexOf(elem), contains(elem) — $O(n)$</div>
+              <div class="block-content">
+                Todas as buscas requerem <strong>iteração nó por nó</strong>:
+                <ul>
+                  <li><code>get(index)</code>: É necessário caminhar $i$ saltos de ponteiro a partir de <code>head</code> &rArr; $\boxed{O(n)}$.</li>
+                  <li><code>indexOf(elem)</code>: Percorre a lista comparando o valor nó a nó até encontrar ou atingir <code>null</code> &rArr; $\boxed{O(n)}$.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">⚡ getFirst() e getLast() — $O(1)$</div>
+              <div class="block-content">
+                Basta retornar diretamente o valor armazenado nos ponteiros <code>head.valor</code> ou <code>tail.valor</code>. Custo: $\boxed{O(1)}$.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 18: LINKEDLIST — RESUMO DE COMPLEXIDADES -->
+      <section data-section="linkedlist" data-subsection="LinkedList > Resumo Geral">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>LinkedList — Resumo das Complexidades</h2>
+            <div class="slide-subtitle">Panorama completo das operações em listas encadeadas</div>
+          </div>
+          <div class="slide-body">
+            <div class="beamer-table-container">
+              <table class="beamer-table">
+                <thead>
+                  <tr>
+                    <th>Operação</th>
+                    <th>Complexidade</th>
+                    <th>Observação Arquitetural</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>addFirst / addLast</code></td>
+                    <td>$O(1)$</td>
+                    <td>Manipulação direta de ponteiros em head/tail</td>
+                  </tr>
+                  <tr>
+                    <td><code>add(i, elem)</code></td>
+                    <td>$O(n)$</td>
+                    <td>Percorrer a cadeia de nós até a posição $i$</td>
+                  </tr>
+                  <tr>
+                    <td><code>removeFirst / removeLast</code></td>
+                    <td>$O(1)$</td>
+                    <td>Manipulação direta de ponteiros em head/tail</td>
+                  </tr>
+                  <tr>
+                    <td><code>remove(i)</code></td>
+                    <td>$O(n)$</td>
+                    <td>Percorrer até a posição do nó desejado</td>
+                  </tr>
+                  <tr>
+                    <td><code>get(i)</code></td>
+                    <td>$O(n)$</td>
+                    <td>Sem cálculo de endereço direto; travessia sequencial</td>
+                  </tr>
+                  <tr>
+                    <td><code>getFirst / getLast</code></td>
+                    <td>$O(1)$</td>
+                    <td>Acesso imediato às referências head e tail</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="alertblock">
+              <div class="block-title">📌 Conclusão Teórica</div>
+              <div class="block-content">
+                A LinkedList é imbatível nas <strong>extremidades</strong> (head e tail), mas é inadequada e ineficiente para operações que demandem acesso aleatório por índice no <strong>meio</strong> da coleção.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 19: ARRAYLIST VS LINKEDLIST -->
+      <section data-section="linkedlist" data-subsection="Comparação > ArrayList vs LinkedList">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>ArrayList vs LinkedList — Comparação</h2>
+            <div class="slide-subtitle">Confronto direto de desempenho e diretrizes de seleção</div>
+          </div>
+          <div class="slide-body">
+            <div class="beamer-table-container">
+              <table class="beamer-table">
+                <thead>
+                  <tr>
+                    <th>Operação</th>
+                    <th>ArrayList</th>
+                    <th>LinkedList</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Acesso por índice (<code>get(i)</code>)</td>
+                    <td>$O(1)$ <span class="check">✓</span></td>
+                    <td>$O(n)$</td>
+                  </tr>
+                  <tr>
+                    <td>Inserção no início (<code>addFirst</code>)</td>
+                    <td>$O(n)$ (shift obrigatório)</td>
+                    <td>$O(1)$ <span class="check">✓</span></td>
+                  </tr>
+                  <tr>
+                    <td>Inserção no fim (<code>addLast</code>)</td>
+                    <td>$O(1)$ amort. <span class="check">✓</span></td>
+                    <td>$O(1)$ <span class="check">✓</span></td>
+                  </tr>
+                  <tr>
+                    <td>Remoção do início (<code>removeFirst</code>)</td>
+                    <td>$O(n)$ (shift obrigatório)</td>
+                    <td>$O(1)$ <span class="check">✓</span></td>
+                  </tr>
+                  <tr>
+                    <td>Remoção do fim (<code>removeLast</code>)</td>
+                    <td>$O(1)$ <span class="check">✓</span></td>
+                    <td>$O(1)$ <span class="check">✓</span></td>
+                  </tr>
+                  <tr>
+                    <td>Busca por valor</td>
+                    <td>$O(n)$</td>
+                    <td>$O(n)$</td>
+                  </tr>
+                  <tr>
+                    <td>Uso de memória</td>
+                    <td>Contígua (alta localidade)</td>
+                    <td>Nós + ponteiros (overhead de referências)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="alertblock">
+              <div class="block-title">💡 Quando Usar Cada Uma?</div>
+              <div class="block-content">
+                <ul>
+                  <li><strong>ArrayList:</strong> Escolha padrão para a esmagadora maioria dos casos; indispensável quando o acesso aleatório por índice for frequente e leituras superarem inserções arbitrárias.</li>
+                  <li><strong>LinkedList:</strong> Use prioritariamente quando você necessitar de inserções e remoções constantes nas pontas (início e fim) sem alocação contígua prévia.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 4: PILHA (STACK -- LIFO)
+           ============================================================ -->
+
+      <!-- SLIDE 20: PILHA — DEFINIÇÃO -->
+      <section data-section="pilha" data-subsection="Pilha > Conceito e Aplicações">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Pilha — Last In, First Out (LIFO)</h2>
+            <div class="slide-subtitle">Acesso estrito à última posição inserida</div>
+          </div>
+          <div class="slide-body">
+            <div class="two-cols">
+              <div>
+                <div class="block">
+                  <div class="block-title">📌 Definição</div>
+                  <div class="block-content">
+                    Uma <strong>pilha</strong> é uma estrutura de dados linear disciplinada onde toda adição (<code>push</code>) e toda remoção (<code>pop</code>) são efetuadas exclusivamente em uma única extremidade denominada <strong>topo</strong>. O último elemento a entrar é obrigatoriamente o primeiro a sair.
+                  </div>
+                </div>
+
+                <div class="exampleblock">
+                  <div class="block-title">💻 Aplicações Práticas Essenciais</div>
+                  <div class="block-content">
+                    <ul>
+                      <li>Operação Desfazer / Refazer (<code>Ctrl+Z</code> / <code>Ctrl+Y</code>).</li>
+                      <li>Histórico de navegação (botão "Voltar" do navegador web).</li>
+                      <li>Pilha de chamadas de execução (Call Stack de recursão).</li>
+                      <li>Casamento e validação de parênteses/chaves em compiladores.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Simulador Stack -->
+              <div>
+                <div class="demo-panel">
+                  <div class="demo-controls">
+                    <button class="demo-btn" onclick="CanvasDemos.StackDemo.push()">push(elem) O(1)</button>
+                    <button class="demo-btn btn-danger" onclick="CanvasDemos.StackDemo.pop()">pop() O(1)</button>
+                    <button class="demo-btn btn-secondary" onclick="CanvasDemos.StackDemo.peek()">peek() O(1)</button>
+                    <button class="demo-btn btn-secondary" onclick="CanvasDemos.StackDemo.reset()">↺</button>
+                  </div>
+                  <canvas id="stack-canvas" class="demo-canvas" height="170"></canvas>
+                  <div id="stack-status" class="demo-status">Pilha pronta. Topo aponta para o elemento mais recente.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 21: PILHA — PSEUDOCÓDIGO -->
+      <section data-section="pilha" data-subsection="Pilha > Pseudocódigo">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Pilha — Pseudocódigo das Operações Primitivas</h2>
+            <div class="slide-subtitle">Manipulação elementar de ponteiro de topo em tempo constante</div>
+          </div>
+          <div class="slide-body">
+            <div class="two-cols">
+              <div>
+                <div class="exampleblock">
+                  <div class="block-title">📥 push(pilha, topo, elem)</div>
+                  <div class="block-content">
+                    <div class="code-container">
+                      <ol>
+                        <li><span class="code-kw">algoritmo</span> push(pilha, topo, elem)</li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">se</span> topo + <span class="code-num">1</span> = capacidade <span class="code-kw">entao</span></li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">// erro: pilha cheia (overflow)</span></li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">fim se</span></li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;topo &larr; topo + <span class="code-num">1</span></li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;pilha[topo] &larr; elem</li>
+                        <li><span class="code-kw">fim algoritmo</span></li>
+                      </ol>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="exampleblock">
+                  <div class="block-title">📤 pop(pilha, topo)</div>
+                  <div class="block-content">
+                    <div class="code-container">
+                      <ol>
+                        <li><span class="code-kw">algoritmo</span> pop(pilha, topo)</li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">se</span> topo = -<span class="code-num">1</span> <span class="code-kw">entao</span></li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">// erro: pilha vazia (underflow)</span></li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">fim se</span></li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;elem &larr; pilha[topo]</li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;topo &larr; topo - <span class="code-num">1</span></li>
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">retorne</span> elem</li>
+                        <li><span class="code-kw">fim algoritmo</span></li>
+                      </ol>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="alertblock" style="margin-top:10px;">
+              <div class="block-title">⚡ Análise de Complexidade</div>
+              <div class="block-content">
+                Ambas as operações envolvem exclusivamente operações primitivas de incremento/decremento de um índice inteiro e atribuição em memória. Nenhum laço é executado: complexidade estritamente $\boxed{O(1)}$.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 22: PILHA — COMPLEXIDADES -->
+      <section data-section="pilha" data-subsection="Pilha > Complexidades">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Pilha — Resumo das Complexidades</h2>
+            <div class="slide-subtitle">Por que todas as operações são estritamente O(1)?</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📋 Tabela de Operações de Pilha</div>
+              <div class="block-content">
+                <table class="beamer-table">
+                  <thead>
+                    <tr>
+                      <th>Operação</th>
+                      <th>Complexidade</th>
+                      <th>Justificativa Algorítmica</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>push(elem)</code></td>
+                      <td>$O(1)$</td>
+                      <td>Atribuição direta em <code>pilha[topo+1]</code> e incremento</td>
+                    </tr>
+                    <tr>
+                      <td><code>pop()</code></td>
+                      <td>$O(1)$</td>
+                      <td>Leitura de <code>pilha[topo]</code> e decremento</td>
+                    </tr>
+                    <tr>
+                      <td><code>peek()</code></td>
+                      <td>$O(1)$</td>
+                      <td>Acesso direto ao elemento <code>pilha[topo]</code> sem remoção</td>
+                    </tr>
+                    <tr>
+                      <td><code>isEmpty()</code></td>
+                      <td>$O(1)$</td>
+                      <td>Comparação booleana simples: <code>topo == -1</code></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">💡 Por que tudo é $O(1)$?</div>
+              <div class="block-content">
+                A disciplina LIFO restringe completamente o ponto de acesso ao <strong>topo</strong>. Não há necessidade de percorrer a estrutura, não há buscas intermediárias e nenhum elemento jamais é deslocado!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 5: FILA (QUEUE -- FIFO)
+           ============================================================ -->
+
+      <!-- SLIDE 23: FILA — DEFINIÇÃO -->
+      <section data-section="fila" data-subsection="Fila > Conceito FIFO">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Fila — First In, First Out (FIFO)</h2>
+            <div class="slide-subtitle">Inserções no final e remoções no início</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📌 Definição</div>
+              <div class="block-content">
+                Uma <strong>fila</strong> é uma estrutura de dados linear onde toda inserção (<code>addLast</code> / <code>enqueue</code>) é realizada no <strong>fim (tail)</strong> e toda remoção (<code>removeFirst</code> / <code>dequeue</code>) ocorre na outra ponta, o <strong>início (head)</strong>. O primeiro elemento a entrar é obrigatoriamente o primeiro a sair.
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">🖨️ Aplicações Típicas</div>
+              <div class="block-content">
+                <ul>
+                  <li>Spool de impressão (documentos impressos na ordem exata de chegada).</li>
+                  <li>Filas de requisições web e filas de mensagens (RabbitMQ, Kafka, SQS).</li>
+                  <li>Busca em Largura em Grafos e Árvores (BFS - Breadth-First Search).</li>
+                  <li>Escalonamento de processos por fatias de tempo (Round-Robin em SO).</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 24: FILA — FILA CIRCULAR -->
+      <section data-section="fila" data-subsection="Fila > Aritmética Modular">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Fila — Implementação e Complexidade</h2>
+            <div class="slide-subtitle">Eliminando o custo de shift com aritmética modular em buffer circular</div>
+          </div>
+          <div class="slide-body">
+            <div class="alertblock">
+              <div class="block-title">⚠️ O Problema da Fila Linear com Shift</div>
+              <div class="block-content">
+                Se implementarmos a fila em um array simples e toda remoção do início exigir deslocar os elementos restantes para a esquerda (<code>shiftLeft</code>), a remoção custará <strong>$O(n)$</strong>!
+              </div>
+            </div>
+
+            <div class="block">
+              <div class="block-title">✨ A Solução Elegante: Fila Circular</div>
+              <div class="block-content">
+                Ao invés de deslocar os dados fisicamente, deslocamos apenas os ponteiros <code>head</code> e <code>tail</code> utilizando <strong>aritmética modular</strong> com o operador resto de divisão (<code>%</code>):
+                <ul>
+                  <li>Ao enfileirar: $\text{tail} \leftarrow (\text{tail} + 1) \pmod{\text{capacidade}}$</li>
+                  <li>Ao desenfileirar: $\text{head} \leftarrow (\text{head} + 1) \pmod{\text{capacidade}}$</li>
+                </ul>
+                Quando um ponteiro atinge o final do array físico, ele "dá a volta" para o índice 0!
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">⚡ Complexidades na Fila Circular</div>
+              <div class="block-content">
+                Ambas as operações básicas tornam-se instantâneas:
+                $$\boxed{\texttt{enqueue}: O(1) \quad \text{e} \quad \texttt{dequeue}: O(1)}$$
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 25: FILA CIRCULAR COM SIMULADOR -->
+      <section data-section="fila" data-subsection="Fila > Demonstração Prática">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Fila — Exemplo de Funcionamento Circular</h2>
+            <div class="slide-subtitle">A volta no vetor físico garantindo tempo constante O(1)</div>
+          </div>
+          <div class="slide-body">
+            <div class="two-cols">
+              <div>
+                <div class="block">
+                  <div class="block-title">🔄 Traço do Funcionamento</div>
+                  <div class="block-content" style="font-size:15px;">
+                    Considere um vetor de capacidade 4 com ponteiros Head (H) e Tail (T):
+                    <ol>
+                      <li><code>addLast(a), addLast(b), addLast(c)</code>:<br>
+                      $[\underset{H}{a},\;b,\;\underset{T}{c},\;\_]$</li>
+                      <li><code>removeFirst() &rarr; a</code>:<br>
+                      $[\_,\;\underset{H}{b},\;\underset{T}{c},\;\_]$</li>
+                      <li><code>addLast(d), addLast(e)</code>:<br>
+                      O tail dá a volta: $(3+1) \pmod 4 = 0$!<br>
+                      $[\underset{T}{e},\;\underset{H}{b},\;c,\;d]$</li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Simulador Fila Circular -->
+              <div>
+                <div class="demo-panel">
+                  <div class="demo-controls">
+                    <button class="demo-btn" onclick="CanvasDemos.QueueDemo.enqueue()">+ Enfileirar O(1)</button>
+                    <button class="demo-btn btn-danger" onclick="CanvasDemos.QueueDemo.dequeue()">- Desenfileirar O(1)</button>
+                    <button class="demo-btn btn-secondary" onclick="CanvasDemos.QueueDemo.reset()">↺</button>
+                  </div>
+                  <canvas id="queue-canvas" class="demo-canvas" height="130"></canvas>
+                  <div id="queue-status" class="demo-status">Fila Circular pronta. Observe H (head) e T (tail).</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 6: ÁRVORE BINÁRIA DE PESQUISA (BST)
+           ============================================================ -->
+
+      <!-- SLIDE 26: BST — DEFINIÇÃO -->
+      <section data-section="bst" data-subsection="BST > Definição e Propriedade">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>BST — Definição</h2>
+            <div class="slide-subtitle">A propriedade fundamental da Árvore Binária de Pesquisa</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">🌳 Propriedade da BST (Binary Search Tree)</div>
+              <div class="block-content">
+                Uma <strong>Árvore Binária de Pesquisa</strong> é uma árvore binária onde, para <strong>todo nó $X$</strong>:
+                <ul>
+                  <li>Todos os valores na <strong>subárvore esquerda</strong> de $X$ são estritamente <strong>menores</strong> que o valor de $X$.</li>
+                  <li>Todos os valores na <strong>subárvore direita</strong> de $X$ são estritamente <strong>maiores</strong> que o valor de $X$.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">🌿 Exemplo Canônico da Aula</div>
+              <div class="block-content">
+                Na árvore com raiz <strong>41</strong>:
+                <ul>
+                  <li>À esquerda temos <strong>20</strong>, cujos filhos são 11 ($< 20$) e 29 ($> 20$). Todos $< 41$.</li>
+                  <li>À direita temos <strong>65</strong>, cujos filhos são 50 ($< 65$) e 91 ($> 65$). Todos $> 41$.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 27: BST — CONCEITOS IMPORTANTES -->
+      <section data-section="bst" data-subsection="BST > Altura e Terminologia">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>BST — Conceitos Importantes</h2>
+            <div class="slide-subtitle">Terminologia e o papel decisivo da altura h</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📖 Terminologia Estrutural</div>
+              <div class="block-content">
+                <ul>
+                  <li><strong>Raiz:</strong> O nó superior da árvore, que não possui pai (nó 41).</li>
+                  <li><strong>Folhas:</strong> Nós sem filhos (ex: 11, 29, 50, 91).</li>
+                  <li><strong>Altura $h$:</strong> O comprimento do maior caminho entre a raiz e uma folha.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="alertblock">
+              <div class="block-title">🎯 Ponto Central da Análise de Complexidade</div>
+              <div class="block-content">
+                As operações fundamentais na BST (busca, inserção e remoção) dependem estritamente da <strong>altura $h$</strong> da árvore:
+                <ul>
+                  <li>Quanto <strong>menor a altura $h$</strong>, mais rápida a execução.</li>
+                  <li>Para $n$ nós, a altura pode variar drasticamente: desde $h \approx \log_2 n$ (árvore perfeitamente balanceada) até $h = n - 1$ (árvore completamente degenerada em lista linear)!</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 28: BST — BUSCA -->
+      <section data-section="bst" data-subsection="BST > Algoritmo de Busca">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>BST — Busca</h2>
+            <div class="slide-subtitle">Decisão binária a cada nó: esquerda ou direita</div>
+          </div>
+          <div class="slide-body">
+            <div class="two-cols">
+              <div>
+                <div class="code-container">
+                  <ol>
+                    <li><span class="code-kw">algoritmo</span> buscaBST(raiz, valor)</li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;no &larr; raiz</li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">enquanto</span> no != <span class="code-kw">nulo</span> <span class="code-kw">faca</span></li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">se</span> valor = no.valor <span class="code-kw">entao</span></li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">retorne</span> no</li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">senao se</span> valor &lt; no.valor <span class="code-kw">entao</span></li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no &larr; no.esquerda</li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">senao</span></li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no &larr; no.direita</li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">fim se</span></li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">fim enquanto</span></li>
+                    <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">retorne nulo</span> <span class="code-comment">// nao encontrado</span></li>
+                    <li><span class="code-kw">fim algoritmo</span></li>
+                  </ol>
+                </div>
+              </div>
+
+              <div>
+                <div class="block">
+                  <div class="block-title">💡 Ideia do Algoritmo</div>
+                  <div class="block-content">
+                    Compara o valor buscado com a chave do nó atual:
+                    <ul>
+                      <li>Se for igual: elemento localizado com sucesso.</li>
+                      <li>Se for <strong>menor</strong>: descartamos toda a subárvore direita e descemos para a <strong>esquerda</strong>.</li>
+                      <li>Se for <strong>maior</strong>: descartamos toda a subárvore esquerda e descemos para a <strong>direita</strong>.</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="alertblock">
+                  <div class="block-title">⚡ Custo da Busca</div>
+                  <div class="block-content">
+                    Em cada iteração, descemos exatamente um nível na árvore:
+                    $$\boxed{\text{Busca em BST: } O(h)}$$
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 29: BST — EXEMPLO DE BUSCA COM SIMULADOR -->
+      <section data-section="bst" data-subsection="BST > Exemplo Passo a Passo">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>BST — Exemplo de Busca Interativa</h2>
+            <div class="slide-subtitle">Rastreamento passo a passo da busca pelo valor 29 na árvore da aula</div>
+          </div>
+          <div class="slide-body">
+            <div class="two-cols">
+              <div>
+                <div class="block">
+                  <div class="block-title">🔍 Traço da Busca por 29</div>
+                  <div class="block-content">
+                    <ol>
+                      <li>Compara 29 com <strong>41</strong> (raiz): $29 < 41$ &rArr; desce para a <strong>esquerda</strong>.</li>
+                      <li>Compara 29 com <strong>20</strong>: $29 > 20$ &rArr; desce para a <strong>direita</strong>.</li>
+                      <li>Compara 29 com <strong>29</strong>: $29 == 29$ &rArr; <strong>Encontrou!</strong></li>
+                    </ol>
+                    <p>Total de comparações: <strong>3</strong> (proporcional à altura percorrida $h$).</p>
+                  </div>
+                </div>
+
+                <div class="exampleblock">
+                  <div class="block-title">🎮 Controles do Simulador</div>
+                  <div class="block-content">
+                    Teste buscar 29 ou qualquer outro valor na árvore ao lado!
+                  </div>
+                </div>
+              </div>
+
+              <!-- Simulador BST -->
+              <div>
+                <div class="demo-panel">
+                  <div class="demo-controls">
+                    <button class="demo-btn" onclick="CanvasDemos.BSTDemo.search(29)">Buscar 29</button>
+                    <button class="demo-btn btn-secondary" onclick="CanvasDemos.BSTDemo.search(50)">Buscar 50</button>
+                    <button class="demo-btn btn-secondary" onclick="CanvasDemos.BSTDemo.setTreeType('balanced')">Balanceada</button>
+                    <button class="demo-btn btn-danger" onclick="CanvasDemos.BSTDemo.setTreeType('degenerate')">Degenerada</button>
+                  </div>
+                  <canvas id="bst-canvas" class="demo-canvas" height="170"></canvas>
+                  <div id="bst-status" class="demo-status">BST pronta. Clique em "Buscar 29" para ver o percurso.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 30: BST — INSERÇÃO -->
+      <section data-section="bst" data-subsection="BST > Inserção">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>BST — Inserção</h2>
+            <div class="slide-subtitle">Localizando a folha vazia para acoplamento do novo nó</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">🌱 Ideia da Inserção</div>
+              <div class="block-content">
+                A inserção segue a exata mesma lógica da busca: desce comparando as chaves até encontrar uma referência nula onde o novo elemento deve se encaixar como uma nova <strong>folha</strong>.
+              </div>
+            </div>
+
+            <div class="code-container">
+              <ol>
+                <li><span class="code-kw">algoritmo</span> inserirBST(raiz, valor)</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">se</span> raiz = <span class="code-kw">nulo</span> <span class="code-kw">entao</span> raiz &larr; <span class="code-kw">novo</span> No(valor); <span class="code-kw">retorne</span>; <span class="code-kw">fim se</span></li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;no &larr; raiz</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">enquanto</span> no != <span class="code-kw">nulo</span> <span class="code-kw">faca</span></li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">se</span> valor &lt; no.valor <span class="code-kw">entao</span></li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">se</span> no.esquerda = <span class="code-kw">nulo</span> <span class="code-kw">entao</span> no.esquerda &larr; <span class="code-kw">novo</span> No(valor); <span class="code-kw">retorne</span>; <span class="code-kw">fim se</span></li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no &larr; no.esquerda</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">senao</span></li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">se</span> no.direita = <span class="code-kw">nulo</span> <span class="code-kw">entao</span> no.direita &larr; <span class="code-kw">novo</span> No(valor); <span class="code-kw">retorne</span>; <span class="code-kw">fim se</span></li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no &larr; no.direita</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">fim se</span></li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">fim enquanto</span></li>
+                <li><span class="code-kw">fim algoritmo</span></li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 31: BST — COMPLEXIDADE DE INSERÇÃO -->
+      <section data-section="bst" data-subsection="BST > Custo de Inserção">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>BST — Complexidade de Inserção</h2>
+            <div class="slide-subtitle">Trabalho constante por nível visitado até a folha</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📊 Análise</div>
+              <div class="block-content">
+                A inserção percorre um único caminho direto da raiz até a posição de inserção da folha, realizando apenas $O(1)$ operações de comparação por nó visitado.
+                $$\boxed{\text{Inserção em BST: } O(h)}$$
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">🔍 Exemplo da Aula: Inserir o Valor 45</div>
+              <div class="block-content">
+                Na árvore canônica com raiz 41:
+                <ol>
+                  <li>$45 > 41$ &rArr; desce para a direita (nó 65).</li>
+                  <li>$45 < 65$ &rArr; desce para a esquerda (nó 50).</li>
+                  <li>$45 < 50$ &rArr; desce para a esquerda (encontra <code>null</code>) &rArr; insere 45 aqui!</li>
+                </ol>
+                Custo total: exatamente 3 comparações $= O(h)$.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 32: BST — BALANCEADA VS DEGENERADA -->
+      <section data-section="bst" data-subsection="BST > Melhor e Pior Caso">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>BST — Balanceada vs. Degenerada</h2>
+            <div class="slide-subtitle">O abismo de desempenho entre O(log n) e O(n)</div>
+          </div>
+          <div class="slide-body">
+            <div class="two-cols">
+              <div>
+                <div class="exampleblock">
+                  <div class="block-title">🌿 Árvore Balanceada (Melhor Caso)</div>
+                  <div class="block-content">
+                    <ul>
+                      <li>As chaves dividem o espaço de busca pela metade a cada nível.</li>
+                      <li>Para $n = 7$ nós, altura $h = 2$.</li>
+                      <li>Altura teórica: $\boxed{h = O(\log n)}$.</li>
+                      <li>Busca, inserção e remoção em tempo logarítmico!</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="alertblock">
+                  <div class="block-title">⚠️ Árvore Degenerada (Pior Caso)</div>
+                  <div class="block-content">
+                    <ul>
+                      <li>Ocorre quando chaves são inseridas em <strong>ordem já crescente ou decrescente</strong> (ex: 1, 2, 3, 4, 5, 6, 7).</li>
+                      <li>A árvore degenera em uma lista encadeada simples!</li>
+                      <li>Altura: $\boxed{h = n - 1 = O(n)}$.</li>
+                      <li>Todas as operações degradam para tempo linear $O(n)$!</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 33: BST — RESUMO DE COMPLEXIDADES -->
+      <section data-section="bst" data-subsection="BST > Resumo Geral">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>BST — Resumo de Complexidades</h2>
+            <div class="slide-subtitle">Comparativo assintótico entre o caso ótimo e o caso degenerado</div>
+          </div>
+          <div class="slide-body">
+            <div class="beamer-table-container">
+              <table class="beamer-table">
+                <thead>
+                  <tr>
+                    <th>Operação</th>
+                    <th>Melhor Caso (Balanceada, $h = O(\log n)$)</th>
+                    <th>Pior Caso (Degenerada, $h = O(n)$)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Busca</td>
+                    <td>$O(\log n)$</td>
+                    <td>$O(n)$</td>
+                  </tr>
+                  <tr>
+                    <td>Inserção</td>
+                    <td>$O(\log n)$</td>
+                    <td>$O(n)$</td>
+                  </tr>
+                  <tr>
+                    <td>Remoção</td>
+                    <td>$O(\log n)$</td>
+                    <td>$O(n)$</td>
+                  </tr>
+                  <tr>
+                    <td>Mínimo / Máximo</td>
+                    <td>$O(\log n)$</td>
+                    <td>$O(n)$</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="alertblock">
+              <div class="block-title">💡 Conclusão Teórica e Árvores Auto-Balanceáveis</div>
+              <div class="block-content">
+                A eficiência de uma BST depende intrinsecamente de mantê-la balanceada. Estruturas como <strong>Árvores AVL</strong> e <strong>Árvores Rubro-Negras (Red-Black Trees)</strong> realizam rotações automáticas para garantir matematicamente que $h \le 2 \log_2 n$, assegurando $O(\log n)$ mesmo no pior caso de inserção ordenada!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 7: HEAP (FILA DE PRIORIDADE)
+           ============================================================ -->
+
+      <!-- SLIDE 34: HEAP — O QUE É? -->
+      <section data-section="heap" data-subsection="Heap > Fila de Prioridade">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Heap — O que é?</h2>
+            <div class="slide-subtitle">A estrutura ideal para implementação de filas de prioridade</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">🎯 Motivação: Fila de Prioridade</div>
+              <div class="block-content">
+                Desejamos uma estrutura de dados especializada que permita:
+                <ul>
+                  <li>Inserir elementos associados a uma chave de prioridade.</li>
+                  <li>Consultar e extrair o elemento de <strong>maior</strong> (ou menor) prioridade de maneira extremamente rápida.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="beamer-table-container">
+              <table class="beamer-table">
+                <thead>
+                  <tr>
+                    <th>Estratégia Linear Alternativa</th>
+                    <th>Inserção</th>
+                    <th>Extração do Máximo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Lista Mantida Sempre Ordenada</td>
+                    <td>$O(n)$</td>
+                    <td>$O(1)$</td>
+                  </tr>
+                  <tr>
+                    <td>Lista Não Ordenada</td>
+                    <td>$O(1)$</td>
+                    <td>$O(n)$</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Heap Binário</strong></td>
+                    <td><strong>$O(\log n)$</strong></td>
+                    <td><strong>$O(\log n)$</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">⚡ O Equilíbrio Perfeito</div>
+              <div class="block-content">
+                O Heap oferece o meio-termo ideal: inserção em $O(\log n)$, extração do máximo em $O(\log n)$ e consulta ao elemento prioritário (raiz) em $O(1)$ imediato!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 35: HEAP — PROPRIEDADES -->
+      <section data-section="heap" data-subsection="Heap > Propriedades Formais">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Heap — Propriedades</h2>
+            <div class="slide-subtitle">As duas leis estruturais do Heap Máximo</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📐 Definição Formal: Heap Máximo</div>
+              <div class="block-content">
+                Uma árvore binária é classificada como um <strong>Heap Máximo</strong> se e somente se satisfizer rigorosamente duas propriedades:
+                <ol>
+                  <li><strong>Propriedade do Heap:</strong> Para todo nó $X$, o valor de $X$ é <strong>maior ou igual</strong> aos valores de seus filhos esquerdo e direito. O maior elemento global da coleção está <em>sempre</em> localizado na raiz!</li>
+                  <li><strong>Propriedade da Completude:</strong> A árvore é <strong>completa</strong> ou quase-completa, preenchida nível a nível da esquerda para a direita sem lacunas. Isso garante matematicamente que sua altura é estritamente:
+                  $$\boxed{h = \lfloor\log_2 n\rfloor = O(\log n)}$$</li>
+                </ol>
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">🌿 Exemplo Canônico de Heap Máximo da Aula</div>
+              <div class="block-content">
+                Raiz <strong>88</strong> com filhos <strong>87</strong> e <strong>73</strong>.<br>
+                Filhos de 87: 47 e 54 (ambos $\le 87$). Filhos de 73: 6 e 0 (ambos $\le 73$).
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 36: HEAP — REPRESENTAÇÃO EM ARRAY -->
+      <section data-section="heap" data-subsection="Heap > Mapeamento em Array">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Heap — Representação em Array</h2>
+            <div class="slide-subtitle">Como dispensar ponteiros e navegar por índices matemáticos</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">💾 Armazenamento sem Ponteiros (Array Compacto)</div>
+              <div class="block-content">
+                Graças à completude, os nós da árvore são mapeados sequencialmente em um array comum por percurso em largura (nível por nível):
+                $$\text{heap} = [88, 87, 73, 47, 54, 6, 0]$$
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">📐 Fórmulas de Navegação por Índices (para nó no índice $i$)</div>
+              <div class="block-content">
+                <ul>
+                  <li>Filho à <strong>esquerda:</strong> $\boxed{2i + 1}$</li>
+                  <li>Filho à <strong>direita:</strong> $\boxed{2i + 2}$</li>
+                  <li>Nó <strong>pai:</strong> $\boxed{\lfloor(i - 1)/2\rfloor}$</li>
+                </ul>
+                <p>Nenhuma referência ou ponteiro de memória é necessário! O acesso à árvore ocorre puramente através de cálculos aritméticos diretos.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 37: HEAP — INSERÇÃO COM SIMULADOR -->
+      <section data-section="heap" data-subsection="Heap > Inserção (Sift-Up)">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Heap — Inserção (Sift-Up / Swim)</h2>
+            <div class="slide-subtitle">Inserção na última posição e subida com trocas com o pai</div>
+          </div>
+          <div class="slide-body">
+            <div class="two-cols">
+              <div>
+                <div class="block">
+                  <div class="block-title">🚀 Algoritmo de Inserção</div>
+                  <div class="block-content" style="font-size:15px;">
+                    <ol>
+                      <li>Adicionar o novo elemento na primeira posição livre: o fim do vetor.</li>
+                      <li>Comparar com seu nó pai via $\lfloor(i-1)/2\rfloor$.</li>
+                      <li>Se o elemento for <strong>maior</strong> que o pai, efetua a troca (swap) e sobe.</li>
+                      <li>Repete até satisfazer a propriedade do heap ou alcançar a raiz.</li>
+                    </ol>
+                    $$\boxed{\text{Inserção no Heap: } O(\log n)}$$
+                  </div>
+                </div>
+
+                <div class="exampleblock">
+                  <div class="block-title">🔍 Exemplo: Inserir 100</div>
+                  <div class="block-content" style="font-size:14px;">
+                    100 entra no fim &rarr; troca com pai 73 &rarr; troca com raiz 88 &rarr; 100 vira a nova raiz! Custo: no máximo $h = O(\log n)$ trocas.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Simulador Heap -->
+              <div>
+                <div class="demo-panel">
+                  <div class="demo-controls">
+                    <button class="demo-btn" onclick="CanvasDemos.HeapDemo.insert(100)">+ Inserir 100 (O(log n))</button>
+                    <button class="demo-btn btn-danger" onclick="CanvasDemos.HeapDemo.extractMax()">Extrair Max (O(log n))</button>
+                    <button class="demo-btn btn-secondary" onclick="CanvasDemos.HeapDemo.reset()">↺ Reset</button>
+                  </div>
+                  <canvas id="heap-canvas" class="demo-canvas" height="180"></canvas>
+                  <div id="heap-status" class="demo-status">Heap Máximo carregado. Visão de árvore e array sincronizados.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 38: HEAP — REMOÇÃO E HEAPIFY -->
+      <section data-section="heap" data-subsection="Heap > Remoção (Heapify)">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Heap — Remoção (Extract Max) e Heapify</h2>
+            <div class="slide-subtitle">Troca da raiz com a última folha e descida restaurando o heap</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">🔄 Algoritmo de Remoção do Máximo</div>
+              <div class="block-content">
+                <ol>
+                  <li>Salva o valor da raiz (o máximo absoluto da coleção).</li>
+                  <li>Substitui o valor da raiz pelo elemento da <strong>última folha</strong> do heap e decrementa o tamanho.</li>
+                  <li>Aplica o procedimento <strong>heapify (sift-down / afundar)</strong> a partir da raiz: compara o nó com seus filhos esquerdo e direito. O <strong>maior dos três</strong> assume a posição, repetindo o processo descendo pela árvore até restaurar a propriedade.</li>
+                </ol>
+                $$\boxed{\text{Remoção no Heap: } O(\log n)}$$
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">🔍 Exemplo da Aula</div>
+              <div class="block-content">
+                Removendo max de $[100, 87, 88, 47, 54, 73]$:
+                <ol>
+                  <li>Troca 100 com última folha 73: $[\mathbf{73}, 87, 88, 47, 54]$ e remove 100.</li>
+                  <li>Heapify na raiz 73: maior filho entre 87 e 88 é <strong>88</strong>. Troca 73 com 88 &rArr; $[88, 87, \mathbf{73}, 47, 54]$.</li>
+                  <li>73 agora é folha &rArr; parada! Heap perfeitamente restaurado.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 39: HEAP — RESUMO DE COMPLEXIDADES -->
+      <section data-section="heap" data-subsection="Heap > Resumo Geral">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Heap — Resumo das Complexidades</h2>
+            <div class="slide-subtitle">Construção bottom-up e eficiência assintótica global</div>
+          </div>
+          <div class="slide-body">
+            <div class="beamer-table-container">
+              <table class="beamer-table">
+                <thead>
+                  <tr>
+                    <th>Operação</th>
+                    <th>Complexidade</th>
+                    <th>Mecanismo Algorítmico</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Inserção (<code>add</code>)</td>
+                    <td>$O(\log n)$</td>
+                    <td>Inserção no fim do array + sift-up até a raiz</td>
+                  </tr>
+                  <tr>
+                    <td>Remoção do máximo (<code>extractMax</code>)</td>
+                    <td>$O(\log n)$</td>
+                    <td>Troca com folha + heapify descendente</td>
+                  </tr>
+                  <tr>
+                    <td>Consulta ao máximo (<code>peek</code>)</td>
+                    <td>$O(1)$</td>
+                    <td>Acesso direto ao índice <code>heap[0]</code></td>
+                  </tr>
+                  <tr>
+                    <td>Build Heap (a partir de array desordenado)</td>
+                    <td>$O(n)$</td>
+                    <td>Heapify de baixo para cima (bottom-up)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">❓ Por que o Build Heap é $O(n)$ e não $O(n \log n)$?</div>
+              <div class="block-content">
+                Embora cada chamada individual a <code>heapify</code> possa custar até $O(\log n)$, a imensa maioria dos nós da árvore está concentrada próxima às folhas (onde a altura a percorrer é zero ou 1). A soma da série convergente resulta em:
+                $$\sum_{k=0}^{\lfloor\log n\rfloor} \frac{n}{2^{k+1}} \cdot k \le n \sum_{k=0}^{\infty} \frac{k}{2^{k+1}} = O(n)$$
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 8: TABELA HASH
+           ============================================================ -->
+
+      <!-- SLIDE 40: TABELA HASH — MOTIVAÇÃO -->
+      <section data-section="hash" data-subsection="Tabela Hash > Motivação">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Tabela Hash — Motivação</h2>
+            <div class="slide-subtitle">O sonho de realizar operações em tempo constante O(1)</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">💭 O Sonho: $O(1)$ para Tudo</div>
+              <div class="block-content">
+                E se pudéssemos associar cada elemento diretamente a um índice no array sem precisar realizar buscas lineares ou comparações sucessivas?
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">⚡ Tabela de Acesso Direto (Chaves Inteiras Pequenas)</div>
+              <div class="block-content">
+                Se as chaves forem inteiros pequenos (ex: matrículas de 0 a 1999), podemos usar a própria chave como índice no vetor:
+                $$\texttt{tabela}[\text{chave}] = \text{valor} \quad \Longrightarrow \quad O(1)$$
+              </div>
+            </div>
+
+            <div class="alertblock">
+              <div class="block-title">🚫 O Grande Obstáculo Prático</div>
+              <div class="block-content">
+                Quando as chaves são grandes (ex: CPF com 11 dígitos &rArr; seriam necessárias $10^{11}$ posições de memória, inviabilizando qualquer computador) ou quando as chaves são strings alfanuméricas (nomes, e-mails, URLs), o acesso direto torna-se completamente impraticável.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 41: TABELA HASH — FUNÇÃO HASH -->
+      <section data-section="hash" data-subsection="Tabela Hash > Função Hash">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Tabela Hash — Função Hash</h2>
+            <div class="slide-subtitle">Mapeando universos gigantescos de chaves para um espaço compacto</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📐 O Papel da Função Hash</div>
+              <div class="block-content">
+                Uma <strong>função hash</strong> $h(k)$ mapeia chaves de qualquer tamanho para índices inteiros válidos dentro de uma tabela de tamanho compacto $m$:
+                $$hash(chave) \longrightarrow \text{índice} \in [0, m-1]$$
+                Exemplo pelo método da divisão: $hash(k) = k \pmod m$, onde $m$ é tipicamente um número primo.
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">💎 Propriedades de uma Boa Função Hash</div>
+              <div class="block-content">
+                <ol>
+                  <li><strong>Determinística:</strong> Para a mesma chave de entrada, deve retornar obrigatoriamente o mesmo índice sempre.</li>
+                  <li><strong>Eficiente:</strong> O cálculo matemático do índice deve executar estritamente em tempo constante $O(1)$.</li>
+                  <li><strong>Uniforme:</strong> Distribui as chaves com igual probabilidade por todos os slots da tabela, minimizando agrupamentos.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 42: TABELA HASH — FUNCIONAMENTO -->
+      <section data-section="hash" data-subsection="Tabela Hash > Funcionamento">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Tabela Hash — Funcionamento</h2>
+            <div class="slide-subtitle">Mapeamento modular de chaves reais para posições de array</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">🔢 Exemplo de Mapeamento com $m = 10$</div>
+              <div class="block-content">
+                Seja a função $hash(k) = k \pmod{10}$:
+                <ul>
+                  <li>Chave <code>807365841</code>: $807365841 \pmod{10} = \mathbf{1}$ &rArr; Armazena no índice 1 ("Jesse").</li>
+                  <li>Chave <code>665422653</code>: $665422653 \pmod{10} = \mathbf{3}$ &rArr; Armazena no índice 3 ("Walter").</li>
+                  <li>Chave <code>736217017</code>: $736217017 \pmod{10} = \mathbf{7}$ &rArr; Armazena no índice 7 ("Saul").</li>
+                  <li>Chave <code>111382749</code>: $111382749 \pmod{10} = \mathbf{9}$ &rArr; Armazena no índice 9 ("Mike").</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="alertblock">
+              <div class="block-title">❓ O que acontece se duas chaves diferentes gerarem o mesmo índice?</div>
+              <div class="block-content">
+                Pelo Princípio da Casa dos Pombos, se tivermos mais chaves possíveis que posições $m$, colisões são <strong>matematicamente inevitáveis</strong>!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 43: TABELA HASH — COLISÕES COM SIMULADOR -->
+      <section data-section="hash" data-subsection="Tabela Hash > Colisões e Encadeamento">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Tabela Hash — Colisões e Encadeamento</h2>
+            <div class="slide-subtitle">Tratamento de colisões através de listas encadeadas (Chaining)</div>
+          </div>
+          <div class="slide-body">
+            <div class="two-cols">
+              <div>
+                <div class="alertblock">
+                  <div class="block-title">💥 O que é uma Colisão?</div>
+                  <div class="block-content">
+                    Ocorre quando duas chaves diferentes produzem exatamente o mesmo índice na função hash:
+                    $$hash(chave_1) = hash(chave_2), \quad \text{sendo } chave_1 \neq chave_2$$
+                  </div>
+                </div>
+
+                <div class="block">
+                  <div class="block-title">🔗 Resolução por Encadeamento (Separate Chaining)</div>
+                  <div class="block-content">
+                    Cada posição da tabela armazena uma <strong>lista encadeada</strong> com todos os elementos que colidiram naquele bucket:
+                    <ul>
+                      <li><strong>Inserção:</strong> Calcula hash e insere no início da lista do bucket &rArr; $\boxed{O(1)}$.</li>
+                      <li><strong>Busca:</strong> Calcula hash e percorre a lista do bucket comparando chaves &rArr; $\boxed{O(1 + \alpha)}$.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Simulador Hash -->
+              <div>
+                <div class="demo-panel">
+                  <div class="demo-controls">
+                    <button class="demo-btn" onclick="CanvasDemos.HashTableDemo.insert()">+ Chave Aleatória</button>
+                    <button class="demo-btn btn-secondary" onclick="CanvasDemos.HashTableDemo.loadExercisePreset()">Preset Ex. 4 (Colisão!)</button>
+                    <button class="demo-btn btn-danger" onclick="CanvasDemos.HashTableDemo.search(35)">Buscar 35</button>
+                    <button class="demo-btn btn-secondary" onclick="CanvasDemos.HashTableDemo.reset()">↺</button>
+                  </div>
+                  <canvas id="hash-canvas" class="demo-canvas" height="180"></canvas>
+                  <div id="hash-status" class="demo-status">Tabela Hash com m=7. Teste colisões com o Preset do Ex. 4.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 44: TABELA HASH — ENDEREÇAMENTO ABERTO -->
+      <section data-section="hash" data-subsection="Tabela Hash > Endereçamento Aberto">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Tabela Hash — Endereçamento Aberto</h2>
+            <div class="slide-subtitle">Sondagem de posições livres dentro do próprio vetor</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📌 Ideia do Endereçamento Aberto</div>
+              <div class="block-content">
+                Todos os elementos residem diretamente no array da tabela, sem listas encadeadas externas. Se a posição $h(k)$ estiver ocupada, procura-se a <strong>próxima posição livre</strong> através de uma sequência de sondagem (probing).
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">🔍 Sondagem Linear (Linear Probing)</div>
+              <div class="block-content">
+                $$hash(chave, i) = (hash(chave) + i) \pmod m, \quad i = 0, 1, 2, \dots$$
+                Avança circularmente de 1 em 1 até encontrar um slot vago.
+              </div>
+            </div>
+
+            <div class="alertblock">
+              <div class="block-title">⚖️ Trade-off entre as Estratégias de Colisão</div>
+              <div class="block-content">
+                <ul>
+                  <li><strong>Encadeamento:</strong> Degrada graciosamente quando cheia; suporta fator de carga $\alpha > 1$, mas aloca memória extra para nós.</li>
+                  <li><strong>Endereçamento Aberto:</strong> Não usa ponteiros extras (ótima localidade de cache), mas exige fator de carga estrito $\alpha < 1$ e sofre com agrupamentos (clustering).</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 45: TABELA HASH — COMPLEXIDADES -->
+      <section data-section="hash" data-subsection="Tabela Hash > Análise de Complexidade">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Tabela Hash — Complexidades</h2>
+            <div class="slide-subtitle">O contraste entre o caso médio O(1) e a degradação no pior caso O(n)</div>
+          </div>
+          <div class="slide-body">
+            <div class="beamer-table-container">
+              <table class="beamer-table">
+                <thead>
+                  <tr>
+                    <th>Operação</th>
+                    <th>Caso Médio (Distribuição Uniforme)</th>
+                    <th>Pior Caso (Todas as chaves colidem)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Inserção (<code>put</code>)</td>
+                    <td>$O(1)$</td>
+                    <td>$O(n)$</td>
+                  </tr>
+                  <tr>
+                    <td>Busca (<code>get</code>)</td>
+                    <td>$O(1)$</td>
+                    <td>$O(n)$</td>
+                  </tr>
+                  <tr>
+                    <td>Remoção (<code>remove</code>)</td>
+                    <td>$O(1)$</td>
+                    <td>$O(n)$</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="alertblock">
+              <div class="block-title">⚠️ Quando ocorre o Pior Caso?</div>
+              <div class="block-content">
+                O pior caso ocorre quando uma função hash ruim ou um conjunto patológico de dados faz com que <strong>todas as $n$ chaves gerem o mesmo índice</strong>. Todos os elementos caem em uma única lista encadeada, transformando a busca em uma busca linear $O(n)$!
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">✅ Na Prática do Mundo Real</div>
+              <div class="block-content">
+                Com boas funções hash universais e mantendo o fator de carga sob controle ($\alpha \le 0.75$), o <strong>caso médio $O(1)$</strong> prevalece com altíssima confiabilidade.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 46: TABELA HASH — FATOR DE CARGA E RESIZE -->
+      <section data-section="hash" data-subsection="Tabela Hash > Fator de Carga e Rehash">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Tabela Hash — Fator de Carga e Resize</h2>
+            <div class="slide-subtitle">Mantendo a performance constante com re-hashing dinâmico</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📊 Fator de Carga ($\alpha$)</div>
+              <div class="block-content">
+                $$\alpha = \frac{n}{m}$$
+                onde $n$ é o número total de elementos armazenados e $m$ é o número de slots da tabela.
+                <ul>
+                  <li>Se $\alpha$ for alto &rArr; o número de colisões explode, degradando a performance para $O(n)$.</li>
+                  <li>As principais linguagens (Java <code>HashMap</code>, C++ <code>unordered_map</code>) utilizam $\alpha = 0.75$ como limiar padrão de corte para expansão.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="alertblock">
+              <div class="block-title">🔄 Resize e Rehash Dinâmico</div>
+              <div class="block-content">
+                Quando $\alpha$ atinge o limiar:
+                <ol>
+                  <li>Aloca-se uma nova tabela maior (tipicamente com o dobro do tamanho: $2m$).</li>
+                  <li><strong>Rehash obrigatório:</strong> Recalcula o hash de cada um dos $n$ elementos usando o novo tamanho $2m$.</li>
+                  <li>Insere cada elemento no seu novo slot correspondente &rArr; Custo de $\boxed{O(n)}$.</li>
+                </ol>
+                Assim como na ArrayList, esse custo é <strong>amortizado</strong> por ocorrer raramente.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 9: TABELA COMPARATIVA GERAL
+           ============================================================ -->
+
+      <!-- SLIDE 47: GRANDE TABELA COMPARATIVA -->
+      <section data-section="comparacao" data-subsection="Comparação > Grande Tabela Geral">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Grande Tabela Comparativa Geral</h2>
+            <div class="slide-subtitle">Todas as estruturas de dados fundamentais lado a lado</div>
+          </div>
+          <div class="slide-body">
+            <div class="beamer-table-container">
+              <table class="beamer-table">
+                <thead>
+                  <tr>
+                    <th>Estrutura de Dados</th>
+                    <th>Acesso</th>
+                    <th>Busca</th>
+                    <th>Inserção</th>
+                    <th>Remoção</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Array / ArrayList</strong></td>
+                    <td>$O(1)$</td>
+                    <td>$O(n)$</td>
+                    <td>$O(n)$ ($O(1)$ amort. no fim)</td>
+                    <td>$O(n)$ ($O(1)$ no fim)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>LinkedList</strong></td>
+                    <td>$O(n)$</td>
+                    <td>$O(n)$</td>
+                    <td>$O(1)$ nas pontas / $O(n)$ meio</td>
+                    <td>$O(1)$ nas pontas / $O(n)$ meio</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Pilha (Stack)</strong></td>
+                    <td>$O(1)$ (topo)</td>
+                    <td>---</td>
+                    <td>$O(1)$ (push)</td>
+                    <td>$O(1)$ (pop)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Fila (Queue)</strong></td>
+                    <td>$O(1)$ (head)</td>
+                    <td>---</td>
+                    <td>$O(1)$ (enqueue)</td>
+                    <td>$O(1)$ (dequeue)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>BST (balanceada)</strong></td>
+                    <td>---</td>
+                    <td>$O(\log n)$</td>
+                    <td>$O(\log n)$</td>
+                    <td>$O(\log n)$</td>
+                  </tr>
+                  <tr>
+                    <td><strong>BST (degenerada)</strong></td>
+                    <td>---</td>
+                    <td>$O(n)$</td>
+                    <td>$O(n)$</td>
+                    <td>$O(n)$</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Heap</strong></td>
+                    <td>$O(1)$ (máximo)</td>
+                    <td>---</td>
+                    <td>$O(\log n)$</td>
+                    <td>$O(\log n)$</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Tabela Hash</strong></td>
+                    <td>---</td>
+                    <td>$O(1)$ médio / $O(n)$ pior</td>
+                    <td>$O(1)$ médio / $O(n)$ pior</td>
+                    <td>$O(1)$ médio / $O(n)$ pior</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 48: QUANDO USAR CADA ESTRUTURA COM SIMULADOR -->
+      <section data-section="comparacao" data-subsection="Comparação > Guia Prático de Seleção">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Quando Usar Cada Estrutura?</h2>
+            <div class="slide-subtitle">Guia prático de engenharia de software e curvas comparativas</div>
+          </div>
+          <div class="slide-body">
+            <div class="two-cols">
+              <div>
+                <div class="exampleblock">
+                  <div class="block-title">💡 Guia Prático de Decisão</div>
+                  <div class="block-content" style="font-size:14.5px;">
+                    <ul>
+                      <li><strong>Acesso frequente por índice numérico?</strong> &rarr; ArrayList.</li>
+                      <li><strong>Inserções/remoções constantes nas pontas?</strong> &rarr; LinkedList ou Deque.</li>
+                      <li><strong>Política estrita LIFO (desfazer/voltar)?</strong> &rarr; Pilha.</li>
+                      <li><strong>Ordem estrita FIFO (processamento por chegada)?</strong> &rarr; Fila.</li>
+                      <li><strong>Consultas por intervalo ordenado?</strong> &rarr; BST balanceada.</li>
+                      <li><strong>Extrair rapidamente o máximo/mínimo?</strong> &rarr; Heap.</li>
+                      <li><strong>Busca instantânea por chave sem necessidade de ordem?</strong> &rarr; Tabela Hash.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Simulador de Complexidade Comparativa -->
+              <div>
+                <div class="demo-panel">
+                  <div class="demo-controls">
+                    <label style="font-size:12px; font-weight:bold;">Tamanho de Entrada (n): </label>
+                    <input type="range" min="2" max="64" value="16" oninput="CanvasDemos.ComplexityChart.setN(this.value); document.getElementById('n-val').textContent = this.value;">
+                    <span id="n-val" style="font-size:12px; font-weight:bold;">16</span>
+                  </div>
+                  <canvas id="complexity-canvas" class="demo-canvas" height="180"></canvas>
+                  <div style="font-size:11.5px; color:var(--text-muted); margin-top:4px;">Número aproximado de passos primitivos em função de $n$.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 10: EXERCÍCIOS RESOLVIDOS
+           ============================================================ -->
+
+      <!-- SLIDE 49: EXERCÍCIO RESOLVIDO 1 -->
+      <section data-section="exercicios-res" data-subsection="Exercícios Resolvidos > Exercício 1">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício Resolvido 1 — Inserções em ArrayList</h2>
+            <div class="slide-subtitle">Contagem exata de operações primitivas e custo amortizado</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📝 Enunciado</div>
+              <div class="block-content">
+                Uma ArrayList inicialmente vazia com <strong>capacidade inicial 4</strong> recebe as seguintes operações consecutivas:
+                <code>add(a), add(b), add(c), add(d), add(e)</code>.
+                Quantas operações primitivas (atribuições) são realizadas no total? Qual a complexidade amortizada?
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">✅ Resolução Passo a Passo</div>
+              <div class="block-content">
+                <ul>
+                  <li><code>add(a)</code>: 1 atribuição direta &rarr; Total acumulado: 1</li>
+                  <li><code>add(b)</code>: 1 atribuição direta &rarr; Total acumulado: 2</li>
+                  <li><code>add(c)</code>: 1 atribuição direta &rarr; Total acumulado: 3</li>
+                  <li><code>add(d)</code>: 1 atribuição direta &rarr; Total acumulado: 4 (capacidade 4 esgotada!)</li>
+                  <li><code>add(e)</code>: <strong>Resize Obrigatório!</strong>
+                    <ul>
+                      <li>Aloca novo array com o dobro da capacidade: $2 \times 4 = 8$.</li>
+                      <li>Copia os 4 elementos do array anterior: <strong>4 atribuições</strong>.</li>
+                      <li>Insere o novo elemento "e": <strong>1 atribuição</strong>.</li>
+                      <li>Subtotal do resize: $4 + 1 = 5$ atribuições.</li>
+                    </ul>
+                  </li>
+                </ul>
+                <p><strong>Custo Total:</strong> $1 + 1 + 1 + 1 + 5 = \mathbf{9\text{ atribuições}}$ para 5 inserções.</p>
+                <p><strong>Custo Médio Amortizado:</strong> $\frac{9}{5} = 1.8\text{ atribuições/inserção} \Longrightarrow \boxed{O(1)\text{ amortizado}}$.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 50: EXERCÍCIO RESOLVIDO 2 — PARTE 1 -->
+      <section data-section="exercicios-res" data-subsection="Exercícios Resolvidos > Exercício 2 (Parte 1)">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício Resolvido 2 — Inserções no Início (Parte 1)</h2>
+            <div class="slide-subtitle">Comparando o custo total de n inserções no início: ArrayList</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📝 Enunciado</div>
+              <div class="block-content">
+                Considere a execução de $n$ inserções consecutivas no <strong>início</strong> de uma lista (posição de índice 0). Compare analiticamente o custo total usando: (a) ArrayList e (b) LinkedList.
+              </div>
+            </div>
+
+            <div class="alertblock">
+              <div class="block-title">⚙️ Solução (a) — ArrayList</div>
+              <div class="block-content">
+                Cada inserção no índice 0 exige o deslocamento (shift) para a direita de todos os elementos que já estão presentes na lista:
+                <ul>
+                  <li>1ª inserção: lista tem 0 elementos &rarr; 0 shifts.</li>
+                  <li>2ª inserção: lista tem 1 elemento &rarr; 1 shift.</li>
+                  <li>3ª inserção: lista tem 2 elementos &rarr; 2 shifts.</li>
+                  <li>$\dots$</li>
+                  <li>$n$-ésima inserção: lista tem $n-1$ elementos &rarr; $n-1$ shifts.</li>
+                </ul>
+                $$\text{Total de Shifts} = 0 + 1 + 2 + \dots + (n-1) = \sum_{i=0}^{n-1} i = \frac{n(n-1)}{2} \in \mathbf{\Theta(n^2)}$$
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 51: EXERCÍCIO RESOLVIDO 2 — PARTE 2 -->
+      <section data-section="exercicios-res" data-subsection="Exercícios Resolvidos > Exercício 2 (Parte 2)">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício Resolvido 2 — Inserções no Início (Parte 2)</h2>
+            <div class="slide-subtitle">Comparando o custo total com LinkedList</div>
+          </div>
+          <div class="slide-body">
+            <div class="exampleblock">
+              <div class="block-title">✅ Solução (b) — LinkedList</div>
+              <div class="block-content">
+                Cada inserção no início em uma lista encadeada (<code>addFirst</code>) manipula exclusivamente as referências do nó e o ponteiro <code>head</code> em tempo constante $O(1)$:
+                $$\text{Total} = n \times O(1) = \mathbf{O(n)}$$
+              </div>
+            </div>
+
+            <div class="block">
+              <div class="block-title">📊 Comparativo Conclusivo</div>
+              <div class="block-content">
+                $$\boxed{\text{ArrayList: } \Theta(n^2) \quad \text{versus} \quad \text{LinkedList: } O(n)}$$
+              </div>
+            </div>
+
+            <div class="alertblock">
+              <div class="block-title">🎯 Lição Arquitetural</div>
+              <div class="block-content">
+                Para algoritmos que realizam inserções volumosas na <strong>cabeça</strong> da coleção, a LinkedList é assintoticamente infinitamente superior à ArrayList!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 52: EXERCÍCIO RESOLVIDO 3 -->
+      <section data-section="exercicios-res" data-subsection="Exercícios Resolvidos > Exercício 3">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício Resolvido 3 — Busca em BST</h2>
+            <div class="slide-subtitle">Construção de árvore e rastreamento de busca</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📝 Enunciado</div>
+              <div class="block-content">
+                Os elementos $[15, 10, 20, 8, 12, 17, 25]$ são inseridos nesta exata ordem em uma BST inicialmente vazia. Determine a estrutura resultante e analise a complexidade de buscar o elemento <strong>12</strong>.
+              </div>
+            </div>
+
+            <div class="two-cols">
+              <div>
+                <div class="exampleblock">
+                  <div class="block-title">🌳 Passo 1: Construção da Árvore</div>
+                  <div class="block-content">
+                    <ul>
+                      <li>15 é a <strong>raiz</strong>.</li>
+                      <li>10 vai à esquerda de 15; 20 vai à direita de 15.</li>
+                      <li>8 vai à esquerda de 10; <strong>12</strong> vai à direita de 10.</li>
+                      <li>17 vai à esquerda de 20; 25 vai à direita de 20.</li>
+                    </ul>
+                    <p>A árvore é perfeitamente balanceada com altura $h = 2$.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="exampleblock">
+                  <div class="block-title">🔍 Passo 2: Buscar 12</div>
+                  <div class="block-content">
+                    <ol>
+                      <li>$12 < 15$ &rArr; desce para a esquerda (nó 10).</li>
+                      <li>$12 > 10$ &rArr; desce para a direita (nó 12).</li>
+                      <li>$12 == 12$ &rArr; <strong>Encontrado!</strong></li>
+                    </ol>
+                    <p>Total: exatamente 3 comparações. Custo $O(h) = O(\log 7) \approx 2.8$ operações!</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 53: EXERCÍCIO RESOLVIDO 4 — PARTE 1 -->
+      <section data-section="exercicios-res" data-subsection="Exercícios Resolvidos > Exercício 4 (Parte 1)">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício Resolvido 4 — Tabela Hash com Colisões (Parte 1)</h2>
+            <div class="slide-subtitle">Inserção e cálculo modular de índices</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📝 Enunciado</div>
+              <div class="block-content">
+                Uma tabela hash de tamanho $m = 7$ utiliza a função $hash(k) = k \pmod 7$ com resolução de colisões por encadeamento. Insira as chaves $[14, 21, 28, 35, 10]$ e analise o custo de buscar o elemento <strong>35</strong>.
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">🔢 Passo 1: Cálculo dos Hashes</div>
+              <div class="block-content">
+                <ul>
+                  <li>$hash(14) = 14 \pmod 7 = \mathbf{0}$</li>
+                  <li>$hash(21) = 21 \pmod 7 = \mathbf{0}$ &rarr; <span style="color:#ef4444; font-weight:bold;">Colisão</span> com 14 no bucket 0!</li>
+                  <li>$hash(28) = 28 \pmod 7 = \mathbf{0}$ &rarr; <span style="color:#ef4444; font-weight:bold;">Colisão</span> com 14 e 21 no bucket 0!</li>
+                  <li>$hash(35) = 35 \pmod 7 = \mathbf{0}$ &rarr; <span style="color:#ef4444; font-weight:bold;">Colisão</span> com 14, 21 e 28 no bucket 0!</li>
+                  <li>$hash(10) = 10 \pmod 7 = \mathbf{3}$ &rarr; Inserido sem colisão no bucket 3.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 54: EXERCÍCIO RESOLVIDO 4 — PARTE 2 -->
+      <section data-section="exercicios-res" data-subsection="Exercícios Resolvidos > Exercício 4 (Parte 2)">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício Resolvido 4 — Tabela Hash com Colisões (Parte 2)</h2>
+            <div class="slide-subtitle">Estado dos buckets e custo da busca</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📦 Passo 2: Estado dos Buckets na Tabela</div>
+              <div class="block-content">
+                <ul>
+                  <li><strong>Posição [0]:</strong> Lista encadeada com 4 elementos: $[14 \longrightarrow 21 \longrightarrow 28 \longrightarrow 35]$</li>
+                  <li><strong>Posição [3]:</strong> Lista com 1 elemento: $[10]$</li>
+                  <li><strong>Demais posições [1, 2, 4, 5, 6]:</strong> Vazias (<code>null</code>).</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">🔍 Passo 3: Custo de Buscar 35</div>
+              <div class="block-content">
+                $hash(35) = 35 \pmod 7 = 0$. Acessa o bucket 0 e percorre a lista comparando chaves:<br>
+                Compara com 14 &rarr; 21 &rarr; 28 &rarr; 35. Total: <strong>4 comparações</strong>!
+              </div>
+            </div>
+
+            <div class="alertblock">
+              <div class="block-title">⚠️ Diagnóstico Teórico</div>
+              <div class="block-content">
+                Como todos os múltiplos de 7 foram mapeados para o mesmo slot, a busca degradou para o <strong>pior caso linear $O(n)$</strong>. Escolher uma função hash que não divida perfeitamente os dados de entrada é fundamental!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 55: EXERCÍCIO RESOLVIDO 5 — PARTE 1 -->
+      <section data-section="exercicios-res" data-subsection="Exercícios Resolvidos > Exercício 5 (Parte 1)">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício Resolvido 5 — Análise de Algoritmo com ED</h2>
+            <div class="slide-subtitle">O perigo do antipadrão de acesso aleatório em laço</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📝 Enunciado</div>
+              <div class="block-content">
+                Analise a complexidade do algoritmo abaixo, considerando que a variável <code>lista</code> seja: (a) uma <code>ArrayList</code> e (b) uma <code>LinkedList</code>.
+              </div>
+            </div>
+
+            <div class="code-container">
+              <ol>
+                <li><span class="code-kw">algoritmo</span> processaLista(lista, n)</li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">para</span> i <span class="code-kw">de</span> <span class="code-num">0</span> <span class="code-kw">ate</span> n-<span class="code-num">1</span> <span class="code-kw">faca</span></li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elemento &larr; lista.get(i) <span class="code-comment">// acesso por indice</span></li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">// processa elemento em tempo O(1)</span></li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-kw">fim para</span></li>
+                <li><span class="code-kw">fim algoritmo</span></li>
+              </ol>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">⚡ Solução (a) — ArrayList</div>
+              <div class="block-content">
+                Na ArrayList, <code>lista.get(i)</code> é acesso direto em tempo constante $O(1)$:<br>
+                $$\text{Total} = \sum_{i=0}^{n-1} O(1) = n \times O(1) = \mathbf{O(n)}$$
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 56: EXERCÍCIO RESOLVIDO 5 — PARTE 2 -->
+      <section data-section="exercicios-res" data-subsection="Exercícios Resolvidos > Exercício 5 (Parte 2)">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício Resolvido 5 — Continuação</h2>
+            <div class="slide-subtitle">O desastre quadrático ao usar get(i) em LinkedList</div>
+          </div>
+          <div class="slide-body">
+            <div class="alertblock">
+              <div class="block-title">🚫 Solução (b) — LinkedList</div>
+              <div class="block-content">
+                Na LinkedList, cada chamada a <code>lista.get(i)</code> precisa percorrer $i$ nós desde a cabeça:<br>
+                $$\text{Total} = \sum_{i=0}^{n-1} i = 0 + 1 + 2 + \dots + (n-1) = \frac{n(n-1)}{2} \in \mathbf{\Theta(n^2)}$$
+              </div>
+            </div>
+
+            <div class="block">
+              <div class="block-title">📊 Comparação de Desempenho</div>
+              <div class="block-content">
+                $$\boxed{\text{ArrayList: } O(n) \quad \text{versus} \quad \text{LinkedList: } \Theta(n^2)}$$
+              </div>
+            </div>
+
+            <div class="alertblock">
+              <div class="block-title">🎯 Lição de Engenharia de Software</div>
+              <div class="block-content">
+                Chamar <code>get(i)</code> dentro de um laço iterando sobre uma LinkedList é um dos <strong>antipadrões mais clássicos e destruidores de performance</strong> da programação! Para percorrer uma LinkedList em $O(n)$, deve-se obrigatoriamente usar um <strong>Iterator / foreach</strong>, que avança de nó em nó sem reiniciar da cabeça!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 57: EXERCÍCIO RESOLVIDO 6 -->
+      <section data-section="exercicios-res" data-subsection="Exercícios Resolvidos > Exercício 6">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício Resolvido 6 — Qual ED Escolher?</h2>
+            <div class="slide-subtitle">Seleção orientada pelos requisitos operacionais do sistema</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📝 Enunciado</div>
+              <div class="block-content">
+                Você precisa implementar um sistema de controle com as seguintes operações frequentes:
+                (1) Inserir novos elementos; (2) Verificar se um elemento existe; (3) Remover elementos por valor.
+                A ordem dos elementos <strong>não importa</strong>. Qual ED escolher?
+              </div>
+            </div>
+
+            <div class="beamer-table-container">
+              <table class="beamer-table">
+                <thead>
+                  <tr>
+                    <th>Estrutura Candidata</th>
+                    <th>Inserção</th>
+                    <th>Busca</th>
+                    <th>Remoção por Valor</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>ArrayList</td>
+                    <td>$O(1)$ amort.</td>
+                    <td>$O(n)$</td>
+                    <td>$O(n)$</td>
+                  </tr>
+                  <tr>
+                    <td>LinkedList</td>
+                    <td>$O(1)$</td>
+                    <td>$O(n)$</td>
+                    <td>$O(n)$</td>
+                  </tr>
+                  <tr>
+                    <td>BST Balanceada</td>
+                    <td>$O(\log n)$</td>
+                    <td>$O(\log n)$</td>
+                    <td>$O(\log n)$</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Tabela Hash</strong></td>
+                    <td><strong>$O(1)$ médio</strong></td>
+                    <td><strong>$O(1)$ médio</strong></td>
+                    <td><strong>$O(1)$ médio</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">✅ Veredito</div>
+              <div class="block-content">
+                $$\boxed{\text{Melhor Escolha: \textbf{Tabela Hash}}}$$
+                Como a ordem entre os elementos é irrelevante para o problema, a Tabela Hash oferece desempenho imbatível de $O(1)$ médio para todas as operações exigidas!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 11: EXERCÍCIOS PROPOSTOS
+           ============================================================ -->
+
+      <!-- SLIDE 58: EXERCÍCIO PROPOSTO 1 -->
+      <section data-section="exercicios-prop" data-subsection="Exercícios Propostos > Proposto 1">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício Proposto 1</h2>
+            <div class="slide-subtitle">ArrayList — Custo de n remoções consecutivas do início</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📝 Enunciado</div>
+              <div class="block-content">
+                Dada uma <code>ArrayList</code> contendo inicialmente $n$ elementos, qual é o custo assintótico total de remover <strong>todos os elementos</strong> a partir do início (posição de índice 0), um por um, até esvaziar a lista?
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">💡 Dica</div>
+              <div class="block-content">
+                A cada remoção realizada no índice 0, todos os elementos que restam na lista sofrem uma operação de shift para a esquerda.
+              </div>
+            </div>
+
+            <button class="toggle-solution-btn" data-target="sol-prop-1">Mostrar Resolução Passo a Passo</button>
+            <div id="sol-prop-1" class="solution-box">
+              <strong>Solução Rápida:</strong> Na 1ª remoção desloca-se $n-1$; na 2ª $n-2$; $\dots$; até 0. Total: $\sum_{i=1}^{n-1} i = \frac{n(n-1)}{2} \in \mathbf{\Theta(n^2)}$.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 59: EXERCÍCIO PROPOSTO 2 -->
+      <section data-section="exercicios-prop" data-subsection="Exercícios Propostos > Proposto 2">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício Proposto 2</h2>
+            <div class="slide-subtitle">BST — O pior caso de inserção ordenada</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📝 Enunciado</div>
+              <div class="block-content">
+                Os elementos $[1, 2, 3, 4, 5, 6, 7]$ são inseridos <strong>nesta exata ordem</strong> em uma BST inicialmente vazia.
+                <ol>
+                  <li>Desenhe ou descreva a árvore resultante.</li>
+                  <li>Qual é a altura $h$ da árvore?</li>
+                  <li>Qual é a complexidade de buscar o elemento 7?</li>
+                </ol>
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">💡 Dica</div>
+              <div class="block-content">
+                Como cada novo elemento é estritamente maior que o nó anterior, ele é sistematicamente inserido à direita.
+              </div>
+            </div>
+
+            <button class="toggle-solution-btn" data-target="sol-prop-2">Mostrar Resolução Passo a Passo</button>
+            <div id="sol-prop-2" class="solution-box">
+              <strong>Solução Rápida:</strong> A árvore torna-se estritamente degenerada (uma cadeia para a direita). Altura $h = 6 = n - 1$. Buscar o elemento 7 percorre todos os 7 nós, com custo $\mathbf{O(n)}$.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 60: EXERCÍCIO PROPOSTO 3 -->
+      <section data-section="exercicios-prop" data-subsection="Exercícios Propostos > Proposto 3">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício Proposto 3</h2>
+            <div class="slide-subtitle">Heap Máximo — Sequência de inserções e contagem de trocas</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📝 Enunciado</div>
+              <div class="block-content">
+                Insira os elementos $[10, 20, 15, 30, 25]$ nesta ordem em um Heap Máximo inicialmente vazio.
+                <ol>
+                  <li>Mostre o estado do array do heap após cada uma das 5 inserções.</li>
+                  <li>Quantas trocas (swaps) foram realizadas no total?</li>
+                </ol>
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">💡 Dica</div>
+              <div class="block-content">
+                Após colocar o elemento no fim do array, aplique o procedimento de subida comparando com o pai no índice $\lfloor(i-1)/2\rfloor$.
+              </div>
+            </div>
+
+            <button class="toggle-solution-btn" data-target="sol-prop-3">Mostrar Resolução Passo a Passo</button>
+            <div id="sol-prop-3" class="solution-box">
+              <strong>Solução Rápida:</strong> 10 &rarr; [10] (0 trocas); 20 &rarr; [20, 10] (1 troca); 15 &rarr; [20, 10, 15] (0 trocas); 30 &rarr; [30, 20, 15, 10] (2 trocas); 25 &rarr; [30, 25, 15, 10, 20] (1 troca). Total: <strong>4 trocas</strong>.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 61: EXERCÍCIO PROPOSTO 4 -->
+      <section data-section="exercicios-prop" data-subsection="Exercícios Propostos > Proposto 4">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício Proposto 4</h2>
+            <div class="slide-subtitle">Tabela Hash com primo e o fenômeno de colisão total</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📝 Enunciado</div>
+              <div class="block-content">
+                Uma tabela hash de tamanho $m = 11$ utiliza $hash(k) = k \pmod{11}$ com resolução por encadeamento. Insira as chaves $[22, 33, 44, 55, 66, 77, 88]$.
+                <ol>
+                  <li>Em quais posições da tabela cada chave é alocada?</li>
+                  <li>Há colisões? Quantas?</li>
+                  <li>Qual é o fator de carga final $\alpha$?</li>
+                </ol>
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">💡 Dica</div>
+              <div class="block-content">
+                Observe o que todas essas chaves têm em comum matematicamente em relação ao número 11.
+              </div>
+            </div>
+
+            <button class="toggle-solution-btn" data-target="sol-prop-4">Mostrar Resolução Passo a Passo</button>
+            <div id="sol-prop-4" class="solution-box">
+              <strong>Solução Rápida:</strong> Como todos os números são múltiplos de 11, $k \pmod{11} = 0$ para todos. Todas as 7 chaves caem no bucket 0 (6 colisões). Fator de carga $\alpha = 7/11 \approx 0.64$.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 62: EXERCÍCIO PROPOSTO 5 -->
+      <section data-section="exercicios-prop" data-subsection="Exercícios Propostos > Proposto 5">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Exercício Proposto 5</h2>
+            <div class="slide-subtitle">Seleção de EDs para cenários reais de engenharia de software</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📝 Enunciado</div>
+              <div class="block-content">
+                Para cada cenário abaixo, indique a <strong>melhor estrutura de dados</strong> e justifique com a operação dominante:
+                <ol>
+                  <li>Um editor de texto implementando <code>Ctrl+Z</code> (desfazer) e <code>Ctrl+Y</code> (refazer).</li>
+                  <li>Um servidor de impressão processando ordens de impressão na ordem exata de chegada.</li>
+                  <li>Um jogo online exibindo em tempo real o ranking dos 10 melhores jogadores do servidor.</li>
+                  <li>A tabela de símbolos de um compilador verificando se uma variável já foi declarada.</li>
+                  <li>Um banco de dados executando consultas por intervalo (ex: "alunos com nota entre 7 e 9").</li>
+                </ol>
+              </div>
+            </div>
+
+            <button class="toggle-solution-btn" data-target="sol-prop-5">Mostrar Resolução Passo a Passo</button>
+            <div id="sol-prop-5" class="solution-box">
+              <strong>Solução Rápida:</strong> 1. Duas Pilhas (LIFO); 2. Fila (FIFO); 3. Min-Heap de tamanho 10; 4. Tabela Hash ($O(1)$); 5. BST balanceada ($O(\log n + k)$).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 12: GABARITO DOS EXERCÍCIOS PROPOSTOS
+           ============================================================ -->
+
+      <!-- SLIDE 63: GABARITO — PROPOSTO 1 -->
+      <section data-section="gabarito" data-subsection="Gabarito > Proposto 1">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Gabarito — Exercício Proposto 1</h2>
+            <div class="slide-subtitle">ArrayList — Custo de n remoções do início</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📌 Enunciado</div>
+              <div class="block-content">
+                Dada uma ArrayList com $n$ elementos, remover todos do início (índice 0), um por um.
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">✅ Demonstração Analítica</div>
+              <div class="block-content">
+                A cada remoção realizada na posição 0, todos os elementos restantes na lista precisam ser deslocados uma casa para a esquerda (shift à esquerda):
+                <ul>
+                  <li>1ª remoção: restam $n-1$ elementos &rarr; $n-1$ shifts.</li>
+                  <li>2ª remoção: restam $n-2$ elementos &rarr; $n-2$ shifts.</li>
+                  <li>$\dots$</li>
+                  <li>$(n-1)$-ésima remoção: resta 1 elemento &rarr; 1 shift.</li>
+                  <li>$n$-ésima remoção: lista vazia &rarr; 0 shifts.</li>
+                </ul>
+                $$\text{Total de Deslocamentos} = (n-1) + (n-2) + \dots + 1 + 0 = \sum_{k=1}^{n-1} k = \frac{n(n-1)}{2}$$
+                $$\boxed{\Theta(n^2)}$$
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 64: GABARITO — PROPOSTO 2 -->
+      <section data-section="gabarito" data-subsection="Gabarito > Proposto 2">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Gabarito — Exercício Proposto 2</h2>
+            <div class="slide-subtitle">BST — Pior caso de inserção ordenada</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📌 Enunciado</div>
+              <div class="block-content">
+                Inserir $[1, 2, 3, 4, 5, 6, 7]$ nesta ordem em uma BST inicialmente vazia.
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">✅ Resolução Completa</div>
+              <div class="block-content">
+                <p><strong>(a) Estrutura da árvore:</strong> Como cada valor inserido é estritamente maior que a raiz e que todos os nós anteriores, cada elemento é acoplado como filho direito do elemento anterior:
+                $$1 \longrightarrow 2 \longrightarrow 3 \longrightarrow 4 \longrightarrow 5 \longrightarrow 6 \longrightarrow 7$$
+                A árvore degenera completamente em uma lista encadeada simples inclinada à direita!</p>
+                <p><strong>(b) Altura da árvore:</strong> $\mathbf{h = 6 = n - 1}$.</p>
+                <p><strong>(c) Complexidade de buscar o 7:</strong> É obrigatório percorrer todos os 7 nós da raiz até a folha 7. Custo de 7 comparações &rArr; $\boxed{O(n)}$.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 65: GABARITO — PROPOSTO 3 -->
+      <section data-section="gabarito" data-subsection="Gabarito > Proposto 3">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Gabarito — Exercício Proposto 3</h2>
+            <div class="slide-subtitle">Heap Máximo — Inserção de [10, 20, 15, 30, 25]</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📌 Enunciado</div>
+              <div class="block-content">
+                Mostrar o estado do array e contar as trocas nas inserções sucessivas.
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">✅ Rastreamento das Inserções</div>
+              <div class="block-content">
+                <ol>
+                  <li><strong>Inserir 10:</strong> <code>[10]</code> &rarr; 0 trocas.</li>
+                  <li><strong>Inserir 20:</strong> <code>[10, 20]</code> &rarr; $20 > \text{pai}(10)$ &rArr; troca &rArr; <code>[20, 10]</code> &rarr; <strong>1 troca</strong>.</li>
+                  <li><strong>Inserir 15:</strong> <code>[20, 10, 15]</code> &rarr; $15 < \text{pai}(20)$ &rArr; <strong>0 trocas</strong>.</li>
+                  <li><strong>Inserir 30:</strong> <code>[20, 10, 15, 30]</code> &rarr; $30 > \text{pai}(10)$ &rArr; <code>[20, 30, 15, 10]</code> &rarr; $30 > \text{pai}(20)$ &rArr; <code>[30, 20, 15, 10]</code> &rarr; <strong>2 trocas</strong>.</li>
+                  <li><strong>Inserir 25:</strong> <code>[30, 20, 15, 10, 25]</code> &rarr; $25 > \text{pai}(20)$ &rArr; <code>[30, 25, 15, 10, 20]</code> &rarr; <strong>1 troca</strong>.</li>
+                </ol>
+                <p><strong>Heap Final:</strong> <code>[30, 25, 15, 10, 20]</code> &emsp;|&emsp; <strong>Total de Trocas:</strong> $\boxed{4\text{ trocas}}$.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 66: GABARITO — PROPOSTO 4 -->
+      <section data-section="gabarito" data-subsection="Gabarito > Proposto 4">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Gabarito — Exercício Proposto 4</h2>
+            <div class="slide-subtitle">Tabela Hash com m = 11 e chaves múltiplas</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📌 Enunciado</div>
+              <div class="block-content">
+                Inserir $[22, 33, 44, 55, 66, 77, 88]$ em tabela $m=11$ com $hash(k) = k \pmod{11}$.
+              </div>
+            </div>
+
+            <div class="exampleblock">
+              <div class="block-title">✅ Resolução Completa</div>
+              <div class="block-content">
+                <p><strong>(a) Posições alocadas:</strong></p>
+                <ul>
+                  <li>$22 \pmod{11} = 0, \quad 33 \pmod{11} = 0, \quad 44 \pmod{11} = 0, \quad 55 \pmod{11} = 0$</li>
+                  <li>$66 \pmod{11} = 0, \quad 77 \pmod{11} = 0, \quad 88 \pmod{11} = 0$</li>
+                </ul>
+                <p>Todas as 7 chaves são mapeadas para o <strong>bucket [0]</strong>!</p>
+                <p><strong>(b) Colisões:</strong> Como a primeira chave ocupa o slot e as 6 seguintes colidem no mesmo local, ocorreram exatamente <strong>6 colisões</strong>.</p>
+                <p><strong>(c) Fator de carga:</strong> $\alpha = \frac{n}{m} = \frac{7}{11} \approx \mathbf{0.64}$.</p>
+              </div>
+            </div>
+
+            <div class="alertblock">
+              <div class="block-title">💡 Lição</div>
+              <div class="block-content">
+                Mesmo com $\alpha < 1$ e usando um tamanho primo ($11$), se as chaves compartilharem um fator comum com o módulo da função hash, ocorrerá colisão em massa!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 67: GABARITO — PROPOSTO 5 -->
+      <section data-section="gabarito" data-subsection="Gabarito > Proposto 5">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Gabarito — Exercício Proposto 5</h2>
+            <div class="slide-subtitle">Respostas e justificativas operacionais para os cenários reais</div>
+          </div>
+          <div class="slide-body">
+            <div class="exampleblock">
+              <div class="block-title">✅ Soluções Justificadas</div>
+              <div class="block-content">
+                <ol>
+                  <li><strong>Ctrl+Z / Ctrl+Y:</strong> <strong>Duas Pilhas (Stack)</strong> — A primeira empilha as ações executadas para desfazer (LIFO); a segunda guarda as ações desfeitas para refazer.</li>
+                  <li><strong>Spooler de Impressão:</strong> <strong>Fila (Queue)</strong> — A ordem FIFO assegura que o primeiro documento enviado seja o primeiro impresso.</li>
+                  <li><strong>Ranking Top-10:</strong> <strong>Min-Heap de tamanho 10</strong> — A raiz armazena a menor pontuação do top-10 em $O(1)$. Qualquer nova pontuação é comparada com a raiz em $O(1)$ e atualizada em $O(\log 10) = O(1)$.</li>
+                  <li><strong>Tabela de Símbolos do Compilador:</strong> <strong>Tabela Hash</strong> — Busca e inserção de identificadores em tempo médio constante $O(1)$.</li>
+                  <li><strong>Consultas por Intervalo no Banco de Dados:</strong> <strong>BST Balanceada (ou B-Tree)</strong> — Os dados ordenados permitem encontrar o início do intervalo em $O(\log n)$ e percorrer em-ordem em $O(k)$ elementos.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SEÇÃO 13: RESUMO E CONCLUSÃO
+           ============================================================ -->
+
+      <!-- SLIDE 68: RESUMO DA AULA 6 -->
+      <section data-section="conclusao" data-subsection="Conclusão > Síntese dos Tópicos">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Resumo da Aula 6</h2>
+            <div class="slide-subtitle">Síntese dos principais aprendizados conceituais</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">🎓 O que Aprendemos Nesta Aula</div>
+              <div class="block-content">
+                <ol>
+                  <li>A <strong>escolha da estrutura de dados</strong> altera radicalmente a classe assintótica dos algoritmos.</li>
+                  <li><strong>ArrayList:</strong> Acesso direto $O(1)$, mas inserção e remoção no meio/início sofrem shifts $O(n)$. Resize tem custo amortizado $O(1)$.</li>
+                  <li><strong>LinkedList:</strong> Inserção e remoção $O(1)$ nas pontas (head/tail), mas acesso posicional por índice é lento ($O(n)$).</li>
+                  <li><strong>Pilha e Fila:</strong> Políticas de acesso restritas (LIFO e FIFO) que garantem operações fundamentais em estrito $O(1)$ sem shifts.</li>
+                  <li><strong>BST:</strong> Eficiência atrelada à altura: $O(\log n)$ quando balanceada e degradação para $O(n)$ quando degenerada.</li>
+                  <li><strong>Heap:</strong> Fila de prioridade balanceada com inserção e extração em $O(\log n)$ e consulta de topo em $O(1)$.</li>
+                  <li><strong>Tabela Hash:</strong> Mapeamento direto com $O(1)$ médio; sensível a colisões e fator de carga $\alpha$.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 69: TABELA RESUMO FINAL -->
+      <section data-section="conclusao" data-subsection="Conclusão > Tabela Comparativa Resumo">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Tabela Resumo Final</h2>
+            <div class="slide-subtitle">Quadro sinóptico de complexidades para memorização</div>
+          </div>
+          <div class="slide-body">
+            <div class="beamer-table-container">
+              <table class="beamer-table">
+                <thead>
+                  <tr>
+                    <th>Estrutura</th>
+                    <th>Acesso</th>
+                    <th>Busca</th>
+                    <th>Inserção</th>
+                    <th>Remoção</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>ArrayList</td>
+                    <td>$O(1)$</td>
+                    <td>$O(n)$</td>
+                    <td>$O(1)$ amort. fim / $O(n)$ meio</td>
+                    <td>$O(1)$ fim / $O(n)$ meio</td>
+                  </tr>
+                  <tr>
+                    <td>LinkedList</td>
+                    <td>$O(n)$</td>
+                    <td>$O(n)$</td>
+                    <td>$O(1)$ pontas / $O(n)$ meio</td>
+                    <td>$O(1)$ pontas / $O(n)$ meio</td>
+                  </tr>
+                  <tr>
+                    <td>Pilha (Stack)</td>
+                    <td>$O(1)$ topo</td>
+                    <td>---</td>
+                    <td>$O(1)$</td>
+                    <td>$O(1)$</td>
+                  </tr>
+                  <tr>
+                    <td>Fila (Queue)</td>
+                    <td>$O(1)$ head</td>
+                    <td>---</td>
+                    <td>$O(1)$</td>
+                    <td>$O(1)$</td>
+                  </tr>
+                  <tr>
+                    <td>BST (bal.)</td>
+                    <td>---</td>
+                    <td>$O(\log n)$</td>
+                    <td>$O(\log n)$</td>
+                    <td>$O(\log n)$</td>
+                  </tr>
+                  <tr>
+                    <td>Heap</td>
+                    <td>$O(1)$ max</td>
+                    <td>---</td>
+                    <td>$O(\log n)$</td>
+                    <td>$O(\log n)$</td>
+                  </tr>
+                  <tr>
+                    <td>Tabela Hash</td>
+                    <td>---</td>
+                    <td>$O(1)$ méd.</td>
+                    <td>$O(1)$ méd.</td>
+                    <td>$O(1)$ méd.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="alertblock">
+              <div class="block-title">💡 Mensagem Principal</div>
+              <div class="block-content">
+                Não existe estrutura de dados universalmente "perfeita". A boa engenharia de software exige a identificação precisa das operações dominantes do problema para escolher a estrutura com o melhor trade-off de desempenho.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 70: PRÓXIMA AULA -->
+      <section data-section="conclusao" data-subsection="Conclusão > Próximos Passos">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Próxima Aula</h2>
+            <div class="slide-subtitle">Transição para algoritmos recursivos e equações de recorrência</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">🚀 Aula 7 — Análise de Algoritmos Recursivos</div>
+              <div class="block-content">
+                <ul>
+                  <li>Relações de recorrência e complexidade temporal de funções recursivas.</li>
+                  <li>Método da Substituição (indução matemática).</li>
+                  <li>Método da Árvore de Recursão (custo por nível e custo total).</li>
+                  <li><strong>Teorema Mestre:</strong> Análise de algoritmos de Divisão e Conquista.</li>
+                  <li>Exemplos canônicos: Fatorial, Fibonacci, Busca Binária, MergeSort e QuickSort.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div style="text-align:center; margin-top:24px;">
+              <h3 style="font-size:26px; color:var(--warsaw-primary); margin:0;">Dúvidas?</h3>
+              <p style="color:var(--text-muted); font-size:16px; margin-top:4px;">Utilize os controles superiores e simuladores para revisar os conceitos.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 71: REFERÊNCIAS BIBLIOGRÁFICAS -->
+      <section data-section="conclusao" data-subsection="Conclusão > Referências">
+        <div class="beamer-slide">
+          <div class="slide-title-banner">
+            <h2>Referências Bibliográficas</h2>
+            <div class="slide-subtitle">Bibliografia fundamental recomendada</div>
+          </div>
+          <div class="slide-body">
+            <div class="block">
+              <div class="block-title">📚 Leituras Recomendadas</div>
+              <div class="block-content">
+                <ul>
+                  <li><strong>T. H. Cormen, C. E. Leiserson, R. L. Rivest, C. Stein.</strong><br>
+                  <em>Algoritmos: Teoria e Prática</em>. 3ª ed, Elsevier, 2012. Capítulos 6 (Heapsort), 10 (Estruturas de Dados Elementares), 11 (Tabelas Hash) e 12 (Árvores Binárias de Busca).</li>
+                  <li><strong>J. A. B. Monteiro.</strong><br>
+                  <em>Notas de Aula — Estruturas de Dados</em>. Disponível em: <a href="https://joaoarthurbm.github.io/eda" target="_blank" style="color:var(--warsaw-accent);">joaoarthurbm.github.io/eda</a>.</li>
+                  <li><strong>R. Sedgewick, K. Wayne.</strong><br>
+                  <em>Algorithms</em>. 4th ed, Addison-Wesley, 2011.</li>
+                  <li><strong>J. Kleinberg, É. Tardos.</strong><br>
+                  <em>Algorithm Design</em>. Pearson, 2005.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- ============================================================
+       RODAPÉ FIXO INFERIOR (FOOTLINE WARSAW)
+       ============================================================ -->
+  <footer id="warsaw-footline">
+    <div class="foot-left">Pedro Ximenes • UNICAP</div>
+    <div class="foot-mid">Análise de Algoritmos — Aula 6: Estruturas de Dados</div>
+    <div class="foot-right">
+      <button id="foot-prev-btn" class="foot-btn" title="Slide Anterior (←)">◀</button>
+      <span id="slide-counter-text">1 / 72</span>
+      <button id="foot-next-btn" class="foot-btn" title="Próximo Slide (→)">▶</button>
+      <button id="foot-fullscreen-btn" class="foot-btn" title="Tela Cheia (F)">⛶</button>
+    </div>
+  </footer>
+
+  <!-- Reveal.js Script -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.0.4/dist/reveal.js"></script>
+
+  <!-- Scripts Customizados -->
+  <script src="js/canvas-demos.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
