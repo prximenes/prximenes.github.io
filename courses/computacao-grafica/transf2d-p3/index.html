@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transformações Geométricas 2D — Parte 3 | Computação Gráfica UNICAP</title>
+  
+  <!-- Reveal.js CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+  
+  <!-- KaTeX CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  
+  <!-- Custom Warsaw Beamer CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="theme-light">
+
+  <!-- ============================================================ -->
+  <!-- BARRA DUPLA DE NAVEGAÇÃO SUPERIOR (WARSAW THEME HEADLINE) -->
+  <!-- ============================================================ -->
+  <header class="warsaw-headline">
+    <div class="headline-section-row">
+      <div class="headline-left-nav">
+        <a href="../../../courses.html" class="nav-back-link">← Courses</a>
+        <span style="font-weight:800;color:#60a5fa;letter-spacing:0.5px;">UNICAP</span>
+        <span id="headline-section-text" style="font-weight:600;">Transformações Geométricas 2D — Parte 3</span>
+      </div>
+
+      <nav class="headline-section-nav">
+        <span data-section="Transformações entre Sistemas 2D" onclick="Reveal.slide(2)">1. Sistemas 2D</span>
+        <span data-section="Método 1" onclick="Reveal.slide(5)">2. Método 1 (θ)</span>
+        <span data-section="Método 2" onclick="Reveal.slide(10)">3. Método 2 (Vetor)</span>
+        <span data-section="Transformações em JS / Canvas" onclick="Reveal.slide(18)">4. Canvas 2D</span>
+        <span data-section="WebGL & Three.js" onclick="Reveal.slide(27)">5. WebGL / 3D</span>
+      </nav>
+
+      <div class="headline-right-tools">
+        <!-- Controle de Zoom de Fonte -->
+        <div class="font-zoom-group">
+          <button id="font-decrease-btn" class="font-zoom-btn" title="Diminuir Fonte (-)">A-</button>
+          <span id="font-zoom-label" class="font-zoom-label">100%</span>
+          <button id="font-increase-btn" class="font-zoom-btn" title="Aumentar Fonte (+)">A+</button>
+        </div>
+
+        <!-- Download do PDF original -->
+        <a href="transf2d-p3.pdf" class="nav-pdf-btn" download title="Baixar Versão em PDF">📄 PDF</a>
+
+        <!-- Alternador de Tema -->
+        <button class="theme-toggle-btn" id="theme-toggle-btn" title="Alternar entre Tema Claro e Escuro">
+          <span>🌙</span> <span>Tema Escuro</span>
+        </button>
+      </div>
+    </div>
+    
+    <div class="headline-subsection-row">
+      <span id="headline-subsection-text">› Introdução</span>
+      <span style="opacity:0.8;font-size:0.7rem;">Computação Gráfica • Prof. Pedro Ximenes</span>
+    </div>
+  </header>
+
+  <!-- ============================================================ -->
+  <!-- CONTAINER REVEAL.JS -->
+  <!-- ============================================================ -->
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 1: Capa (Titlepage) -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="hero-container">
+          <div class="hero-box">
+            <h1>Transformações Geométricas 2D — Parte 3</h1>
+            <h2>Computação Gráfica — Mudança entre Sistemas de Coordenadas 2D & Pipeline no Canvas 2D, WebGL e Three.js</h2>
+          </div>
+          
+          <div class="hero-author-card">
+            <p><strong>Prof. Pedro Ximenes</strong></p>
+            <p>Universidade Católica de Pernambuco (UNICAP)</p>
+          </div>
+
+          <div style="margin-top: 10px;">
+            <button class="btn" style="padding:8px 22px;font-size:0.92rem;" onclick="Reveal.next()">
+              Iniciar Aula ➔
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 2: Sumário -->
+      <!-- ============================================================ -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Sumário</h2>
+          <span class="section-badge">Visão Geral</span>
+        </div>
+
+        <div class="toc-list">
+          <div class="toc-item" onclick="Reveal.slide(2)">
+            <div class="toc-badge">1</div>
+            <div><strong>Transformações entre Sistemas de Coordenadas 2D:</strong> Motivação, formulação do problema e conexão direta com o futuro assunto de Viewing 3D.</div>
+          </div>
+          <div class="toc-item" onclick="Reveal.slide(5)">
+            <div class="toc-badge">2</div>
+            <div><strong>Método 1 — Usando o Ângulo de Rotação $\theta$:</strong> Decomposição em translação e rotação horária $R(-\theta)$, dedução matricial e exemplo numérico completo.</div>
+          </div>
+          <div class="toc-item" onclick="Reveal.slide(9)">
+            <div class="toc-badge">3</div>
+            <div><strong>Propriedade Ortonormal & Método 2 (Sem Ângulo):</strong> Especificação de orientação por vetor diretor $\vec{V} = P_1 - P_0$, normalização e construção da base ortogonal $\vec{u}$.</div>
+          </div>
+          <div class="toc-item" onclick="Reveal.slide(18)">
+            <div class="toc-badge">4</div>
+            <div><strong>Transformações 2D em JavaScript/Canvas:</strong> Funções nativas (`translate`, `rotate`, `scale`, `setTransform`, `save/restore`) e convenção do eixo $Y$ para baixo.</div>
+          </div>
+          <div class="toc-item" onclick="Reveal.slide(22)">
+            <div class="toc-badge">5</div>
+            <div><strong>Ordem de Execução, Pipeline, WebGL & Three.js:</strong> Execução de baixo para cima, não-comutatividade, reset de matriz e transição para shaders WebGL e Three.js.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ############################################################ -->
+      <!-- SEÇÃO 1: TRANSFORMAÇÕES ENTRE SISTEMAS DE COORDENADAS 2D -->
+      <!-- ############################################################ -->
+
+      <!-- SLIDE 3: Motivação -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Por que Transformar entre Sistemas de Coordenadas?</h2>
+          <span class="section-badge">Motivação</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Contexto</div>
+          <div class="block-body">
+            Em Computação Gráfica, muitas vezes precisamos converter as coordenadas de um ponto de um sistema de coordenadas para outro.
+          </div>
+        </div>
+
+        <ul class="styled-list" style="margin-top: 14px;">
+          <li>Mais adiante no curso, vamos aprender <strong>Transformações entre Sistemas de Coordenadas 3D</strong>, essencial para o assunto de <strong>Viewing 3D</strong> (câmeras sintéticas, sistemas de coordenadas do mundo, da câmera e da tela).</li>
+          <li>Antes disso, é muito mais fácil, intuitivo e didático aprender a versão <strong>2D</strong>!</li>
+          <li>A álgebra linear, a ortonormalidade e a ordem de composição de matrizes que você dominar aqui em 2D serão exatamente as mesmas aplicadas em 3D.</li>
+        </ul>
+      </section>
+
+      <!-- SLIDE 4: Enunciado do Problema -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Enunciado do Problema</h2>
+          <span class="section-badge">Enunciado</span>
+        </div>
+
+        <div style="display:flex;justify-content:center;margin-bottom:8px;">
+          <canvas id="canvas-fig-enunciado" width="420" height="240"></canvas>
+        </div>
+
+        <div class="beamer-block example">
+          <div class="block-header">Imagine dois sistemas de coordenadas:</div>
+          <div class="block-body">
+            <ul class="styled-list" style="margin:0;">
+              <li>Sistema <strong>original</strong> $XY$ (em preto), com origem canônica em $(0,0)$.</li>
+              <li>Sistema <strong>destino</strong> $X'Y'$ (em azul/ciano), cuja origem está localizada em $(x_0, y_0)$ do sistema $XY$ e rotacionado por um ângulo $\theta$.</li>
+            </ul>
+            <p style="margin-top:8px;font-weight:700;">Pergunta: Dado um ponto com coordenadas $(x, y)$ no sistema $XY$, quais são suas coordenadas no sistema $X'Y'$?</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 5: Visualização do Problema -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Visualização do Problema</h2>
+          <span class="section-badge">Objetivo</span>
+        </div>
+
+        <div class="beamer-block alert">
+          <div class="block-header">Objetivo Fundamental</div>
+          <div class="block-body">
+            Encontrar as coordenadas de $P$ no sistema $X'Y'$, ou seja:
+            $$\mathbf{P}' = (x', y')$$
+            <p style="margin-top:8px;">
+              Os dois sistemas representam <strong>a mesma cena física</strong>, com exatamente os mesmos objetos. <strong>Não estamos movendo o ponto no espaço real!</strong> Estamos apenas <em>“reindexando”</em> suas coordenadas para expressá-las em relação a uma nova origem e novos eixos de referência.
+            </p>
+          </div>
+        </div>
+
+        <div class="beamer-block def" style="margin-top:12px;">
+          <div class="block-header">Princípio Geométrico da Transformação</div>
+          <div class="block-body">
+            Para expressar o ponto $P$ no sistema $X'Y'$, devemos descobrir qual sequência de operações move o sistema $X'Y'$ de volta para coincidir perfeitamente com a origem e a orientação do sistema canônico $XY$.
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 6: Método 1: Usando o Ângulo theta -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Método 1 — Usando o Ângulo $\theta$</h2>
+          <span class="section-badge">Método 1</span>
+        </div>
+
+        <p style="font-size:calc(0.88rem * var(--font-zoom, 1));margin-bottom:8px;">
+          Para transformar de $XY$ para $X'Y'$, usamos <strong>duas operações consecutivas</strong>:
+        </p>
+
+        <ol class="styled-ordered-list">
+          <li><strong>Transladar</strong> a origem de $X'Y'$ (que está em $(x_0, y_0)$) para coincidir com a origem de $XY$: $\mathbf{T(-x_0, -y_0)}$</li>
+          <li><strong>Rotacionar</strong> por $-\theta$ para alinhar os eixos: $\mathbf{R(-\theta)}$</li>
+        </ol>
+
+        <div class="beamer-block def">
+          <div class="block-header">Matriz Composta</div>
+          <div class="block-body">
+            $$M_{XY \to X'Y'} = \underbrace{R(-\theta)}_{\text{2ª operação}} \cdot \underbrace{T(-x_0, -y_0)}_{\text{1ª operação}}$$
+          </div>
+        </div>
+
+        <p style="font-size:calc(0.84rem * var(--font-zoom, 1));margin:6px 0;">
+          Lembre-se sempre: <strong>de trás para frente!</strong> A translação é a 1ª operação aplicada geometricamente ao ponto e, portanto, aparece por <strong>último</strong> na multiplicação de matrizes à esquerda.
+        </p>
+
+        <div class="beamer-block example">
+          <div class="block-header">Aplicando ao ponto</div>
+          <div class="block-body">
+            $$P' = M_{XY \to X'Y'} \cdot P = R(-\theta) \cdot T(-x_0, -y_0) \cdot \begin{pmatrix} x \\ y \\ 1 \end{pmatrix}$$
+            O vetor resultante $P' = (x', y', 1)^T$ contém as coordenadas do ponto expressas no sistema destino $X'Y'$.
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 7: Exemplo -- Método 1 (Cálculos 100% Detalhados) -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Exemplo — Método 1</h2>
+          <span class="section-badge">Exemplo Completo</span>
+        </div>
+
+        <p style="font-size:calc(0.82rem * var(--font-zoom, 1));margin-bottom:6px;">
+          Calcular a matriz de transformação de $XY$ para $X'Y'$ e as coordenadas finais do ponto $P$ no sistema destino ($P'$).<br>
+          <strong>Dados:</strong> $x_0 = 3$, $y_0 = 2$, $\theta = 45^\circ$, $P = (4, 5)$. Sabendo que $\cos 45^\circ = \sin 45^\circ = \frac{\sqrt{2}}{2} \approx 0{,}7071$.
+        </p>
+
+        <div class="two-cols ratio-45-55">
+          <div class="col">
+            <div class="canvas-card" style="padding:6px;">
+              <canvas id="canvas-fig-ex1" width="350" height="310"></canvas>
+              <span style="font-size:0.70rem;color:var(--text-muted);margin-top:4px;">Sistema $XY$ (preto), $X'Y'$ a $45^\circ$, ponto $P(4,5)$ e projeções ortogonais $P' \approx (2{,}83, \; 1{,}41)$</span>
+            </div>
+          </div>
+
+          <div class="col" style="font-size:calc(0.76rem * var(--font-zoom, 1));">
+            <strong>Passo 1: Montar as matrizes (de trás para frente):</strong>
+            $$M = R(-45^\circ) \cdot T(-3, -2) = \begin{pmatrix} \frac{\sqrt{2}}{2} & \frac{\sqrt{2}}{2} & 0 \\[2pt] -\frac{\sqrt{2}}{2} & \frac{\sqrt{2}}{2} & 0 \\[2pt] 0 & 0 & 1 \end{pmatrix} \cdot \begin{pmatrix} 1 & 0 & -3 \\ 0 & 1 & -2 \\ 0 & 0 & 1 \end{pmatrix}$$
+
+            <strong>Passo 2: Multiplicação das matrizes:</strong>
+            $$\begin{aligned}
+            M &= \begin{pmatrix} 
+              \frac{\sqrt{2}}{2}(1) & \frac{\sqrt{2}}{2}(1) & \frac{\sqrt{2}}{2}(-3) + \frac{\sqrt{2}}{2}(-2) \\[3pt]
+              -\frac{\sqrt{2}}{2}(1) & \frac{\sqrt{2}}{2}(1) & -\frac{\sqrt{2}}{2}(-3) + \frac{\sqrt{2}}{2}(-2) \\[3pt]
+              0 & 0 & 1
+            \end{pmatrix} \\\\[3pt]
+            &= \begin{pmatrix}
+              \frac{\sqrt{2}}{2} & \frac{\sqrt{2}}{2} & -\frac{5\sqrt{2}}{2} \\[4pt]
+              -\frac{\sqrt{2}}{2} & \frac{\sqrt{2}}{2} & \frac{\sqrt{2}}{2} \\[4pt]
+              0 & 0 & 1
+            \end{pmatrix} \approx \begin{pmatrix} 0{,}7071 & 0{,}7071 & -3{,}5355 \\ -0{,}7071 & 0{,}7071 & 0{,}7071 \\ 0 & 0 & 1 \end{pmatrix}
+            \end{aligned}$$
+
+            <strong>Passo 3: Aplicar ao ponto $P = (4, 5, 1)^T$:</strong>
+            $$P' = M \cdot \begin{pmatrix} 4 \\ 5 \\ 1 \end{pmatrix} = \begin{pmatrix} \frac{\sqrt{2}}{2}(4) + \frac{\sqrt{2}}{2}(5) - \frac{5\sqrt{2}}{2} \\[4pt] -\frac{\sqrt{2}}{2}(4) + \frac{\sqrt{2}}{2}(5) + \frac{\sqrt{2}}{2}(1) \\[4pt] 1 \end{pmatrix} = \begin{pmatrix} \frac{4\sqrt{2}}{2} \\[3pt] \frac{2\sqrt{2}}{2} \\[3pt] 1 \end{pmatrix} = \begin{pmatrix} \mathbf{2\sqrt{2}} \\[3pt] \mathbf{\sqrt{2}} \\[3pt] 1 \end{pmatrix} \approx \begin{pmatrix} \mathbf{2{,}8284} \\ \mathbf{1{,}4142} \\ 1 \end{pmatrix}$$
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 8: Exemplo -- Método 1 (Notas sobre R(-theta)) -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Exemplo — Método 1 (Notas sobre a Rotação $R(-\theta)$)</h2>
+          <span class="section-badge">Análise Teórica</span>
+        </div>
+
+        <div class="beamer-block alert">
+          <div class="block-header">Por que $-\theta$ e não $+\theta$?</div>
+          <div class="block-body">
+            Os dois sistemas estão <strong>desalinhados</strong> por um ângulo $\theta$ no sentido anti-horário. Para alinhar os eixos de volta ao sistema canônico, precisamos rotacionar no sentido <strong>horário</strong>, o que na convenção matemática padrão significa ângulo <strong>negativo</strong>: $-\theta$.
+          </div>
+        </div>
+
+        <div class="beamer-block example" style="margin-top:10px;">
+          <div class="block-header">Lembrete Algébrico: $R(-\theta)$</div>
+          <div class="block-body">
+            $$R(-\theta) = \begin{pmatrix}
+              \cos(-\theta) & -\sin(-\theta) & 0 \\
+              \sin(-\theta) & \cos(-\theta) & 0 \\
+              0 & 0 & 1
+            \end{pmatrix} = \begin{pmatrix}
+              \cos\theta & \sin\theta & 0 \\
+              -\sin\theta & \cos\theta & 0 \\
+              0 & 0 & 1
+            \end{pmatrix}$$
+            Como o cosseno é função par ($\cos(-\theta) = \cos\theta$) e o seno é função ímpar ($\sin(-\theta) = -\sin\theta$), o sinal do seno “troca de posição” na matriz de rotação.
+          </div>
+        </div>
+
+        <div class="beamer-block alert" style="margin-top:10px;">
+          <div class="block-header">Problema Fundamental deste Método</div>
+          <div class="block-body">
+            Na prática profissional de Computação Gráfica, o ângulo $\theta$ <strong>geralmente não é informado diretamente</strong>!<br>
+            Nas aplicações reais (câmeras virtuais, robótica, engines de jogos), conhecemos a posição da origem $(x_0, y_0)$ e as coordenadas de um segundo ponto de mira, mas calcular $\theta$ exigiria funções trigonométricas caras ($\arctan$).<br>
+            $\Rightarrow$ <strong>O Método 2 resolve exatamente esse problema!</strong>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 9: Laboratório Interativo -- Método 1 -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Laboratório Interativo — Método 1 (Com Ângulo $\theta$)</h2>
+          <span class="section-badge">Simulação 2D</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="canvas-card">
+              <canvas id="canvas-demo-metodo1"></canvas>
+
+              <div class="interactive-controls">
+                <div class="ctrl-row">
+                  <label>Origem $x_0$:</label>
+                  <input type="range" id="d1-x0" min="-4" max="5" step="0.5" value="3">
+                  <span id="d1-val-x0" class="ctrl-val">3</span>
+                </div>
+                <div class="ctrl-row">
+                  <label>Origem $y_0$:</label>
+                  <input type="range" id="d1-y0" min="-4" max="5" step="0.5" value="2">
+                  <span id="d1-val-y0" class="ctrl-val">2</span>
+                </div>
+                <div class="ctrl-row">
+                  <label>Ângulo $\theta$:</label>
+                  <input type="range" id="d1-theta" min="-180" max="180" step="5" value="45">
+                  <span id="d1-val-theta" class="ctrl-val">45°</span>
+                </div>
+                <div class="ctrl-row">
+                  <label>Ponto $P_x$:</label>
+                  <input type="range" id="d1-px" min="-4" max="6" step="0.5" value="4">
+                  <span id="d1-val-px" class="ctrl-val">4</span>
+                </div>
+                <div class="ctrl-row">
+                  <label>Ponto $P_y$:</label>
+                  <input type="range" id="d1-py" min="-4" max="6" step="0.5" value="5">
+                  <span id="d1-val-py" class="ctrl-val">5</span>
+                </div>
+
+                <div class="btn-group">
+                  <button class="btn btn-sm" id="d1-reset-btn">Restaurar Padrão do Exemplo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block def">
+              <div class="block-header">Cálculos Matriciais Dinâmicos</div>
+              <div class="block-body" style="padding:6px;">
+                <div id="demo1-math-output" class="math-box">
+                  <!-- Renderizado via KaTeX -->
+                </div>
+              </div>
+            </div>
+
+            <div class="beamer-block example">
+              <div class="block-header">Como Interpretar o Gráfico</div>
+              <div class="block-body" style="font-size:calc(0.76rem * var(--font-zoom, 1));">
+                <ul class="styled-list" style="margin:0;">
+                  <li><strong>Eixos em preto ($XY$):</strong> sistema canônico global.</li>
+                  <li><strong>Eixos em azul ciano ($X'Y'$):</strong> sistema transladado por $(x_0, y_0)$ e rotacionado por $\theta$.</li>
+                  <li><strong>Ponto $P$ (vermelho):</strong> note como a posição no espaço é fixa; apenas os valores de $(x', y')$ mudam conforme você altera a base!</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 10: Propriedade Ortonormal da Submatriz 2x2 -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Propriedade Ortonormal da Submatriz $2\times 2$</h2>
+          <span class="section-badge">Álgebra Linear</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Observação importante</div>
+          <div class="block-body">
+            Em qualquer matriz de rotação $3 \times 3$ em coordenadas homogêneas, a submatriz $2\times 2$ superior esquerda forma um par de vetores <strong>ortonormais</strong>.
+          </div>
+        </div>
+
+        <p style="font-size:calc(0.85rem * var(--font-zoom, 1));margin:8px 0;">
+          Considere a submatriz de rotação genérica:
+          $$\begin{pmatrix}
+            r_{xx} & r_{xy} \\
+            r_{yx} & r_{yy}
+          \end{pmatrix}
+          \quad \Rightarrow \quad
+          \vec{e}_1 = \begin{pmatrix} r_{xx} \\ r_{xy} \end{pmatrix}, \quad
+          \vec{e}_2 = \begin{pmatrix} r_{yx} \\ r_{yy} \end{pmatrix}$$
+        </p>
+
+        <div class="beamer-block example">
+          <div class="block-header">O que significa “ortonormal”?</div>
+          <div class="block-body">
+            <ol class="styled-ordered-list" style="margin:0;">
+              <li><strong>Unitários:</strong> $\|\vec{e}_1\| = 1$ e $\|\vec{e}_2\| = 1$<br>
+              $\text{norma} = \sqrt{r_{xx}^2 + r_{xy}^2} = 1$</li>
+              <li><strong>Ortogonais:</strong> $\vec{e}_1 \cdot \vec{e}_2 = 0$<br>
+              $\text{produto escalar} = r_{xx} \cdot r_{yx} + r_{xy} \cdot r_{yy} = 0$</li>
+            </ol>
+            <p style="margin-top:6px;">Ou seja, os dois vetores formam ângulo reto perfeito ($90^\circ$) entre si e possuem comprimento exatamente unitário.</p>
+          </div>
+        </div>
+
+        <div class="beamer-block alert">
+          <div class="block-header">Para que serve isso?</div>
+          <div class="block-body">
+            Essa propriedade geométrica permite construir a matriz de rotação <strong>sem conhecer previamente o ângulo $\theta$</strong> — é a base matemática do Método 2!
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 11: Método 2 -- Orientação pelo Vetor V (P0 e P1) -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Método 2 — Orientação pelo Vetor $\vec{V}$ ($P_0$ e $P_1$)</h2>
+          <span class="section-badge">Método 2</span>
+        </div>
+
+        <div class="two-cols ratio-45-55">
+          <div class="col">
+            <div class="canvas-card" style="padding:6px;">
+              <canvas id="canvas-fig-vetor-v" width="350" height="280"></canvas>
+              <span style="font-size:0.70rem;color:var(--text-muted);margin-top:4px;">Direção do eixo $Y'$ determinada pelo vetor $\vec{V} = P_1 - P_0$</span>
+            </div>
+          </div>
+
+          <div class="col" style="font-size:calc(0.80rem * var(--font-zoom, 1));">
+            <div class="beamer-block def">
+              <div class="block-header">Orientação por Vetor Direcional</div>
+              <div class="block-body">
+                Usando a propriedade de ortonormalidade, descrevemos a orientação do sistema de coordenadas $X'Y'$ por meio de um vetor $\vec{V}$ indicando a <strong>direção positiva do eixo $y'$</strong>.
+              </div>
+            </div>
+
+            <div class="beamer-block example" style="margin-top:8px;">
+              <div class="block-header">Especificando $\vec{V}$ com Base em Dois Pontos</div>
+              <div class="block-body">
+                $$\vec{V} = P_1 - P_0 = (x_1 - x_0, \; y_1 - y_0) = (V_x, V_y)$$
+                <ul class="styled-list" style="margin:4px 0 0 0;">
+                  <li><strong>$P_0 = (x_0, y_0)$:</strong> define a posição da origem do sistema de destino $X'Y'$.</li>
+                  <li><strong>$P_1 = (x_1, y_1)$:</strong> qualquer ponto arbitrário sobre a parte positiva do eixo $Y'$.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="beamer-block alert" style="margin-top:8px;">
+              <div class="block-header">Grande Vantagem Prática</div>
+              <div class="block-body">
+                Dispensa o cálculo de $\theta$ via $\arctan$, eliminando ambiguidades de quadrante e divisões por zero!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 12: Método 2 -- Vetor Diretor e Normalização (Passos 1 e 2) -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Método 2 — Vetor Diretor e Normalização (Passos 1 e 2)</h2>
+          <span class="section-badge">Passos 1 e 2</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Ideia Central</div>
+          <div class="block-body">
+            Ao invés do ângulo $\theta$, usamos <strong>dois pontos</strong> para definir a orientação do sistema $X'Y'$: a origem $P_0 = (x_0, y_0)$ e um ponto $P_1 = (x_1, y_1)$ na direção positiva do eixo $Y'$.
+          </div>
+        </div>
+
+        <div class="beamer-block def" style="margin-top:8px;">
+          <div class="block-header">Passo 1: Obter o Vetor Diretor de $Y'$</div>
+          <div class="block-body">
+            Calcular o vetor que liga a origem $P_0$ ao ponto de alinhamento $P_1$:
+            $$\vec{V} = P_1 - P_0 = (x_1 - x_0, \; y_1 - y_0) = (V_x, V_y) \quad \text{(não normalizado)}$$
+          </div>
+        </div>
+
+        <div class="beamer-block example" style="margin-top:8px;">
+          <div class="block-header">Passo 2: Normalizar o Vetor (Comprimento Unitário)</div>
+          <div class="block-body">
+            Dividir o vetor pela sua norma euclidiana para obter um vetor unitário ($\|\vec{v}\| = 1$):
+            $$\|\vec{V}\| = \sqrt{V_x^2 + V_y^2}, \qquad
+            \vec{v} = \left(\frac{V_x}{\|\vec{V}\|}, \; \frac{V_y}{\|\vec{V}\|}\right) = (v_x, v_y)$$
+          </div>
+        </div>
+
+        <div class="beamer-block alert" style="margin-top:8px;">
+          <div class="block-header">Regra de Ouro: Vetores Unitários Sempre!</div>
+          <div class="block-body">
+            Em Computação Gráfica, <strong>sempre normalize seus vetores direcionais!</strong> Se um vetor não tem norma 1, ele causará distorções involuntárias de escala nos objetos.<br>
+            <strong>Convenção:</strong> Maiúsculas $(V_x, V_y)$ = vetor bruto não normalizado. Minúsculas $(v_x, v_y)$ = vetor unitário normalizado.
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 13: Método 2 -- Construindo a Matriz de Rotação (Passos 3 a 5) -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Método 2 — Construindo a Matriz de Rotação (Passos 3 a 5)</h2>
+          <span class="section-badge">Passos 3 a 5</span>
+        </div>
+
+        <div class="two-cols ratio-45-55">
+          <div class="col">
+            <div class="canvas-card" style="padding:6px;">
+              <canvas id="canvas-fig-vetor-u" width="350" height="310"></canvas>
+              <span style="font-size:0.70rem;color:var(--text-muted);margin-top:4px;">Construção Geométrica: $\vec{u} \perp \vec{v}$ formando a base ortonormal de $X'Y'$ ($90^\circ$)</span>
+            </div>
+          </div>
+
+          <div class="col" style="font-size:calc(0.78rem * var(--font-zoom, 1));">
+            <div class="beamer-block def">
+              <div class="block-header">Passo 3: Vetor Ortogonal $\vec{u}$ no Eixo $X'$</div>
+              <div class="block-body">
+                Um vetor perpendicular a $\vec{v} = (v_x, v_y)$ apontando para $X'$ é obtido trocando as componentes e invertendo o sinal:
+                $$\vec{u} = (u_x, \; u_y) = (v_y, \; -v_x)$$
+                <div style="margin-top:6px;padding:5px 8px;background:rgba(59,130,246,0.08);border-radius:4px;border-left:3px solid var(--beamer-blue);">
+                  <strong>Verificação analítica:</strong>
+                  $$\vec{u} \cdot \vec{v} = v_y \cdot v_x + (-v_x) \cdot v_y = v_x v_y - v_x v_y = 0 \quad \checkmark \text{ (ortogonais!)}$$
+                </div>
+              </div>
+            </div>
+
+            <div class="beamer-block def" style="margin-top:6px;">
+              <div class="block-header">Passo 4: Matriz de Rotação Ortonormal $R$</div>
+              <div class="block-body">
+                $$R = \begin{pmatrix}
+                  u_x & u_y & 0 \\
+                  v_x & v_y & 0 \\
+                  0 & 0 & 1
+                \end{pmatrix} = \begin{pmatrix}
+                  v_y & -v_x & 0 \\
+                  v_x & v_y & 0 \\
+                  0 & 0 & 1
+                \end{pmatrix}$$
+              </div>
+            </div>
+
+            <div class="beamer-block example" style="margin-top:6px;">
+              <div class="block-header">Passo 5: Matriz Composta Final e Ponto $P'$</div>
+              <div class="block-body">
+                $$M_{XY \to X'Y'} = R \cdot T(-x_0, -y_0) = \begin{pmatrix}
+                  v_y & -v_x & 0 \\
+                  v_x & v_y & 0 \\
+                  0 & 0 & 1
+                \end{pmatrix} \cdot \begin{pmatrix}
+                  1 & 0 & -x_0 \\
+                  0 & 1 & -y_0 \\
+                  0 & 0 & 1
+                \end{pmatrix}$$
+                $$P' = M_{XY \to X'Y'} \cdot P$$
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 14: Exemplo -- Método 2 (Passos 1 a 4) -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Exemplo — Método 2 (Passos 1 a 4)</h2>
+          <span class="section-badge">Exemplo Passo a Passo</span>
+        </div>
+
+        <p style="font-size:calc(0.80rem * var(--font-zoom, 1));margin-bottom:6px;">
+          Calcular a matriz de transformação de $XY$ para $X'Y'$ e as coordenadas finais do ponto $P$ no sistema destino ($P'$).<br>
+          <strong>Dados:</strong> $P_0 = (x_0, y_0) = (4, 3)$, $P_1 = (x_1, y_1) = (3, 4)$, $P = (3, 6)$.
+        </p>
+
+        <div class="two-cols ratio-45-55">
+          <div class="col">
+            <div class="canvas-card" style="padding:6px;">
+              <canvas id="canvas-fig-ex2a" width="350" height="310"></canvas>
+              <span style="font-size:0.70rem;color:var(--text-muted);margin-top:4px;">Pontos $P_0(4,3)$, $P_1(3,4)$, vetor $\vec{V} = (-1, 1)$ e ponto $P(3,6)$</span>
+            </div>
+          </div>
+
+          <div class="col" style="font-size:calc(0.76rem * var(--font-zoom, 1));">
+            <strong>Passo 1: Vetor diretor $\vec{V} = P_1 - P_0$:</strong>
+            $$\vec{V} = (3 - 4, \; 4 - 3) = (-1, 1)$$
+
+            <strong>Passo 2: Norma euclidiana e vetor unitário $\vec{v}$:</strong>
+            $$\|\vec{V}\| = \sqrt{(-1)^2 + 1^2} = \sqrt{2}, \quad v_x = -\frac{1}{\sqrt{2}}, \quad v_y = \frac{1}{\sqrt{2}}$$
+
+            <strong>Passo 3: Vetor ortogonal $\vec{u} = (v_y, -v_x)$ no eixo $X'$:</strong>
+            $$u_x = v_y = \frac{1}{\sqrt{2}}, \quad u_y = -v_x = -\left(-\frac{1}{\sqrt{2}}\right) = +\frac{1}{\sqrt{2}} \implies \vec{u} = \left(\frac{1}{\sqrt{2}}, \; \frac{1}{\sqrt{2}}\right)$$
+
+            <strong>Passo 4: Montar a matriz de rotação $R$:</strong>
+            $$R = \begin{pmatrix}
+              v_y & -v_x & 0 \\[3pt]
+              v_x & v_y & 0 \\[3pt]
+              0 & 0 & 1
+            \end{pmatrix} = \begin{pmatrix}
+              \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0 \\[3pt]
+              -\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0 \\[3pt]
+              0 & 0 & 1
+            \end{pmatrix}$$
+
+            <div class="beamer-block alert" style="margin-top:4px;padding:4px;">
+              <div class="block-header" style="font-size:0.72rem;padding:3px 8px;">Atenção aos sinais!</div>
+              <div class="block-body" style="font-size:0.70rem;padding:4px 8px;">
+                $-v_x = -(-1/\sqrt{2}) = +1/\sqrt{2}$. Os dois sinais negativos cancelam-se!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 15: Exemplo -- Método 2 (Passos 5 e 6) -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Exemplo — Método 2 (Passos 5 e 6)</h2>
+          <span class="section-badge">Exemplo Passo a Passo</span>
+        </div>
+
+        <div class="two-cols ratio-45-55">
+          <div class="col">
+            <div class="canvas-card" style="padding:6px;">
+              <canvas id="canvas-fig-ex2b" width="350" height="310"></canvas>
+              <span style="font-size:0.70rem;color:var(--text-muted);margin-top:4px;">Projeções ortogonais de $P(3,6)$ nos eixos $X'$ e $Y'$ ($P' \approx (1{,}41, \; 2{,}83)$)</span>
+            </div>
+          </div>
+
+          <div class="col" style="font-size:calc(0.76rem * var(--font-zoom, 1));">
+            <strong>Passo 5: Matriz de translação $T(-4, -3)$ e composição:</strong>
+            $$\begin{aligned}
+            M &= R \cdot T(-4, -3) = \begin{pmatrix}
+              \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0 \\[3pt]
+              -\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0 \\[3pt]
+              0 & 0 & 1
+            \end{pmatrix} \cdot \begin{pmatrix}
+              1 & 0 & -4 \\
+              0 & 1 & -3 \\
+              0 & 0 & 1
+            \end{pmatrix} \\\\[3pt]
+            &= \begin{pmatrix}
+              \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}}(-4) + \frac{1}{\sqrt{2}}(-3) \\[3pt]
+              -\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}}(-4) + \frac{1}{\sqrt{2}}(-3) \\[3pt]
+              0 & 0 & 1
+            \end{pmatrix} = \begin{pmatrix}
+              \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & -\frac{7}{\sqrt{2}} \\[4pt]
+              -\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\[4pt]
+              0 & 0 & 1
+            \end{pmatrix}
+            \end{aligned}$$
+
+            <strong>Passo 6: Aplicar ao ponto $P = (3, 6, 1)^T$:</strong>
+            $$\begin{aligned}
+            P' &= M \cdot \begin{pmatrix} 3 \\ 6 \\ 1 \end{pmatrix} = \begin{pmatrix}
+              \frac{1}{\sqrt{2}}(3) + \frac{1}{\sqrt{2}}(6) - \frac{7}{\sqrt{2}} \\[4pt]
+              -\frac{1}{\sqrt{2}}(3) + \frac{1}{\sqrt{2}}(6) + \frac{1}{\sqrt{2}}(1) \\[4pt]
+              1
+            \end{pmatrix} \\\\[3pt]
+            &= \begin{pmatrix}
+              \frac{3 + 6 - 7}{\sqrt{2}} \\[4pt]
+              \frac{-3 + 6 + 1}{\sqrt{2}} \\[4pt]
+              1
+            \end{pmatrix} = \begin{pmatrix}
+              \frac{2}{\sqrt{2}} \\[4pt]
+              \frac{4}{\sqrt{2}} \\[4pt]
+              1
+            \end{pmatrix} = \begin{pmatrix}
+              \mathbf{\sqrt{2}} \\[4pt]
+              \mathbf{2\sqrt{2}} \\[4pt]
+              1
+            \end{pmatrix} \approx \begin{pmatrix} \mathbf{1{,}4142} \\ \mathbf{2{,}8284} \\ 1 \end{pmatrix}
+            \end{aligned}$$
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 17: Comparação dos Dois Métodos -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Comparação dos Dois Métodos</h2>
+          <span class="section-badge">Comparação</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="beamer-block def">
+              <div class="block-header">Método 1 (com $\theta$)</div>
+              <div class="block-body" style="font-size:calc(0.80rem * var(--font-zoom, 1));">
+                <ul class="styled-list" style="margin:0;">
+                  <li>Precisa saber explicitamente o ângulo $\theta$.</li>
+                  <li>Usa $R(-\theta)$ diretamente na fórmula.</li>
+                  <li>Mais simples de compreender conceitualmente em aulas teóricas.</li>
+                  <li>Geralmente empregado em exercícios teóricos de fixação acadêmica.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block example">
+              <div class="block-header">Método 2 (sem $\theta$)</div>
+              <div class="block-body" style="font-size:calc(0.80rem * var(--font-zoom, 1));">
+                <ul class="styled-list" style="margin:0;">
+                  <li>Só precisa de dois pontos no espaço: $P_0$ e $P_1$.</li>
+                  <li>Constrói vetores ortonormais diretos $(\vec{v}, \vec{u})$.</li>
+                  <li>Mais eficiente, robusto e prático em motores gráficos reais.</li>
+                  <li>Usado quando $\theta$ não é conhecido (ex.: câmeras virtuais).</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="beamer-block alert" style="margin-top:10px;">
+          <div class="block-header">Quando usar cada método?</div>
+          <div class="block-body">
+            <ul class="styled-list" style="margin:0;">
+              <li>Se o ângulo de rotação $\theta$ for fornecido $\Rightarrow$ <strong>Método 1</strong></li>
+              <li>Se dois pontos de alinhamento do eixo forem dados (sem ângulo) $\Rightarrow$ <strong>Método 2</strong></li>
+            </ul>
+          </div>
+        </div>
+
+        <p style="font-size:calc(0.85rem * var(--font-zoom, 1));margin-top:8px;">
+          Ambos os métodos produzem <strong>rigorosamente o mesmo resultado numérico</strong>! A única distinção é <em>a forma matemática</em> como a rotação é formulada (trigonometria direta vs. vetores ortonormais).
+        </p>
+      </section>
+
+      <!-- SLIDE 18: Laboratório Interativo -- Método 2 -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Laboratório Interativo — Método 2 (Dois Pontos e Vetor $\vec{V}$)</h2>
+          <span class="section-badge">Simulação 2D</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="canvas-card">
+              <canvas id="canvas-demo-metodo2"></canvas>
+
+              <div class="interactive-controls">
+                <div class="ctrl-row">
+                  <label>$P_{0x}$ (origem):</label>
+                  <input type="range" id="d2-p0x" min="-4" max="5" step="0.5" value="4">
+                  <span id="d2-val-p0x" class="ctrl-val">4</span>
+                </div>
+                <div class="ctrl-row">
+                  <label>$P_{0y}$ (origem):</label>
+                  <input type="range" id="d2-p0y" min="-4" max="5" step="0.5" value="3">
+                  <span id="d2-val-p0y" class="ctrl-val">3</span>
+                </div>
+                <div class="ctrl-row">
+                  <label>$P_{1x}$ ($Y'$):</label>
+                  <input type="range" id="d2-p1x" min="-4" max="5" step="0.5" value="3">
+                  <span id="d2-val-p1x" class="ctrl-val">3</span>
+                </div>
+                <div class="ctrl-row">
+                  <label>$P_{1y}$ ($Y'$):</label>
+                  <input type="range" id="d2-p1y" min="-4" max="5" step="0.5" value="4">
+                  <span id="d2-val-p1y" class="ctrl-val">4</span>
+                </div>
+                <div class="ctrl-row">
+                  <label>Ponto $P_x$:</label>
+                  <input type="range" id="d2-px" min="-4" max="6" step="0.5" value="3">
+                  <span id="d2-val-px" class="ctrl-val">3</span>
+                </div>
+                <div class="ctrl-row">
+                  <label>Ponto $P_y$:</label>
+                  <input type="range" id="d2-py" min="-4" max="7" step="0.5" value="6">
+                  <span id="d2-val-py" class="ctrl-val">6</span>
+                </div>
+
+                <div class="btn-group">
+                  <button class="btn btn-sm" id="d2-reset-btn">Restaurar Exemplo 2</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block def">
+              <div class="block-header">Dedução Matricial Instantânea</div>
+              <div class="block-body" style="padding:6px;">
+                <div id="demo2-math-output" class="math-box">
+                  <!-- Renderizado via KaTeX -->
+                </div>
+              </div>
+            </div>
+
+            <div class="beamer-block example">
+              <div class="block-header">Observações do Experimento</div>
+              <div class="block-body" style="font-size:calc(0.76rem * var(--font-zoom, 1));">
+                <ul class="styled-list" style="margin:0;">
+                  <li><strong>Vetor vermelho $\vec{V}$:</strong> aponta de $P_0$ para $P_1$, definindo a direção positiva de $Y'$.</li>
+                  <li><strong>Eixos ciano ($X'Y'$):</strong> construídos automaticamente através dos vetores ortonormais $(\vec{v}, \vec{u})$.</li>
+                  <li>Arraste $P_1$ para observar a matriz $R$ se recalculando sem qualquer chamada a $\sin$ ou $\cos$!</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ############################################################ -->
+      <!-- SEÇÃO 2: TRANSFORMAÇÕES 2D EM JAVASCRIPT/CANVAS -->
+      <!-- ############################################################ -->
+
+      <!-- SLIDE 19: Transformações no Canvas 2D -- Introdução -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Transformações no Canvas 2D — Introdução</h2>
+          <span class="section-badge">HTML5 Canvas</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Canvas 2D do HTML5</div>
+          <div class="block-body">
+            O elemento <code>&lt;canvas&gt;</code> do HTML5 oferece um contexto 2D (<code>ctx</code>) com funções nativas de transformação que aplicam matrizes afins $3\times 3$ internamente no pipeline de renderização.
+          </div>
+        </div>
+
+        <div class="beamer-block example" style="margin-top:10px;">
+          <div class="block-header">Três funções principais</div>
+          <div class="block-body">
+            <ol class="styled-ordered-list" style="margin:0;">
+              <li><code>ctx.translate(tx, ty)</code> — Translação de eixos</li>
+              <li><code>ctx.rotate(angulo)</code> — Rotação (ângulo fornecido em <strong>radianos</strong>!)</li>
+              <li><code>ctx.scale(sx, sy)</code> — Escala a partir da origem</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="beamer-block alert" style="margin-top:10px;">
+          <div class="block-header">Atenção Crítica: Ângulo em Radianos!</div>
+          <div class="block-body">
+            A função nativa <code>ctx.rotate()</code> recebe obrigatoriamente o ângulo em <strong>radianos</strong>, nunca em graus!<br>
+            $$\text{rad} = \text{graus} \times \frac{\pi}{180}$$
+            <strong>Exemplo:</strong> $90^\circ = 90 \times \pi / 180 = \pi/2 \approx 1{,}5708 \text{ rad}$.
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 20: ctx.translate -- Translação -->
+      <section>
+        <div class="frame-title-banner">
+          <h2><code>ctx.translate</code> — Translação</h2>
+          <span class="section-badge">Canvas 2D</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Sintaxe</div>
+          <div class="block-body">
+            <code>ctx.translate(tx, ty);</code><br>
+            Translada a origem do sistema de coordenadas do canvas em $(t_x, t_y)$ pixels.
+          </div>
+        </div>
+
+        <div class="beamer-block example" style="margin-top:10px;">
+          <div class="block-header">Exemplo de Código</div>
+          <div class="block-body">
+            <pre class="code-block"><code><span class="token-comment">// Move o sistema de coordenadas 100px para a direita e 50px para baixo</span>
+<span class="token-fn">ctx</span>.<span class="token-fn">translate</span>(<span class="token-num">100</span>, <span class="token-num">50</span>);
+
+<span class="token-comment">// Tudo desenhado a seguir estará posicionado em relação à nova origem</span>
+<span class="token-fn">ctx</span>.<span class="token-fn">fillRect</span>(<span class="token-num">0</span>, <span class="token-num">0</span>, <span class="token-num">40</span>, <span class="token-num">30</span>); <span class="token-comment">// O retângulo surge fisicamente em (100, 50)</span></code></pre>
+          </div>
+        </div>
+
+        <div class="beamer-block alert" style="margin-top:10px;">
+          <div class="block-header">Observação Importante: Convenção do Canvas ($Y$ para baixo)</div>
+          <div class="block-body">
+            No Canvas 2D, o eixo $Y$ cresce <strong>para baixo</strong> (oposto à convenção cartesiana matemática). Isso afeta diretamente o sentido visual das translações verticais e das rotações!
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 21: ctx.rotate e ctx.scale -->
+      <section>
+        <div class="frame-title-banner">
+          <h2><code>ctx.rotate</code> e <code>ctx.scale</code></h2>
+          <span class="section-badge">Canvas 2D</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header"><code>ctx.rotate(angulo)</code></div>
+          <div class="block-body">
+            Aplica uma rotação ao redor da <strong>origem atual $(0,0)$</strong> do sistema de coordenadas. O ângulo deve ser passado em <strong>radianos</strong>.<br>
+            <code>ctx.rotate(Math.PI / 4);</code> // rotação de $45^\circ$
+          </div>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header"><code>ctx.scale(sx, sy)</code></div>
+          <div class="block-body">
+            Multiplica as distâncias a partir da <strong>origem atual</strong>. Pode deslocar o objeto como efeito colateral indesejado!<br>
+            <code>ctx.scale(2, 0.5);</code> // duplica a largura em $x$ e reduz à metade em $y$
+          </div>
+        </div>
+
+        <div class="beamer-block alert">
+          <div class="block-header">Cuidados com a Escala sem Ponto Fixo</div>
+          <div class="block-body">
+            <ul class="styled-list" style="margin:0;">
+              <li>Essa é a escala padrão a partir da origem (se o objeto não estiver na origem, ele se moverá!).</li>
+              <li>Para escala com ponto fixo: requer composição (<code>translate</code> $\to$ <code>scale</code> $\to$ <code>translate</code>).</li>
+              <li>Fatores de escala negativos produzem <strong>reflexão</strong> ($s_x = -1$ reflete horizontalmente).</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="beamer-block example">
+          <div class="block-header">Cisalhamento (Shear) no Canvas</div>
+          <div class="block-body">
+            O Canvas 2D não possui uma função direta <code>ctx.shear()</code>. Para cisalhar, utiliza-se <code>ctx.transform(a, b, c, d, e, f)</code> passando a matriz afim $3\times 3$ completa.
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 22: ctx.setTransform e ctx.save/restore -->
+      <section>
+        <div class="frame-title-banner">
+          <h2><code>ctx.setTransform</code> e <code>ctx.save / restore</code></h2>
+          <span class="section-badge">Gerenciamento de Estado</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Reset da Matriz de Transformação</div>
+          <div class="block-body">
+            <code>ctx.setTransform(1, 0, 0, 1, 0, 0);</code><br>
+            Substitui imediatamente a matriz de transformação atual pela <strong>matriz identidade</strong> (reseta qualquer escala, rotação ou translação anterior).
+          </div>
+        </div>
+
+        <div class="beamer-block example">
+          <div class="block-header">Salvando e Restaurando o Estado Gráfico</div>
+          <div class="block-body">
+            <pre class="code-block"><code><span class="token-fn">ctx</span>.<span class="token-fn">save</span>();       <span class="token-comment">// empilha o estado atual (matriz, cores, estilos)</span>
+<span class="token-fn">ctx</span>.<span class="token-fn">translate</span>(<span class="token-num">100</span>, <span class="token-num">100</span>);
+<span class="token-fn">ctx</span>.<span class="token-fn">rotate</span>(<span class="token-num">Math.PI / 4</span>);
+<span class="token-comment">// ... renderiza o objeto transformado ...</span>
+<span class="token-fn">ctx</span>.<span class="token-fn">restore</span>();    <span class="token-comment">// desempilha e restaura o estado anterior sem afetar o resto</span></code></pre>
+          </div>
+        </div>
+
+        <div class="beamer-block alert">
+          <div class="block-header">Resumo das Equivalências Teóricas</div>
+          <div class="block-body" style="padding:4px 8px;">
+            <table class="beamer-table">
+              <thead>
+                <tr>
+                  <th>Conceito Teórico</th>
+                  <th>Equivalente no Canvas 2D</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Translação $T(t_x, t_y)$</td><td><code>ctx.translate(tx, ty)</code></td></tr>
+                <tr><td>Rotação $R(\theta)$</td><td><code>ctx.rotate(rad)</code></td></tr>
+                <tr><td>Escala $S(s_x, s_y)$</td><td><code>ctx.scale(sx, sy)</code></td></tr>
+                <tr><td>Carregar Identidade $I$</td><td><code>ctx.setTransform(1, 0, 0, 1, 0, 0)</code></td></tr>
+                <tr><td>Pilha de Matrizes (Push/Pop)</td><td><code>ctx.save()</code> / <code>ctx.restore()</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 23: A Importância do Reset da Matriz -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>A Importância do Reset da Matriz</h2>
+          <span class="section-badge">Ordem & Acumulação</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">O Problema da Acumulação Descontrolada</div>
+          <div class="block-body">
+            Se você estiver redesenhando repetidamente a tela (por exemplo, em loops de animação com <code>requestAnimationFrame</code>), as funções de transformação <strong>se multiplicam e se acumulam a cada quadro</strong>!
+          </div>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="beamer-block alert">
+              <div class="block-header">❌ SEM Reset (Incorreto)</div>
+              <div class="block-body" style="font-size:calc(0.74rem * var(--font-zoom, 1));">
+                <pre class="code-block"><code><span class="token-keyword">function</span> <span class="token-fn">draw</span>() {
+  <span class="token-fn">ctx</span>.<span class="token-fn">clearRect</span>(<span class="token-num">0</span>, <span class="token-num">0</span>, w, h);
+  <span class="token-comment">// SEM reset da matriz!</span>
+  <span class="token-fn">ctx</span>.<span class="token-fn">scale</span>(<span class="token-num">2</span>, <span class="token-num">2</span>);
+  <span class="token-fn">desenhaCasa</span>();
+  <span class="token-fn">requestAnimationFrame</span>(draw);
+}</code></pre>
+                <p style="color:#ef4444;font-weight:700;margin-top:4px;">A escala acumula exponencialmente: $2\times, 4\times, 8\times, 16\times\dots$ e o objeto desaparece da tela!</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block example">
+              <div class="block-header">✅ COM Reset (Correto)</div>
+              <div class="block-body" style="font-size:calc(0.74rem * var(--font-zoom, 1));">
+                <pre class="code-block"><code><span class="token-keyword">function</span> <span class="token-fn">draw</span>() {
+  <span class="token-fn">ctx</span>.<span class="token-fn">setTransform</span>(<span class="token-num">1</span>, <span class="token-num">0</span>, <span class="token-num">0</span>, <span class="token-num">1</span>, <span class="token-num">0</span>, <span class="token-num">0</span>);
+  <span class="token-fn">ctx</span>.<span class="token-fn">clearRect</span>(<span class="token-num">0</span>, <span class="token-num">0</span>, w, h);
+  <span class="token-fn">ctx</span>.<span class="token-fn">scale</span>(<span class="token-num">2</span>, <span class="token-num">2</span>);
+  <span class="token-fn">desenhaCasa</span>();
+  <span class="token-fn">requestAnimationFrame</span>(draw);
+}</code></pre>
+                <p style="color:#10b981;font-weight:700;margin-top:4px;">A matriz é limpa a cada quadro e a escala $2\times$ é aplicada de forma estável e consistente.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="beamer-block alert" style="margin-top:8px;">
+          <div class="block-header">Regra de Ouro</div>
+          <div class="block-body">
+            <strong>Sempre</strong> resete a matriz de transformação (via <code>ctx.setTransform(1,0,0,1,0,0)</code> ou <code>ctx.save()/ctx.restore()</code>) antes de aplicar novas transformações a cada quadro de animação!
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 24: Ordem das Transformações -- De Baixo para Cima -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Ordem das Transformações — De Baixo para Cima</h2>
+          <span class="section-badge">Ordem das Matrizes</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Leitura do Pipeline: De Baixo para Cima!</div>
+          <div class="block-body">
+            No Canvas 2D, exatamente como aprendemos na teoria matricial, a <strong>primeira transformação geométrica aplicada ao objeto</strong> é a <strong>última linha de código</strong> escrita imediatamente antes da função de desenho. As matrizes afins são <strong>pós-multiplicadas</strong> no contexto gráfico.
+          </div>
+        </div>
+
+        <div class="two-cols ratio-6-4">
+          <div class="col">
+            <div class="beamer-block example">
+              <div class="block-header">Exemplo: Escala com Ponto Fixo em $(110, 50)$</div>
+              <div class="block-body">
+                <pre class="code-block"><code><span class="token-fn">ctx</span>.<span class="token-fn">setTransform</span>(<span class="token-num">1</span>, <span class="token-num">0</span>, <span class="token-num">0</span>, <span class="token-num">1</span>, <span class="token-num">0</span>, <span class="token-num">0</span>);
+<span class="token-fn">ctx</span>.<span class="token-fn">translate</span>(<span class="token-num">110</span>, <span class="token-num">50</span>);     <span class="token-comment">// 3ª operacao (volta do ponto fixo)</span>
+<span class="token-fn">ctx</span>.<span class="token-fn">scale</span>(<span class="token-num">2</span>, <span class="token-num">2</span>);            <span class="token-comment">// 2ª operacao (aplica o fator de escala)</span>
+<span class="token-fn">ctx</span>.<span class="token-fn">translate</span>(<span class="token-num">-110</span>, <span class="token-num">-50</span>);   <span class="token-comment">// 1ª operacao (leva ponto fixo p/ origem)</span>
+<span class="token-fn">desenhaCasa</span>();               <span class="token-comment">// Geometria do objeto</span></code></pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="pipeline-diagram">
+              <span style="font-weight:700;font-size:0.76rem;color:var(--text-muted);">Sequência de Execução Geométrica</span>
+              <div class="pipe-box op-3">3ª: ctx.translate(110, 50)</div>
+              <div style="font-size:12px;">▲</div>
+              <div class="pipe-box op-2">2ª: ctx.scale(2, 2)</div>
+              <div style="font-size:12px;">▲</div>
+              <div class="pipe-box op-1">1ª: ctx.translate(-110, -50)</div>
+              <div style="font-size:12px;">▲</div>
+              <div class="pipe-box op-draw">desenhaCasa()</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 25: Exemplo: Rotação com Ponto Arbitrário + Translação -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Exemplo: Rotação com Ponto Arbitrário + Translação</h2>
+          <span class="section-badge">Composição Complexa</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Rotação de $90^\circ$ ao redor de $(110, 50)$ + Translação $t_x = 50$</div>
+          <div class="block-body">
+            <pre class="code-block"><code><span class="token-fn">ctx</span>.<span class="token-fn">setTransform</span>(<span class="token-num">1</span>, <span class="token-num">0</span>, <span class="token-num">0</span>, <span class="token-num">1</span>, <span class="token-num">0</span>, <span class="token-num">0</span>);
+<span class="token-fn">ctx</span>.<span class="token-fn">translate</span>(<span class="token-num">50</span>, <span class="token-num">0</span>);               <span class="token-comment">// 4ª op: translada em x no final</span>
+<span class="token-fn">ctx</span>.<span class="token-fn">translate</span>(<span class="token-num">110</span>, <span class="token-num">50</span>);             <span class="token-comment">// 3ª op: volta do ponto de rotacao</span>
+<span class="token-fn">ctx</span>.<span class="token-fn">rotate</span>(<span class="token-num">Math.PI / 2</span>);            <span class="token-comment">// 2ª op: rotacao de 90 graus (PI/2 rad)</span>
+<span class="token-fn">ctx</span>.<span class="token-fn">translate</span>(<span class="token-num">-110</span>, <span class="token-num">-50</span>);           <span class="token-comment">// 1ª op: leva o ponto pivô para a origem</span>
+<span class="token-fn">desenhaCasa</span>();</code></pre>
+          </div>
+        </div>
+
+        <div class="beamer-block alert" style="margin-top:10px;">
+          <div class="block-header">A Ordem Importa Absolutamente!</div>
+          <div class="block-body">
+            Se você mover <code>ctx.translate(50, 0)</code> para <strong>depois</strong> dos três comandos de rotação (ou seja, imediatamente antes de <code>desenhaCasa()</code>), o resultado gráfico final será <strong>completamente diferente!</strong><br><br>
+            Trocar a posição de <strong>uma única linha de código</strong> altera todo o desenho na tela porque a multiplicação de matrizes <strong>não é comutativa</strong> ($A \cdot B \neq B \cdot A$).
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 26: Exemplo Completo -- Escala com Ponto Fixo -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Exemplo Completo — Escala com Ponto Fixo</h2>
+          <span class="section-badge">Código Completo</span>
+        </div>
+
+        <div class="beamer-block example">
+          <div class="block-header">Escala com ponto fixo $(110, 50)$, fator 2</div>
+          <div class="block-body">
+            <pre class="code-block"><code><span class="token-keyword">const</span> canvas = document.<span class="token-fn">getElementById</span>(<span class="token-string">'myCanvas'</span>);
+<span class="token-keyword">const</span> ctx = canvas.<span class="token-fn">getContext</span>(<span class="token-string">'2d'</span>);
+
+<span class="token-keyword">function</span> <span class="token-fn">desenhaCasa</span>() {
+  ctx.<span class="token-fn">beginPath</span>();
+  ctx.<span class="token-fn">moveTo</span>(<span class="token-num">100</span>, <span class="token-num">100</span>); ctx.<span class="token-fn">lineTo</span>(<span class="token-num">120</span>, <span class="token-num">100</span>);
+  ctx.<span class="token-fn">lineTo</span>(<span class="token-num">120</span>, <span class="token-num">50</span>);  ctx.<span class="token-fn">lineTo</span>(<span class="token-num">110</span>, <span class="token-num">30</span>); <span class="token-comment">// telhado</span>
+  ctx.<span class="token-fn">lineTo</span>(<span class="token-num">100</span>, <span class="token-num">50</span>);  ctx.<span class="token-fn">closePath</span>();
+  ctx.fillStyle = <span class="token-string">'red'</span>; ctx.<span class="token-fn">fill</span>();
+}
+
+ctx.<span class="token-fn">clearRect</span>(<span class="token-num">0</span>, <span class="token-num">0</span>, canvas.width, canvas.height);
+ctx.<span class="token-fn">setTransform</span>(<span class="token-num">1</span>, <span class="token-num">0</span>, <span class="token-num">0</span>, <span class="token-num">1</span>, <span class="token-num">0</span>, <span class="token-num">0</span>); <span class="token-comment">// reset</span>
+
+<span class="token-comment">// Escala com ponto fixo (110, 50) - lida de BAIXO para CIMA:</span>
+ctx.<span class="token-fn">translate</span>(<span class="token-num">110</span>, <span class="token-num">50</span>);     <span class="token-comment">// 3ª op: translada de volta</span>
+ctx.<span class="token-fn">scale</span>(<span class="token-num">2</span>, <span class="token-num">2</span>);            <span class="token-comment">// 2ª op: aplica a escala</span>
+ctx.<span class="token-fn">translate</span>(<span class="token-num">-110</span>, <span class="token-num">-50</span>);   <span class="token-comment">// 1ª op: leva o ponto fixo para a origem</span>
+<span class="token-fn">desenhaCasa</span>();</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 27: Laboratório Interativo -- Pipeline Canvas 2D -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Laboratório Interativo — Pipeline Canvas 2D</h2>
+          <span class="section-badge">Simulação 2D</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="canvas-card">
+              <canvas id="canvas-demo-pipeline"></canvas>
+
+              <div class="interactive-controls">
+                <span style="font-weight:700;">Testar Casos Clássicos do Slide:</span>
+                <div class="btn-group" style="flex-wrap:wrap;">
+                  <button class="btn btn-sm" id="d3-preset-scale">Escala Ponto Fixo (110,50)</button>
+                  <button class="btn btn-sm" id="d3-preset-rotate">Rotação 90° + Translação</button>
+                  <button class="btn btn-sm btn-secondary" id="d3-preset-wrong" style="color:#ef4444;">Ordem Invertida (Erro)</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block def">
+              <div class="block-header">Pipeline JavaScript Equivalente Executado</div>
+              <div class="block-body" style="padding:6px;">
+                <pre class="code-block" style="font-size:0.72rem;max-height:160px;"><code id="demo3-code-display"></code></pre>
+              </div>
+            </div>
+
+            <div class="beamer-block example">
+              <div class="block-header">O que Observar na Tela</div>
+              <div class="block-body" style="font-size:calc(0.74rem * var(--font-zoom, 1));">
+                <ul class="styled-list" style="margin:0;">
+                  <li><strong>Casinha tracejada (cinza):</strong> geometria original sem nenhuma transformação.</li>
+                  <li><strong>Casinha vermelha:</strong> geometria resultante após as matrizes afins do pipeline.</li>
+                  <li><strong>Ponto rosa:</strong> ponto de ancoragem / pivô fixo $(110, 50)$.</li>
+                  <li>Ao selecionar <em>“Ordem Invertida”</em>, veja como a translação é rotacionada pelo ângulo de $90^\circ$, arremessando a casinha para uma posição completamente errada!</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 28: Composição com Matrizes no WebGL -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Composição com Matrizes no WebGL</h2>
+          <span class="section-badge">WebGL Shaders</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Do Canvas 2D ao WebGL</div>
+          <div class="block-body">
+            Em aplicações WebGL, combinamos as transformações afins em uma <strong>única matriz de modelo e visão (ModelView)</strong> que é repassada via <em>uniform</em> para o <em>vertex shader</em> na GPU.
+          </div>
+        </div>
+
+        <div class="beamer-block example" style="margin-top:10px;">
+          <div class="block-header">Composição de matrizes no WebGL</div>
+          <div class="block-body">
+            <pre class="code-block"><code><span class="token-keyword">var</span> modelView = <span class="token-fn">translate</span>(obj.pos[<span class="token-num">0</span>], obj.pos[<span class="token-num">1</span>], <span class="token-num">0</span>);
+modelView = <span class="token-fn">mult</span>(modelView, <span class="token-fn">rotateZ</span>(obj.theta));
+modelView = <span class="token-fn">mult</span>(modelView, <span class="token-fn">scale</span>(obj.sx, obj.sy, <span class="token-num">1</span>));
+<span class="token-keyword">var</span> uMatrix = <span class="token-fn">mult</span>(projection, modelView);</code></pre>
+          </div>
+        </div>
+
+        <p style="font-size:calc(0.85rem * var(--font-zoom, 1));margin:8px 0;">
+          A ordem da composição algébrica segue exatamente a mesma lógica:
+          $$gl\_Position = \underbrace{projection}_{\text{4ª}} \cdot \underbrace{T}_{\text{3ª}} \cdot \underbrace{R}_{\text{2ª}} \cdot \underbrace{S}_{\text{1ª}} \cdot Position$$
+        </p>
+
+        <div class="beamer-block alert">
+          <div class="block-header">Primeira transformação aplicada = última na equação</div>
+          <div class="block-body">
+            Escala primeiro, depois rotação, depois translação e, por fim, a matriz de projeção em perspectiva ou ortogonal.
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 29: Transformações 3D com Three.js -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Transformações 3D com Three.js</h2>
+          <span class="section-badge">Three.js</span>
+        </div>
+
+        <div class="beamer-block def">
+          <div class="block-header">Do Canvas 2D ao 3D Moderno</div>
+          <div class="block-body">
+            Em aplicações 3D industriais, utilizamos bibliotecas de alto nível como o <strong>Three.js</strong>, que encapsulam os shaders do WebGL. Cada objeto tridimensional (<code>Mesh</code>) possui propriedades intuitivas de transformação.
+          </div>
+        </div>
+
+        <div class="beamer-block example" style="margin-top:10px;">
+          <div class="block-header">Transformações em um objeto Three.js</div>
+          <div class="block-body">
+            <pre class="code-block"><code><span class="token-comment">// 1. Escala</span>
+mesh.<span class="token-fn">scale</span>.<span class="token-fn">set</span>(<span class="token-num">2</span>, <span class="token-num">2</span>, <span class="token-num">1</span>);
+
+<span class="token-comment">// 2. Rotacao (em radianos ao redor do eixo Z)</span>
+mesh.rotation.z = Math.PI / <span class="token-num">4</span>;
+
+<span class="token-comment">// 3. Translacao</span>
+mesh.position.<span class="token-fn">set</span>(<span class="token-num">110</span>, <span class="token-num">50</span>, <span class="token-num">0</span>);</code></pre>
+          </div>
+        </div>
+
+        <p style="font-size:calc(0.85rem * var(--font-zoom, 1));margin:8px 0;">
+          O Three.js compõe automaticamente a matriz local <code>mesh.matrix</code> na ordem padrão:
+          $$M = \underbrace{T}_{\text{position}} \cdot \underbrace{R}_{\text{rotation}} \cdot \underbrace{S}_{\text{scale}}$$
+        </p>
+
+        <div class="beamer-block alert">
+          <div class="block-header">Mesma Lógica Universal de Composição</div>
+          <div class="block-body">
+            Escala primeiro, depois rotação, depois translação — a mesmíssima ordem que deduzimos e provamos no Canvas 2D!
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 30: Resumo Geral & Tabela Comparativa de Sintaxe -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Resumo Geral & Tabela Comparativa de Sintaxe</h2>
+          <span class="section-badge">Síntese</span>
+        </div>
+
+        <table class="beamer-table" style="font-size:calc(0.74rem * var(--font-zoom, 1));">
+          <thead>
+            <tr>
+              <th>Conceito</th>
+              <th>Expressão Algébrica</th>
+              <th>HTML5 Canvas 2D</th>
+              <th>WebGL / Three.js</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Translação</strong></td>
+              <td>$T(t_x, t_y)$</td>
+              <td><code>ctx.translate(tx, ty)</code></td>
+              <td><code>mesh.position.set(x, y, z)</code></td>
+            </tr>
+            <tr>
+              <td><strong>Rotação</strong></td>
+              <td>$R(\theta)$</td>
+              <td><code>ctx.rotate(rad)</code></td>
+              <td><code>mesh.rotation.z = rad</code></td>
+            </tr>
+            <tr>
+              <td><strong>Escala</strong></td>
+              <td>$S(s_x, s_y)$</td>
+              <td><code>ctx.scale(sx, sy)</code></td>
+              <td><code>mesh.scale.set(sx, sy, sz)</code></td>
+            </tr>
+            <tr>
+              <td><strong>Mudança de Base</strong></td>
+              <td>$M = R \cdot T(-x_0, -y_0)$</td>
+              <td>Translação $\to$ Rotação</td>
+              <td>Matriz de Câmera / View Matrix</td>
+            </tr>
+            <tr>
+              <td><strong>Identidade / Reset</strong></td>
+              <td>Matriz Identidade $I$</td>
+              <td><code>ctx.setTransform(1,0,0,1,0,0)</code></td>
+              <td><code>matrix.identity()</code></td>
+            </tr>
+            <tr>
+              <td><strong>Ordem na Geometria</strong></td>
+              <td>De trás para frente ($A \cdot B \cdot P$)</td>
+              <td>De baixo para cima</td>
+              <td>$T \cdot R \cdot S \cdot \mathbf{v}$</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="beamer-block example" style="margin-top:10px;">
+          <div class="block-header">Conclusão Fundamental da Parte 3</div>
+          <div class="block-body" style="font-size:calc(0.80rem * var(--font-zoom, 1));">
+            Com as Partes 1, 2 e 3 de Transformações 2D concluídas, você dominou a base matemática completa de <strong>coordenadas homogêneas</strong>, <strong>transformações inversas</strong>, <strong>composição de matrizes</strong>, <strong>mudança de sistemas de coordenadas</strong> e <strong>pipelines gráficos modernos</strong>. Esses conceitos são idênticos em 3D, adicionando apenas a terceira dimensão $Z$!
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 30: Referências Bibliográficas -->
+      <section>
+        <div class="frame-title-banner">
+          <h2>Referências Bibliográficas</h2>
+          <span class="section-badge">Material Complementar</span>
+        </div>
+
+        <div class="two-cols ratio-5-5">
+          <div class="col">
+            <div class="beamer-block def">
+              <div class="block-header">Livros-Texto Recomendados</div>
+              <div class="block-body" style="line-height:1.6;font-size:calc(0.80rem * var(--font-zoom, 1));">
+                1. <strong>Angel, E.; Shreiner, D.</strong> <em>Interactive Computer Graphics: A Top-Down Approach with WebGL</em>. 8th edition. Pearson. Capítulo 5 (Geometric Objects and Transformations).<br><br>
+                2. <strong>Mount, D.</strong> <em>CMSC 427 — Computer Graphics Lecture Notes</em>. University of Maryland. Aulas 6 a 9 (Coordinate Systems & Viewing).
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="beamer-block example">
+              <div class="block-header">Material Digital & Dicas de Estudo</div>
+              <div class="block-body" style="line-height:1.6;font-size:calc(0.80rem * var(--font-zoom, 1));">
+                1. <strong>Material de Introdução à Computação Gráfica</strong> — IME-USP. Disponível em: <span style="color:#2563eb;word-break:break-all;">https://panda.ime.usp.br/introcg/static/introcg</span><br><br>
+                2. <strong>Dica Prática:</strong> Pratique montando as matrizes de rotação usando Método 1 (com $\theta$) e Método 2 (com vetores unitários) e conferindo nos simuladores desta página para consolidar a fixação!
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- RODAPÉ ESTILO BEAMER WARSAW (FOOTLINE) -->
+  <!-- ============================================================ -->
+  <footer class="warsaw-footline">
+    <div class="footline-author">
+      Pedro Ximenes (UNICAP) • Transformações Geométricas 2D — Parte 3
+    </div>
+    <div class="footline-keys">
+      <span>Navegar: <kbd>◄</kbd> <kbd>►</kbd> ou <kbd>Espaço</kbd></span>
+      <span>Zoom: <kbd>+</kbd> <kbd>-</kbd></span>
+      <span>Tela Cheia: <kbd>F</kbd></span>
+      <span>Visão Geral: <kbd>O</kbd></span>
+    </div>
+  </footer>
+
+  <!-- Scripts: Reveal.js, KaTeX e Módulos Canvas -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+  
+  <script src="js/canvas-demos.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
