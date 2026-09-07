@@ -812,219 +812,304 @@ window.CanvasDemos = (function () {
   };
 
   /* ============================================================
-     6. HEAP (MAX-HEAP & ARRAY VIEW) VISUALIZER
+     6. HEAP VISUALIZERS (Inserção e Remoção Passo a Passo)
      ============================================================ */
+  function drawHeapOnCanvas(canvas, heap, activeIdx, swapPair) {
+    const setup = setupFixedCanvas(canvas);
+    if (!setup) return;
+    const { ctx, width, height } = setup;
+    const dark = isDarkMode();
+
+    ctx.clearRect(0, 0, width, height);
+
+    const n = heap.length;
+    if (n === 0) return;
+
+    // Coordenadas dos nós da árvore (suporta até 7 nós)
+    const positions = [
+      { x: width / 2, y: 26 },
+      { x: width / 2 - 75, y: 68 },
+      { x: width / 2 + 75, y: 68 },
+      { x: width / 2 - 115, y: 110 },
+      { x: width / 2 - 38, y: 110 },
+      { x: width / 2 + 38, y: 110 },
+      { x: width / 2 + 115, y: 110 }
+    ];
+
+    // Arestas da árvore
+    ctx.strokeStyle = dark ? '#475569' : '#cbd5e1';
+    ctx.lineWidth = 1.8;
+    for (let i = 0; i < Math.min(n, 7); i++) {
+      const left = 2 * i + 1;
+      const right = 2 * i + 2;
+      if (left < Math.min(n, 7)) {
+        ctx.beginPath();
+        ctx.moveTo(positions[i].x, positions[i].y);
+        ctx.lineTo(positions[left].x, positions[left].y);
+        ctx.stroke();
+      }
+      if (right < Math.min(n, 7)) {
+        ctx.beginPath();
+        ctx.moveTo(positions[i].x, positions[i].y);
+        ctx.lineTo(positions[right].x, positions[right].y);
+        ctx.stroke();
+      }
+    }
+
+    // Desenha nós da árvore
+    for (let i = 0; i < Math.min(n, 7); i++) {
+      const { x, y } = positions[i];
+      const isActive = i === activeIdx;
+      const isSwapped = swapPair && swapPair.includes(i);
+
+      if (isActive) {
+        ctx.fillStyle = '#22c55e';
+      } else if (isSwapped) {
+        ctx.fillStyle = '#eab308';
+      } else if (i === 0) {
+        ctx.fillStyle = dark ? '#7f1d1d' : '#fee2e2';
+      } else if (i === 1 || i === 2) {
+        ctx.fillStyle = dark ? '#7c2d12' : '#ffedd5';
+      } else {
+        ctx.fillStyle = dark ? '#713f12' : '#fef9c3';
+      }
+
+      ctx.beginPath();
+      ctx.arc(x, y, 15, 0, 2 * Math.PI);
+      ctx.fill();
+
+      ctx.strokeStyle = isActive ? '#15803d' : (isSwapped ? '#ca8a04' : (dark ? '#64748b' : '#94a3b8'));
+      ctx.lineWidth = isActive || isSwapped ? 2.5 : 1.5;
+      ctx.stroke();
+
+      ctx.fillStyle = isActive || isSwapped ? (isActive ? '#ffffff' : '#000000') : (dark ? '#f8fafc' : '#0f172a');
+      ctx.font = 'bold 12.5px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(heap[i], x, y);
+    }
+
+    // Vista em Array 1D no rodapé
+    const cellW = 34;
+    const cellH = 24;
+    const startArrX = (width - n * cellW) / 2;
+    const arrY = height - 32;
+
+    ctx.fillStyle = dark ? '#94a3b8' : '#64748b';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('Array:', Math.max(6, startArrX - 38), arrY + 15);
+
+    for (let i = 0; i < n; i++) {
+      const x = startArrX + i * cellW;
+      const isActive = i === activeIdx;
+      const isSwapped = swapPair && swapPair.includes(i);
+
+      if (isActive) {
+        ctx.fillStyle = '#22c55e';
+      } else if (isSwapped) {
+        ctx.fillStyle = '#eab308';
+      } else {
+        ctx.fillStyle = dark ? '#1e293b' : '#f1f5f9';
+      }
+
+      ctx.fillRect(x, arrY, cellW - 2, cellH);
+      ctx.strokeStyle = isActive ? '#15803d' : (dark ? '#475569' : '#cbd5e1');
+      ctx.lineWidth = 1.4;
+      ctx.strokeRect(x, arrY, cellW - 2, cellH);
+
+      ctx.fillStyle = isActive ? '#ffffff' : (isSwapped ? '#000000' : (dark ? '#f8fafc' : '#0f172a'));
+      ctx.font = 'bold 11.5px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(heap[i], x + cellW / 2, arrY + cellH / 2 + 1);
+
+      ctx.fillStyle = dark ? '#64748b' : '#94a3b8';
+      ctx.font = '9px monospace';
+      ctx.fillText(i, x + cellW / 2, arrY + cellH + 9);
+    }
+  }
+
+  // Heap — Inserção (Sift-Up) Passo a Passo (Slide 37)
   const HeapDemo = {
     canvas: null,
-    heap: [88, 87, 73, 47, 54, 6, 0],
-    activeIdx: -1,
-    statusText: 'Heap Máximo pronto. Maior valor sempre na raiz heap[0].',
-    isBusy: false,
+    stepIndex: 0,
+    steps: [
+      {
+        heap: [88, 87, 73, 47, 54],
+        activeIdx: -1,
+        swapPair: [],
+        status: 'Heap inicial: [88, 87, 73, 47, 54]. Clique em "Próximo Passo" para inserir 100.'
+      },
+      {
+        heap: [88, 87, 73, 47, 54, 100],
+        activeIdx: 5,
+        swapPair: [5],
+        status: 'Passo 1: Colocar 100 na próxima posição livre (índice 5): [88, 87, 73, 47, 54, 100].'
+      },
+      {
+        heap: [88, 87, 100, 47, 54, 73],
+        activeIdx: 2,
+        swapPair: [2, 5],
+        status: 'Passo 2: 100 > pai(5)=73? Sim ⇒ troca com 73: [88, 87, 100, 47, 54, 73].'
+      },
+      {
+        heap: [100, 87, 88, 47, 54, 73],
+        activeIdx: 0,
+        swapPair: [0, 2],
+        status: 'Passo 3: 100 > pai(2)=88? Sim ⇒ troca com 88: [100, 87, 88, 47, 54, 73].'
+      },
+      {
+        heap: [100, 87, 88, 47, 54, 73],
+        activeIdx: 0,
+        swapPair: [],
+        status: 'Passo 4: 100 é raiz ⇒ parar! Inserção concluída em O(log n).'
+      }
+    ],
+    autoTimer: null,
 
     init(canvasId) {
       this.canvas = document.getElementById(canvasId);
       if (!this.canvas) return;
       this.reset();
+    },
+
+    step() {
+      if (this.autoTimer) {
+        clearTimeout(this.autoTimer);
+        this.autoTimer = null;
+      }
+      if (this.stepIndex < this.steps.length - 1) {
+        this.stepIndex++;
+      } else {
+        this.stepIndex = 0;
+      }
+      this.updateUI();
       this.draw();
+    },
+
+    auto() {
+      if (this.autoTimer) clearTimeout(this.autoTimer);
+      this.reset();
+      const runNext = () => {
+        if (this.stepIndex < this.steps.length - 1) {
+          this.stepIndex++;
+          this.updateUI();
+          this.draw();
+          this.autoTimer = setTimeout(runNext, 750);
+        }
+      };
+      this.autoTimer = setTimeout(runNext, 600);
     },
 
     reset() {
-      this.heap = [88, 87, 73, 47, 54, 6, 0];
-      this.activeIdx = -1;
-      this.statusText = 'Heap restaurado para o estado inicial: [88, 87, 73, 47, 54, 6, 0].';
-      this.updateUI();
-      this.draw();
-    },
-
-    insert(val) {
-      if (this.isBusy) return;
-      if (this.heap.length >= 10) {
-        this.statusText = 'Limite visual atingido (máx 10 nós). Remova o máximo antes.';
-        this.updateUI();
-        return;
+      if (this.autoTimer) {
+        clearTimeout(this.autoTimer);
+        this.autoTimer = null;
       }
-      const num = val !== undefined ? val : Math.floor(Math.random() * 50) + 50;
-      this.isBusy = true;
-      this.heap.push(num);
-      let curr = this.heap.length - 1;
-      this.activeIdx = curr;
-      this.statusText = `Inserindo ${num} no final do array (índice ${curr}). Iniciando subida (sift-up: O(log n))...`;
+      this.stepIndex = 0;
       this.updateUI();
       this.draw();
-
-      const siftUp = () => {
-        if (curr > 0) {
-          const parent = Math.floor((curr - 1) / 2);
-          if (this.heap[curr] > this.heap[parent]) {
-            this.statusText = `${this.heap[curr]} > pai ${this.heap[parent]} (índice ${parent}) -> Troca! Subindo...`;
-            const temp = this.heap[curr];
-            this.heap[curr] = this.heap[parent];
-            this.heap[parent] = temp;
-            curr = parent;
-            this.activeIdx = curr;
-            this.updateUI();
-            this.draw();
-            setTimeout(siftUp, 600);
-            return;
-          }
-        }
-        this.statusText = `Inserção de ${num} concluída com sucesso! Propriedade de heap restaurada em O(log n).`;
-        this.activeIdx = -1;
-        this.isBusy = false;
-        this.updateUI();
-        this.draw();
-      };
-      setTimeout(siftUp, 600);
-    },
-
-    extractMax() {
-      if (this.isBusy || this.heap.length === 0) return;
-      this.isBusy = true;
-      const maxVal = this.heap[0];
-
-      if (this.heap.length === 1) {
-        this.heap.pop();
-        this.statusText = `extractMax() -> ${maxVal}. Heap agora vazio.`;
-        this.isBusy = false;
-        this.updateUI();
-        this.draw();
-        return;
-      }
-
-      const lastVal = this.heap.pop();
-      this.heap[0] = lastVal;
-      let curr = 0;
-      this.activeIdx = 0;
-      this.statusText = `extractMax() -> ${maxVal}. Raiz substituída pela última folha (${lastVal}). Iniciando heapify (descida: O(log n))...`;
-      this.updateUI();
-      this.draw();
-
-      const heapify = () => {
-        const n = this.heap.length;
-        let largest = curr;
-        const left = 2 * curr + 1;
-        const right = 2 * curr + 2;
-
-        if (left < n && this.heap[left] > this.heap[largest]) largest = left;
-        if (right < n && this.heap[right] > this.heap[largest]) largest = right;
-
-        if (largest !== curr) {
-          this.statusText = `Descendo no heapify: Troca ${this.heap[curr]} com maior filho ${this.heap[largest]} (índice ${largest}).`;
-          const temp = this.heap[curr];
-          this.heap[curr] = this.heap[largest];
-          this.heap[largest] = temp;
-          curr = largest;
-          this.activeIdx = curr;
-          this.updateUI();
-          this.draw();
-          setTimeout(heapify, 600);
-        } else {
-          this.statusText = `Heapify concluído! Novo máximo na raiz: ${this.heap[0]}. Custo total: O(log n).`;
-          this.activeIdx = -1;
-          this.isBusy = false;
-          this.updateUI();
-          this.draw();
-        }
-      };
-      setTimeout(heapify, 600);
     },
 
     updateUI() {
+      const curr = this.steps[this.stepIndex];
       const statusElem = document.getElementById('heap-status');
-      if (statusElem) statusElem.textContent = this.statusText;
+      if (statusElem && curr) statusElem.textContent = curr.status;
     },
 
     draw() {
-      const setup = setupFixedCanvas(this.canvas);
-      if (!setup) return;
-      const { ctx, width, height } = setup;
-      const dark = isDarkMode();
+      const curr = this.steps[this.stepIndex];
+      if (!curr) return;
+      drawHeapOnCanvas(this.canvas, curr.heap, curr.activeIdx, curr.swapPair);
+    }
+  };
 
-      ctx.clearRect(0, 0, width, height);
+  // Heap — Remoção (Extract Max) e Heapify Passo a Passo (Slide 38)
+  const HeapExtractDemo = {
+    canvas: null,
+    stepIndex: 0,
+    steps: [
+      {
+        heap: [100, 87, 88, 47, 54, 73],
+        activeIdx: 0,
+        swapPair: [],
+        status: 'Heap inicial: [100, 87, 88, 47, 54, 73]. Máximo (100) na raiz. Clique em "Próximo Passo".'
+      },
+      {
+        heap: [73, 87, 88, 47, 54],
+        activeIdx: 0,
+        swapPair: [0],
+        status: 'Passo 1: Trocar raiz 100 com última folha 73 e remover 100: [73, 87, 88, 47, 54].'
+      },
+      {
+        heap: [88, 87, 73, 47, 54],
+        activeIdx: 2,
+        swapPair: [0, 2],
+        status: 'Passo 2: Heapify(0): max(73, filhos 87, 88) = 88 ⇒ troca 73 com 88: [88, 87, 73, 47, 54].'
+      },
+      {
+        heap: [88, 87, 73, 47, 54],
+        activeIdx: -1,
+        swapPair: [],
+        status: 'Passo 3: 73 é folha ⇒ parar! Propriedade de heap restaurada em O(log n).'
+      }
+    ],
+    autoTimer: null,
 
-      const n = this.heap.length;
-      if (n === 0) return;
+    init(canvasId) {
+      this.canvas = document.getElementById(canvasId);
+      if (!this.canvas) return;
+      this.reset();
+    },
 
-      // Coordenadas dos nós da árvore (suporta até 7 nós facilmente)
-      const positions = [
-        { x: width / 2, y: 30 },
-        { x: width / 2 - 80, y: 75 },
-        { x: width / 2 + 80, y: 75 },
-        { x: width / 2 - 120, y: 120 },
-        { x: width / 2 - 40, y: 120 },
-        { x: width / 2 + 40, y: 120 },
-        { x: width / 2 + 120, y: 120 }
-      ];
+    step() {
+      if (this.autoTimer) {
+        clearTimeout(this.autoTimer);
+        this.autoTimer = null;
+      }
+      if (this.stepIndex < this.steps.length - 1) {
+        this.stepIndex++;
+      } else {
+        this.stepIndex = 0;
+      }
+      this.updateUI();
+      this.draw();
+    },
 
-      // Arestas da árvore
-      ctx.strokeStyle = dark ? '#475569' : '#cbd5e1';
-      ctx.lineWidth = 1.8;
-      for (let i = 0; i < Math.min(n, 7); i++) {
-        const left = 2 * i + 1;
-        const right = 2 * i + 2;
-        if (left < Math.min(n, 7)) {
-          ctx.beginPath();
-          ctx.moveTo(positions[i].x, positions[i].y);
-          ctx.lineTo(positions[left].x, positions[left].y);
-          ctx.stroke();
+    auto() {
+      if (this.autoTimer) clearTimeout(this.autoTimer);
+      this.reset();
+      const runNext = () => {
+        if (this.stepIndex < this.steps.length - 1) {
+          this.stepIndex++;
+          this.updateUI();
+          this.draw();
+          this.autoTimer = setTimeout(runNext, 750);
         }
-        if (right < Math.min(n, 7)) {
-          ctx.beginPath();
-          ctx.moveTo(positions[i].x, positions[i].y);
-          ctx.lineTo(positions[right].x, positions[right].y);
-          ctx.stroke();
-        }
+      };
+      this.autoTimer = setTimeout(runNext, 600);
+    },
+
+    reset() {
+      if (this.autoTimer) {
+        clearTimeout(this.autoTimer);
+        this.autoTimer = null;
       }
+      this.stepIndex = 0;
+      this.updateUI();
+      this.draw();
+    },
 
-      // Desenha nós
-      for (let i = 0; i < Math.min(n, 7); i++) {
-        const { x, y } = positions[i];
-        const isActive = i === this.activeIdx;
+    updateUI() {
+      const curr = this.steps[this.stepIndex];
+      const statusElem = document.getElementById('heap-extract-status');
+      if (statusElem && curr) statusElem.textContent = curr.status;
+    },
 
-        ctx.fillStyle = isActive ? '#ef4444' : (i === 0 ? (dark ? '#7f1d1d' : '#fee2e2') : (dark ? '#1e3a8a' : '#dbeafe'));
-        ctx.beginPath();
-        ctx.arc(x, y, 15, 0, 2 * Math.PI);
-        ctx.fill();
-        ctx.strokeStyle = isActive ? '#b91c1c' : (dark ? '#60a5fa' : '#1e3a8a');
-        ctx.lineWidth = 1.6;
-        ctx.stroke();
-
-        ctx.fillStyle = isActive ? '#ffffff' : (dark ? '#f8fafc' : '#0f172a');
-        ctx.font = 'bold 12.5px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(this.heap[i], x, y);
-      }
-
-      // Vista em Array 1D no rodapé
-      const cellW = 34;
-      const cellH = 26;
-      const startArrX = (width - n * cellW) / 2;
-      const arrY = height - 34;
-
-      ctx.fillStyle = dark ? '#94a3b8' : '#64748b';
-      ctx.font = '10px sans-serif';
-      ctx.textAlign = 'left';
-      ctx.fillText('Array:', startArrX - 38, arrY + 16);
-
-      for (let i = 0; i < n; i++) {
-        const x = startArrX + i * cellW;
-        const isActive = i === this.activeIdx;
-
-        ctx.fillStyle = isActive ? '#ef4444' : (dark ? '#1e293b' : '#f1f5f9');
-        ctx.fillRect(x, arrY, cellW - 2, cellH);
-        ctx.strokeStyle = dark ? '#475569' : '#cbd5e1';
-        ctx.strokeRect(x, arrY, cellW - 2, cellH);
-
-        ctx.fillStyle = isActive ? '#ffffff' : (dark ? '#f8fafc' : '#0f172a');
-        ctx.font = 'bold 12px monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText(this.heap[i], x + cellW / 2, arrY + cellH / 2 + 1);
-
-        ctx.fillStyle = dark ? '#64748b' : '#94a3b8';
-        ctx.font = '9px monospace';
-        ctx.fillText(i, x + cellW / 2, arrY + cellH + 9);
-      }
+    draw() {
+      const curr = this.steps[this.stepIndex];
+      if (!curr) return;
+      drawHeapOnCanvas(this.canvas, curr.heap, curr.activeIdx, curr.swapPair);
     }
   };
 
@@ -1169,16 +1254,65 @@ window.CanvasDemos = (function () {
   const ComplexityChart = {
     canvas: null,
     n: 16,
+    op: 'search', // 'search', 'index', 'priority'
 
     init(canvasId) {
       this.canvas = document.getElementById(canvasId);
       if (!this.canvas) return;
       this.draw();
+      this.updateUI();
+    },
+
+    setOp(op) {
+      this.op = op;
+      ['search', 'index', 'priority'].forEach(k => {
+        const btn = document.getElementById(`btn-op-${k}`);
+        if (btn) {
+          if (k === op) {
+            btn.classList.add('active');
+            btn.classList.remove('btn-secondary');
+          } else {
+            btn.classList.remove('active');
+            btn.classList.add('btn-secondary');
+          }
+        }
+      });
+      this.draw();
+      this.updateUI();
     },
 
     setN(val) {
-      this.n = Math.max(1, Math.min(100, parseInt(val, 10) || 16));
+      this.n = Math.max(2, Math.min(128, parseInt(val, 10) || 16));
       this.draw();
+      this.updateUI();
+    },
+
+    updateUI() {
+      const n = this.n;
+      const logVal = Math.max(1, Math.ceil(Math.log2(n)));
+      const statusElem = document.getElementById('complexity-status');
+      if (!statusElem) return;
+
+      if (this.op === 'search') {
+        statusElem.innerHTML = `<strong>Comparativo para BUSCAR um valor entre $n = ${n}$ itens:</strong><br>` +
+          `• <strong>Tabela Hash:</strong> <strong>1</strong> cálculo de hash e acesso direto ao bucket ($O(1)$).<br>` +
+          `• <strong>BST Balanceada:</strong> <strong>${logVal}</strong> comparações descendo pelos nós ($O(\\log n)$).<br>` +
+          `• <strong>Array e LinkedList:</strong> até <strong>${n}</strong> comparações varrendo item por item ($O(n)$).`;
+      } else if (this.op === 'index') {
+        statusElem.innerHTML = `<strong>Comparativo para ACESSAR a posição $v[i]$ entre $n = ${n}$ itens:</strong><br>` +
+          `• <strong>Array / ArrayList:</strong> <strong>1</strong> instrução de cálculo aritmético direto ($O(1)$).<br>` +
+          `• <strong>LinkedList:</strong> até <strong>${n}</strong> nós percorridos sequencialmente a partir do head ($O(n)$).<br>` +
+          `• <strong>BST / Hash:</strong> Não suportam acesso numérico por índice posicional ($0 \\dots n-1$).`;
+      } else if (this.op === 'priority') {
+        statusElem.innerHTML = `<strong>Comparativo para OBTER O MÁXIMO entre $n = ${n}$ itens:</strong><br>` +
+          `• <strong>Heap (Consulta):</strong> <strong>1</strong> leitura direta na raiz <code>heap[0]</code> ($O(1)$).<br>` +
+          `• <strong>Heap (Extração):</strong> <strong>${logVal}</strong> comparações no sift-down ($O(\\log n)$).<br>` +
+          `• <strong>Array Não Ordenado:</strong> <strong>${n}</strong> comparações varrendo tudo para achar o maior ($O(n)$).`;
+      }
+
+      if (window.renderMathInElement) {
+        window.renderMathInElement(statusElem, { delimiters: [{ left: '$', right: '$', display: false }] });
+      }
     },
 
     draw() {
@@ -1190,40 +1324,147 @@ window.CanvasDemos = (function () {
       ctx.clearRect(0, 0, width, height);
 
       const n = this.n;
-      const curves = [
-        { label: 'O(1) - Pilha/Fila/Hash méd.', val: 1, color: '#10b981' },
-        { label: 'O(log n) - BST bal./Heap', val: Math.log2(Math.max(1, n)), color: '#06b6d4' },
-        { label: 'O(n) - Busca linear/Shift', val: n, color: '#f59e0b' },
-        { label: 'O(n log n) - Ordenação ótima', val: n * Math.log2(Math.max(1, n)), color: '#8b5cf6' },
-        { label: 'O(n²) - Loops aninhados/Pior caso', val: Math.min(120, n * n), color: '#ef4444' }
-      ];
+      const logN = Math.max(1, Math.ceil(Math.log2(n)));
 
-      const barHeight = 22;
-      const startX = 180;
-      const maxBarWidth = width - startX - 80;
-      const maxVal = Math.max(...curves.map(c => c.val));
+      let items = [];
+      let opTitle = '';
 
-      ctx.font = 'bold 12px sans-serif';
+      if (this.op === 'search') {
+        opTitle = `Operação: BUSCA por Valor / Chave (n = ${n})`;
+        items = [
+          {
+            name: 'Tabela Hash (Caso Médio)',
+            complexity: 'O(1)',
+            steps: 1,
+            stepsText: '1 cálculo de hash e acesso direto ao bucket',
+            color: '#10b981'
+          },
+          {
+            name: 'BST Balanceada',
+            complexity: 'O(log n)',
+            steps: logN,
+            stepsText: `${logN} comparações descendo na árvore (h = ⌈log₂ n⌉)`,
+            color: '#0284c7'
+          },
+          {
+            name: 'Array / ArrayList (Não ordenado)',
+            complexity: 'O(n)',
+            steps: n,
+            stepsText: `até ${n} comparações varrendo elemento por elemento`,
+            color: '#f59e0b'
+          },
+          {
+            name: 'LinkedList (Busca Linear)',
+            complexity: 'O(n)',
+            steps: n,
+            stepsText: `até ${n} nós visitados sequencialmente ponteiro a ponteiro`,
+            color: '#ef4444'
+          }
+        ];
+      } else if (this.op === 'index') {
+        opTitle = `Operação: ACESSO por Índice Numérico v[i] (n = ${n})`;
+        items = [
+          {
+            name: 'Array / ArrayList',
+            complexity: 'O(1)',
+            steps: 1,
+            stepsText: '1 instrução: base + i * tamanho (memória contígua instantânea)',
+            color: '#10b981'
+          },
+          {
+            name: 'LinkedList (Lista Encadeada)',
+            complexity: 'O(n)',
+            steps: n,
+            stepsText: `percorre até ${n} ponteiros a partir do head até o índice i`,
+            color: '#ef4444'
+          },
+          {
+            name: 'BST / Tabela Hash',
+            complexity: 'N/A',
+            steps: 0,
+            stepsText: 'Estruturas baseadas em chave/árvore, sem índice numérico',
+            color: '#64748b'
+          }
+        ];
+      } else if (this.op === 'priority') {
+        opTitle = `Operação: OBTER / EXTRAIR O MÁXIMO (n = ${n})`;
+        items = [
+          {
+            name: 'Heap (Consulta peek)',
+            complexity: 'O(1)',
+            steps: 1,
+            stepsText: '1 leitura direta: o maior elemento está sempre na raiz heap[0]',
+            color: '#10b981'
+          },
+          {
+            name: 'Heap (Remoção extractMax)',
+            complexity: 'O(log n)',
+            steps: logN,
+            stepsText: `${logN} comparações descendo no heapify para restaurar o heap`,
+            color: '#0284c7'
+          },
+          {
+            name: 'Array / LinkedList Não Ordenada',
+            complexity: 'O(n)',
+            steps: n,
+            stepsText: `varredura completa de todos os ${n} elementos para achar o maior`,
+            color: '#ef4444'
+          }
+        ];
+      }
+
+      const maxSteps = Math.max(1, ...items.map(i => i.steps));
+      const padX = 8;
+      const trackW = Math.max(80, width - padX * 2);
+      const rowH = items.length === 3 ? 58 : 46;
+      const startY = 20;
+
+      // Cabeçalho da operação no canvas
+      ctx.fillStyle = dark ? '#94a3b8' : '#64748b';
+      ctx.font = 'bold 10.5px sans-serif';
       ctx.textAlign = 'left';
+      ctx.fillText(opTitle.toUpperCase(), padX, 12);
 
-      curves.forEach((c, idx) => {
-        const y = 20 + idx * 32;
+      items.forEach((item, idx) => {
+        const y = startY + idx * rowH;
 
-        // Label
-        ctx.fillStyle = dark ? '#e2e8f0' : '#1e293b';
-        ctx.fillText(c.label, 12, y + barHeight / 2 + 4);
+        // 1. Linha superior: Nome da estrutura + complexidade e passos
+        ctx.textAlign = 'left';
+        ctx.fillStyle = dark ? '#f8fafc' : '#0f172a';
+        ctx.font = 'bold 11.5px sans-serif';
+        ctx.fillText(item.name, padX, y + 12);
 
-        // Barra
-        const bWidth = Math.max(4, (c.val / maxVal) * maxBarWidth);
-        ctx.fillStyle = c.color;
+        // Badge / Valor à direita
+        ctx.textAlign = 'right';
+        ctx.font = 'bold 11px monospace';
+        ctx.fillStyle = item.color;
+        const badgeText = item.steps > 0 ? `${item.complexity} : ${item.steps} op.` : item.complexity;
+        ctx.fillText(badgeText, width - padX, y + 12);
+
+        // 2. Barra de Progresso com Trilho
+        const barY = y + 17;
+        const barH = 11;
+
+        // Fundo do trilho
+        ctx.fillStyle = dark ? '#1e293b' : '#e2e8f0';
         ctx.beginPath();
-        ctx.roundRect(startX, y, bWidth, barHeight, 4);
+        ctx.roundRect(padX, barY, trackW, barH, 4);
         ctx.fill();
 
-        // Valor numérico
+        // Barra preenchida proporcional (se > 0)
+        if (item.steps > 0) {
+          const barW = Math.max(6, Math.min(trackW, (item.steps / maxSteps) * trackW));
+          ctx.fillStyle = item.color;
+          ctx.beginPath();
+          ctx.roundRect(padX, barY, barW, barH, 4);
+          ctx.fill();
+        }
+
+        // 3. Legenda explicativa concreta do que representa o passo
+        ctx.textAlign = 'left';
         ctx.fillStyle = dark ? '#94a3b8' : '#475569';
-        ctx.font = '11.5px monospace';
-        ctx.fillText(`~${Math.round(c.val)}`, startX + bWidth + 8, y + barHeight / 2 + 4);
+        ctx.font = '9.5px sans-serif';
+        ctx.fillText(`↳ ${item.stepsText}`, padX, y + 38);
       });
     }
   };
@@ -1235,6 +1476,7 @@ window.CanvasDemos = (function () {
     QueueDemo,
     BSTDemo,
     HeapDemo,
+    HeapExtractDemo,
     HashTableDemo,
     ComplexityChart
   };

@@ -269,6 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.CanvasDemos.QueueDemo.init('queue-canvas');
     window.CanvasDemos.BSTDemo.init('bst-canvas');
     window.CanvasDemos.HeapDemo.init('heap-canvas');
+    window.CanvasDemos.HeapExtractDemo.init('heap-extract-canvas');
     window.CanvasDemos.HashTableDemo.init('hash-canvas');
     window.CanvasDemos.ComplexityChart.init('complexity-canvas');
   }
@@ -281,6 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.CanvasDemos.QueueDemo.canvas) window.CanvasDemos.QueueDemo.draw();
     if (window.CanvasDemos.BSTDemo.canvas) window.CanvasDemos.BSTDemo.draw();
     if (window.CanvasDemos.HeapDemo.canvas) window.CanvasDemos.HeapDemo.draw();
+    if (window.CanvasDemos.HeapExtractDemo.canvas) window.CanvasDemos.HeapExtractDemo.draw();
     if (window.CanvasDemos.HashTableDemo.canvas) window.CanvasDemos.HashTableDemo.draw();
     if (window.CanvasDemos.ComplexityChart.canvas) window.CanvasDemos.ComplexityChart.draw();
   }
@@ -293,6 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (slideElem.querySelector('#queue-canvas')) window.CanvasDemos.QueueDemo.draw();
     if (slideElem.querySelector('#bst-canvas')) window.CanvasDemos.BSTDemo.draw();
     if (slideElem.querySelector('#heap-canvas')) window.CanvasDemos.HeapDemo.draw();
+    if (slideElem.querySelector('#heap-extract-canvas')) window.CanvasDemos.HeapExtractDemo.draw();
     if (slideElem.querySelector('#hash-canvas')) window.CanvasDemos.HashTableDemo.draw();
     if (slideElem.querySelector('#complexity-canvas')) window.CanvasDemos.ComplexityChart.draw();
   }
