@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Análise de Algoritmos — Aula 7: Análise de Algoritmos Recursivos</title>
+  <meta name="description" content="Visualizador de slides da Aula 7 de Análise de Algoritmos da UNICAP: Relações de Recorrência, Árvores de Recursão e o Teorema Mestre.">
+  
+  <link rel="icon" type="image/svg+xml" href="../../../assets/images/favicon.svg">
+  <link rel="shortcut icon" href="../../../favicon.ico">
+
+  <!-- PDF.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+  <!-- Estilos Personalizados Warsaw Beamer -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       CABEÇALHO FIXO WARSAW (DUPLA BARRA)
+       ============================================================ -->
+  <header id="warsaw-header">
+    <div class="warsaw-section-bar">
+      <div class="warsaw-left-group">
+        <a href="../../../courses.html" class="warsaw-nav-back" title="Voltar para a página de Cursos">← Courses</a>
+        <span class="warsaw-tag">UNICAP</span>
+        <span class="warsaw-header-title">Análise de Algoritmos — Aula 7: Algoritmos Recursivos</span>
+      </div>
+
+      <!-- Ferramentas Centrais / Direitas -->
+      <div class="warsaw-tools">
+        <!-- Navegação de Páginas -->
+        <div class="page-nav-controls" title="Navegação rápida de slides">
+          <button id="prev-btn" class="page-nav-btn" title="Slide Anterior (←)">◀</button>
+          <input type="number" id="page-num-input" class="page-nav-input" min="1" max="49" value="1" title="Ir para o slide">
+          <span class="page-nav-total">/ <span id="page-count">49</span></span>
+          <button id="next-btn" class="page-nav-btn" title="Próximo Slide (→)">▶</button>
+        </div>
+
+        <!-- Zoom do Slide -->
+        <div class="font-zoom-group">
+          <button id="zoom-out-btn" class="font-zoom-btn" title="Diminuir Zoom (-)">A-</button>
+          <span id="zoom-label" title="Clique para redefinir para 100%">100%</span>
+          <button id="zoom-in-btn" class="font-zoom-btn" title="Aumentar Zoom (+)">A+</button>
+        </div>
+
+        <!-- Botão Baixar PDF -->
+        <a href="aula6_analise_algoritmos_recursivos.pdf" download class="warsaw-tool-btn primary-btn" title="Baixar Arquivo PDF Original">
+          <span>📄</span> <span>PDF</span>
+        </a>
+
+        <!-- Tela Cheia -->
+        <button id="fullscreen-btn" class="warsaw-tool-btn" title="Alternar Modo Tela Cheia (F)">
+          <span>⛶</span>
+        </button>
+
+        <!-- Modo Escuro/Claro -->
+        <button id="theme-toggle-btn" class="warsaw-tool-btn" title="Alternar Tema Claro/Escuro">
+          <span>🌙</span> <span>Escuro</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Segunda Barra (Subseção) -->
+    <div class="warsaw-subsection-bar">
+      <span>› Relações de Recorrência, Árvores de Recursão &amp; Teorema Mestre</span>
+      <span style="opacity: 0.85;">Prof. Pedro Ximenes • Semestre Letivo 2026.2</span>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       CONTAINER PRINCIPAL DO VISUALIZADOR DE SLIDES
+       ============================================================ -->
+  <main id="viewer-container">
+    <!-- Setas Laterais Flutuantes -->
+    <button id="side-prev-btn" class="side-nav-btn prev" title="Slide Anterior (←)">‹</button>
+    <button id="side-next-btn" class="side-nav-btn next" title="Próximo Slide (→)">›</button>
+
+    <!-- Wrapper do Canvas do Slide -->
+    <div id="canvas-wrapper" class="slide-canvas-wrapper">
+      <canvas id="pdf-canvas"></canvas>
+    </div>
+
+    <!-- Indicador de Carregamento -->
+    <div id="loading-overlay">
+      <div class="spinner"></div>
+      <p style="font-size: 13px; font-weight: 500; letter-spacing: 0.5px;">Carregando apresentação...</p>
+    </div>
+
+    <!-- Fallback em caso de indisponibilidade do Canvas / PDF.js -->
+    <div id="pdf-fallback">
+      <h3>Visualizador Indisponível</h3>
+      <p>Não foi possível renderizar a prévia interativa no seu navegador. Você pode baixar ou abrir diretamente o arquivo PDF:</p>
+      <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+        <a href="aula6_analise_algoritmos_recursivos.pdf" target="_blank" class="warsaw-tool-btn primary-btn" style="height: 36px; padding: 6px 16px; font-size: 13px;">
+          Abrir PDF no Navegador
+        </a>
+        <a href="aula6_analise_algoritmos_recursivos.pdf" download class="warsaw-tool-btn" style="height: 36px; padding: 6px 16px; font-size: 13px;">
+          Baixar Arquivo PDF
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- ============================================================
+       RODAPÉ FIXO INFERIOR (FOOTLINE WARSAW)
+       ============================================================ -->
+  <footer id="warsaw-footline">
+    <div class="foot-left">Prof. Pedro Ximenes • UNICAP</div>
+    <div class="foot-mid">Análise de Algoritmos Recursivos — Relações de Recorrência e Teorema Mestre</div>
+    <div class="foot-right">
+      <span>Navegar: <kbd>◄</kbd> <kbd>►</kbd> ou <kbd>Espaço</kbd></span>
+      <span>Tela Cheia: <kbd>F</kbd></span>
+    </div>
+  </footer>
+
+  <!-- Script Controlador do Visualizador -->
+  <script src="js/viewer.js"></script>
+</body>
+</html>
