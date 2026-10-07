@@ -689,6 +689,91 @@ Regras Obrigatórias da Persona:
                 </div>
             </div>
 
+            <!-- DEMONSTRAÇÃO AO VIVO PARA A PLATEIA -->
+            <div style="background: #fdf4f5; border: 2px solid #fecdd3; border-left: 6px solid var(--unicap-primary); border-radius: 10px; padding: 1.5rem; margin-top: 1.25rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem;">
+                    <h4 style="color: var(--unicap-primary); font-size: 1.15rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 0.4rem;">
+                        🎤 Exemplo Preenchido para Demonstração ao Vivo com a Plateia
+                    </h4>
+                    <span style="background: var(--unicap-primary); color: white; font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 999px; text-transform: uppercase;">
+                        Dinâmica Interativa de Palco
+                    </span>
+                </div>
+                
+                <p style="font-size: 0.9rem; color: var(--text-main); margin-bottom: 1rem;">
+                    <strong>Como usar no palco:</strong> Caso queira demonstrar o poder das Personas de IA de forma interdisciplinar (para que professores de <em>todas as áreas</em> consigam participar e sugerir perguntas juntos), utilize o caso abaixo. Primeiro gere o caso PBL e, em seguida, ative a persona do <strong>Diretor de Operações (Roberto)</strong> para a plateia interrogar ao vivo:
+                </p>
+
+                <!-- PARTE 1: PROMPT PBL PREENCHIDO -->
+                <div style="margin-bottom: 1.25rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                        <span style="font-size: 0.85rem; font-weight: 700; color: var(--unicap-primary);">
+                            1️⃣ PROMPT DO CASO PBL PREENCHIDO (Gere o Cenário e o Dilema):
+                        </span>
+                    </div>
+
+                    <div class="prompt-container" style="margin-top: 0.3rem;">
+                        <div class="prompt-header">
+                            <span>PROMPT: CASO PBL UNIVERSAL (A CRISE DO PROJETO DELTA)</span>
+                            <button class="btn-copy" onclick="copyPrompt('prompt-demo-pbl')">📋 Copiar Prompt</button>
+                        </div>
+                        <pre id="prompt-demo-pbl" class="prompt-code">Atue como especialista em Aprendizagem Baseada em Problemas (PBL) e tomada de decisão institucional no Ensino Superior.
+Elabore uma situação-problema autêntica e interdisciplinar sobre GESTÃO DE CRISE, COMUNICAÇÃO E RESPONSABILIDADE ÉTICA.
+
+A atividade deve conter:
+1. O CENÁRIO (Até 250 palavras): A empresa Delta contratou uma equipe júnior multidisciplinar para implementar um novo portal de serviços crítico para a comunidade. No dia do lançamento oficial, o sistema colapsou, gerando protestos públicos e prejuízos. O Diretor de Operações (Roberto Alencar) culpa a inexperiência da equipe júnior e quer rescindir o contrato com penalidades. A equipe alega que a infraestrutura interna da empresa estava sobrecarregada e que seus alertas foram ignorados;
+2. O DILEMA DISPARADOR: A instituição deve demitir e responsabilizar publicamente a equipe jovem (preservando a imagem da diretoria perante os clientes) OU deve assumir que os processos internos e a infraestrutura falharam, arcando com o custo político da crise?
+3. DUAS PERGUNTAS DISPARADORAS: Para orientar um debate investigativo de 15 minutos em sala de aula.
+RESTRIÇÃO: Não dê a solução pronta. O objetivo é provocar reflexão e investigação de fatos.</pre>
+                    </div>
+                </div>
+
+                <!-- PARTE 2: PROMPT DA PERSONA PREENCHIDO -->
+                <div style="margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                        <span style="font-size: 0.85rem; font-weight: 700; color: var(--unicap-primary);">
+                            2️⃣ PROMPT DE ATIVAÇÃO DA PERSONA PREENCHIDO (Cole na IA para a Plateia Interrogar):
+                        </span>
+                    </div>
+
+                    <div class="prompt-container" style="margin-top: 0.3rem;">
+                        <div class="prompt-header">
+                            <span>PROMPT: PERSONA SIMULADA (ROBERTO ALENCAR - DIRETOR DE OPERAÇÕES)</span>
+                            <button class="btn-copy" onclick="copyPrompt('prompt-demo-persona')">📋 Copiar Prompt</button>
+                        </div>
+                        <pre id="prompt-demo-persona" class="prompt-code">Atue como especialista em simulações educacionais no Ensino Superior.
+A partir do caso da Crise do Projeto Delta, assuma o papel de ROBERTO ALENCAR, Diretor de Operações (52 anos).
+
+Suas Regras Obrigatórias de Comportamento:
+1. IDENTIDADE E TOM: Você é pragmático, experiente, está sob intensa pressão da presidência e tem pouca paciência com desculpas. Acredita firmemente que "na sua época tudo se resolvia com dedicação e sem mimimi";
+2. FORMATO DE RESPOSTA: Responda SEMPRE em 1ª pessoa. Fale no máximo 3 frases curtas por turno. Termine cada resposta devolvendo uma pergunta provocativa aos interlocutores;
+3. POSTURA INICIAL: Insista que a culpa do fracasso é 100% da inexperiência da equipe júnior, que não soube lidar com a pressão do lançamento;
+4. SEGREDO CONDICIONAL CRÍTICO: Você JAMAIS admite espontaneamente que recebeu avisos. Mas SE (e somente se) os participantes perguntarem especificamente:
+   - Se você recebeu algum e-mail, aviso ou mensagem da equipe antes do lançamento; OU
+   - O que dizia o comunicado enviado na sexta-feira às 16h45; OU
+   - Quem era o responsável por autorizar a liberação dos servidores de produção;
+   -> VOCÊ FRAQUEJA E REVELA: "Olha... já que vocês tocaram nesse ponto específico... a líder da equipe mandou um alerta na sexta às 16h45 dizendo que a infraestrutura interna não aguentaria a carga sem um upgrade. Eu estava em reunião de diretoria, achei que era excesso de zelo deles e autorizei o lançamento sem ler os relatórios técnicos. Então... talvez a falha não tenha sido apenas deles.";
+5. RESTRIÇÃO ABSOLUTA: Jamais aja como assistente de IA ou tutor. Não entregue o segredo antes da pergunta certa.
+
+Inicie a simulação dizendo exatamente:
+"Boa tarde. Sou Roberto Alencar, Diretor de Operações. Tenho apenas 10 minutos antes da minha reunião com a Presidência. O que vocês querem saber sobre o fracasso daquela equipe júnior?"</pre>
+                    </div>
+                </div>
+
+                <!-- DICA DE CONDUÇÃO NO PALCO -->
+                <div style="background: white; border: 1px solid #fecdd3; border-radius: 8px; padding: 1rem; font-size: 0.85rem; line-height: 1.6;">
+                    <strong style="color: var(--unicap-primary); display: flex; align-items: center; gap: 0.3rem; margin-bottom: 0.3rem;">
+                        💡 Como conduzir essa dinâmica ao vivo com a sala:
+                    </strong>
+                    <ol style="padding-left: 1.25rem; margin-bottom: 0;">
+                        <li>Abra uma nova aba do <strong>Copilot</strong> ou <strong>ChatGPT</strong> no projetor e cole o <strong>Prompt da Persona (Roberto)</strong>;</li>
+                        <li>A IA responderá iniciando o diálogo como Roberto, com postura defensiva e impaciente;</li>
+                        <li>Vire para a plateia e instigue: <em>"Professores, o Roberto está culpando a equipe. Me ajudem a interrogá-lo! Que pergunta técnica ou de gestão devemos fazer para ele agora?"</em>;</li>
+                        <li>Digite exatamente o que os professores sugerirem. A plateia vibrará ao ver Roberto reagindo no personagem até revelar o segredo condicional!</li>
+                    </ol>
+                </div>
+            </div>
+
             <div style="margin-top: 1.5rem;">
                 <h3 style="color: var(--unicap-primary); font-size: 1.1rem; margin-bottom: 0.5rem;">Trilha B: Guia de Condução Docente (Script Minuto a Minuto)</h3>
                 <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Gera um roteiro para o professor orquestrar os tempos, as rodadas de debate e o fechamento da aula ativa:</p>
