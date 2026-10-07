@@ -241,6 +241,7 @@
 
         <nav class="nav-pills">
             <a href="#downloads">📦 Materiais</a>
+            <a href="#metaprompt">⚡ Meta-Prompting</a>
             <a href="#lab1">🧪 Lab 1: Planejamento</a>
             <a href="#lab2">🧪 Lab 2: Materiais</a>
             <a href="#lab3">🧪 Lab 3: Dinâmicas</a>
@@ -282,6 +283,49 @@
                     <p>Caso de falha de conexão e CGNAT para PBL.</p>
                     <a href="estudo_caso_incidente_redes.pdf" target="_blank" class="btn-download">📥 Baixar Dossiê (PDF)</a>
                 </div>
+            </div>
+        </section>
+
+        <!-- META-PROMPTING -->
+        <section id="metaprompt" class="card">
+            <div class="card-header">
+                <h2 class="card-title">⚡ Meta-Prompting: A IA Criando Prompts para Você</h2>
+                <span class="badge">Dica de Ouro</span>
+            </div>
+            <p><strong>Em dúvida sobre como pedir?</strong> Se você tem uma intenção pedagógica em mente, mas não sabe exatamente quais palavras, restrições ou formatos usar, <strong>peça para a própria IA atuar como sua engenheira de prompts</strong> nos 4 pilares acadêmicos (<em>Papel + Contexto + Tarefa + Formato e Restrições</em>).</p>
+
+            <div class="prompt-container">
+                <div class="prompt-header">
+                    <span>PROMPT 0.1: GERADOR AUTOMÁTICO DE PROMPT (MODO DIRETO)</span>
+                    <button class="btn-copy" onclick="copyPrompt('prompt-meta-direto')">📋 Copiar Prompt</button>
+                </div>
+                <pre id="prompt-meta-direto" class="prompt-code">Atue como especialista sênior em engenharia de prompts e design instrucional no Ensino Superior.
+Preciso que você escreva o PROMPT PERFEITO para eu enviar a uma IA generativa para me auxiliar na seguinte necessidade da minha disciplina:
+
+"[DESCREVA AQUI O QUE VOCÊ QUER FAZER EM LINGUAGEM NATURAL E INFORMAL, ex.: Quero criar um estudo de caso desafiador de 40 minutos para alunos de Direito sobre contratos eletrônicos, onde eles precisem identificar cláusulas abusivas sem que a IA dê as respostas prontas]".
+
+Com base nessa minha necessidade, construa o prompt definitivo estruturado rigorosamente com:
+1. PAPEL/PERSONA: Quem a IA deve encarnar com profundidade;
+2. CONTEXTO: O nível acadêmico e as características dos estudantes universitários;
+3. TAREFA INSTRUCIONAL: A ação detalhada passo a passo do que deve ser gerado;
+4. FORMATO DO ARTEFATO: A estrutura visual e textual exata da entrega;
+5. RESTRIÇÕES E SALVAGUARDAS: Regras rígidas contra alucinações, obviedades e respostas prontas.
+
+Entregue o prompt final formatado dentro de um bloco de código, com marcadores entre colchetes [ASSIM] nos pontos onde eu possa ajustar variáveis, 100% pronto para eu copiar e executar.</pre>
+            </div>
+
+            <div class="prompt-container">
+                <div class="prompt-header">
+                    <span>PROMPT 0.2: CONSULTORA PEDAGÓGICA (MODO ENTREVISTA / CO-CRIAÇÃO)</span>
+                    <button class="btn-copy" onclick="copyPrompt('prompt-meta-entrevista')">📋 Copiar Prompt</button>
+                </div>
+                <pre id="prompt-meta-entrevista" class="prompt-code">Atue como consultor pedagógico e designer instrucional sênior no Ensino Superior.
+Tenho a intenção de planejar uma experiência de aprendizagem sobre [INSERIR SEU TEMA] para a disciplina de [INSERIR SUA DISCIPLINA] (turma de [INSERIR PERÍODO]), mas estou em dúvida sobre qual formato ou dinâmica funcionará melhor para engajar os estudantes.
+
+Não me dê a resposta final de imediato. Em vez disso:
+1. Faça-me exatamente 3 perguntas diagnósticas estratégicas sobre os meus objetivos de aprendizagem, o perfil/dificuldades da turma e o tempo disponível em sala de aula;
+2. Aguarde as minhas respostas;
+3. Com base no que eu responder, formule o PROMPT PERFEITO E OTIMIZADO que eu devo rodar para gerar essa atividade com máxima qualidade acadêmica.</pre>
             </div>
         </section>
 
