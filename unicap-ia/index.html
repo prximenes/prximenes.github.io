@@ -3,52 +3,522 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Materiais do Workshop: IA como Ferramenta Pedagógica</title>
+    <title>Oficina: IA como Ferramenta Pedagógica | UNICAP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; max-width: 850px; margin: 0 auto; padding: 2rem; color: #333; }
-        h1 { color: #8A1538; }
-        a { color: #8A1538; text-decoration: none; font-weight: bold; }
-        a:hover { text-decoration: underline; }
-        .card { border: 1px solid #ddd; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; background: #fdfdfd; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
-        .card h2 { margin-top: 0; color: #8A1538; font-size: 1.3rem; }
-        .badge { display: inline-block; background: #8A1538; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; margin-left: 6px; }
-        ul { padding-left: 20px; }
-        li { margin-bottom: 0.5rem; }
+        :root {
+            --unicap-primary: #8A1538;
+            --unicap-primary-dark: #680f2a;
+            --unicap-primary-light: #fbf2f4;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --code-bg: #1e293b;
+            --code-text: #f1f5f9;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 4rem;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--unicap-primary), var(--unicap-primary-dark));
+            color: white;
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(138, 21, 56, 0.15);
+        }
+        header h1 { font-size: 1.85rem; font-weight: 700; margin-bottom: 0.5rem; }
+        header p { font-size: 1.05rem; opacity: 0.95; max-width: 700px; margin: 0 auto; }
+
+        .container {
+            max-width: 900px;
+            margin: -1.5rem auto 0 auto;
+            padding: 0 1rem;
+        }
+
+        .nav-pills {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+            position: sticky;
+            top: 0.75rem;
+            z-index: 100;
+        }
+        .nav-pills a {
+            text-decoration: none;
+            color: var(--text-muted);
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .nav-pills a:hover {
+            color: var(--unicap-primary);
+            background: var(--unicap-primary-light);
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.75rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--unicap-primary-light);
+            padding-bottom: 0.75rem;
+        }
+        .card-title {
+            color: var(--unicap-primary);
+            font-size: 1.35rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .badge {
+            background: var(--unicap-primary-light);
+            color: var(--unicap-primary);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.6rem;
+            border-radius: 999px;
+            text-transform: uppercase;
+        }
+
+        .step-list {
+            margin: 1rem 0;
+            padding-left: 1.25rem;
+        }
+        .step-list li {
+            margin-bottom: 0.75rem;
+            color: var(--text-main);
+        }
+
+        .prompt-container {
+            position: relative;
+            margin: 1.25rem 0;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #334155;
+            background: var(--code-bg);
+        }
+        .prompt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0f172a;
+            padding: 0.5rem 1rem;
+            color: #94a3b8;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .prompt-code {
+            padding: 1rem 1.25rem;
+            color: var(--code-text);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.85rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+            line-height: 1.5;
+            max-height: 380px;
+            overflow-y: auto;
+        }
+
+        .btn-copy {
+            background: var(--unicap-primary);
+            color: white;
+            border: none;
+            padding: 0.35rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: all 0.2s;
+        }
+        .btn-copy:hover {
+            background: var(--unicap-primary-dark);
+        }
+        .btn-copy.copied {
+            background: #16a34a !important;
+        }
+
+        .example-box {
+            background: #f1f5f9;
+            border-left: 4px solid var(--unicap-primary);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        .example-box strong { color: var(--unicap-primary); }
+
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: var(--unicap-primary);
+            color: white;
+            text-decoration: none;
+            padding: 0.6rem 1.1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+            margin: 0.3rem 0;
+        }
+        .btn-download:hover {
+            background: var(--unicap-primary-dark);
+            color: white;
+        }
+
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .download-item {
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 8px;
+            background: #fcfcfc;
+        }
+        .download-item h4 {
+            font-size: 1rem;
+            color: var(--text-main);
+            margin-bottom: 0.3rem;
+        }
+        .download-item p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
     </style>
 </head>
 <body>
-    <h1>Oficina: IA como Ferramenta Pedagógica</h1>
-    <p><strong>Design de Experiências de Aprendizagem</strong> | Universidade Católica de Pernambuco (UNICAP)</p>
-    <p>Abaixo você encontra os arquivos que utilizaremos nos laboratórios, os materiais de demonstração e o material complementar da oficina.</p>
 
-    <div class="card">
-        <h2>1. Slides da Apresentação</h2>
-        <p>Apresentação completa projetada durante a nossa jornada.</p>
-        <p><a href="workshop_ia_docente.pdf" target="_blank">📥 Baixar Slides (PDF)</a></p>
+    <header>
+        <h1>Oficina: IA como Ferramenta Pedagógica</h1>
+        <p>Design de Experiências de Aprendizagem | Universidade Católica de Pernambuco (UNICAP)</p>
+    </header>
+
+    <div class="container">
+
+        <nav class="nav-pills">
+            <a href="#downloads">📦 Materiais</a>
+            <a href="#lab1">🧪 Lab 1: Planejamento</a>
+            <a href="#lab2">🧪 Lab 2: Materiais</a>
+            <a href="#lab3">🧪 Lab 3: Dinâmicas</a>
+            <a href="#ferramentas">🛠️ Ferramentas</a>
+        </nav>
+
+        <!-- SEÇÃO: DOWNLOADS GERAIS -->
+        <section id="downloads" class="card">
+            <div class="card-header">
+                <h2 class="card-title">📦 Materiais de Apoio e Slides</h2>
+                <span class="badge">Downloads Oficiais</span>
+            </div>
+            <p>Baixe os slides da apresentação, o cardápio completo de prompts e os arquivos acadêmicos para as práticas caso não tenha trazido um documento próprio:</p>
+            
+            <div class="download-grid">
+                <div class="download-item">
+                    <h4>Slides da Apresentação</h4>
+                    <p>Apresentação visual projetada durante a oficina.</p>
+                    <a href="workshop_ia_docente.pdf" target="_blank" class="btn-download">📥 Baixar Slides (PDF)</a>
+                </div>
+                <div class="download-item">
+                    <h4>Cardápio de Prompts</h4>
+                    <p>Manual definitivo com prompts para o semestre inteiro.</p>
+                    <a href="cardapio_prompts_universais.pdf" target="_blank" class="btn-download">📥 Baixar Cardápio (PDF)</a>
+                </div>
+                <div class="download-item">
+                    <h4>Ementa Exemplo (Lab 1)</h4>
+                    <p>Plano de ensino formal de Redes de Computadores.</p>
+                    <a href="ementa_redes_computadores.pdf" target="_blank" class="btn-download">📥 Baixar Ementa (PDF)</a>
+                </div>
+                <div class="download-item">
+                    <h4>Artigo de Leitura (Lab 2)</h4>
+                    <p>Artigo técnico sobre transição de IPv4 para IPv6.</p>
+                    <a href="texto_apoio_ipv6.pdf" target="_blank" class="btn-download">📥 Baixar Artigo (PDF)</a>
+                </div>
+                <div class="download-item">
+                    <h4>Dossiê de Incidente (Lab 3)</h4>
+                    <p>Caso de falha de conexão e CGNAT para PBL.</p>
+                    <a href="estudo_caso_incidente_redes.pdf" target="_blank" class="btn-download">📥 Baixar Dossiê (PDF)</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- LABORATÓRIO 1 -->
+        <section id="lab1" class="card">
+            <div class="card-header">
+                <h2 class="card-title">🧪 Laboratório 1: Descompactação de Ementas & Planejamento</h2>
+                <span class="badge">45 min</span>
+            </div>
+            <p><strong>Objetivo:</strong> Subir o documento da sua disciplina e transformar uma ementa burocrática em uma matriz de sequenciamento de aula em 3 momentos, com objetivos em verbos de ação e zero alucinação.</p>
+            
+            <ol class="step-list">
+                <li><strong>Escolha o Documento:</strong> Use o PDF da ementa do seu próprio curso <em>OU</em> baixe a <a href="ementa_redes_computadores.pdf" target="_blank">ementa exemplo de Redes de Computadores</a>.</li>
+                <li><strong>Abra a Ferramenta:</strong>
+                    <ul>
+                        <li>No <strong>NotebookLM</strong> (<a href="https://notebooklm.google.com" target="_blank">notebooklm.google.com</a>): crie um caderno e faça o upload do PDF.</li>
+                        <li>No <strong>Microsoft Copilot</strong> (Edge com login institucional): abra o PDF direto no navegador e ative a barra lateral com o selo <em>Protegido (EDP)</em>.</li>
+                    </ul>
+                </li>
+                <li><strong>Envie o Prompt de Planejamento:</strong> Copie o comando abaixo, preencha os campos entre colchetes e envie:</li>
+            </ol>
+
+            <div class="prompt-container">
+                <div class="prompt-header">
+                    <span>PROMPT 1.1: ANCORAGEM PRÉ-LETIVA (RECORTE DE UNIDADE)</span>
+                    <button class="btn-copy" onclick="copyPrompt('prompt-lab1')">📋 Copiar Prompt</button>
+                </div>
+                <pre id="prompt-lab1" class="prompt-code">Atue como especialista em design instrucional universitário. 
+Estou na fase de planejamento pré-letivo da disciplina de [INSERIR SUA DISCIPLINA], direcionada a estudantes de [INSERIR PERÍODO OU NÍVEL DA TURMA].
+
+Com base no documento em anexo, foque exclusivamente na [INSERIR UNIDADE OU TEMA A PLANEJAR, ex.: Unidade I - Fundamentos e Camada de Aplicação] para estruturar nossa aula presencial de [CARGA HORÁRIA DA AULA, ex.: 2 horas]:
+1. NÚCLEOS CONCEITUAIS DA UNIDADE: Identifique os 4 conceitos ou teses fundamentais abordados no texto indispensáveis para o domínio deste tema específico.
+2. OBJETIVOS DE APRENDIZAGEM ATIVOS: Formule 3 objetivos de aprendizagem claros, utilizando verbos de ação mensuráveis (Taxonomia de Bloom: ex.: analisar, diferenciar, aplicar, contrastar), indicando o que o estudante será capaz de realizar autonomamente ao término desta aula.
+3. MATRIZ DE SEQUENCIAMENTO DIDÁTICO: Esboce uma sequência em 3 momentos rígidos para esta aula:
+   - Momento 1 (Sensibilização - 20 min): Um dilema ou questão provocativa inicial ligada à prática profissional;
+   - Momento 2 (Aprofundamento - 60 min): Dinâmica de exploração dos conceitos centrais com andaimes cognitivos;
+   - Momento 3 (Síntese e Consolidação - 40 min): Atividade participativa de fechamento em duplas ou grupos.
+
+CLÁUSULA DE ANCORAGEM ESTRITA: Responda utilizando exclusivamente as informações presentes no PDF anexado sobre este recorte temático. Caso o documento não aborde algum ponto solicitado, informe claramente que a informação não consta no material. Não deduza nem utilize conhecimentos externos à fonte.</pre>
+            </div>
+
+            <div class="example-box">
+                <strong>💡 Exemplo preenchido com a ementa de demonstração:</strong><br>
+                • <code>[INSERIR SUA DISCIPLINA]</code>: Redes de Computadores I<br>
+                • <code>[INSERIR PERÍODO OU NÍVEL DA TURMA]</code>: 4º período de Ciência da Computação / Sistemas de Informação<br>
+                • <code>[INSERIR UNIDADE OU TEMA A PLANEJAR]</code>: Módulo I: Fundamentos de Arquitetura e Camada de Aplicação (HTTP e DNS)<br>
+                • <code>[CARGA HORÁRIA DA AULA]</code>: 2 horas (120 minutos)
+            </div>
+
+            <ol class="step-list" start="4">
+                <li><strong>Auditoria de Fontes:</strong> No NotebookLM, clique nas citações numéricas <code>[1]</code> para ver o trecho exato no PDF. No Copilot, confira se os termos gerados correspondem estritamente ao documento.</li>
+                <li><strong>Refinamento Opcional (Andaimes Cognitivos):</strong> Se a resposta estiver abstrata demais, envie na mesma conversa:</li>
+            </ol>
+
+            <div class="prompt-container">
+                <div class="prompt-header">
+                    <span>PROMPT DE REFINAMENTO: ANDAIMES COGNITIVOS</span>
+                    <button class="btn-copy" onclick="copyPrompt('prompt-lab1-refinamento')">📋 Copiar Prompt</button>
+                </div>
+                <pre id="prompt-lab1-refinamento" class="prompt-code">A estrutura está excelente, mas muitos estudantes desta disciplina ingressam com lacunas em [INSERIR CONCEITO BÁSICO]. 
+Reajuste o Momento 2 propondo uma estratégia de transição gradual (andaime cognitivo) para que eles assimilem o conceito central sem frustração.</pre>
+            </div>
+        </section>
+
+        <!-- LABORATÓRIO 2 -->
+        <section id="lab2" class="card">
+            <div class="card-header">
+                <h2 class="card-title">🧪 Laboratório 2: Transposição Didática & Materiais</h2>
+                <span class="badge">30 min</span>
+            </div>
+            <p><strong>Objetivo:</strong> Continuar na mesma conversa do Lab 1 (efeito em cascata) para gerar um Roteiro de Estudo Dirigido e a arquitetura narrativa de slides focados em storytelling e analogias.</p>
+            
+            <ol class="step-list">
+                <li><strong>Mantenha a Mesma Conversa:</strong> Não abra um chat novo! A ferramenta já conhece sua ementa e os objetivos gerados. (Se quiser usar um artigo de apoio mais denso, adicione o <a href="texto_apoio_ipv6.pdf" target="_blank">Artigo de Apoio sobre IPv6</a>).</li>
+                <li><strong>Envie o Prompt de Roteiro de Leitura (Artefato 2):</strong></li>
+            </ol>
+
+            <div class="prompt-container">
+                <div class="prompt-header">
+                    <span>PROMPT 2.1: ROTEIRO DE ESTUDO DIRIGIDO</span>
+                    <button class="btn-copy" onclick="copyPrompt('prompt-lab2-roteiro')">📋 Copiar Prompt</button>
+                </div>
+                <pre id="prompt-lab2-roteiro" class="prompt-code">Com base nos conceitos e objetivos que acabamos de estruturar a partir do documento, atue como especialista em transposição didática e aprendizagem no Ensino Superior.
+
+Elabore um ROTEIRO DE ESTUDO DIRIGIDO de 1 página para os estudantes da disciplina [INSERIR SUA DISCIPLINA], cobrindo o tema [INSERIR SEU TEMA].
+
+O roteiro deve conter:
+1. CONTEXTUALIZAÇÃO DO IMPACTO (1 parágrafo): Por que dominar esse conceito é decisivo para a atuação profissional futura do estudante;
+2. TRÊS PONTOS FOCAIS DE LEITURA: Três perguntas reflexivas para o aluno responder enquanto realiza a leitura do texto base;
+3. GLOSSÁRIO INSTRUMENTAL: Tradução de 3 termos técnicos difíceis para uma linguagem clara e acessível;
+4. CHECK DE LEITURA (Autoavaliação formativa): 2 perguntas rápidas de múltipla escolha para o estudante testar sua compreensão antes de entrar na sala de aula.</pre>
+            </div>
+
+            <ol class="step-list" start="3">
+                <li><strong>Envie o Prompt de Slides em Storytelling (Artefato 3):</strong> Na sequência imediata, envie:</li>
+            </ol>
+
+            <div class="prompt-container">
+                <div class="prompt-header">
+                    <span>PROMPT 2.2: ARQUITETURA DE SLIDES COM ANALOGIAS</span>
+                    <button class="btn-copy" onclick="copyPrompt('prompt-lab2-slides')">📋 Copiar Prompt</button>
+                </div>
+                <pre id="prompt-lab2-slides" class="prompt-code">Agora, atue como consultor de comunicação visual e apresentações pedagógicas.
+Estruture o roteiro para uma apresentação de 5 slides sobre este tema, superando o modelo tradicional de blocos de texto corrido.
+
+Para cada um dos 5 slides, forneça:
+1. TÍTULO PROVOCATIVO: Em formato de pergunta intrigante ou afirmação marcante;
+2. CONTEÚDO VISUAL (Máximo de 3 tópicos curtos): Frases concisas e em alto nível;
+3. ANALOGIA DIDÁTICA DO COTIDIANO: Uma metáfora ou comparação prática do dia a dia para o professor explicar o conceito abstrato da lâmina;
+4. A FALA DO PROFESSOR: O que o docente deve enfatizar oralmente ao projetar o slide.
+
+RESTRIÇÃO DE DESIGN: Cada lâmina deve conter apenas UMA ideia-força para garantir leveza e foco cognitivo.</pre>
+            </div>
+
+            <div class="example-box">
+                <strong>💡 Exemplo preenchido com os materiais da oficina:</strong><br>
+                • <code>[INSERIR SUA DISCIPLINA]</code>: Redes de Computadores I<br>
+                • <code>[INSERIR SEU TEMA]</code>: A Transição do IPv4 para o IPv6 e o Impacto do CGNAT
+            </div>
+        </section>
+
+        <!-- LABORATÓRIO 3 -->
+        <section id="lab3" class="card">
+            <div class="card-header">
+                <h2 class="card-title">🧪 Laboratório 3: Metodologias Ativas & Simulações</h2>
+                <span class="badge">20 min</span>
+            </div>
+            <p><strong>Objetivo:</strong> Criar um estudo de caso PBL com dilema profissional autêntico e transformá-lo em uma simulação interativa com Persona de IA ou em um roteiro de condução presencial.</p>
+            
+            <ol class="step-list">
+                <li><strong>Gere a Situação-Problema PBL (Artefato 4):</strong> Na mesma conversa, envie:</li>
+            </ol>
+
+            <div class="prompt-container">
+                <div class="prompt-header">
+                    <span>PROMPT 3.1: ESTUDO DE CASO PBL COM DILEMA</span>
+                    <button class="btn-copy" onclick="copyPrompt('prompt-lab3-caso')">📋 Copiar Prompt</button>
+                </div>
+                <pre id="prompt-lab3-caso" class="prompt-code">Atue como especialista em Aprendizagem Baseada em Problemas (PBL).
+Com base no conteúdo de [INSERIR SUA DISCIPLINA] e no tema [INSERIR SEU TEMA] que trabalhamos até aqui, crie uma situação-problema autêntica do mercado profissional/sociedade real.
+
+A atividade deve conter:
+1. O CENÁRIO (Até 250 palavras): Uma narrativa com personagens e desafios reais, apresentando dados ambíguos ou incompletos;
+2. O DILEMA DISPARADOR: Uma encruzilhada ética ou técnica onde não haja resposta óbvia de "certo ou errado", forçando os estudantes a tomar uma decisão e justificá-la com a teoria;
+3. DUAS PERGUNTAS DISPARADORAS: Para orientar um debate em duplas de 15 minutos em sala de aula.
+RESTRIÇÃO: Não dê a solução. O objetivo é que o caso gere debate ativo.</pre>
+            </div>
+
+            <p style="margin-top: 1.5rem;"><strong>Escolha uma das Trilhas abaixo para o Artefato 5:</strong></p>
+
+            <div style="margin-top: 1rem;">
+                <h3 style="color: var(--unicap-primary); font-size: 1.1rem; margin-bottom: 0.5rem;">Trilha A: Persona Interativa de IA (Role-Play para o Aluno)</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Gera um comando para o aluno colar na IA, transformando-a em um personagem que exige perguntas investigativas:</p>
+
+                <div class="prompt-container">
+                    <div class="prompt-header">
+                        <span>PROMPT 3.2A: ATIVAÇÃO DE PERSONA SIMULADA</span>
+                        <button class="btn-copy" onclick="copyPrompt('prompt-lab3-persona')">📋 Copiar Prompt</button>
+                    </div>
+                    <pre id="prompt-lab3-persona" class="prompt-code">Atue como especialista em simulações educacionais no Ensino Superior.
+Estruture um PROMPT DE ATIVAÇÃO DE PERSONA baseado no caso PBL que geramos para a disciplina de [INSERIR SUA DISCIPLINA].
+
+A persona representa: [DEFINIR PAPEL: ex.: paciente em consulta / cliente de consultoria / analista de suporte / testemunha].
+Regras Obrigatórias da Persona:
+- Responder em 1ª pessoa, tom emocional condizente (ex.: ocupado, hesitante, defensivo);
+- Máximo de 3 frases curtas por resposta, sempre devolvendo perguntas ao estudante;
+- SEGREDO CONDICIONAL: Jamais revelar a informação crítica sobre [INSERIR PONTO-CHAVE] a menos que o estudante formule uma pergunta técnica específica sobre [DEFINIR O PONTO];
+- Proibido atuar como tutor ou entregar a resposta certa.</pre>
+                </div>
+            </div>
+
+            <div style="margin-top: 1.5rem;">
+                <h3 style="color: var(--unicap-primary); font-size: 1.1rem; margin-bottom: 0.5rem;">Trilha B: Guia de Condução Docente (Script Minuto a Minuto)</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Gera um roteiro para o professor orquestrar os tempos, as rodadas de debate e o fechamento da aula ativa:</p>
+
+                <div class="prompt-container">
+                    <div class="prompt-header">
+                        <span>PROMPT 3.2B: GUIA DE CONDUÇÃO DOCENTE MINUTO A MINUTO</span>
+                        <button class="btn-copy" onclick="copyPrompt('prompt-lab3-guia')">📋 Copiar Prompt</button>
+                    </div>
+                    <pre id="prompt-lab3-guia" class="prompt-code">Atue como consultor de dinâmicas ativas de sala de aula universitária.
+Vou conduzir uma aula presencial de [INSERIR CARGA HORÁRIA, ex.: 1h40 ou 2h] aplicando o estudo de caso PBL que criamos na disciplina de [INSERIR SUA DISCIPLINA].
+
+Elabore um GUIA DE CONDUÇÃO DOCENTE MINUTO A MINUTO contendo:
+1. CRONOGRAMA EM BLOCOS RÍGIDOS:
+   - Bloco 1 (Aquecimento - 15 min): Pergunta-choque e formação de equipes;
+   - Bloco 2 (Desafio PBL em Grupos - 50 min): Dinâmica de trabalho e rodadas de mediação;
+   - Bloco 3 (Plenária e Síntese Teórica - 35 min): Confronto de soluções e amarração dos conceitos.
+2. BANCO DE PERGUNTAS DE DESCONGELAMENTO: 3 perguntas provocativas para romper o silêncio inicial da turma.
+3. MEDIAÇÃO DA DIVERSIDADE: 1 intervenção prática para destravar o grupo calado e 1 intervenção para moderar o aluno dominador.
+4. SÍNTESE DE FECHAMENTO: Os 3 pontos teóricos inegociáveis que o professor deve registrar no quadro nos últimos 10 minutos da aula.</pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: FERRAMENTAS OFICIAIS -->
+        <section id="ferramentas" class="card">
+            <div class="card-header">
+                <h2 class="card-title">🛠️ Ferramentas Oficiais Recomendadas</h2>
+                <span class="badge">Acesso Rápido</span>
+            </div>
+            <ul style="padding-left: 1.25rem;">
+                <li style="margin-bottom: 0.75rem;">
+                    <strong><a href="https://copilot.cloud.microsoft/" target="_blank">Microsoft Copilot Institucional</a>:</strong> Acesse com seu e-mail institucional M365 (via navegador Microsoft Edge) para usufruir da <em>Proteção de Dados Empresariais (EDP)</em> com modelo GPT-4 gratuito.
+                </li>
+                <li>
+                    <strong><a href="https://notebooklm.google.com" target="_blank">Google NotebookLM</a>:</strong> Ideal para criar cadernos de fontes ancorados a partir de PDFs com citações auditáveis de páginas e zero alucinação.
+                </li>
+            </ul>
+        </section>
+
     </div>
 
-    <div class="card">
-        <h2>2. Cardápio de Prompts Universais <span class="badge">Essencial</span></h2>
-        <p>O seu guia definitivo com os comandos parametrizados para cada etapa do semestre letivo.</p>
-        <p><a href="cardapio_prompts_universais.pdf" target="_blank">📥 Baixar Cardápio de Prompts (PDF)</a></p>
-    </div>
+    <footer>
+        <p>© 2025 Universidade Católica de Pernambuco - UNICAP | Oficina de Design de Experiências de Aprendizagem</p>
+    </footer>
 
-    <div class="card">
-        <h2>3. Arquivos de Demonstração (Para Prática de Bancada)</h2>
-        <p>Caso você não tenha trazido um documento próprio em PDF da sua disciplina, utilize nossos artefatos acadêmicos de alta fidelidade para as práticas:</p>
-        <ul>
-            <li><strong>Laboratório 1 (Plano Pré-Letivo):</strong> <a href="ementa_redes_computadores.pdf" target="_blank">📥 Ementa & Plano de Ensino - Redes de Computadores (PDF)</a></li>
-            <li><strong>Laboratório 2 (Transposição Didática):</strong> <a href="texto_apoio_ipv6.pdf" target="_blank">📥 Artigo de Apoio Técnico - Transição IPv4 para IPv6 (PDF)</a></li>
-            <li><strong>Laboratório 3 (Metodologias Ativas & PBL):</strong> <a href="estudo_caso_incidente_redes.pdf" target="_blank">📥 Dossiê de Incidente Técnico - TecnoLog S/A (PDF)</a></li>
-        </ul>
-    </div>
-    
-    <div class="card">
-        <h2>Ferramentas Oficiais Recomendadas</h2>
-        <ul>
-            <li><a href="https://copilot.cloud.microsoft/" target="_blank">Microsoft Copilot Institucional (com proteção de dados corporativa - EDP)</a></li>
-            <li><a href="https://notebooklm.google.com" target="_blank">Google NotebookLM (Cadernos de Estudo Ancorados com Citação de Páginas)</a></li>
-        </ul>
-    </div>
+    <script>
+        function copyPrompt(elementId) {
+            const codeElement = document.getElementById(elementId);
+            const textToCopy = codeElement.innerText;
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const btn = event.currentTarget;
+                const originalText = btn.innerHTML;
+                
+                btn.innerHTML = '✓ Copiado!';
+                btn.classList.add('copied');
+
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Erro ao copiar texto: ', err);
+            });
+        }
+    </script>
+
 </body>
 </html>
