@@ -288,52 +288,83 @@
         <!-- LABORATÓRIO 1 -->
         <section id="lab1" class="card">
             <div class="card-header">
-                <h2 class="card-title">🧪 Laboratório 1: Descompactação de Ementas & Planejamento</h2>
+                <h2 class="card-title">🧪 Laboratório 1: Sequência Didática & Planejamento Pré-Letivo</h2>
                 <span class="badge">45 min</span>
             </div>
-            <p><strong>Objetivo:</strong> Subir o documento da sua disciplina e transformar uma ementa burocrática em uma matriz de sequenciamento de aula em 3 momentos, com objetivos em verbos de ação e zero alucinação.</p>
+            <p><strong>Objetivo:</strong> Subir o documento curricular da sua disciplina e realizar o planejamento em <strong>duas etapas encadeadas</strong>: primeiro gerando a <strong>Sequência Didática completa da unidade</strong> (visão macro: tema, objetivos em Bloom, diagnóstico, desenvolvimento, avaliação e rubrica) e, em seguida, detalhando <strong>UM Plano de Aula operacional</strong> em 3 momentos rígidos (visão micro) — com ancoragem estrita e zero alucinação.</p>
             
             <ol class="step-list">
-                <li><strong>Escolha o Documento:</strong> Use o PDF da ementa do seu próprio curso <em>OU</em> baixe a <a href="ementa_redes_computadores.pdf" target="_blank">ementa exemplo de Redes de Computadores</a>.</li>
-                <li><strong>Abra a Ferramenta:</strong>
+                <li><strong>Escolha o Documento:</strong> Use o PDF da ementa do seu próprio curso <em>OU</em> baixe a <a href="ementa_redes_computadores.pdf" target="_blank">Ementa Oficial de Redes de Computadores</a>.</li>
+                <li><strong>Abra a Ferramenta Ancorada:</strong>
                     <ul>
                         <li>No <strong>NotebookLM</strong> (<a href="https://notebooklm.google.com" target="_blank">notebooklm.google.com</a>): crie um caderno e faça o upload do PDF.</li>
                         <li>No <strong>Microsoft Copilot</strong> (Edge com login institucional): abra o PDF direto no navegador e ative a barra lateral com o selo <em>Protegido (EDP)</em>.</li>
                     </ul>
                 </li>
-                <li><strong>Envie o Prompt de Planejamento:</strong> Copie o comando abaixo, preencha os campos entre colchetes e envie:</li>
+                <li><strong>ETAPA 1 — Gerar a Sequência Didática da Unidade (Prompt Macro):</strong> Copie o comando abaixo, preencha os campos entre colchetes e envie à ferramenta:</li>
             </ol>
 
             <div class="prompt-container">
                 <div class="prompt-header">
-                    <span>PROMPT 1.1: ANCORAGEM PRÉ-LETIVA (RECORTE DE UNIDADE)</span>
-                    <button class="btn-copy" onclick="copyPrompt('prompt-lab1')">📋 Copiar Prompt</button>
+                    <span>PROMPT 1.1: SEQUÊNCIA DIDÁTICA COMPLETA DA UNIDADE</span>
+                    <button class="btn-copy" onclick="copyPrompt('prompt-lab1-sequencia')">📋 Copiar Prompt</button>
                 </div>
-                <pre id="prompt-lab1" class="prompt-code">Atue como especialista em design instrucional universitário. 
-Estou na fase de planejamento pré-letivo da disciplina de [INSERIR SUA DISCIPLINA], direcionada a estudantes de [INSERIR PERÍODO DA TURMA].
+                <pre id="prompt-lab1-sequencia" class="prompt-code">Atue como especialista em design instrucional universitário e metodologias ativas no Ensino Superior.
+Estou na fase de planejamento pré-letivo da disciplina de [INSERIR SUA DISCIPLINA], direcionada a estudantes de [INSERIR PERÍODO OU NÍVEL DA TURMA].
 
-Com base no documento em anexo, foque no tema [INSERIR UNIDADE OU TEMA, ex.: Camada de Rede e Transição IPv4/IPv6] para planejar nossa primeira aula de [CARGA HORÁRIA, ex.: 2 horas]:
-1. NÚCLEOS CONCEITUAIS: Identifique os 3 conceitos fundamentais mais importantes do texto para esta aula;
-2. OBJETIVOS DE APRENDIZAGEM ATIVOS: Formule 3 objetivos claros utilizando verbos de ação mensuráveis (Taxonomia de Bloom: ex.: analisar, diferenciar, aplicar);
-3. MATRIZ DE SEQUENCIAMENTO DIDÁTICO: Estruture a aula em 3 momentos rígidos:
-   - Problematização (20 min): Um dilema ou questão provocativa inicial ligada à prática profissional;
-   - Aprofundamento (60 min): Exploração orientada dos conceitos centrais;
-   - Síntese e Aplicação (40 min): Atividade participativa de fechamento.
+Com base exclusivamente no documento curricular em anexo, faça um recorte temático na unidade de [INSERIR UNIDADE OU TEMA A PLANEJAR] e elabore uma SEQUÊNCIA DIDÁTICA completa e estruturada, preenchendo rigorosamente os seguintes tópicos:
 
-CLÁUSULA DE ANCORAGEM ESTRITA: Responda utilizando exclusivamente as informações presentes no PDF anexado sobre este recorte. Caso o documento não aborde algum ponto solicitado, informe claramente que a informação não consta no material. Não deduza nem utilize conhecimentos externos à fonte.</pre>
+Tema: [Tópico central da sequência delimitado a partir do documento]
+Público: [Quem são os alunos — nível, contexto e conhecimento prévio esperado com base nas disciplinas anteriores da ementa]
+Objetivo geral: [O que o estudante será capaz de realizar autonomamente ao final da sequência — verbo de ação em Bloom + conteúdo + contexto prático]
+Objetivos específicos: [3 a 5 competências menores em ordem progressiva de complexidade que compõem o objetivo geral]
+Duração total: [Carga horária total da sequência, ex.: 4 aulas presenciais de 2h / total de 8 horas]
+Recursos necessários: [Materiais de apoio, tecnologia/softwares, laboratório ou espaço físico]
+Aula 1 — Diagnóstico e sensibilização: Atividade de sondagem diagnóstica + engajamento com o problema central do tema
+Aulas 2 a N — Desenvolvimento: Atividades em progressão crescente de complexidade conceitual e prática (detalhar brevemente cada uma das aulas intermediárias)
+Avaliação formativa: Quando e como será feita a checagem de aprendizagem ao longo da sequência (com feedback formativo)
+Aula final — Síntese: Produto final, estudo de caso ou avaliação somativa que evidencia o cumprimento cabal do objetivo geral
+Critérios de avaliação: Rubrica ou lista de critérios claros de qualidade que o estudante conhece desde o início da sequência
+
+CLÁUSULA DE ANCORAGEM ESTRITA: Responda utilizando exclusivamente os conceitos, tópicos e bibliografias presentes no documento anexado. Caso algum ponto não conste na fonte, aponte expressamente essa ausência em vez de inventar. Não utilize conhecimentos externos ao material.</pre>
             </div>
 
             <div class="example-box">
-                <strong>💡 Exemplo preenchido com a ementa de demonstração:</strong><br>
+                <strong>💡 Exemplo preenchido com a ementa de demonstração (UNICAP):</strong><br>
                 • <code>[INSERIR SUA DISCIPLINA]</code>: Redes de Computadores I<br>
-                • <code>[INSERIR PERÍODO DA TURMA]</code>: 4º período de Ciência da Computação / Sistemas de Informação<br>
-                • <code>[INSERIR UNIDADE OU TEMA]</code>: Módulo III: A Camada de Rede e a Transição do IPv4 para o IPv6<br>
-                • <code>[CARGA HORÁRIA]</code>: 2 horas (120 minutos)
+                • <code>[INSERIR PERÍODO OU NÍVEL DA TURMA]</code>: 4º período do Bacharelado em Ciência da Computação / Sistemas de Informação<br>
+                • <code>[INSERIR UNIDADE OU TEMA A PLANEJAR]</code>: Módulo III: A Camada de Rede e a Transição do IPv4 para o IPv6
             </div>
 
             <ol class="step-list" start="4">
-                <li><strong>Auditoria de Fontes:</strong> No NotebookLM, clique nas citações numéricas <code>[1]</code> para ver o trecho exato no PDF. No Copilot, confira se os termos gerados correspondem estritamente ao documento.</li>
-                <li><strong>Refinamento Opcional (Andaimes Cognitivos):</strong> Se a resposta estiver abstrata demais, envie na mesma conversa:</li>
+                <li><strong>ETAPA 2 — Detalhamento Operacional de UM Plano de Aula (Prompt Encadeado):</strong> Na <strong>mesma conversa</strong>, envie o comando para aprofundar uma aula da sequência minuto a minuto:</li>
+            </ol>
+
+            <div class="prompt-container">
+                <div class="prompt-header">
+                    <span>PROMPT 1.2: DETALHAMENTO DE UM PLANO DE AULA (ENCADEAMENTO)</span>
+                    <button class="btn-copy" onclick="copyPrompt('prompt-lab1-plano')">📋 Copiar Prompt</button>
+                </div>
+                <pre id="prompt-lab1-plano" class="prompt-code">Excelente. Agora vamos dar o passo operacional seguinte nesta mesma conversa (encadeamento pedagógico).
+Com base na Sequência Didática que você acabou de estruturar, selecione a [INSERIR QUAL AULA DA SEQUÊNCIA, ex.: Aula 2 — Desenvolvimento: Arquitetura de Cabeçalhos e Escassez de Endereços IPv4] e elabore o PLANO DE AULA DETALHADO para este encontro de [CARGA HORÁRIA, ex.: 2 horas (120 minutos)], estruturado estritamente nos seguintes momentos:
+
+1. DADOS DE IDENTIFICAÇÃO: Aula selecionada, tema da sessão e objetivo de aprendizagem específico do encontro (verbo ativo de Bloom).
+2. MOMENTO 1 — Acolhida & Problematização (20 minutos):
+   - Gancho disparador: Pergunta provocativa ou mini-problema do mundo real para capturar a atenção;
+   - Conexão: Breve resgate da sondagem diagnóstica realizada na Aula 1.
+3. MOMENTO 2 — Aprofundamento Ativo & Andaimes Cognitivos (60 minutos):
+   - Progressão do conteúdo em 2 blocos (do conceito concreto para a aplicação prática);
+   - Papel do Professor: Mediação, perguntas reflexivas e pontos críticos de parada;
+   - Papel do Aluno: Atividade prática individual ou em duplas para processar o conceito (sem passividade).
+4. MOMENTO 3 — Síntese & Checagem Formativa (40 minutos):
+   - Atividade de consolidação (ex.: resolução de desafio rápido ou análise comparativa);
+   - Ticket de saída (Exit Ticket): Pergunta rápida de 3 minutos para checar se a turma atingiu o objetivo antes de sair da sala.
+5. RECURSOS E MATERIAIS DO ENCONTRO: Lista do que precisa estar pronto (slides, quadro, links de consulta, software de simulação).</pre>
+            </div>
+
+            <ol class="step-list" start="5">
+                <li><strong>Auditoria de Fontes:</strong> No NotebookLM, clique nas citações numéricas <code>[1]</code> para verificar se os trechos no PDF conferem com o plano. No Copilot, confira se as competências batem com a ementa.</li>
+                <li><strong>Refinamento Opcional (Andaimes Cognitivos):</strong> Se a atividade do Momento 2 for muito abstrata para o perfil da turma, envie na mesma conversa:</li>
             </ol>
 
             <div class="prompt-container">
@@ -342,7 +373,7 @@ CLÁUSULA DE ANCORAGEM ESTRITA: Responda utilizando exclusivamente as informaç�
                     <button class="btn-copy" onclick="copyPrompt('prompt-lab1-refinamento')">📋 Copiar Prompt</button>
                 </div>
                 <pre id="prompt-lab1-refinamento" class="prompt-code">A estrutura está excelente, mas muitos estudantes desta disciplina ingressam com lacunas em [INSERIR CONCEITO BÁSICO]. 
-Reajuste o Momento 2 propondo uma estratégia de transição gradual (andaime cognitivo) para que eles assimilem o conceito central sem frustração.</pre>
+Reajuste o Momento 2 propondo uma estratégia de transição gradual (andaime conceitual) para que eles assimilem o conceito central sem frustração.</pre>
             </div>
         </section>
 
