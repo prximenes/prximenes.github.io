@@ -244,6 +244,7 @@
             <a href="#lab1">🧪 Lab 1: Planejamento</a>
             <a href="#lab2">🧪 Lab 2: Materiais</a>
             <a href="#lab3">🧪 Lab 3: Dinâmicas</a>
+            <a href="#artefatos">🎨 Ementas, Cronogramas & Gamma</a>
             <a href="#ferramentas">🛠️ Ferramentas</a>
         </nav>
 
@@ -487,6 +488,88 @@ Elabore um GUIA DE CONDUÇÃO DOCENTE MINUTO A MINUTO contendo:
 3. MEDIAÇÃO DA DIVERSIDADE: 1 intervenção prática para destravar o grupo calado e 1 intervenção para moderar o aluno dominador.
 4. SÍNTESE DE FECHAMENTO: Os 3 pontos teóricos inegociáveis que o professor deve registrar no quadro nos últimos 10 minutos da aula.</pre>
                 </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: ARTEFATOS ESTRUTURANTES & GAMMA APP -->
+        <section id="artefatos" class="card">
+            <div class="card-header">
+                <h2 class="card-title">🎨 Criação de Artefatos Estruturantes & Slides com Gamma</h2>
+                <span class="badge">Manual de Autoria</span>
+            </div>
+            <p>Modelos de prompts universais para estruturar o semestre inteiro (do plano de ensino ao cronograma aula a aula) e transformar textos acadêmicos em apresentações visuais prontas no <strong>Gamma App</strong>:</p>
+
+            <h3 style="color: var(--unicap-primary); font-size: 1.15rem; margin: 1.5rem 0 0.5rem 0;">1. Criação ou Reformulação Completa de Ementa e Plano de Ensino</h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Utilize para criar ou atualizar o Plano de Ensino institucional com base nas DCNs do MEC e Taxonomia de Bloom:</p>
+            
+            <div class="prompt-container">
+                <div class="prompt-header">
+                    <span>PROMPT 6.1: PLANO DE ENSINO E EMENTA INSTITUCIONAL</span>
+                    <button class="btn-copy" onclick="copyPrompt('prompt-ementa')">📋 Copiar Prompt</button>
+                </div>
+                <pre id="prompt-ementa" class="prompt-code">Atue como especialista em regulação do Ensino Superior e design curricular universitário.
+Preciso estruturar o Plano de Ensino completo da disciplina [INSERIR SUA DISCIPLINA], com carga horária de [CARGA HORÁRIA: ex.: 60h (40h teóricas / 20h práticas)] para o curso de [INSERIR CURSO].
+
+Com base nas Diretrizes Curriculares Nacionais (DCNs) do MEC e nas fontes anexadas, elabore:
+1. EMENTA FORMAL: Texto corrido normatizado sintetizando o escopo da disciplina;
+2. COMPETÊNCIAS GERAIS E ESPECÍFICAS: 2 competências gerais e 3 competências específicas articuladas com o perfil profissional do egresso;
+3. OBJETIVOS DE APRENDIZAGEM: 1 objetivo geral e 3 objetivos específicos alinhados à Taxonomia de Bloom Revisada (níveis: Analisar, Aplicar, Avaliar);
+4. CONTEÚDO PROGRAMÁTICO MODULAR: Divisão em 4 módulos temáticos com subtópicos detalhados;
+5. METODOLOGIA E AVALIAÇÃO: Metodologias ativas recomendadas e fórmula explícita para cálculo da Média Semestral (provas + práticas laboratoriais);
+6. BIBLIOGRAFIA RECOMENDADA: 3 títulos básicos e 2 complementares no padrão ABNT.</pre>
+            </div>
+
+            <h3 style="color: var(--unicap-primary); font-size: 1.15rem; margin: 1.75rem 0 0.5rem 0;">2. Cronograma Semestral Semana a Semana (18 Semanas)</h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Gera a tabela completa do semestre distribuindo aulas teóricas, laboratórios, leituras e marcos de avaliação:</p>
+            
+            <div class="prompt-container">
+                <div class="prompt-header">
+                    <span>PROMPT 6.2: CRONOGRAMA SEMANAL DETALHADO</span>
+                    <button class="btn-copy" onclick="copyPrompt('prompt-cronograma')">📋 Copiar Prompt</button>
+                </div>
+                <pre id="prompt-cronograma" class="prompt-code">Atue como coordenador pedagógico universitário.
+Com base na ementa da disciplina [INSERIR SUA DISCIPLINA], elabore um CRONOGRAMA SEMESTRAL DETALHADO de 18 semanas letivas (aulas de [DURAÇÃO: ex.: 2h ou 4h semanais]).
+
+Gere uma tabela completa contendo as colunas:
+- Semana (01 a 18);
+- Módulo Temático;
+- Tópico da Aula Teórica;
+- Atividade Prática / Laboratório;
+- Leitura Prévia Recomendada;
+- Instrumento de Avaliação / Marco (indique AP1 na semana 8, AP2 na semana 15, Entrega de Projeto na semana 17 e Exame Final na semana 18).
+Regra: Garanta progressão pedagógica, intercalando aulas expositivas dialogadas com práticas de bancada.</pre>
+            </div>
+
+            <h3 style="color: var(--unicap-primary); font-size: 1.15rem; margin: 1.75rem 0 0.5rem 0;">3. Roteiro de Slides Estruturado para o Gamma App</h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Gera o texto otimizado com a sintaxe ideal para a IA do Gamma App interpretar e diagramar slides perfeitos:</p>
+            
+            <div class="prompt-container">
+                <div class="prompt-header">
+                    <span>PROMPT 6.3: ROTEIRO FORMATADO PARA O GAMMA APP</span>
+                    <button class="btn-copy" onclick="copyPrompt('prompt-roteiro-gamma')">📋 Copiar Prompt</button>
+                </div>
+                <pre id="prompt-roteiro-gamma" class="prompt-code">Atue como consultor de comunicação visual e apresentações pedagógicas universitárias.
+Com base no texto/artigo em anexo [PDF ANEXADO] sobre o tema [INSERIR TEMA], elabore o roteiro de uma apresentação de 5 slides estruturado ESPECIFICAMENTE para ser processado pela ferramenta Gamma App (gamma.app).
+
+Para cada um dos 5 slides, forneça rigorosamente:
+CARD [Número do Slide]: [TÍTULO PROVOCATIVO EM CAIXA ALTA]
+- CONTEÚDO VISUAL (Exatamente 3 tópicos curtos e objetivos em alto nível);
+- ELEMENTO GRÁFICO RECOMENDADO: (Descreva o tipo de ícone, gráfico ou diagrama visual ideal para ilustrar este slide);
+- FALA DO PROFESSOR (Storytelling & Analogia do Cotidiano): (Um parágrafo conciso explicando o conceito abstrato com uma comparação do dia a dia).
+
+RESTRIÇÃO: Formate em texto limpo com marcadores, sem blocos de texto corrido nos tópicos, para facilitar a leitura e geração automática pelo Gamma.</pre>
+            </div>
+
+            <div style="background: #fdf2f4; border: 1px solid #fecdd3; border-radius: 8px; padding: 1.25rem; margin-top: 1.5rem;">
+                <h4 style="color: var(--unicap-primary); margin-bottom: 0.5rem;">🚀 Passo a Passo no Gamma App: Do Roteiro aos Slides Prontos</h4>
+                <ol style="padding-left: 1.25rem; font-size: 0.9rem; line-height: 1.7;">
+                    <li><strong>Gere o Roteiro com a IA:</strong> Execute o Prompt 6.3 acima anexando seu PDF no NotebookLM ou Copilot e copie a resposta.</li>
+                    <li><strong>Acesse o Gamma:</strong> Abra <a href="https://gamma.app" target="_blank" style="font-weight: 700; color: var(--unicap-primary);">gamma.app</a> e entre com sua conta gratuita.</li>
+                    <li><strong>Criar com IA:</strong> Clique no botão <strong>"Novo com IA"</strong> (<em>New with AI</em>) &gt; <strong>"Colar texto"</strong> (<em>Paste in text</em>).</li>
+                    <li><strong>Cole e Configure:</strong> Cole o roteiro gerado, selecione o formato <strong>"Apresentação"</strong> (5 slides) e confirme a estrutura.</li>
+                    <li><strong>Escolha o Tema:</strong> Selecione um estilo visual profissional (Dark, Minimalist ou tons sóbrios).</li>
+                    <li><strong>Gere e Exporte:</strong> Clique em <strong>"Gerar"</strong>. Em cerca de 30 segundos sua apresentação estará pronta! Você pode exportar diretamente para <strong>PowerPoint (.pptx)</strong> ou <strong>PDF</strong> no botão de compartilhamento.</li>
+                </ol>
             </div>
         </section>
 
