@@ -213,6 +213,37 @@ body.theme-light .profile-info-item {
     transform: translateX(3px);
 }
 
+.sidebar-link-btn-secondary {
+    text-align: center;
+    justify-content: center;
+    font-size: 13px;
+    padding: 8px 12px;
+}
+
+body.theme-dark .sidebar-link-btn.sidebar-link-btn-secondary {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #f1f5f9 !important;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+body.theme-light .sidebar-link-btn.sidebar-link-btn-secondary {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #1e293b !important;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+body.theme-dark .sidebar-link-btn.sidebar-link-btn-secondary:hover {
+    background-color: rgba(229, 57, 53, 0.2);
+    border-color: rgba(229, 57, 53, 0.5);
+    color: #ef5350 !important;
+}
+
+body.theme-light .sidebar-link-btn.sidebar-link-btn-secondary:hover {
+    background-color: rgba(229, 57, 53, 0.1);
+    border-color: rgba(229, 57, 53, 0.4);
+    color: #e53935 !important;
+}
+
 .topics-section h4 {
     font-size: 13px;
     text-transform: uppercase;
