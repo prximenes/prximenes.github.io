@@ -47,6 +47,20 @@ document.addEventListener('DOMContentLoaded', () => {
   // Carregar Documento PDF
   loadPDF();
 
+  // Obter página a partir da URL (#16 ou ?page=16)
+  function getPageFromUrl() {
+    const hash = window.location.hash.replace('#', '').trim();
+    if (hash && !isNaN(parseInt(hash, 10))) {
+      return parseInt(hash, 10);
+    }
+    const params = new URLSearchParams(window.location.search);
+    const p = params.get('page') || params.get('p');
+    if (p && !isNaN(parseInt(p, 10))) {
+      return parseInt(p, 10);
+    }
+    return 1;
+  }
+
   function loadPDF() {
     if (!window.pdfjsLib) {
       showFallback('Biblioteca PDF.js não encontrada.');
@@ -64,6 +78,11 @@ document.addEventListener('DOMContentLoaded', () => {
       totalPages = pdf.numPages;
       pageCountSpan.textContent = totalPages;
       pageNumInput.max = totalPages;
+
+      const requestedPage = getPageFromUrl();
+      if (requestedPage >= 1 && requestedPage <= totalPages) {
+        currentPage = requestedPage;
+      }
 
       hideLoading();
       renderPage(currentPage);
@@ -168,6 +187,11 @@ document.addEventListener('DOMContentLoaded', () => {
     sidePrevBtn.disabled = (currentPage <= 1);
     nextBtn.disabled = (currentPage >= totalPages);
     sideNextBtn.disabled = (currentPage >= totalPages);
+
+    // Sincronizar URL hash com slide atual (#16)
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState(null, '', '#' + currentPage);
+    }
 
     // Banner Interativo do Slide 16 (Polinomial vs Exponencial)
     const slide16Banner = document.getElementById('slide16-interactive-banner');
@@ -293,6 +317,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   }, { passive: true });
+
+  // Navegação direta por hash na URL
+  window.addEventListener('hashchange', () => {
+    const pageFromHash = getPageFromUrl();
+    if (pageFromHash >= 1 && pageFromHash <= totalPages && pageFromHash !== currentPage) {
+      goToPage(pageFromHash);
+    }
+  });
 
   // Redimensionamento de Janela
   let resizeTimer = null;
