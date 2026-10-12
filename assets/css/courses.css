@@ -330,6 +330,19 @@ body.theme-light .material-description {
     align-items: center;
 }
 
+.material-btn-interactive {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
+}
+
+.material-btn-interactive:hover {
+    background: linear-gradient(135deg, #34d399 0%, #10b981 100%) !important;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.45);
+    transform: scale(1.02);
+}
+
 .material-btn-secondary {
     background-color: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.15);

@@ -168,6 +168,12 @@ document.addEventListener('DOMContentLoaded', () => {
     sidePrevBtn.disabled = (currentPage <= 1);
     nextBtn.disabled = (currentPage >= totalPages);
     sideNextBtn.disabled = (currentPage >= totalPages);
+
+    // Banner Interativo do Slide 16 (Polinomial vs Exponencial)
+    const slide16Banner = document.getElementById('slide16-interactive-banner');
+    if (slide16Banner) {
+      slide16Banner.style.display = (currentPage === 16) ? 'block' : 'none';
+    }
   }
 
   // Controles de Zoom

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Polinomial vs. Exponencial — Simulador Interativo • Aula 7 (Slide 16)</title>
+  <meta name="description" content="Simulador gráfico interativo do Slide 16 da Aula 7 de Análise de Algoritmos (UNICAP): intuição visual do crescimento de funções polinomiais (n², n³) vs exponenciais (2ⁿ).">
+  
+  <link rel="icon" type="image/svg+xml" href="../../../assets/images/favicon.svg">
+  <link rel="shortcut icon" href="../../../favicon.ico">
+
+  <!-- Estilos Personalizados Warsaw Beamer -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       CABEÇALHO FIXO WARSAW (DUPLA BARRA)
+       ============================================================ -->
+  <header id="warsaw-header">
+    <div class="warsaw-section-bar">
+      <div class="warsaw-left-group">
+        <a href="../aula7-intro-problemas-p/index.html" class="warsaw-nav-back" title="Voltar para a apresentação de slides da Aula 7">
+          ← Voltar para Slide 16
+        </a>
+        <a href="../../../courses.html" class="warsaw-nav-back" title="Voltar para a página de Cursos">
+          Cursos
+        </a>
+        <span class="warsaw-tag">UNICAP</span>
+        <span class="warsaw-header-title">Análise de Algoritmos — Polinomial vs. Exponencial (Slide 16)</span>
+      </div>
+
+      <!-- Ferramentas Centrais / Direitas -->
+      <div class="warsaw-tools">
+        <a href="../aula7-intro-problemas-p/aula7.pdf" download class="warsaw-tool-btn" title="Baixar PDF Original da Aula 7">
+          <span>📄</span> <span>PDF Aula 7</span>
+        </a>
+
+        <button id="fullscreen-btn" class="warsaw-tool-btn" title="Alternar Modo Tela Cheia (F)">
+          <span>⛶</span> <span>Tela Cheia</span>
+        </button>
+
+        <button id="theme-toggle-btn" class="warsaw-tool-btn" title="Alternar Tema Claro/Escuro">
+          <span>🌙</span> <span>Escuro</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Segunda Barra (Subseção) -->
+    <div class="warsaw-subsection-bar">
+      <span>› Aula 7: Introdução a Problemas P • Intuição Visual do Crescimento de Funções</span>
+      <span style="opacity: 0.85;">Prof. Pedro Ximenes • Semestre Letivo 2026.2</span>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       CONTAINER DA APLICAÇÃO
+       ============================================================ -->
+  <div class="app-container">
+
+    <!-- Banner Introdutório -->
+    <div class="intro-banner">
+      <div class="intro-text">
+        <h1>
+          <span>📈</span> Polinomial vs. Exponencial — Intuição Visual
+        </h1>
+        <p>
+          Demonstração interativa do gráfico do <strong>Slide 16 da Aula 7</strong>. Observe como, para entradas pequenas ($n \le 9$), polinômios de grau alto como $n^3$ podem parecer maiores, mas a partir do limiar $n = 10$, a curva exponencial $2^n$ explode vertiginosamente e deixa qualquer polinômio para trás.
+        </p>
+      </div>
+    </div>
+
+    <!-- Grid do Gráfico + Painel Lateral -->
+    <div class="workspace-grid">
+
+      <!-- Coluna Principal: Gráfico Canvas -->
+      <div class="graph-card">
+        
+        <!-- Controles Superiores do Gráfico -->
+        <div class="graph-top-controls">
+          <!-- Alternador de Escala -->
+          <div class="scale-toggle-group">
+            <button class="scale-btn active" data-scale="linear" title="Escala linear direta do Slide 16">
+              Escala Linear (Slide 16)
+            </button>
+            <button class="scale-btn" data-scale="log" title="Escala Logarítmica base 10: mostra o comportamento assintótico profundo">
+              Escala Logarítmica (log₁₀)
+            </button>
+          </div>
+
+          <!-- Filtro de Curvas Ativas -->
+          <div class="curve-toggles">
+            <span style="font-size: 11.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Curvas:</span>
+            <div class="curve-chip active" data-fn="exp" title="2ⁿ - Curva Exponencial Vermelha">
+              <span class="curve-dot" style="background: var(--c-exp);"></span>
+              <span>2ⁿ (Exponencial)</span>
+            </div>
+            <div class="curve-chip active" data-fn="cube" title="n³ - Curva Cúbica Verde">
+              <span class="curve-dot" style="background: var(--c-cube);"></span>
+              <span>n³ (Polinomial)</span>
+            </div>
+            <div class="curve-chip active" data-fn="quad" title="n² - Curva Quadrática Azul">
+              <span class="curve-dot" style="background: var(--c-quad);"></span>
+              <span>n² (Polinomial)</span>
+            </div>
+            <div class="curve-chip" data-fn="lin" title="n - Curva Linear Roxa">
+              <span class="curve-dot" style="background: var(--c-lin);"></span>
+              <span>n (Linear)</span>
+            </div>
+            <div class="curve-chip" data-fn="quartic" title="n⁴ - Curva Quártica Âmbar">
+              <span class="curve-dot" style="background: var(--c-quartic);"></span>
+              <span>n⁴ (Polinomial)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas Interativo -->
+        <div class="canvas-wrapper">
+          <canvas id="graphCanvas"></canvas>
+          <div id="canvasTooltip"></div>
+        </div>
+
+        <!-- Barra de Controle do Parâmetro n -->
+        <div class="n-control-bar">
+          <div class="n-label-group">
+            <span class="n-title">Tamanho da Entrada:</span>
+            <span class="n-val" id="nValDisplay">10</span>
+          </div>
+
+          <div class="slider-container">
+            <input type="range" id="nSlider" min="1" max="35" value="10" step="1" title="Ajuste o tamanho de n">
+          </div>
+
+          <div class="n-actions">
+            <button class="step-btn" data-delta="-1" title="Decrementar n em 1">-1</button>
+            <button class="step-btn" data-delta="1" title="Incrementar n em 1">+1</button>
+            <button class="step-btn" data-delta="-5" title="Decrementar n em 5">-5</button>
+            <button class="step-btn" data-delta="5" title="Incrementar n em 5">+5</button>
+            <button class="play-btn" id="playBtn" title="Animar crescimento progressivo de n">
+              <span>▶</span> <span>Animar</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Coluna Lateral: Telemetria & Cenários de Aula -->
+      <div class="sidebar-panel">
+
+        <!-- Card: Valores em Tempo Real -->
+        <div class="telemetry-card">
+          <div class="panel-title">
+            <span>⚡</span> Telemetria em Tempo Real (n = <span id="telemetryN">10</span>)
+          </div>
+
+          <div class="val-items-grid">
+            <!-- 2^n -->
+            <div class="val-item exp">
+              <div class="val-meta">
+                <span class="val-fn-name" style="color: var(--c-exp);">2ⁿ (Exponencial)</span>
+                <span class="val-fn-desc">Complexidade Exponencial</span>
+              </div>
+              <div>
+                <div class="val-number" id="val-exp-num">1.024</div>
+                <span class="val-time-sub" id="val-exp-time">1.02 µs</span>
+              </div>
+            </div>
+
+            <!-- n^3 -->
+            <div class="val-item cube">
+              <div class="val-meta">
+                <span class="val-fn-name" style="color: var(--c-cube);">n³ (Polinomial)</span>
+                <span class="val-fn-desc">Complexidade Cúbica</span>
+              </div>
+              <div>
+                <div class="val-number" id="val-cube-num">1.000</div>
+                <span class="val-time-sub" id="val-cube-time">1.00 µs</span>
+              </div>
+            </div>
+
+            <!-- n^2 -->
+            <div class="val-item quad">
+              <div class="val-meta">
+                <span class="val-fn-name" style="color: var(--c-quad);">n² (Polinomial)</span>
+                <span class="val-fn-desc">Complexidade Quadrática</span>
+              </div>
+              <div>
+                <div class="val-number" id="val-quad-num">100</div>
+                <span class="val-time-sub" id="val-quad-time">0.10 µs</span>
+              </div>
+            </div>
+
+            <!-- n (Linear - se ativado) -->
+            <div class="val-item lin">
+              <div class="val-meta">
+                <span class="val-fn-name" style="color: var(--c-lin);">n (Linear)</span>
+                <span class="val-fn-desc">Complexidade Linear</span>
+              </div>
+              <div>
+                <div class="val-number" id="val-lin-num">10</div>
+                <span class="val-time-sub" id="val-lin-time">0.01 µs</span>
+              </div>
+            </div>
+
+            <!-- n^4 (se ativado) -->
+            <div class="val-item quartic">
+              <div class="val-meta">
+                <span class="val-fn-name" style="color: var(--c-quartic);">n⁴ (Polinomial)</span>
+                <span class="val-fn-desc">Complexidade Quártica</span>
+              </div>
+              <div>
+                <div class="val-number" id="val-quartic-num">10.000</div>
+                <span class="val-time-sub" id="val-quartic-time">10.00 µs</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Destaque de Razão / Comparação -->
+          <div class="ratio-callout" id="ratioDisplay">
+            Para <strong>n = 10</strong>, <strong>2ⁿ (1.024)</strong> ultrapassa <strong>n³ (1.000)</strong> pela primeira vez!
+          </div>
+        </div>
+
+        <!-- Card: Cenários de Aula Prontos para Demonstrar -->
+        <div class="scenarios-card">
+          <div class="panel-title">
+            <span>🎯</span> Pontos Críticos para Mostrar em Aula
+          </div>
+
+          <div class="scenario-buttons">
+            <button class="scenario-btn" data-n="3" data-scale="linear" title="Mostrar para n=3">
+              <span class="scenario-icon">🟢</span>
+              <div class="scenario-content">
+                <div class="scenario-title">1. A Ilusão Inicial (n = 3)</div>
+                <div class="scenario-desc">Para entradas muito pequenas, n³ (27) é maior que 2ⁿ (8). O polinômio parece pior.</div>
+              </div>
+            </button>
+
+            <button class="scenario-btn" data-n="10" data-scale="linear" title="Mostrar para n=10">
+              <span class="scenario-icon">🟡</span>
+              <div class="scenario-content">
+                <div class="scenario-title">2. O Ponto de Cruzamento n₀ (n = 10)</div>
+                <div class="scenario-desc">2¹⁰ = 1.024 ultrapassa 10³ = 1.000. A partir daqui, a exponencial nunca mais fica abaixo.</div>
+              </div>
+            </button>
+
+            <button class="scenario-btn" data-n="20" data-scale="linear" title="Mostrar para n=20">
+              <span class="scenario-icon">🟠</span>
+              <div class="scenario-content">
+                <div class="scenario-title">3. O Abismo se Abre (n = 20)</div>
+                <div class="scenario-desc">2²⁰ = 1.048.576 (1 milhão) vs 20³ = 8.000 (131 vezes mais operações!).</div>
+              </div>
+            </button>
+
+            <button class="scenario-btn" data-n="30" data-scale="linear" title="Mostrar para n=30">
+              <span class="scenario-icon">🔴</span>
+              <div class="scenario-content">
+                <div class="scenario-title">4. A Barreira de 1 Segundo (n = 30)</div>
+                <div class="scenario-desc">2³⁰ ≈ 1.07 bilhão de operações (1 segundo em 1 GHz) vs 30² = 900 (menos de 1 µs!).</div>
+              </div>
+            </button>
+
+            <button class="scenario-btn" data-n="35" data-scale="log" title="Mostrar para n=35 em escala logarítmica">
+              <span class="scenario-icon">🌌</span>
+              <div class="scenario-content">
+                <div class="scenario-title">5. Explosão Assintótica (Escala Log)</div>
+                <div class="scenario-desc">Muda para escala log₁₀: os polinômios viram curvas suaves, enquanto 2ⁿ sobe como reta íngreme.</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Seção Inferior: Tabela Comparativa de CPU e Reflexão Teórica -->
+    <div class="bottom-grid">
+
+      <!-- Tabela do Teste da Realidade -->
+      <div class="pedagogy-card">
+        <h2>
+          <span>⏱️</span> O Teste da Realidade (CPU de 1 GHz = 10⁹ operações/segundo)
+        </h2>
+        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 10px;">
+          Comparação concreta do tempo necessário para resolver problemas com diferentes funções de complexidade:
+        </p>
+
+        <table class="reality-table">
+          <thead>
+            <tr>
+              <th>Tamanho (n)</th>
+              <th>Linear: n</th>
+              <th>Quadrático: n²</th>
+              <th>Cúbico: n³</th>
+              <th style="color: var(--c-exp);">Exponencial: 2ⁿ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="table-code">n = 10</td>
+              <td class="table-time-fast">10 ns</td>
+              <td class="table-time-fast">100 ns</td>
+              <td class="table-time-fast">1 µs</td>
+              <td class="table-time-fast">1.02 µs</td>
+            </tr>
+            <tr>
+              <td class="table-code">n = 20</td>
+              <td class="table-time-fast">20 ns</td>
+              <td class="table-time-fast">400 ns</td>
+              <td class="table-time-fast">8 µs</td>
+              <td class="table-time-fast">1.05 ms</td>
+            </tr>
+            <tr>
+              <td class="table-code">n = 30</td>
+              <td class="table-time-fast">30 ns</td>
+              <td class="table-time-fast">900 ns</td>
+              <td class="table-time-fast">27 µs</td>
+              <td style="color: #f59e0b; font-weight: 700;">1.07 segundos</td>
+            </tr>
+            <tr>
+              <td class="table-code">n = 40</td>
+              <td class="table-time-fast">40 ns</td>
+              <td class="table-time-fast">1.6 µs</td>
+              <td class="table-time-fast">64 µs</td>
+              <td class="table-time-danger">18.3 minutos</td>
+            </tr>
+            <tr>
+              <td class="table-code">n = 50</td>
+              <td class="table-time-fast">50 ns</td>
+              <td class="table-time-fast">2.5 µs</td>
+              <td class="table-time-fast">125 µs</td>
+              <td class="table-time-danger">13.0 dias ⚠️</td>
+            </tr>
+            <tr>
+              <td class="table-code">n = 60</td>
+              <td class="table-time-fast">60 ns</td>
+              <td class="table-time-fast">3.6 µs</td>
+              <td class="table-time-fast">216 µs</td>
+              <td class="table-time-danger">36.5 anos 🛑</td>
+            </tr>
+            <tr>
+              <td class="table-code">n = 100</td>
+              <td class="table-time-fast">100 ns</td>
+              <td class="table-time-fast">10 µs</td>
+              <td class="table-time-fast">1 ms</td>
+              <td class="table-time-danger">4×10¹³ anos (Idade Universo!)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Conclusão e Resumo Pedagógico da Aula 7 -->
+      <div class="pedagogy-card">
+        <h2>
+          <span>💡</span> Lições Fundamentais da Aula 7 (Slide 16)
+        </h2>
+
+        <div class="insights-list">
+          <div class="insight-item">
+            <span class="insight-icon">1.</span>
+            <div>
+              <strong>Polinômios são Tratáveis (Tese de Cobham):</strong> Algoritmos polinomiais ($O(n^k)$) escalam de forma gerenciável. Dobrar o poder do processador permite resolver instâncias proporcionalmente maiores.
+            </div>
+          </div>
+
+          <div class="insight-item">
+            <span class="insight-icon">2.</span>
+            <div>
+              <strong>Exponenciais são Intratáveis na Prática:</strong> Em algoritmos de força bruta ($O(2^n)$), adicionar apenas <strong>1 elemento</strong> à entrada ($n \to n + 1$) <strong>dobra</strong> o tempo total de execução. Dobrar a velocidade da CPU adiciona apenas uma constante aditiva ao $n$ tratável.
+            </div>
+          </div>
+
+          <div class="insight-item">
+            <span class="insight-icon">3.</span>
+            <div>
+              <strong>O Papel do Limiar $n_0$:</strong> Não se iluda com entradas pequenas ($n \le 5$). A análise assintótica se importa com o comportamento quando $n \to \infty$. A partir de $n = 10$, qualquer exponencial supera qualquer polinômio cúbico e cresce infinitamente mais rápido.
+            </div>
+          </div>
+
+          <div class="insight-item">
+            <span class="insight-icon">4.</span>
+            <div>
+              <strong>Definição da Classe P:</strong> A <strong>Classe P</strong> é definida rigorosamente como a classe de todos os problemas de decisão que admitem um algoritmo com tempo de execução polinomial determinístico no pior caso ($O(n^k)$ para alguma constante $k$).
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ============================================================
+       RODAPÉ FIXO WARSAW
+       ============================================================ -->
+  <footer id="warsaw-footline">
+    <div>Prof. Pedro Ximenes • UNICAP — Análise de Algoritmos</div>
+    <div>Aula 7: Introdução a Problemas P • Slide 16 Interativo</div>
+    <div>
+      <span>Navegar: <kbd>◄</kbd> <kbd>►</kbd></span>
+      <span>Animar: <kbd>Espaço</kbd></span>
+      <span>Escala: <kbd>L</kbd></span>
+    </div>
+  </footer>
+
+  <!-- Script do Simulador -->
+  <script src="js/simulator.js"></script>
+</body>
+</html>
