@@ -245,7 +245,7 @@
             <a href="#lab1">🧪 Lab 1: Planejamento</a>
             <a href="#lab2">🧪 Lab 2: Materiais</a>
             <a href="#lab3">🧪 Lab 3: Dinâmicas</a>
-            <a href="#artefatos">🎨 Ementas, Cronogramas & Gamma</a>
+            <a href="#aula2">🎓 Aula 2: Plano &amp; Calendário 2026</a>
             <a href="#ferramentas">🛠️ Ferramentas</a>
         </nav>
 
@@ -255,23 +255,33 @@
                 <h2 class="card-title">📦 Materiais de Apoio e Slides</h2>
                 <span class="badge">Downloads Oficiais</span>
             </div>
-            <p>Baixe os slides da apresentação, o cardápio completo de prompts e os arquivos acadêmicos para as práticas caso não tenha trazido um documento próprio:</p>
+            <p>Baixe os slides da apresentação, o novo tutorial da Aula 2, o cardápio completo de prompts e os arquivos acadêmicos para as práticas caso não tenha trazido um documento próprio:</p>
             
             <div class="download-grid">
                 <div class="download-item">
                     <h4>Slides da Apresentação</h4>
-                    <p>Apresentação visual projetada durante a oficina.</p>
+                    <p>Apresentação visual completa das Aulas 1 e 2.</p>
                     <a href="workshop_ia_docente.pdf" target="_blank" class="btn-download">📥 Baixar Slides (PDF)</a>
                 </div>
                 <div class="download-item">
                     <h4>Cardápio de Prompts</h4>
-                    <p>Manual definitivo com prompts para o semestre inteiro.</p>
+                    <p>Repertório definitivo com prompts nos 4 pilares para o semestre.</p>
                     <a href="cardapio_prompts_universais.pdf" target="_blank" class="btn-download">📥 Baixar Cardápio (PDF)</a>
                 </div>
+                <div class="download-item" style="border: 2px solid var(--unicap-primary); background: #fdf2f4;">
+                    <h4 style="color: var(--unicap-primary);">Novo: Tutorial Plano &amp; Calendário</h4>
+                    <p>Passo a passo completo da Ementa ao Cronograma com datas reais de 2026.</p>
+                    <a href="tutorial_plano_ensino.pdf" target="_blank" class="btn-download">📥 Baixar Tutorial (PDF)</a>
+                </div>
                 <div class="download-item">
-                    <h4>Ementa Exemplo (Lab 1)</h4>
-                    <p>Plano de ensino formal de Redes de Computadores.</p>
-                    <a href="ementa_redes_computadores.pdf" target="_blank" class="btn-download">📥 Baixar Ementa (PDF)</a>
+                    <h4>Ementa Oficial UNICAP (INF1936)</h4>
+                    <p>Ementa de Redes de Computadores para a prática da Aula 2.</p>
+                    <a href="INF1936_REDES_DE_COMPUTADORES_Ementa.pdf" target="_blank" class="btn-download">📥 Baixar Ementa (PDF)</a>
+                </div>
+                <div class="download-item">
+                    <h4>Calendário Oficial UNICAP 2026</h4>
+                    <p>Portaria 163/2025 com datas reais, recessos e feriados para cruzar com o plano.</p>
+                    <a href="PORTARIA_163_2025_Calendario_2026.pdf" target="_blank" class="btn-download">📥 Baixar Calendário (PDF)</a>
                 </div>
                 <div class="download-item">
                     <h4>Artigo de Leitura (Lab 2)</h4>
@@ -299,19 +309,17 @@
                     <span>PROMPT 0.1: GERADOR AUTOMÁTICO DE PROMPT (MODO DIRETO)</span>
                     <button class="btn-copy" onclick="copyPrompt('prompt-meta-direto')">📋 Copiar Prompt</button>
                 </div>
-                <pre id="prompt-meta-direto" class="prompt-code">Atue como especialista sênior em engenharia de prompts e design instrucional no Ensino Superior.
-Preciso que você escreva o PROMPT PERFEITO para eu enviar a uma IA generativa para me auxiliar na seguinte necessidade da minha disciplina:
+                <pre id="prompt-meta-direto" class="prompt-code">[PAPEL]: Atue como especialista sênior em engenharia de prompts e design instrucional no Ensino Superior.
 
-"[DESCREVA AQUI O QUE VOCÊ QUER FAZER EM LINGUAGEM NATURAL E INFORMAL, ex.: Quero criar um estudo de caso desafiador de 40 minutos para alunos de Direito sobre contratos eletrônicos, onde eles precisem identificar cláusulas abusivas sem que a IA dê as respostas prontas]".
+[CONTEXTO]: Preciso criar um prompt de alta qualidade para a seguinte necessidade da minha disciplina: "[DESCREVA O QUE VOCÊ QUER FAZER EM LINGUAGEM NATURAL, ex.: Criar um estudo de caso desafiador de 40 minutos sobre contratos eletrônicos para o 3º período de Direito]".
 
-Com base nessa minha necessidade, construa o prompt definitivo estruturado rigorosamente com:
-1. PAPEL/PERSONA: Quem a IA deve encarnar com profundidade;
-2. CONTEXTO: O nível acadêmico e as características dos estudantes universitários;
-3. TAREFA INSTRUCIONAL: A ação detalhada passo a passo do que deve ser gerado;
-4. FORMATO DO ARTEFATO: A estrutura visual e textual exata da entrega;
-5. RESTRIÇÕES E SALVAGUARDAS: Regras rígidas contra alucinações, obviedades e respostas prontas.
+[TAREFA]: Com base nessa necessidade, escreva o prompt definitivo estruturado rigorosamente nos 4 pilares:
+1. [PAPEL]: Quem a IA deve encarnar com profundidade;
+2. [CONTEXTO]: O nível acadêmico e as características da turma;
+3. [TAREFA]: A ação detalhada passo a passo do que deve ser gerado;
+4. [RESTRIÇÕES]: Regras contra respostas prontas, obviedades e alucinações.
 
-Entregue o prompt final formatado dentro de um bloco de código, com marcadores entre colchetes [ASSIM] nos pontos onde eu possa ajustar variáveis, 100% pronto para eu copiar e executar.</pre>
+[RESTRIÇÕES]: Entregue apenas o prompt final dentro de um bloco de código, com marcadores entre colchetes [ASSIM], 100% pronto para eu copiar e executar.</pre>
             </div>
 
             <div class="prompt-container">
@@ -319,13 +327,16 @@ Entregue o prompt final formatado dentro de um bloco de código, com marcadores 
                     <span>PROMPT 0.2: CONSULTORA PEDAGÓGICA (MODO ENTREVISTA / CO-CRIAÇÃO)</span>
                     <button class="btn-copy" onclick="copyPrompt('prompt-meta-entrevista')">📋 Copiar Prompt</button>
                 </div>
-                <pre id="prompt-meta-entrevista" class="prompt-code">Atue como consultor pedagógico e designer instrucional sênior no Ensino Superior.
-Tenho a intenção de planejar uma experiência de aprendizagem sobre [INSERIR SEU TEMA] para a disciplina de [INSERIR SUA DISCIPLINA] (turma de [INSERIR PERÍODO]), mas estou em dúvida sobre qual formato ou dinâmica funcionará melhor para engajar os estudantes.
+                <pre id="prompt-meta-entrevista" class="prompt-code">[PAPEL]: Atue como consultor pedagógico e designer instrucional sênior no Ensino Superior.
 
-Não me dê a resposta final de imediato. Em vez disso:
+[CONTEXTO]: Planejamento de uma experiência de aprendizagem sobre [INSERIR SEU TEMA] para a disciplina de [INSERIR SUA DISCIPLINA] (turma de [INSERIR PERÍODO]).
+
+[TAREFA]: Não me dê a resposta final de imediato. Em vez disso:
 1. Faça-me exatamente 3 perguntas diagnósticas estratégicas sobre os meus objetivos de aprendizagem, o perfil/dificuldades da turma e o tempo disponível em sala de aula;
 2. Aguarde as minhas respostas;
-3. Com base no que eu responder, formule o PROMPT PERFEITO E OTIMIZADO que eu devo rodar para gerar essa atividade com máxima qualidade acadêmica.</pre>
+3. Com base no que eu responder, formule o PROMPT OTIMIZADO nos 4 pilares que eu devo rodar para gerar essa atividade.
+
+[RESTRIÇÕES]: Máximo de 3 perguntas diretas e objetivas. Não gere a atividade antes de eu responder.</pre>
             </div>
         </section>
 
@@ -353,33 +364,30 @@ Não me dê a resposta final de imediato. Em vez disso:
                     <span>PROMPT 1.1: SEQUÊNCIA DIDÁTICA COMPLETA DA UNIDADE</span>
                     <button class="btn-copy" onclick="copyPrompt('prompt-lab1-sequencia')">📋 Copiar Prompt</button>
                 </div>
-                <pre id="prompt-lab1-sequencia" class="prompt-code">Atue como especialista em design instrucional universitário e metodologias ativas no Ensino Superior.
-Estou na fase de planejamento pré-letivo da disciplina de [INSERIR SUA DISCIPLINA], direcionada a estudantes de [INSERIR PERÍODO OU NÍVEL DA TURMA].
+                <pre id="prompt-lab1-sequencia" class="prompt-code">[PAPEL]: Atue como especialista em design instrucional universitário e metodologias ativas no Ensino Superior.
 
-Com base exclusivamente no documento curricular em anexo, faça um recorte temático na unidade de [INSERIR UNIDADE OU TEMA A PLANEJAR] e elabore uma SEQUÊNCIA DIDÁTICA completa e estruturada, preenchendo rigorosamente os seguintes tópicos:
+[CONTEXTO]: Planejamento pré-letivo da disciplina de [INSERIR SUA DISCIPLINA], direcionada a estudantes de [INSERIR PERÍODO OU NÍVEL DA TURMA], com base exclusivamente no documento curricular em anexo.
 
-Tema: [Tópico central da sequência delimitado a partir do documento, ex.: Módulo III — Camada de Rede e Transição do IPv4 para o IPv6]
-Público: [Quem são os alunos — nível, contexto e conhecimento prévio esperado com base nas disciplinas anteriores da ementa, ex.: Estudantes do 4º período de Ciência da Computação / Sistemas de Informação com base prévia em Sistemas Operacionais e Camada de Aplicação]
-Objetivo geral: [O que o estudante será capaz de realizar autonomamente ao final da sequência — verbo de ação em Bloom + conteúdo + contexto prático, ex.: Projetar planos de endereçamento IPv6 corporativos e diagnosticar falhas de interoperabilidade na transição IPv4/IPv6 em redes empresariais]
-Objetivos específicos: [3 a 5 competências menores em ordem progressiva de complexidade que compõem o objetivo geral, ex.: 1. Contrastar a arquitetura de cabeçalhos IPv4 vs IPv6 de 40 bytes; 2. Calcular planos de sub-redes com prefixos globais /64 e link-local; 3. Capturar e dissecar mensagens ICMPv6 validando processos SLAAC e DAD no Wireshark; 4. Propor estratégias de transição em dupla pilha (Dual-Stack) e mitigação com CGNAT]
-Duração total: [Carga horária total da sequência, ex.: 4 aulas presenciais de 2h / total de 8 horas-relógio]
-Recursos necessários: [Materiais de apoio, tecnologia/softwares, laboratório ou espaço físico, ex.: Laboratório de Informática da Escola ICAM Tech com analisador Wireshark, emulador Cisco Packet Tracer e quadro para cálculo de sub-redes]
-Aula 1 — Diagnóstico e sensibilização: [Atividade de sondagem diagnóstica + engajamento com o problema central do tema, ex.: Sondagem sobre esgotamento de IPs e dilema real de indisponibilidade de serviços sob CGNAT]
-Aulas 2 a N — Desenvolvimento: [Atividades em progressão crescente de complexidade conceitual e prática, ex.: Aula 2 sobre cabeçalhos e eliminação da fragmentação; Aula 3 sobre endereçamento e laboratório prático com Wireshark]
-Avaliação formativa: [Quando e como será feita a checagem de aprendizagem ao longo da sequência com feedback, ex.: Quizzes rápidos de 5 min via AVA e checagem de capturas de pacotes em duplas no laboratório]
-Aula final — Síntese: [Produto final, estudo de caso ou avaliação somativa que evidencia o cumprimento cabal do objetivo geral, ex.: Resolução de estudo de caso de migração com topologia validada no Packet Tracer]
-Critérios de avaliação: [Rubrica ou lista de critérios claros de qualidade que o estudante conhece desde o início da sequência, ex.: Rubrica avaliando correção no cálculo de prefixos, precisão na análise de pacotes e viabilidade da transição]
+[TAREFA]: Faça um recorte temático na unidade de [INSERIR UNIDADE OU TEMA] e elabore uma SEQUÊNCIA DIDÁTICA completa e estruturada:
+1. Tema e Público (nível e conhecimentos prévios esperados);
+2. Objetivo Geral e 3 a 5 Objetivos Específicos (verbos ativos da Taxonomia de Bloom);
+3. Duração total (carga horária) e recursos necessários;
+4. Aula 1: Diagnóstico e sensibilização (sondagem + problema central);
+5. Aulas 2 a N: Desenvolvimento em progressão crescente de complexidade;
+6. Avaliação Formativa contínua ao longo da sequência;
+7. Aula Final: Síntese e integração;
+8. Critérios de Avaliação claros em formato de rubrica.
 
-CLÁUSULA DE ANCORAGEM ESTRITA: Responda utilizando exclusivamente os conceitos, tópicos e bibliografias presentes no documento anexado. Caso algum ponto não conste na fonte, aponte expressamente essa ausência em vez de inventar. Não utilize conhecimentos externos ao material.</pre>
+[RESTRIÇÕES]: Responda utilizando exclusivamente os conceitos, tópicos e bibliografias presentes no documento anexado. Caso algum ponto não conste na fonte, aponte essa ausência em vez de inventar. Proibido usar conhecimentos externos ao material.</pre>
             </div>
 
             <div class="example-box">
-                <strong>💡 Exemplo preenchido com a ementa de demonstração (UNICAP - <code>ementa_redes_computadores.pdf</code>):</strong><br>
-                • <code>[INSERIR SUA DISCIPLINA]</code>: Redes de Computadores I<br>
+                <strong>💡 Exemplo preenchido com a ementa de demonstração (UNICAP - <code>INF1936_REDES_DE_COMPUTADORES_Ementa.pdf</code>):</strong><br>
+                • <code>[INSERIR SUA DISCIPLINA]</code>: Redes de Computadores I (INF1936)<br>
                 • <code>[INSERIR PERÍODO OU NÍVEL DA TURMA]</code>: 4º período do Bacharelado em Ciência da Computação / Sistemas de Informação<br>
-                • <code>[INSERIR UNIDADE OU TEMA A PLANEJAR]</code>: Módulo III: A Camada de Rede e a Transição do IPv4 para o IPv6<br>
+                • <code>[INSERIR UNIDADE OU TEMA]</code>: Módulo III: A Camada de Rede e a Transição do IPv4 para o IPv6<br>
                 • <strong>Objetivo Geral esperado:</strong> <em>"Projetar planos de endereçamento IPv6 corporativos e diagnosticar falhas de transição IPv4/IPv6 em redes empresariais."</em><br>
-                • <strong>Recursos esperados:</strong> <em>Laboratório de Informática da Escola ICAM Tech com Wireshark e Cisco Packet Tracer.</em>
+                • <strong>Recursos esperados:</strong> <em>Laboratório de Informática com Wireshark e Cisco Packet Tracer.</em>
             </div>
 
             <ol class="step-list" start="4">
@@ -391,21 +399,18 @@ CLÁUSULA DE ANCORAGEM ESTRITA: Responda utilizando exclusivamente os conceitos,
                     <span>PROMPT 1.2: DETALHAMENTO DE UM PLANO DE AULA (ENCADEAMENTO)</span>
                     <button class="btn-copy" onclick="copyPrompt('prompt-lab1-plano')">📋 Copiar Prompt</button>
                 </div>
-                <pre id="prompt-lab1-plano" class="prompt-code">Excelente. Agora vamos dar o passo operacional seguinte nesta mesma conversa (encadeamento pedagógico).
-Com base na Sequência Didática que você acabou de estruturar, selecione a [INSERIR QUAL AULA DA SEQUÊNCIA, ex.: Aula 2 — Desenvolvimento: Arquitetura de Cabeçalhos e Escassez de Endereços IPv4] e elabore o PLANO DE AULA DETALHADO para este encontro de [CARGA HORÁRIA, ex.: 2 horas (120 minutos)], estruturado estritamente nos seguintes momentos:
+                <pre id="prompt-lab1-plano" class="prompt-code">[PAPEL]: Atue como designer instrucional universitário.
 
-1. DADOS DE IDENTIFICAÇÃO: Aula selecionada, tema da sessão e objetivo de aprendizagem específico do encontro (verbo ativo de Bloom).
-2. MOMENTO 1 — Acolhida & Problematização (20 minutos):
-   - Gancho disparador: Pergunta provocativa ou mini-problema do mundo real para capturar a atenção;
-   - Conexão: Breve resgate da sondagem diagnóstica realizada na Aula 1.
-3. MOMENTO 2 — Aprofundamento Ativo & Andaimes Cognitivos (60 minutos):
-   - Progressão do conteúdo em 2 blocos (do conceito concreto para a aplicação prática);
-   - Papel do Professor: Mediação, perguntas reflexivas e pontos críticos de parada;
-   - Papel do Aluno: Atividade prática individual ou em duplas para processar o conceito (sem passividade).
-4. MOMENTO 3 — Síntese & Checagem Formativa (40 minutos):
-   - Atividade de consolidação (ex.: resolução de desafio rápido ou análise comparativa);
-   - Ticket de saída (Exit Ticket): Pergunta rápida de 3 minutos para checar se a turma atingiu o objetivo antes de sair da sala.
-5. RECURSOS E MATERIAIS DO ENCONTRO: Lista do que precisa estar pronto (slides, quadro, links de consulta, software de simulação).</pre>
+[CONTEXTO]: Na mesma conversa (encadeamento pedagógico), aprofundando a [INSERIR QUAL AULA DA SEQUÊNCIA, ex.: Aula 2 — Desenvolvimento: Arquitetura de Cabeçalhos e Escassez de Endereços IPv4] para um encontro de [CARGA HORÁRIA, ex.: 2 horas (120 minutos)].
+
+[TAREFA]: Elabore o PLANO DE AULA DETALHADO estruturado estritamente nos seguintes momentos:
+1. Dados de Identificação: Tema e objetivo específico de aprendizagem (verbo ativo de Bloom);
+2. Momento 1 — Acolhida &amp; Problematização (20 minutos): Pergunta disparadora e resgate da sondagem anterior;
+3. Momento 2 — Aprofundamento Ativo &amp; Andaimes Cognitivos (60 minutos): Progressão em 2 blocos, papel mediador do professor e atividade prática do aluno (sem passividade);
+4. Momento 3 — Síntese &amp; Checagem Formativa (40 minutos): Atividade de consolidação e Ticket de Saída de 3 minutos;
+5. Recursos e Materiais: Lista do que precisa estar preparado para a aula.
+
+[RESTRIÇÕES]: Respeite rigidamente a divisão temporal em 3 momentos. Garanta protagonismo prático do estudante.</pre>
             </div>
 
             <ol class="step-list" start="5">
@@ -418,8 +423,13 @@ Com base na Sequência Didática que você acabou de estruturar, selecione a [IN
                     <span>PROMPT DE REFINAMENTO: ANDAIMES COGNITIVOS</span>
                     <button class="btn-copy" onclick="copyPrompt('prompt-lab1-refinamento')">📋 Copiar Prompt</button>
                 </div>
-                <pre id="prompt-lab1-refinamento" class="prompt-code">A estrutura está excelente, mas muitos estudantes desta disciplina ingressam com lacunas em [INSERIR CONCEITO BÁSICO]. 
-Reajuste o Momento 2 propondo uma estratégia de transição gradual (andaime conceitual) para que eles assimilem o conceito central sem frustração.</pre>
+                <pre id="prompt-lab1-refinamento" class="prompt-code">[PAPEL]: Atue como especialista em transposição didática universitária.
+
+[CONTEXTO]: Estudantes ingressando na disciplina com lacunas conceituais em [INSERIR CONCEITO BÁSICO].
+
+[TAREFA]: Reajuste o Momento 2 do plano de aula propondo uma estratégia de andaimes cognitivos (do concreto para o abstrato), permitindo que eles assimilem o conceito central sem frustração.
+
+[RESTRIÇÕES]: Mantenha o tempo total de 60 minutos e o rigor conceitual da ementa.</pre>
             </div>
         </section>
 
@@ -441,17 +451,17 @@ Reajuste o Momento 2 propondo uma estratégia de transição gradual (andaime co
                     <span>PROMPT 2.1: ROTEIRO DE ESTUDO DIRIGIDO ANCORADO</span>
                     <button class="btn-copy" onclick="copyPrompt('prompt-lab2-roteiro')">📋 Copiar Prompt</button>
                 </div>
-                <pre id="prompt-lab2-roteiro" class="prompt-code">Atue como especialista em transposição didática e aprendizagem no Ensino Superior.
-Faça a leitura aprofundada do MATERIAL TÉCNICO DE APOIO anexado [PDF DO ARTIGO/TEXTO DE APOIO, ex.: texto_apoio_ipv6.pdf — "A Transição do IPv4 para o IPv6: Arquitetura, Desafios do CGNAT e a Quebra do Princípio Ponta a Ponta"].
+                <pre id="prompt-lab2-roteiro" class="prompt-code">[PAPEL]: Atue como especialista em transposição didática e aprendizagem no Ensino Superior.
 
-Articulando os conceitos deste material de apoio com os objetivos pedagógicos da disciplina de [INSERIR SUA DISCIPLINA], elabore um ROTEIRO DE ESTUDO DIRIGIDO de 1 página para os estudantes, cobrindo o tema [INSERIR SEU TEMA]:
+[CONTEXTO]: Leitura prévia obrigatória do MATERIAL TÉCNICO DE APOIO anexado [PDF DO ARTIGO/TEXTO DE APOIO, ex.: texto_apoio_ipv6.pdf] para a disciplina de [INSERIR SUA DISCIPLINA], cobrindo o tema [INSERIR SEU TEMA].
 
-1. CONTEXTUALIZAÇÃO DO IMPACTO (1 parágrafo): Conecte a tese central do texto de apoio à prática profissional contemporânea dos estudantes;
-2. TRÊS PONTOS FOCAIS DE LEITURA: Formule 3 perguntas reflexivas estratégicas que direcionem a atenção do aluno durante a leitura, indicando expressamente as seções do artigo onde encontrar as respostas;
-3. GLOSSÁRIO INSTRUMENTAL: Selecione 3 conceitos técnicos áridos presentes no material de apoio (ex.: CGNAT/NAT444, Path MTU Discovery/PMTUD, Cabeçalho Fixo de 40 bytes) e traduza-os para uma linguagem clara e acessível;
-4. CHECK RÁPIDO DE LEITURA (Autoavaliação formativa): Elabore 2 perguntas de múltipla escolha com gabarito comentado, extraídas estritamente dos mecanismos explicados no texto de apoio, para o estudante testar sua compreensão antes da aula presencial.
+[TAREFA]: Elabore um ROTEIRO DE ESTUDO DIRIGIDO de 1 página para os estudantes:
+1. Contextualização do Impacto (1 parágrafo conectando a tese à prática profissional);
+2. 3 Pontos Focais de Leitura (perguntas estratégicas indicando as seções relevantes);
+3. Glossário Instrumental (3 termos técnicos essenciais traduzidos com clareza);
+4. Check Rápido de Leitura (2 questões de múltipla escolha com gabarito comentado).
 
-CLÁUSULA DE ANCORAGEM NO MATERIAL DE APOIO: Extraia todas as perguntas, termos do glossário e testes de leitura diretamente do PDF anexado. Caso algum tópico não seja abordado pelo texto, aponte expressamente essa ausência em vez de inventar.</pre>
+[RESTRIÇÕES]: Extraia conceitos, termos e testes de autoavaliação exclusivamente do documento anexado. Proibido inventar dados ausentes na fonte.</pre>
             </div>
 
             <div class="example-box">
@@ -470,17 +480,18 @@ CLÁUSULA DE ANCORAGEM NO MATERIAL DE APOIO: Extraia todas as perguntas, termos 
                     <span>PROMPT 2.2: ARQUITETURA DE SLIDES COM ANALOGIAS</span>
                     <button class="btn-copy" onclick="copyPrompt('prompt-lab2-slides')">📋 Copiar Prompt</button>
                 </div>
-                <pre id="prompt-lab2-slides" class="prompt-code">Agora, atue como consultor de comunicação visual e apresentações pedagógicas no Ensino Superior.
-Com base nas controvérsias técnicas e mecanismos conceituais extraídos do material de apoio anexado [PDF DO TEXTO DE APOIO, ex.: texto_apoio_ipv6.pdf], estruture o ROTEIRO PARA UMA APRESENTAÇÃO DE 5 SLIDES no tema [INSERIR SEU TEMA, ex.: Transição IPv4/IPv6 e os Gargalos do CGNAT], superando o modelo tradicional de blocos de texto corrido.
+                <pre id="prompt-lab2-slides" class="prompt-code">[PAPEL]: Atue como consultor de comunicação visual e storytelling pedagógico no Ensino Superior.
 
-Para cada um dos 5 slides, forneça:
-1. TÍTULO PROVOCATIVO: Em formato de pergunta intrigante ou afirmação marcante (ex.: "Por que a Internet mundial está ficando sem endereços?");
-2. CONTEÚDO VISUAL (Máximo de 3 tópicos curtos): Frases concisas com no máximo 1 linha cada, prontas para diagramação visual no Gamma;
-3. ANALOGIA DIDÁTICA DO COTIDIANO: Uma metáfora ou comparação prática do dia a dia (ex.: condomínio com interfone vs. linha telefônica direta; passaporte universal vs. crachá local) para o professor explicar o mecanismo técnico abstrato descrito no artigo;
-4. A FALA DO PROFESSOR: O roteiro conciso do que o docente deve enfatizar oralmente ao projetar o slide;
-5. SUGESTÃO DE LAYOUT PARA O GAMMA: Uma orientação de disposição visual dos blocos de conteúdo para o gerador de slides.
+[CONTEXTO]: Aula sobre [INSERIR SEU TEMA] da disciplina de [INSERIR SUA DISCIPLINA], baseada no material de apoio anexado [PDF DO TEXTO DE APOIO, ex.: texto_apoio_ipv6.pdf].
 
-RESTRIÇÃO DE DESIGN: Cada lâmina deve conter apenas UMA ideia-força ancorada no texto base para garantir leveza e foco cognitivo.</pre>
+[TAREFA]: Estruture o ROTEIRO PARA UMA APRESENTAÇÃO DE 5 SLIDES (otimizada para o Gamma App), fornecendo para cada slide:
+1. Título provocativo em formato de pergunta ou afirmação marcante;
+2. Conteúdo visual com no máximo 3 tópicos curtos de 1 linha cada;
+3. Analogia didática do cotidiano para ancorar o conceito técnico abstrato;
+4. Fala concisa do professor para regência presencial;
+5. Sugestão visual de layout para diagramação.
+
+[RESTRIÇÕES]: Cada lâmina deve conter apenas UMA ideia-força ancorada no texto base. Proibido blocos de texto corrido nos tópicos.</pre>
             </div>
 
             <div style="background: #fdf2f4; border: 1px solid #fecdd3; border-radius: 8px; padding: 1.2rem; margin-top: 1.25rem;">
@@ -506,8 +517,13 @@ RESTRIÇÃO DE DESIGN: Cada lâmina deve conter apenas UMA ideia-força ancorada
                     <span>PROMPT DE REFINAMENTO: CALIBRAGEM DE METÁFORA</span>
                     <button class="btn-copy" onclick="copyPrompt('prompt-lab2-calibragem')">📋 Copiar Prompt</button>
                 </div>
-                <pre id="prompt-lab2-calibragem" class="prompt-code">Gostei da analogia do slide 3, mas a minha turma é de [INSERIR PERÍODO, ex.: 1º período de calouros]. 
-Faça-me 2 perguntas sobre o perfil de interesses cotidianos dessa faixa etária para que possamos ajustar a analogia e torná-la inesquecível para eles.</pre>
+                <pre id="prompt-lab2-calibragem" class="prompt-code">[PAPEL]: Atue como especialista em transposição didática e comunicação universitária.
+
+[CONTEXTO]: Turma de estudantes de [INSERIR PERÍODO, ex.: 1º período de calouros].
+
+[TAREFA]: Proponha uma analogia do cotidiano alternativa para o slide 3, mais conectada com o universo e a rotina dessa faixa etária.
+
+[RESTRIÇÕES]: Máximo de 2 parágrafos. Linguagem simples e envolvente, preservando o fundamento técnico.</pre>
             </div>
         </section>
 
@@ -528,14 +544,16 @@ Faça-me 2 perguntas sobre o perfil de interesses cotidianos dessa faixa etária
                     <span>PROMPT 3.1: ESTUDO DE CASO PBL COM DILEMA</span>
                     <button class="btn-copy" onclick="copyPrompt('prompt-lab3-caso')">📋 Copiar Prompt</button>
                 </div>
-                <pre id="prompt-lab3-caso" class="prompt-code">Atue como especialista em Aprendizagem Baseada em Problemas (PBL).
-Com base no conteúdo de [INSERIR SUA DISCIPLINA] e no tema [INSERIR SEU TEMA] que trabalhamos até aqui, crie uma situação-problema autêntica do mercado profissional/sociedade real.
+                <pre id="prompt-lab3-caso" class="prompt-code">[PAPEL]: Atue como especialista em Aprendizagem Baseada em Problemas (PBL) no Ensino Superior.
 
-A atividade deve conter:
-1. O CENÁRIO (Até 250 palavras): Uma narrativa com personagens e desafios reais, apresentando dados ambíguos ou incompletos;
+[CONTEXTO]: Conteúdo curricular de [INSERIR SUA DISCIPLINA] cobrindo o tema [INSERIR SEU TEMA].
+
+[TAREFA]: Crie uma situação-problema autêntica do mercado profissional/sociedade real contendo:
+1. O CENÁRIO (Até 200 palavras): Narrativa realista com personagens, contexto prático e dados em aparente conflito;
 2. O DILEMA DISPARADOR: Uma encruzilhada ética ou técnica onde não haja resposta óbvia de "certo ou errado", forçando os estudantes a tomar uma decisão e justificá-la com a teoria;
-3. DUAS PERGUNTAS DISPARADORAS: Para orientar um debate em duplas de 15 minutos em sala de aula.
-RESTRIÇÃO: Não dê a solução. O objetivo é que o caso gere debate ativo.</pre>
+3. DUAS PERGUNTAS DISPARADORAS: Para orientar um debate em duplas/equipes de 15 minutos em sala de aula.
+
+[RESTRIÇÕES]: Não dê a solução pronta. O objetivo é provocar reflexão, tomada de decisão e debate ativo.</pre>
             </div>
 
             <!-- SUGESTÃO DE ATIVIDADE / TAREFA DE CASA -->
@@ -639,16 +657,18 @@ Elabore o ROTEIRO COMPLETO DE CONDUÇÃO DE AULA (duração de 100 minutos) para
                             <span>PROMPT COMPLEMENTAR: ESTRUTURAÇÃO DE SLIDES PARA O GAMMA</span>
                             <button class="btn-copy" onclick="copyPrompt('prompt-tarefa-slides')">📋 Copiar Prompt</button>
                         </div>
-                        <pre id="prompt-tarefa-slides" class="prompt-code">Agora, converta este roteiro de dinâmica PBL em uma estrutura narrativa para uma APRESENTAÇÃO DE 5 SLIDES, pronta para importação no Gamma App.
+                        <pre id="prompt-tarefa-slides" class="prompt-code">[PAPEL]: Atue como consultor de comunicação visual e apresentações pedagógicas no Ensino Superior.
 
-Para cada um dos 5 slides, estruture estritamente:
+[CONTEXTO]: Conversão do estudo de caso PBL gerado anteriormente em uma estrutura de apresentação de slides para o Gamma App.
+
+[TAREFA]: Converta o roteiro de dinâmica PBL em uma narrativa para uma APRESENTAÇÃO DE 5 SLIDES:
 Slide 1: O ENIGMA (Título provocativo em forma de pergunta + 2 frases curtas sobre o impacto do problema);
-Slide 2: O CENÁRIO E OS DADOS (Apresentação dos personagens, contexto e dados ambíguos em formato de tópicos de 1 linha);
+Slide 2: O CENÁRIO E OS DADOS (Apresentação dos personagens e dados ambíguos em tópicos de 1 linha);
 Slide 3: O DILEMA ÉTICO/TÉCNICO (A encruzilhada de decisão: Opção A vs. Opção B com os riscos de cada uma);
 Slide 4: A MISSÃO DAS EQUIPES (Regras da dinâmica, tempo de debate e o entregável esperado da turma);
 Slide 5: SÍNTESE E FUNDAMENTAÇÃO (Os conceitos teóricos centrais da disciplina que sustentam a solução correta).
 
-RESTRIÇÃO DE DESIGN: Escreva frases curtas, objetivas e de alto impacto visual (sem blocos de texto corrido).</pre>
+[RESTRIÇÕES]: Frases curtas, objetivas e de alto impacto visual (máximo 3 tópicos por lâmina, sem blocos de texto corrido).</pre>
                     </div>
 
                     <p style="font-size: 0.85rem; font-weight: 600; margin: 1rem 0 0.4rem 0; color: var(--text-main);">
@@ -683,15 +703,17 @@ RESTRIÇÃO DE DESIGN: Escreva frases curtas, objetivas e de alto impacto visual
                         <span>PROMPT 3.2A: ATIVAÇÃO DE PERSONA SIMULADA</span>
                         <button class="btn-copy" onclick="copyPrompt('prompt-lab3-persona')">📋 Copiar Prompt</button>
                     </div>
-                    <pre id="prompt-lab3-persona" class="prompt-code">Atue como especialista em simulações educacionais no Ensino Superior.
-Estruture um PROMPT DE ATIVAÇÃO DE PERSONA baseado no caso PBL que geramos para a disciplina de [INSERIR SUA DISCIPLINA].
+                    <pre id="prompt-lab3-persona" class="prompt-code">[PAPEL]: Atue como especialista em simulações educacionais e Role-Play no Ensino Superior.
 
-A persona representa: [DEFINIR PAPEL: ex.: paciente em consulta / cliente de consultoria / analista de suporte / testemunha].
-Regras Obrigatórias da Persona:
-- Responder em 1ª pessoa, tom emocional condizente (ex.: ocupado, hesitante, defensivo);
-- Máximo de 3 frases curtas por resposta, sempre devolvendo perguntas ao estudante;
-- SEGREDO CONDICIONAL: Jamais revelar a informação crítica sobre [INSERIR PONTO-CHAVE] a menos que o estudante formule uma pergunta técnica específica sobre [DEFINIR O PONTO];
-- Proibido atuar como tutor ou entregar a resposta certa.</pre>
+[CONTEXTO]: Simulação interativa baseada no caso PBL da disciplina de [INSERIR SUA DISCIPLINA].
+
+[TAREFA]: Estruture um PROMPT DE ATIVAÇÃO DE PERSONA para os estudantes colarem na IA, representando [DEFINIR PAPEL: ex.: paciente hesitante / cliente resistente / comerciante tradicional / testemunha]:
+1. Identidade: Nome, ocupação e traços de personalidade condizentes (ex.: direto, ocupado, cético com custos ou termos técnicos);
+2. Regras de conversa: Responder sempre em 1ª pessoa, em no máximo 2 a 3 frases curtas por turno, devolvendo dúvidas ou preocupações práticas;
+3. Parede de Reação: Reagir com ceticismo realista a jargões e propostas vagas, apontando dificuldades cotidianas sem entregar soluções prontas;
+4. Postura: Manter total fidelidade ao personagem.
+
+[RESTRIÇÕES]: Proibido atuar como tutor, assistente prestativo de IA ou elogiar dizendo "ótima ideia". O esforço cognitivo deve ser 100% do estudante.</pre>
                 </div>
             </div>
 
@@ -699,7 +721,7 @@ Regras Obrigatórias da Persona:
             <div style="background: #ffffff; border: 2px solid #e2e8f0; border-left: 6px solid var(--unicap-primary); border-radius: 10px; padding: 1.5rem; margin-top: 1.5rem; box-shadow: 0 4px 12px rgba(138, 21, 56, 0.05);">
                 <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.85rem; border-bottom: 2px solid var(--unicap-primary-light); padding-bottom: 0.75rem;">
                     <h4 style="color: var(--unicap-primary); font-size: 1.15rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 0.4rem;">
-                        🎭 Exemplo Preenchido: Simulação Ativa com Persona (O Caso do Projeto Delta)
+                        🎭 Exemplo Preenchido: Simulação Ativa com Persona (O Caso do Seu Carlos - Comércio Tradicional)
                     </h4>
                     <span style="background: var(--unicap-primary-light); color: var(--unicap-primary); font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.65rem; border-radius: 999px; text-transform: uppercase;">
                         Exemplo Pronto para Uso
@@ -712,15 +734,15 @@ Regras Obrigatórias da Persona:
                         <strong>Por que não enviamos a solução para a IA?</strong> Você não precisa enviar a solução para a IA, porque na verdade <strong>não existe uma "resposta certa única" pré-programada</strong>.
                     </p>
                     <p style="margin-bottom: 0.75rem;">
-                        O objetivo dessa instrução (<em>"nunca dê a resposta ou solução"</em>) é impedir que a IA se comporte como um professor ou assistente prestativo. Por padrão, se um aluno diz <em>"estou pensando em fazer X"</em>, a IA tende a responder: <em>"Excelente ideia! Uma alternativa ainda melhor seria Y por causa de Z"</em>. Se isso acontecer, a IA faz o trabalho cognitivo pelo estudante.
+                        O objetivo dessa instrução (<em>"nunca dê a resposta ou solução"</em>) é impedir que a IA se comporte como um professor ou assistente prestativo. Por padrão, se um aluno diz <em>"estou pensando em fazer X"</em>, a IA tende a responder: <em>"Excelente ideia! Uma alternativa ainda melhor seria Y por causa de Z"</em>. Se isso acontecer, <strong>a IA faz o trabalho cognitivo pelo estudante</strong>.
                     </p>
                     <p style="margin-bottom: 0.5rem;">
-                        A dinâmica funciona com a IA atuando apenas como uma <strong>parede de reação e pressão</strong>:
+                        A dinâmica funciona com a IA atuando apenas como uma <strong>parede de reação e resistência realista</strong>:
                     </p>
                     <ul style="padding-left: 1.25rem; margin-bottom: 0.75rem;">
-                        <li style="margin-bottom: 0.4rem;"><strong>O papel do aluno:</strong> Propor caminhos técnicos, justificar escolhas e negociar com base na teoria.</li>
-                        <li style="margin-bottom: 0.4rem;"><strong>O papel da IA:</strong> Defender os interesses do personagem dela. Se ela interpreta um Diretor Financeiro, ela vai reclamar do custo de qualquer proposta. Se interpreta um Auditor de Segurança, vai apontar riscos e brechas técnicas na proposta do aluno.</li>
-                        <li style="margin-bottom: 0.4rem;"><strong>Critério de validação:</strong> A IA não precisa "conhecer o gabarito". Ela apenas avalia se o argumento do aluno faz sentido lógico dentro do papel que ela está encenando. Se o aluno apresentar uma justificativa técnica sólida e consistente, a IA cede um pouco de terreno; se o argumento for frágil ou vago, ela rebate e aperta a cobrança.</li>
+                        <li style="margin-bottom: 0.4rem;"><strong>O papel do aluno:</strong> Investigar as dores reais do interlocutor, propor caminhos viáveis e justificar escolhas com base na teoria da disciplina.</li>
+                        <li style="margin-bottom: 0.4rem;"><strong>O papel da IA:</strong> Defender os interesses do personagem dela. Se ela interpreta um comerciante tradicional, vai reclamar do custo de qualquer proposta e desconfiar de tecnologia. Se interpreta um paciente hesitante, vai expressar medo de remédios e apego a hábitos caseiros.</li>
+                        <li style="margin-bottom: 0.4rem;"><strong>Critério de validação:</strong> A IA não precisa "conhecer o gabarito". Ela apenas avalia se o argumento do aluno faz sentido lógico e tem aplicabilidade prática dentro do papel que ela está encenando. Se o aluno apresentar uma justificativa sólida e simples, a personagem cede terreno; se o argumento for vago ou cheio de jargão de livro, ela rebate e aperta a cobrança.</li>
                     </ul>
                     <p style="margin-bottom: 0; color: var(--text-muted); font-size: 0.85rem;">
                         <em>Na prática, a avaliação final e a validação do conhecimento continuam sendo suas: você encerra o exercício reunindo a turma para analisar quem conseguiu convencer o personagem, quais argumentos teóricos funcionaram e quais concessões foram perigosas.</em>
@@ -737,17 +759,19 @@ Regras Obrigatórias da Persona:
 
                     <div class="prompt-container" style="margin-top: 0.3rem;">
                         <div class="prompt-header">
-                            <span>PROMPT: CASO PBL UNIVERSAL (A CRISE DO PROJETO DELTA)</span>
+                            <span>PROMPT: CASO PBL UNIVERSAL (A MODERNIZAÇÃO DO COMÉRCIO TRADICIONAL)</span>
                             <button class="btn-copy" onclick="copyPrompt('prompt-demo-pbl')">📋 Copiar Prompt</button>
                         </div>
-                        <pre id="prompt-demo-pbl" class="prompt-code">Atue como especialista em Aprendizagem Baseada em Problemas (PBL) e tomada de decisão institucional no Ensino Superior.
-Elabore uma situação-problema autêntica e interdisciplinar sobre GESTÃO DE CRISE, COMUNICAÇÃO E RESPONSABILIDADE ÉTICA.
+                        <pre id="prompt-demo-pbl" class="prompt-code">[PAPEL]: Atue como especialista em Aprendizagem Baseada em Problemas (PBL) e diagnóstico organizacional no Ensino Superior.
 
-A atividade deve conter:
-1. O CENÁRIO (Até 250 palavras): A empresa Delta contratou uma equipe júnior multidisciplinar para implementar um novo portal de serviços crítico para a comunidade. No dia do lançamento oficial, o sistema colapsou, gerando protestos públicos e prejuízos. O Diretor de Operações (Roberto Alencar) culpa a inexperiência da equipe júnior e quer rescindir o contrato com penalidades. A equipe alega que a infraestrutura interna da empresa estava sobrecarregada e que seus alertas foram ignorados;
-2. O DILEMA DISPARADOR: A instituição deve demitir e responsabilizar publicamente a equipe jovem (preservando a imagem da diretoria perante os clientes) OU deve assumir que os processos internos e a infraestrutura falharam, arcando com o custo político da crise?
-3. DUAS PERGUNTAS DISPARADORAS: Para orientar um debate investigativo de 15 minutos em sala de aula.
-RESTRIÇÃO: Não dê a solução pronta. O objetivo é provocar reflexão e investigação de fatos.</pre>
+[CONTEXTO]: Situação interdisciplinar de tomada de decisão sobre GESTÃO DE MUDANÇA, COMUNICAÇÃO NÃO-VIOLENTA E VIABILIDADE ECONÔMICA.
+
+[TAREFA]: Elabore uma situação-problema autêntica contendo:
+1. O CENÁRIO (Até 200 palavras): Seu Carlos é dono de uma padaria tradicional de bairro há 30 anos. Com a chegada de redes de supermercados e padarias gourmet na região, o movimento caiu 30% nos últimos meses. Ele sabe que precisa reagir, mas tem pavor de gastar suas reservas financeiras, desconfia de modismos da internet e tem muito orgulho da história da sua família;
+2. O DILEMA DISPARADOR: Os estudantes, atuando como consultores juniores, devem propor uma estratégia que ajude a recuperar o movimento sem exigir investimentos altos ou descaracterizar a identidade tradicional do negócio;
+3. DUAS PERGUNTAS DISPARADORAS: Para orientar um debate investigativo em pequenos grupos por 15 minutos.
+
+[RESTRIÇÕES]: Não dê a solução pronta. O objetivo é provocar reflexão e investigação dos fatos.</pre>
                     </div>
                 </div>
 
@@ -761,39 +785,153 @@ RESTRIÇÃO: Não dê a solução pronta. O objetivo é provocar reflexão e inv
 
                     <div class="prompt-container" style="margin-top: 0.3rem;">
                         <div class="prompt-header">
-                            <span>PROMPT: PERSONA SIMULADA (ROBERTO ALENCAR - DIRETOR DE OPERAÇÕES)</span>
+                            <span>PROMPT: PERSONA SIMULADA (SEU CARLOS - COMERCIANTE TRADICIONAL)</span>
                             <button class="btn-copy" onclick="copyPrompt('prompt-demo-persona')">📋 Copiar Prompt</button>
                         </div>
-                        <pre id="prompt-demo-persona" class="prompt-code">Atue como especialista em simulações educacionais no Ensino Superior.
-A partir do caso da Crise do Projeto Delta, assuma o papel de ROBERTO ALENCAR, Diretor de Operações (52 anos).
+                        <pre id="prompt-demo-persona" class="prompt-code">[PAPEL]: Assuma o papel de SEU CARLOS, 58 anos, dono de uma padaria e mercearia tradicional de bairro há 30 anos (pragmático, apegado aos costumes da família, desconfiado de modismos tecnológicos e muito preocupado com custos).
 
-Suas Regras Obrigatórias de Comportamento:
-1. IDENTIDADE E TOM: Você é pragmático, experiente, está sob intensa pressão da presidência e tem pouca paciência com desculpas. Acredita firmemente que "na sua época tudo se resolvia com dedicação e sem mimimi";
-2. FORMATO DE RESPOSTA: Responda SEMPRE em 1ª pessoa. Fale no máximo 3 frases curtas por turno. Termine cada resposta devolvendo uma pergunta provocativa aos interlocutores;
-3. POSTURA INICIAL: Insista que a culpa do fracasso é 100% da inexperiência da equipe júnior, que não soube lidar com a pressão do lançamento;
-4. SEGREDO CONDICIONAL CRÍTICO: Você JAMAIS admite espontaneamente que recebeu avisos. Mas SE (e somente se) os participantes perguntarem especificamente:
-   - Se você recebeu algum e-mail, aviso ou mensagem da equipe antes do lançamento; OU
-   - O que dizia o comunicado enviado na sexta-feira às 16h45; OU
-   - Quem era o responsável por autorizar a liberação dos servidores de produção;
-   -> VOCÊ FRAQUEJA E REVELA: "Olha... já que vocês tocaram nesse ponto específico... a líder da equipe mandou um alerta na sexta às 16h45 dizendo que a infraestrutura interna não aguentaria a carga sem um upgrade. Eu estava em reunião de diretoria, achei que era excesso de zelo deles e autorizei o lançamento sem ler os relatórios técnicos. Então... talvez a falha não tenha sido apenas deles.";
-5. RESTRIÇÃO ABSOLUTA: Jamais aja como assistente de IA ou tutor. Não entregue o segredo antes da pergunta certa.
+[CONTEXTO]: Exercício de Role-Play com estudantes universitários de [INSERIR SUA DISCIPLINA] atuando como consultores para realizar um diagnóstico e propor melhorias para o comércio.
 
-Inicie a simulação dizendo exatamente:
-"Boa tarde. Sou Roberto Alencar, Diretor de Operações. Tenho apenas 10 minutos antes da minha reunião com a Presidência. O que vocês querem saber sobre o fracasso daquela equipe júnior?"</pre>
+[TAREFA]: Interaja com os participantes respondendo às perguntas e propostas deles:
+1. Responda SEMPRE em 1ª pessoa ("Eu", "Minha padaria");
+2. Fale no máximo 2 a 3 frases curtas por turno, em tom direto e realista;
+3. Devolva sempre uma preocupação prática sobre custos, tempo ou impacto na rotina;
+4. Reaja com ceticismo inicial a termos técnicos ("marketing digital", "otimização", "softwares"), exigindo explicações simples e aplicáveis ao dia a dia do comércio;
+5. Inicie a simulação dizendo exatamente: "Boa tarde. Olha, eu tenho pouco tempo porque preciso olhar a fornada no forno. O que é que vocês queriam falar comigo sobre o meu comércio?"
+
+[RESTRIÇÕES]: NUNCA dê a solução pronta, sugestões ou elogios como "excelente ideia". Jamais aja como assistente prestativo ou tutor acadêmico. Funcione como parede de reação: aponte dificuldades do dia a dia e force o estudante a justificar cada proposta.</pre>
                     </div>
                 </div>
 
                 <!-- COMO APLICAR COM OS ESTUDANTES -->
-                <div style="background: #f1f5f9; border-left: 4px solid var(--unicap-primary); border-radius: 0 8px 8px 0; padding: 1rem; font-size: 0.85rem; line-height: 1.6;">
+                <div style="background: #f1f5f9; border-left: 4px solid var(--unicap-primary); border-radius: 0 8px 8px 0; padding: 1rem; font-size: 0.85rem; line-height: 1.6; margin-bottom: 1.5rem;">
                     <strong style="color: var(--unicap-primary); display: flex; align-items: center; gap: 0.3rem; margin-bottom: 0.3rem;">
                         💡 Como conduzir este exercício com a turma em sala de aula:
                     </strong>
                     <ol style="padding-left: 1.25rem; margin-bottom: 0;">
-                        <li>O professor disponibiliza o <strong>Prompt da Persona (Roberto)</strong> para os estudantes (individualmente ou em duplas);</li>
+                        <li>O professor disponibiliza o <strong>Prompt da Persona (Seu Carlos)</strong> para os estudantes (individualmente ou em duplas);</li>
                         <li>Cada dupla cola o comando em um chat da IA (ChatGPT, Copilot, Claude, etc.);</li>
-                        <li>Os alunos assumem o papel de consultores e passam de 10 a 15 minutos interrogando e negociando com o personagem na sua mesa;</li>
+                        <li>Os alunos assumem o papel de consultores e passam de 10 a 15 minutos conversando e negociando com o personagem na sua mesa;</li>
                         <li>O professor circula pela sala observando as estratégias investigativas e encerra a atividade reunindo a turma em plenária para debater os achados e comparar as decisões tomadas.</li>
                     </ol>
+                </div>
+
+                <!-- EXEMPLOS DE ROLE-PLAY PARA OUTRAS ÁREAS DO CONHECIMENTO -->
+                <div style="border-top: 2px dashed #cbd5e1; padding-top: 1.25rem;">
+                    <h4 style="color: var(--unicap-primary); font-size: 1.15rem; font-weight: 700; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.4rem;">
+                        🌐 Adaptações da Parede de Reação para Outras Áreas
+                    </h4>
+                    <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1rem;">
+                        O princípio pedagógico é universal: <strong>a IA não tem gabarito nem dá soluções prontas</strong>; ela atua como um interlocutor realista sob pressão, exigindo que o estudante aplique a teoria para negociar e diagnosticar. Copie os exemplos por curso:
+                    </p>
+
+                    <!-- ÁREA: DIREITO -->
+                    <div style="margin-bottom: 1.25rem;">
+                        <span style="font-size: 0.88rem; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 0.3rem;">
+                            ⚖️ DIREITO: Marcos Silva (Cliente que quer rescindir contrato sem pagar multa)
+                        </span>
+                        <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0.2rem 0 0.4rem 0;">Prática jurídica: investiga cumprimento contratual, identifica exceções bilaterais e exercita mediação.</p>
+                        <div class="prompt-container" style="margin-top: 0.2rem;">
+                            <div class="prompt-header">
+                                <span>PROMPT: PERSONA DE DIREITO (RESCISÃO CONTRATUAL)</span>
+                                <button class="btn-copy" onclick="copyPrompt('prompt-roleplay-direito')">📋 Copiar Prompt</button>
+                            </div>
+                            <pre id="prompt-roleplay-direito" class="prompt-code">[PAPEL]: Assuma o papel de MARCOS SILVA, 45 anos, empresário irritado e ansioso que contratou um serviço de consultoria/fornecimento e agora quer rescindir o contrato unilateralmente sem pagar a multa rescisória estipulada de 30%.
+
+[CONTEXTO]: Atendimento simulado no Núcleo de Prática Jurídica (NPJ) com estudantes de Direito. O cliente chega ao escritório buscando uma brecha para não pagar a multa.
+
+[TAREFA]: Interaja com os participantes em 1ª pessoa ("Eu", "Minha empresa"):
+1. Responda em tom firme e impaciente, em no máximo 2 a 3 frases curtas por turno;
+2. Insista que o serviço "não atendeu às suas expectativas" e que você se recusa terminantemente a pagar qualquer penalidade;
+3. Parede de Reação: Reaja com resistência a explicações puramente teóricas ou jargões em latim ("pacta sunt servanda"). Exija que o estudante encontre uma saída negocial viável ou demonstre onde o contrato permite a rescisão sem custo.
+
+[RESTRIÇÕES]: NUNCA dê a solução jurídica pronta nem elogie propostas dizendo "ótima ideia". Jamais aja como assistente prestativo. Force o estudante a investigar fatos reais (notificações, prazos, falhas mútuas) e a fundamentar suas orientações.
+
+Inicie a simulação dizendo exatamente:
+"Boa tarde, doutores. Eu não tenho muito tempo. Assinei esse contrato absurdo, o serviço foi péssimo e eu não vou pagar um centavo de multa rescisória. Como vocês vão resolver isso pra mim?"</pre>
+                        </div>
+                    </div>
+
+                    <!-- ÁREA: SAÚDE -->
+                    <div style="margin-bottom: 1.25rem;">
+                        <span style="font-size: 0.88rem; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 0.3rem;">
+                            🩺 SAÚDE (MEDICINA / ENFERMAGEM): Dona Lourdes (Paciente hipertensa que recusa remédios)
+                        </span>
+                        <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0.2rem 0 0.4rem 0;">Comunicação clínica: empatia, escuta ativa e pactuação terapêutica sem autoritarismo.</p>
+                        <div class="prompt-container" style="margin-top: 0.2rem;">
+                            <div class="prompt-header">
+                                <span>PROMPT: PERSONA DE SAÚDE (ADESÃO AO TRATAMENTO)</span>
+                                <button class="btn-copy" onclick="copyPrompt('prompt-roleplay-saude')">📋 Copiar Prompt</button>
+                            </div>
+                            <pre id="prompt-roleplay-saude" class="prompt-code">[PAPEL]: Assuma o papel de DONA LOURDES, 64 anos, aposentada, hipertensa e com diabetes tipo 2 inicial (simpática, porém teimosa, desconfiada de remédios alopáticos e apegada a chás da vizinha).
+
+[CONTEXTO]: Consulta ambulatorial simulada com estudantes da área de Saúde. A paciente suspendeu por conta própria os medicamentos prescritos há duas semanas.
+
+[TAREFA]: Interaja com os participantes em 1ª pessoa:
+1. Responda de forma coloquial e calma, em no máximo 2 a 3 frases por turno;
+2. Revele seus medos reais aos poucos: você sentiu tontura com os remédios e tem pavor de ficar "dependente de químicos";
+3. Parede de Reação: Se o estudante usar tom professoral, autoritário ou ameaçador ("a senhora vai infartar"), feche-se e diga que "já viveu muito e sabe se cuidar". Ceda na adesão apenas se o estudante demonstrar escuta ativa, acolher seus receios e pactuar uma rotina simples.
+
+[RESTRIÇÕES]: NUNCA aceite o tratamento de imediato com um simples "está bem". Jamais aja como assistente prestativo de IA. Force o estudante a praticar comunicação clínica humanizada e negociação terapêutica.
+
+Inicie a simulação dizendo exatamente:
+"Bom dia, doutor(a). Eu vim porque minha filha insistiu muito... Mas já vou avisando que parei com aqueles comprimidos todos que me passaram mês passado. Prefiro meus chás naturais."</pre>
+                        </div>
+                    </div>
+
+                    <!-- ÁREA: ENGENHARIA & ARQUITETURA -->
+                    <div style="margin-bottom: 1.25rem;">
+                        <span style="font-size: 0.88rem; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 0.3rem;">
+                            🏗️ ENGENHARIA & ARQUITETURA: Valéria (Síndica resistente a obras preventivas)
+                        </span>
+                        <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0.2rem 0 0.4rem 0;">Gestão de projetos: tradução de laudos técnicos em viabilidade econômica e segurança predial.</p>
+                        <div class="prompt-container" style="margin-top: 0.2rem;">
+                            <div class="prompt-header">
+                                <span>PROMPT: PERSONA DE ENGENHARIA (SÍNDICA RESISTENTE A OBRAS)</span>
+                                <button class="btn-copy" onclick="copyPrompt('prompt-roleplay-engenharia')">📋 Copiar Prompt</button>
+                            </div>
+                            <pre id="prompt-roleplay-engenharia" class="prompt-code">[PAPEL]: Assuma o papel de VALÉRIA, 56 anos, síndica de um condomínio residencial há 8 anos (zelosa pelo caixa do prédio, pragmática e resistente a obras ou custos extras).
+
+[CONTEXTO]: Apresentação técnica com estudantes de Engenharia/Arquitetura após vistoria predial que apontou necessidade urgente de reforma na impermeabilização e no quadro elétrico.
+
+[TAREFA]: Interaja com os participantes em 1ª pessoa ("Eu", "O condomínio"):
+1. Responda em tom direto e preocupado com a assembleia (máximo 2 a 3 frases por turno);
+2. Devolva sempre o argumento de que "o prédio nunca caiu em 30 anos" e que "os moradores vão rejeitar qualquer cota extra";
+3. Parede de Reação: Reaja com ceticismo a laudos puramente técnicos ou citações frias de normas (ABNT/NBR). Exija que os estudantes demonstrem a relação de custo-benefício, os riscos financeiros de postergar a obra e uma proposta de fases.
+
+[RESTRIÇÕES]: NUNCA aprove a obra de imediato. Jamais aja como assistente prestativo. Force os estudantes a traduzir o laudo técnico para argumentos de segurança, custos futuros e viabilidade prática.
+
+Inicie a simulação dizendo exatamente:
+"Boa tarde, pessoal. Li o relatório de vocês por cima, mas já adianto: não tem a menor condição de aprovar essa obra com os valores que vocês colocaram. Os moradores não vão pagar cota extra. O que a gente faz?"</pre>
+                        </div>
+                    </div>
+
+                    <!-- ÁREA: EDUCAÇÃO / LICENCIATURAS -->
+                    <div style="margin-bottom: 0.5rem;">
+                        <span style="font-size: 0.88rem; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 0.3rem;">
+                            📚 EDUCAÇÃO & LICENCIATURAS: Juliana (Mãe contestando metodologia ativa e avaliação em grupo)
+                        </span>
+                        <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0.2rem 0 0.4rem 0;">Mediação docente: comunicação com as famílias, justificativa de critérios de avaliação e acolhimento.</p>
+                        <div class="prompt-container" style="margin-top: 0.2rem;">
+                            <div class="prompt-header">
+                                <span>PROMPT: PERSONA DE EDUCAÇÃO (MEDIAÇÃO PEDAGÓGICA)</span>
+                                <button class="btn-copy" onclick="copyPrompt('prompt-roleplay-educacao')">📋 Copiar Prompt</button>
+                            </div>
+                            <pre id="prompt-roleplay-educacao" class="prompt-code">[PAPEL]: Assuma o papel de JULIANA, 42 anos, mãe de um estudante do Ensino Médio (protetora, exigente com o desempenho do filho e acostumada ao modelo tradicional de ensino expositivo e provas individuais).
+
+[CONTEXTO]: Reunião pedagógica com estudantes de Licenciatura/Pedagogia. O filho tirou nota baixa em uma atividade de projeto em equipe e a mãe veio à escola contestar o método avaliativo.
+
+[TAREFA]: Interaja com os participantes em 1ª pessoa:
+1. Responda em tom indignado, porém polido (máximo 2 a 3 frases por turno);
+2. Insista que o filho "estuda muito em casa e foi prejudicado por colegas folgados no grupo", exigindo que a nota seja substituída por uma prova individual tradicional;
+3. Parede de Reação: Desconfie de jargões pedagógicos abstratos ("metodologias ativas", "aprendizagem cooperativa"). Exija que o professor/licenciando explique concretamente como a rubrica mede o esforço individual e como essa dinâmica prepara o jovem para o futuro.
+
+[RESTRIÇÕES]: Jamais concorde de início. Não aja como assistente prestativo. Force o futuro professor a demonstrar clareza pedagógica, acolhimento à família e justificativa de critérios de avaliação.
+
+Inicie a simulação dizendo exatamente:
+"Boa tarde, professor(a). Vim aqui porque não entendi essa nota do meu filho. Ele sempre tirou 9 e 10, e agora nessa dinâmica de projeto a nota dele despencou. Por que vocês não passam uma prova tradicional em vez de deixar os alunos soltos em grupo?"</pre>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -806,88 +944,108 @@ Inicie a simulação dizendo exatamente:
                         <span>PROMPT 3.2B: GUIA DE CONDUÇÃO DOCENTE MINUTO A MINUTO</span>
                         <button class="btn-copy" onclick="copyPrompt('prompt-lab3-guia')">📋 Copiar Prompt</button>
                     </div>
-                    <pre id="prompt-lab3-guia" class="prompt-code">Atue como consultor de dinâmicas ativas de sala de aula universitária.
-Vou conduzir uma aula presencial de [INSERIR CARGA HORÁRIA, ex.: 1h40 ou 2h] aplicando o estudo de caso PBL que criamos na disciplina de [INSERIR SUA DISCIPLINA].
+                    <pre id="prompt-lab3-guia" class="prompt-code">[PAPEL]: Atue como consultor de dinâmicas ativas de sala de aula universitária.
 
-Elabore um GUIA DE CONDUÇÃO DOCENTE MINUTO A MINUTO contendo:
+[CONTEXTO]: Regência de aula presencial de [INSERIR CARGA HORÁRIA, ex.: 1h40 ou 2h] aplicando o estudo de caso PBL na disciplina de [INSERIR SUA DISCIPLINA].
+
+[TAREFA]: Elabore um GUIA DE CONDUÇÃO DOCENTE MINUTO A MINUTO contendo:
 1. CRONOGRAMA EM BLOCOS RÍGIDOS:
    - Bloco 1 (Aquecimento - 15 min): Pergunta-choque e formação de equipes;
    - Bloco 2 (Desafio PBL em Grupos - 50 min): Dinâmica de trabalho e rodadas de mediação;
    - Bloco 3 (Plenária e Síntese Teórica - 35 min): Confronto de soluções e amarração dos conceitos.
-2. BANCO DE PERGUNTAS DE DESCONGELAMENTO: 3 perguntas provocativas para romper o silêncio inicial da turma.
-3. MEDIAÇÃO DA DIVERSIDADE: 1 intervenção prática para destravar o grupo calado e 1 intervenção para moderar o aluno dominador.
-4. SÍNTESE DE FECHAMENTO: Os 3 pontos teóricos inegociáveis que o professor deve registrar no quadro nos últimos 10 minutos da aula.</pre>
+2. BANCO DE PERGUNTAS DE DESCONGELAMENTO: 3 perguntas provocativas para romper o silêncio inicial da turma;
+3. MEDIAÇÃO DA DIVERSIDADE: 1 intervenção prática para destravar o grupo calado e 1 intervenção para moderar o aluno dominador;
+4. SÍNTESE DE FECHAMENTO: Os 3 pontos teóricos inegociáveis que o professor deve registrar no quadro nos últimos 10 minutos.
+
+[RESTRIÇÕES]: Roteiro prático com foco na atuação do professor como facilitador no palco da sala.</pre>
                 </div>
             </div>
         </section>
 
-        <!-- SEÇÃO: ARTEFATOS ESTRUTURANTES & GAMMA APP -->
-        <section id="artefatos" class="card">
+        <!-- SEÇÃO: AULA 2 - ARTEFATOS ESTRUTURANTES (PLANO DE ENSINO & CRONOGRAMA 2026) -->
+        <section id="aula2" class="card">
+            <span id="artefatos"></span>
             <div class="card-header">
-                <h2 class="card-title">🎨 Criação de Artefatos Estruturantes & Slides com Gamma</h2>
-                <span class="badge">Manual de Autoria</span>
+                <h2 class="card-title">🎓 Aula 2: Artefatos Estruturantes (Plano de Ensino &amp; Cronograma com Calendário 2026)</h2>
+                <span class="badge">Oficina Prática - Aula 2</span>
             </div>
-            <p>Modelos de prompts universais para estruturar o semestre inteiro (do plano de ensino ao cronograma aula a aula) e transformar textos acadêmicos em apresentações visuais prontas no <strong>Gamma App</strong>:</p>
+            <p>O fluxo central da Aula 2 ensina a encadear duas fontes oficiais fundamentais na mesma conversa com a IA: primeiro o <strong>PDF da Ementa</strong> para gerar o <strong>Plano de Ensino Institucional</strong>; em seguida, o <strong>Calendário Acadêmico 2026 da UNICAP (Portaria 163/2025)</strong> para cruzar o planejamento com os dias letivos reais, recessos e limites de GQ/Exames Finais.</p>
 
-            <h3 style="color: var(--unicap-primary); font-size: 1.15rem; margin: 1.5rem 0 0.5rem 0;">1. Criação ou Reformulação Completa de Ementa e Plano de Ensino</h3>
-            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Utilize para criar ou atualizar o Plano de Ensino institucional com base nas DCNs do MEC e Taxonomia de Bloom:</p>
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.25rem;">
+                <a href="tutorial_plano_ensino.pdf" target="_blank" class="btn-download" style="background: var(--unicap-primary); color: #fff;">📖 Baixar Tutorial Completo em PDF</a>
+                <a href="PORTARIA_163_2025_Calendario_2026.pdf" target="_blank" class="btn-download">📅 Calendário UNICAP 2026 (Portaria 163/2025)</a>
+                <a href="INF1936_REDES_DE_COMPUTADORES_Ementa.pdf" target="_blank" class="btn-download">📄 Ementa de Exemplo (Redes INF1936)</a>
+                <a href="cardapio_prompts_universais.pdf" target="_blank" class="btn-download">🍽️ Cardápio de Prompts Universais (PDF)</a>
+            </div>
+
+            <h3 style="color: var(--unicap-primary); font-size: 1.15rem; margin: 1.5rem 0 0.5rem 0;">Passo 1: Da Ementa ao Plano de Ensino Completo</h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Anexe o PDF da ementa (sua ou a de demonstração) e execute o comando abaixo nos 4 pilares acadêmicos:</p>
             
             <div class="prompt-container">
                 <div class="prompt-header">
                     <span>PROMPT 6.1: PLANO DE ENSINO E EMENTA INSTITUCIONAL</span>
                     <button class="btn-copy" onclick="copyPrompt('prompt-ementa')">📋 Copiar Prompt</button>
                 </div>
-                <pre id="prompt-ementa" class="prompt-code">Atue como especialista em regulação do Ensino Superior e design curricular universitário.
-Preciso estruturar o Plano de Ensino completo da disciplina [INSERIR SUA DISCIPLINA], com carga horária de [CARGA HORÁRIA: ex.: 60h (40h teóricas / 20h práticas)] para o curso de [INSERIR CURSO].
+                <pre id="prompt-ementa" class="prompt-code">[PAPEL]: Atue como especialista em regulação do Ensino Superior e design pedagógico universitário.
 
-Com base nas Diretrizes Curriculares Nacionais (DCNs) do MEC e nas fontes anexadas, elabore:
-1. EMENTA FORMAL: Texto corrido normatizado sintetizando o escopo da disciplina;
-2. COMPETÊNCIAS GERAIS E ESPECÍFICAS: 2 competências gerais e 3 competências específicas articuladas com o perfil profissional do egresso;
-3. OBJETIVOS DE APRENDIZAGEM: 1 objetivo geral e 3 objetivos específicos alinhados à Taxonomia de Bloom Revisada (níveis: Analisar, Aplicar, Avaliar);
-4. CONTEÚDO PROGRAMÁTICO MODULAR: Divisão em 4 módulos temáticos com subtópicos detalhados;
-5. METODOLOGIA E AVALIAÇÃO: Metodologias ativas recomendadas e fórmula explícita para cálculo da Média Semestral (provas + práticas laboratoriais);
-6. BIBLIOGRAFIA RECOMENDADA: 3 títulos básicos e 2 complementares no padrão ABNT.</pre>
+[CONTEXTO]: Com base exclusivamente no documento de ementa anexado (PDF da disciplina [INSERIR SUA DISCIPLINA]), preciso estruturar um Plano de Ensino completo e oficial para o curso de [INSERIR CURSO], com carga horária de [INSERIR CARGA HORÁRIA: ex.: 60h].
+
+[TAREFA]: Elabore o Plano de Ensino contendo:
+1. Objetivos de Aprendizagem (1 geral e 3 específicos com verbos ativos da Taxonomia de Bloom);
+2. Competências e Habilidades a serem desenvolvidas no egresso;
+3. Componentes de Aprendizagem articulando teoria e prática laboratorial;
+4. Metodologia de Ensino-Aprendizagem ativa recomendada;
+5. Metodologia de Avaliação e critérios de aprovação regimental;
+6. Bibliografia recomendada (3 títulos básicos e 2 complementares no padrão ABNT);
+7. Planejamento básico dos módulos de conteúdo.
+
+[RESTRIÇÕES]: Não invente tópicos fora do escopo da ementa. Use tom institucional formal e formato estruturado com marcadores.</pre>
             </div>
 
-            <h3 style="color: var(--unicap-primary); font-size: 1.15rem; margin: 1.75rem 0 0.5rem 0;">2. Cronograma Semestral Semana a Semana (18 Semanas)</h3>
-            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Gera a tabela completa do semestre distribuindo aulas teóricas, laboratórios, leituras e marcos de avaliação:</p>
+            <h3 style="color: var(--unicap-primary); font-size: 1.15rem; margin: 1.75rem 0 0.5rem 0;">Passo 2: Do Plano ao Cronograma Semestral Cruzado com o Calendário 2026 da UNICAP</h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Na <strong>mesma conversa</strong>, anexe a Portaria 163/2025 da UNICAP (Calendário 2026) e envie o prompt a seguir:</p>
             
             <div class="prompt-container">
                 <div class="prompt-header">
-                    <span>PROMPT 6.2: CRONOGRAMA SEMANAL DETALHADO</span>
+                    <span>PROMPT 6.2: CRONOGRAMA SEMESTRAL CRUZADO COM O CALENDÁRIO 2026</span>
                     <button class="btn-copy" onclick="copyPrompt('prompt-cronograma')">📋 Copiar Prompt</button>
                 </div>
-                <pre id="prompt-cronograma" class="prompt-code">Atue como coordenador pedagógico universitário.
-Com base na ementa da disciplina [INSERIR SUA DISCIPLINA], elabore um CRONOGRAMA SEMESTRAL DETALHADO de 18 semanas letivas (aulas de [DURAÇÃO: ex.: 2h ou 4h semanais]).
+                <pre id="prompt-cronograma" class="prompt-code">[PAPEL]: Atue como coordenador pedagógico universitário.
 
-Gere uma tabela completa contendo as colunas:
-- Semana (01 a 18);
-- Módulo Temático;
-- Tópico da Aula Teórica;
-- Atividade Prática / Laboratório;
-- Leitura Prévia Recomendada;
-- Instrumento de Avaliação / Marco (indique AP1 na semana 8, AP2 na semana 15, Entrega de Projeto na semana 17 e Exame Final na semana 18).
-Regra: Garanta progressão pedagógica, intercalando aulas expositivas dialogadas com práticas de bancada.</pre>
+[CONTEXTO]: Na mesma conversa, estou anexando o Calendário Acadêmico 2026 da UNICAP (Portaria 163/2025). As aulas desta disciplina ocorrem às [DIAS DA SEMANA: ex.: quintas-feiras], com início em 05/02/2026.
+
+[TAREFA]: Cruze o Plano de Ensino recém-gerado com os dias letivos reais de 2026 e construa o Cronograma Semestral aula a aula em formato de tabela, contendo as colunas:
+- Aula Nº
+- Data Real (DD/MM/2026)
+- Conteúdo / Atividade
+- Metodologia
+- Avaliações e Marcos Institucionais
+
+[RESTRIÇÕES]:
+1. Desconsidere dias não letivos e feriados da Portaria (atenção especial: Corpus Christi em 04/06/2026 é feriado/recesso);
+2. Respeite os prazos da UNICAP: encerramento do 1ºGQ até 18/04/2026, encerramento do 2ºGQ até 18/06/2026 e Exames Finais até 26/06/2026;
+3. Indique claramente as aulas reservadas para avaliações regimentais e revisão.</pre>
             </div>
 
-            <h3 style="color: var(--unicap-primary); font-size: 1.15rem; margin: 1.75rem 0 0.5rem 0;">3. Roteiro de Slides Estruturado para o Gamma App</h3>
-            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Gera o texto otimizado com a sintaxe ideal para a IA do Gamma App interpretar e diagramar slides perfeitos:</p>
+            <h3 style="color: var(--unicap-primary); font-size: 1.15rem; margin: 1.75rem 0 0.5rem 0;">Passo 3: Roteiro Formatado para Gerar Slides no Gamma App</h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Transforme qualquer tópico do seu plano ou artigo em uma apresentação visual profissional de 5 slides no Gamma App:</p>
             
             <div class="prompt-container">
                 <div class="prompt-header">
                     <span>PROMPT 6.3: ROTEIRO FORMATADO PARA O GAMMA APP</span>
                     <button class="btn-copy" onclick="copyPrompt('prompt-roteiro-gamma')">📋 Copiar Prompt</button>
                 </div>
-                <pre id="prompt-roteiro-gamma" class="prompt-code">Atue como consultor de comunicação visual e apresentações pedagógicas universitárias.
-Com base no texto/artigo em anexo [PDF ANEXADO] sobre o tema [INSERIR TEMA], elabore o roteiro de uma apresentação de 5 slides estruturado ESPECIFICAMENTE para ser processado pela ferramenta Gamma App (gamma.app).
+                <pre id="prompt-roteiro-gamma" class="prompt-code">[PAPEL]: Atue como designer de apresentações pedagógicas universitárias.
 
-Para cada um dos 5 slides, forneça rigorosamente:
-CARD [Número do Slide]: [TÍTULO PROVOCATIVO EM CAIXA ALTA]
-- CONTEÚDO VISUAL (Exatamente 3 tópicos curtos e objetivos em alto nível);
-- ELEMENTO GRÁFICO RECOMENDADO: (Descreva o tipo de ícone, gráfico ou diagrama visual ideal para ilustrar este slide);
-- FALA DO PROFESSOR (Storytelling & Analogia do Cotidiano): (Um parágrafo conciso explicando o conceito abstrato com uma comparação do dia a dia).
+[CONTEXTO]: Com base no tópico [INSERIR TÓPICO DO PLANO DE ENSINO OU TEXTO BASE ANEXADO], elabore um roteiro para apresentação visual de 5 slides estruturado especificamente para a ferramenta Gamma App (gamma.app).
 
-RESTRIÇÃO: Formate em texto limpo com marcadores, sem blocos de texto corrido nos tópicos, para facilitar a leitura e geração automática pelo Gamma.</pre>
+[TAREFA]: Para cada um dos 5 slides, forneça:
+- Slide [Nº]: [TÍTULO PROVOCATIVO EM CAIXA ALTA]
+- Conteúdo: Exatamente 3 tópicos curtos e objetivos em alto nível;
+- Elemento Visual Sugerido: Descrição de imagem, ícone ou diagrama explicativo;
+- Fala do Professor: Um parágrafo conciso com analogia do cotidiano para explicar o conceito aos estudantes.
+
+[RESTRIÇÕES]: Texto limpo em tópicos concisos, sem parágrafos longos, otimizado para colar diretamente no Gamma App.</pre>
             </div>
 
             <div style="background: #fdf2f4; border: 1px solid #fecdd3; border-radius: 8px; padding: 1.25rem; margin-top: 1.5rem;">
