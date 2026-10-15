@@ -12,6 +12,7 @@
             --unicap-primary: #8A1538;
             --unicap-primary-dark: #680f2a;
             --unicap-primary-light: #fbf2f4;
+            --unicap-gold: #c59b27;
             --text-main: #1e293b;
             --text-muted: #64748b;
             --bg-page: #f8fafc;
@@ -22,66 +23,98 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-page);
             color: var(--text-main);
             line-height: 1.6;
             padding-bottom: 4rem;
+            -webkit-font-smoothing: antialiased;
         }
 
         header {
             background: linear-gradient(135deg, var(--unicap-primary), var(--unicap-primary-dark));
             color: white;
-            padding: 2.5rem 1.5rem;
+            padding: 3rem 1.5rem 3.75rem 1.5rem;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(138, 21, 56, 0.15);
+            box-shadow: 0 4px 16px rgba(138, 21, 56, 0.15);
         }
-        header h1 { font-size: 1.85rem; font-weight: 700; margin-bottom: 0.5rem; }
-        header p { font-size: 1.05rem; opacity: 0.95; max-width: 700px; margin: 0 auto; }
+        header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+        header p {
+            font-size: 1.05rem;
+            opacity: 0.95;
+            max-width: 680px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
 
         .container {
-            max-width: 900px;
-            margin: -1.5rem auto 0 auto;
-            padding: 0 1rem;
+            max-width: 960px;
+            margin: -2rem auto 0 auto;
+            padding: 0 1.25rem;
         }
 
         .nav-pills {
             display: flex;
-            gap: 0.5rem;
-            overflow-x: auto;
-            background: white;
-            padding: 0.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 0.5rem 0.75rem;
+            border-radius: 999px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
             margin-bottom: 2rem;
             border: 1px solid var(--border-color);
             position: sticky;
             top: 0.75rem;
             z-index: 100;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .nav-pills::-webkit-scrollbar {
+            display: none;
         }
         .nav-pills a {
             text-decoration: none;
             color: var(--text-muted);
-            padding: 0.6rem 1rem;
-            border-radius: 8px;
+            padding: 0.45rem 0.85rem;
+            border-radius: 999px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             white-space: nowrap;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
         }
         .nav-pills a:hover {
             color: var(--unicap-primary);
             background: var(--unicap-primary-light);
+            border-color: rgba(138, 21, 56, 0.15);
+        }
+
+        section, .card {
+            scroll-margin-top: 5.5rem;
         }
 
         .card {
             background: var(--bg-card);
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 1.75rem;
             margin-bottom: 2rem;
             border: 1px solid var(--border-color);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
         }
 
         .card-header {
@@ -105,9 +138,10 @@
             color: var(--unicap-primary);
             font-size: 0.75rem;
             font-weight: 700;
-            padding: 0.25rem 0.6rem;
+            padding: 0.25rem 0.65rem;
             border-radius: 999px;
             text-transform: uppercase;
+            letter-spacing: 0.02em;
         }
 
         .step-list {
@@ -122,29 +156,31 @@
         .prompt-container {
             position: relative;
             margin: 1.25rem 0;
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
             border: 1px solid #334155;
             background: var(--code-bg);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
         .prompt-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: #0f172a;
-            padding: 0.5rem 1rem;
+            padding: 0.55rem 1rem;
             color: #94a3b8;
             font-size: 0.8rem;
             font-weight: 600;
+            border-bottom: 1px solid #334155;
         }
         .prompt-code {
-            padding: 1rem 1.25rem;
+            padding: 1.1rem 1.25rem;
             color: var(--code-text);
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-            font-size: 0.85rem;
+            font-size: 0.86rem;
             white-space: pre-wrap;
             word-break: break-word;
-            line-height: 1.5;
+            line-height: 1.55;
             max-height: 380px;
             overflow-y: auto;
         }
@@ -153,50 +189,55 @@
             background: var(--unicap-primary);
             color: white;
             border: none;
-            padding: 0.35rem 0.8rem;
+            padding: 0.35rem 0.85rem;
             border-radius: 6px;
             font-size: 0.8rem;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 0.3rem;
-            transition: all 0.2s;
+            gap: 0.35rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
         }
         .btn-copy:hover {
             background: var(--unicap-primary-dark);
+            transform: translateY(-1px);
         }
         .btn-copy.copied {
-            background: #16a34a !important;
+            background: #15803d !important;
         }
 
         .example-box {
-            background: #f1f5f9;
+            background: #f8fafc;
             border-left: 4px solid var(--unicap-primary);
-            padding: 1rem;
+            padding: 1.1rem;
             border-radius: 0 8px 8px 0;
-            margin: 1rem 0;
+            margin: 1.25rem 0;
             font-size: 0.9rem;
+            line-height: 1.6;
         }
         .example-box strong { color: var(--unicap-primary); }
 
         .btn-download {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 0.4rem;
             background: var(--unicap-primary);
             color: white;
             text-decoration: none;
-            padding: 0.6rem 1.1rem;
+            padding: 0.55rem 1rem;
             border-radius: 8px;
             font-weight: 600;
-            font-size: 0.9rem;
-            transition: background 0.2s;
+            font-size: 0.85rem;
+            transition: all 0.2s;
             margin: 0.3rem 0;
         }
         .btn-download:hover {
             background: var(--unicap-primary-dark);
             color: white;
+            transform: translateY(-1px);
         }
 
         .download-grid {
@@ -207,26 +248,48 @@
         }
         .download-item {
             border: 1px solid var(--border-color);
-            padding: 1rem;
-            border-radius: 8px;
-            background: #fcfcfc;
+            padding: 1.15rem;
+            border-radius: 10px;
+            background: #ffffff;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .download-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
         }
         .download-item h4 {
             font-size: 1rem;
             color: var(--text-main);
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.35rem;
+            font-weight: 700;
         }
         .download-item p {
             font-size: 0.85rem;
             color: var(--text-muted);
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.85rem;
+            line-height: 1.5;
         }
 
         footer {
             text-align: center;
-            margin-top: 3rem;
+            margin-top: 3.5rem;
             color: var(--text-muted);
             font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 2.25rem 1rem 3rem 1rem; }
+            header h1 { font-size: 1.5rem; }
+            header p { font-size: 0.95rem; }
+            .container { margin-top: -1.5rem; padding: 0 0.85rem; }
+            .nav-pills { gap: 0.3rem; padding: 0.4rem; border-radius: 12px; }
+            .nav-pills a { font-size: 0.78rem; padding: 0.35rem 0.65rem; }
+            .card { padding: 1.25rem; border-radius: 10px; }
+            .card-title { font-size: 1.15rem; }
+            .download-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -241,12 +304,12 @@
 
         <nav class="nav-pills">
             <a href="#downloads">📦 Materiais</a>
-            <a href="#metaprompt">⚡ Meta-Prompting</a>
-            <a href="#lab1">🧪 Lab 1: Planejamento</a>
-            <a href="#lab2">🧪 Lab 2: Materiais</a>
-            <a href="#lab3">🧪 Lab 3: Dinâmicas</a>
-            <a href="#aula2">🎓 Aula 2: Plano &amp; Calendário 2026</a>
-            <a href="#ferramentas">🛠️ Ferramentas</a>
+            <a href="#metaprompt">⚡ Meta-Prompt</a>
+            <a href="#lab1">🧪 Lab 1: Plano</a>
+            <a href="#lab2">🧪 Lab 2: Conteúdo</a>
+            <a href="#lab3">🧪 Lab 3: Role-Play</a>
+            <a href="#aula2">🎓 Aula 2: Cronograma 2026</a>
+            <a href="#ferramentas">🛠️ Links Úteis</a>
         </nav>
 
         <!-- SEÇÃO: DOWNLOADS GERAIS -->
