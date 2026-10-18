@@ -7,9 +7,10 @@
 
     // Detect the correct base path for themes based on page depth
     function getThemePath(themeName) {
-        const currentHref = themeLink.getAttribute('href');
-        const prefix = currentHref.substring(0, currentHref.lastIndexOf('/') + 1);
-        return `${prefix}style-${themeName}.css`;
+        const currentHref = themeLink.getAttribute('href') || '';
+        const cleanHref = currentHref.split('?')[0];
+        const prefix = cleanHref.substring(0, cleanHref.lastIndexOf('/') + 1);
+        return `${prefix}style-${themeName}.css?v=20261018d`;
     }
 
     function getThemeButtonText(theme) {
@@ -46,7 +47,12 @@
         toggleButton.innerHTML = getThemeButtonText(isCurrentlyDark ? 'dark' : 'light');
     };
 
-    // Initialize with saved theme or default to dark
+    // Initialize with query param (?theme=light | ?theme=dark), saved theme, or default to dark
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlTheme = urlParams.get('theme');
+    if (urlTheme === 'light' || urlTheme === 'dark') {
+        localStorage.setItem('site-theme', urlTheme);
+    }
     const savedTheme = localStorage.getItem('site-theme') || 'dark';
     applyTheme(savedTheme);
 

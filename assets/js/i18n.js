@@ -287,11 +287,16 @@
     }
 
     function setupToggleListener() {
-        document.querySelectorAll('.lang-switcher .lang-btn').forEach((btn) => {
-            btn.addEventListener('click', () => {
-                const targetLang = btn.getAttribute('data-lang');
-                if (targetLang) {
-                    window.switchLanguage(targetLang);
+        document.querySelectorAll('.lang-switcher').forEach((switcher) => {
+            switcher.addEventListener('click', (e) => {
+                const btn = e.target.closest('.lang-btn');
+                if (btn) {
+                    const targetLang = btn.getAttribute('data-lang');
+                    if (targetLang) {
+                        window.switchLanguage(targetLang);
+                    }
+                } else {
+                    window.toggleLanguage();
                 }
             });
         });
