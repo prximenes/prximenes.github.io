@@ -23,18 +23,20 @@
     }
 
     function applyTheme(theme) {
-        if (theme === 'light') {
-            themeLink.setAttribute('href', getThemePath('light'));
-            toggleButton.innerHTML = getThemeButtonText('light');
-            toggleButton.setAttribute('aria-label', 'Switch to Dark Mode');
+        const isLight = theme === 'light';
+        themeLink.setAttribute('href', getThemePath(isLight ? 'light' : 'dark'));
+        toggleButton.innerHTML = getThemeButtonText(isLight ? 'light' : 'dark');
+        toggleButton.setAttribute('aria-label', isLight ? 'Switch to Dark Mode' : 'Switch to Light Mode');
+        if (isLight) {
             document.body.classList.remove('theme-dark');
             document.body.classList.add('theme-light');
+            document.documentElement.classList.remove('theme-dark');
+            document.documentElement.classList.add('theme-light');
         } else {
-            themeLink.setAttribute('href', getThemePath('dark'));
-            toggleButton.innerHTML = getThemeButtonText('dark');
-            toggleButton.setAttribute('aria-label', 'Switch to Light Mode');
             document.body.classList.remove('theme-light');
             document.body.classList.add('theme-dark');
+            document.documentElement.classList.remove('theme-light');
+            document.documentElement.classList.add('theme-dark');
         }
     }
 
@@ -49,8 +51,7 @@
     applyTheme(savedTheme);
 
     toggleButton.addEventListener('click', () => {
-        const currentHref = themeLink.getAttribute('href');
-        const isCurrentlyDark = currentHref.includes('style-dark.css');
+        const isCurrentlyDark = document.body.classList.contains('theme-dark');
         const newTheme = isCurrentlyDark ? 'light' : 'dark';
         
         localStorage.setItem('site-theme', newTheme);

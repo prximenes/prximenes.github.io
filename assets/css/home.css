@@ -80,13 +80,128 @@ body.theme-light .nav-menu a:hover {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-shrink: 0;
+    white-space: nowrap;
 }
 
-.lang-toggle-btn {
-    padding: 9px 15px;
-    font-size: 13.5px;
+/* Modern Segmented Language Switcher [ EN | PT ] */
+.lang-switcher {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 20px;
+    padding: 3px;
+    transition: all 0.25s ease;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+body.theme-dark .lang-switcher {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+body.theme-light .lang-switcher {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.lang-btn {
+    border: none;
+    background: transparent;
+    padding: 4px 10px;
+    font-size: 12px;
     font-weight: 700;
-    border-radius: 5px;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    line-height: 1.2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+}
+
+body.theme-dark .lang-btn {
+    color: #94a3b8;
+}
+
+body.theme-dark .lang-btn:hover:not(.active) {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+body.theme-light .lang-btn {
+    color: #64748b;
+}
+
+body.theme-light .lang-btn:hover:not(.active) {
+    color: #0f172a;
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.lang-btn.active {
+    background: #e53935 !important;
+    color: #ffffff !important;
+    box-shadow: 0 1px 4px rgba(229, 57, 53, 0.4);
+    cursor: default;
+}
+
+/* Theme Toggle Button */
+#toggle-button, .theme-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 14px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+    border: none;
+    box-sizing: border-box;
+}
+
+body.theme-dark #toggle-button,
+body.theme-dark .theme-toggle-btn {
+    background: rgba(255, 255, 255, 0.08);
+    color: #f1f5f9;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+body.theme-dark #toggle-button:hover,
+body.theme-dark .theme-toggle-btn:hover {
+    background: #e53935;
+    color: #ffffff;
+    border-color: #e53935;
+    transform: translateY(-1px);
+}
+
+body.theme-light #toggle-button,
+body.theme-light .theme-toggle-btn {
+    background: #ffffff;
+    color: #1e293b;
+    border: 1px solid #cbd5e1;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+body.theme-light #toggle-button:hover,
+body.theme-light .theme-toggle-btn:hover {
+    background: #e53935;
+    color: #ffffff;
+    border-color: #e53935;
+    transform: translateY(-1px);
+}
+
+/* Fallback for legacy single-button toggle */
+.lang-toggle-btn {
+    height: 32px;
+    padding: 0 12px;
+    font-size: 12.5px;
+    font-weight: 700;
+    border-radius: 20px;
     cursor: pointer;
     border: 1px solid rgba(229, 57, 53, 0.4);
     background: rgba(229, 57, 53, 0.12);
@@ -107,7 +222,6 @@ body.theme-light .lang-toggle-btn {
     background-color: #e53935;
     color: #ffffff;
     border-color: #e53935;
-    transform: translateY(-1px);
 }
 
 /* Layout Principal de 2 Colunas */

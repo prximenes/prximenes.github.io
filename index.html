@@ -27,10 +27,11 @@
             <a href="courses.html" style="color: #e53935; font-weight: 700;" data-i18n="nav.teaching_hub">📚 Teaching Hub</a>
         </nav>
         <div class="header-actions">
-            <button id="lang-toggle-button" class="lang-toggle-btn" aria-label="Switch language">🌐 PT</button>
-            <div class="theme-toggle" style="position: static;">
-                <button id="toggle-button">☀️ Light Mode</button>
+            <div class="lang-switcher" id="lang-switcher" role="group" aria-label="Language selector">
+                <button type="button" class="lang-btn" data-lang="en">EN</button>
+                <button type="button" class="lang-btn" data-lang="pt">PT</button>
             </div>
+            <button id="toggle-button" class="theme-toggle-btn" aria-label="Toggle dark/light theme">☀️ Light Mode</button>
         </div>
     </header>
 

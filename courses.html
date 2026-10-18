@@ -25,23 +25,23 @@
             <a href="courses.html" style="color: #e53935; font-weight: 700;" data-i18n="nav.courses">Courses</a>
             <a href="index.html#news" data-i18n="nav.news">News</a>
             <a href="index.html#publications" data-i18n="nav.publications">Publications</a>
-            <a href="index.html" class="back-link" style="padding: 4px 10px; font-size: 13px;" data-i18n="nav.back_home">← Back to Home</a>
         </nav>
         <div class="header-actions">
-            <button id="lang-toggle-button" class="lang-toggle-btn" aria-label="Switch language">🌐 PT</button>
-            <div class="theme-toggle" style="position: static;">
-                <button id="toggle-button">☀️ Light Mode</button>
+            <div class="lang-switcher" id="lang-switcher" role="group" aria-label="Language selector">
+                <button type="button" class="lang-btn" data-lang="en">EN</button>
+                <button type="button" class="lang-btn" data-lang="pt">PT</button>
             </div>
+            <button id="toggle-button" class="theme-toggle-btn" aria-label="Toggle dark/light theme">☀️ Light Mode</button>
         </div>
     </header>
 
     <!-- Main Container -->
-    <div class="disciplinas-page" style="width: 100%; max-width: 1000px; margin: 20px auto 40px auto;">
+    <div class="disciplinas-page">
         <main class="container disciplinas-container">
             <div class="nav-header">
                 <div>
                     <h1 class="disciplinas-title" style="margin: 0;" data-i18n="hub.title">📚 Courses &amp; Teaching Materials</h1>
-                    <span style="font-size: 14px; opacity: 0.85;" data-i18n="hub.subtitle">Universidade Católica de Pernambuco (UNICAP)</span>
+                    <span class="disciplinas-subtitle" data-i18n="hub.subtitle">Universidade Católica de Pernambuco (UNICAP)</span>
                 </div>
                 <a href="index.html" class="back-link" data-i18n="nav.back_home">← Back to Home</a>
             </div>
@@ -385,7 +385,8 @@
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(url).then(() => {
                     const originalHtml = btn.innerHTML;
-                    btn.innerHTML = '✓ <span>Copied!</span>';
+                    const isPt = (window.getCurrentLanguage && window.getCurrentLanguage() === 'pt');
+                    btn.innerHTML = isPt ? '✓ <span>Copiado!</span>' : '✓ <span>Copied!</span>';
                     btn.style.color = '#22c55e';
                     setTimeout(() => {
                         btn.innerHTML = originalHtml;

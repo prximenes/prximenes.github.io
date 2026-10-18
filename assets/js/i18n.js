@@ -22,7 +22,7 @@
             "sidebar.title": "Professor of Computer Science",
             "sidebar.affil": "<strong>Universidade Católica de Pernambuco (UNICAP)</strong><br>Ph.D. Candidate @ <strong>UFPE (CIn)</strong>",
             "sidebar.location": "Recife, PE — Brazil",
-            "sidebar.courses_btn": "📚 Courses & Materials",
+            "sidebar.courses_btn": "Courses & Materials",
             "sidebar.topics_title": "Research Topics",
 
             // Homepage - About
@@ -65,7 +65,7 @@
             "hub.pill_aa": "⚡ Analysis of Algorithms",
             "hub.pill_as": "🌐 Systems Architecture",
             "hub.open_dedicated": "📂 Open Dedicated Course Page →",
-            "hub.copy_link": "🔗 Copy Link",
+            "hub.copy_link": "Copy Link",
             "hub.copied": "✓ Copied!",
             "hub.share_alert": "Course link copied to clipboard!",
 
@@ -106,7 +106,7 @@
             "sidebar.title": "Professor de Ciência da Computação",
             "sidebar.affil": "<strong>Universidade Católica de Pernambuco (UNICAP)</strong><br>Doutorando @ <strong>UFPE (CIn)</strong>",
             "sidebar.location": "Recife, PE — Brasil",
-            "sidebar.courses_btn": "📚 Disciplinas & Materiais",
+            "sidebar.courses_btn": "Disciplinas & Materiais",
             "sidebar.topics_title": "Tópicos de Pesquisa",
 
             // Homepage - About
@@ -149,7 +149,7 @@
             "hub.pill_aa": "⚡ Análise de Algoritmos",
             "hub.pill_as": "🌐 Arquitetura de Sistemas",
             "hub.open_dedicated": "📂 Abrir Página da Disciplina →",
-            "hub.copy_link": "🔗 Copiar Link",
+            "hub.copy_link": "Copiar Link",
             "hub.copied": "✓ Copiado!",
             "hub.share_alert": "Link da disciplina copiado para a área de transferência!",
 
@@ -233,7 +233,19 @@
             }
         });
 
-        // Update language toggle button label
+        // Update segmented language switcher active state
+        document.querySelectorAll('.lang-switcher .lang-btn').forEach((btn) => {
+            const targetLang = btn.getAttribute('data-lang');
+            if (targetLang === lang) {
+                btn.classList.add('active');
+                btn.setAttribute('aria-pressed', 'true');
+            } else {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-pressed', 'false');
+            }
+        });
+
+        // Update legacy single language toggle button if present
         const langToggleBtn = document.getElementById('lang-toggle-button');
         if (langToggleBtn) {
             langToggleBtn.innerHTML = dict["lang.toggle"];
@@ -275,6 +287,15 @@
     }
 
     function setupToggleListener() {
+        document.querySelectorAll('.lang-switcher .lang-btn').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                const targetLang = btn.getAttribute('data-lang');
+                if (targetLang) {
+                    window.switchLanguage(targetLang);
+                }
+            });
+        });
+
         const langToggleBtn = document.getElementById('lang-toggle-button');
         if (langToggleBtn) {
             langToggleBtn.removeEventListener('click', window.toggleLanguage);
