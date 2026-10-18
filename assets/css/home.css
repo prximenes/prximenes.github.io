@@ -76,6 +76,40 @@ body.theme-light .nav-menu a:hover {
     color: #e53935;
 }
 
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.lang-toggle-btn {
+    padding: 9px 15px;
+    font-size: 13.5px;
+    font-weight: 700;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid rgba(229, 57, 53, 0.4);
+    background: rgba(229, 57, 53, 0.12);
+    color: #ef5350;
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+body.theme-light .lang-toggle-btn {
+    background: rgba(229, 57, 53, 0.08);
+    color: #e53935;
+    border-color: rgba(229, 57, 53, 0.3);
+}
+
+.lang-toggle-btn:hover {
+    background-color: #e53935;
+    color: #ffffff;
+    border-color: #e53935;
+    transform: translateY(-1px);
+}
+
 /* Layout Principal de 2 Colunas */
 .main-wrapper {
     max-width: 1200px;

@@ -21,14 +21,17 @@
             <span>Pedro Rafael</span>
         </a>
         <nav class="nav-menu" aria-label="Main Navigation">
-            <a href="index.html#about">About</a>
-            <a href="courses.html" style="color: #e53935; font-weight: 700;">Courses</a>
-            <a href="index.html#news">News</a>
-            <a href="index.html#publications">Publications</a>
-            <a href="index.html" class="back-link" style="padding: 4px 10px; font-size: 13px;">← Back to Home</a>
+            <a href="index.html#about" data-i18n="nav.about">About</a>
+            <a href="courses.html" style="color: #e53935; font-weight: 700;" data-i18n="nav.courses">Courses</a>
+            <a href="index.html#news" data-i18n="nav.news">News</a>
+            <a href="index.html#publications" data-i18n="nav.publications">Publications</a>
+            <a href="index.html" class="back-link" style="padding: 4px 10px; font-size: 13px;" data-i18n="nav.back_home">← Back to Home</a>
         </nav>
-        <div class="theme-toggle" style="position: static;">
-            <button id="toggle-button">☀️ Light Mode</button>
+        <div class="header-actions">
+            <button id="lang-toggle-button" class="lang-toggle-btn" aria-label="Switch language">🌐 PT</button>
+            <div class="theme-toggle" style="position: static;">
+                <button id="toggle-button">☀️ Light Mode</button>
+            </div>
         </div>
     </header>
 
@@ -37,34 +40,35 @@
         <main class="container disciplinas-container">
             <div class="nav-header">
                 <div>
-                    <h1 class="disciplinas-title" style="margin: 0;">📚 Courses &amp; Teaching Materials</h1>
-                    <span style="font-size: 14px; opacity: 0.85;">Universidade Católica de Pernambuco (UNICAP)</span>
+                    <h1 class="disciplinas-title" style="margin: 0;" data-i18n="hub.title">📚 Courses &amp; Teaching Materials</h1>
+                    <span style="font-size: 14px; opacity: 0.85;" data-i18n="hub.subtitle">Universidade Católica de Pernambuco (UNICAP)</span>
                 </div>
-                <a href="index.html" class="back-link">← Back to Home</a>
+                <a href="index.html" class="back-link" data-i18n="nav.back_home">← Back to Home</a>
             </div>
 
             <section class="content">
-                <p class="disciplinas-intro">
+                <p class="disciplinas-intro" data-i18n="hub.intro">
                     Lecture notes, interactive slide decks, and academic resources prepared for undergraduate and graduate computer science courses.
                 </p>
 
                 <!-- Course Quick Jump Bar -->
                 <div style="display: flex; gap: 8px; margin: 16px 0 24px 0; flex-wrap: wrap;">
-                    <a href="#computacao-grafica" class="filter-pill">🎨 Computer Graphics</a>
-                    <a href="#analise-de-algoritmos" class="filter-pill">⚡ Analysis of Algorithms</a>
-                    <a href="#arquitetura-sistemas" class="filter-pill">🌐 Systems Architecture</a>
+                    <a href="#computacao-grafica" class="filter-pill" data-i18n="hub.pill_cg">🎨 Computer Graphics</a>
+                    <a href="#analise-de-algoritmos" class="filter-pill" data-i18n="hub.pill_aa">⚡ Analysis of Algorithms</a>
+                    <a href="#arquitetura-sistemas" class="filter-pill" data-i18n="hub.pill_as">🌐 Systems Architecture</a>
                 </div>
 
                 <!-- Course 1: Computer Graphics -->
                 <article class="discipline-section" id="computacao-grafica">
                     <div class="discipline-header">
-                        <h2 class="discipline-name">🎨 Computer Graphics</h2>
-                        <span class="badge-tag badge-red">Undergraduate • UNICAP</span>
+                        <h2 class="discipline-name" data-i18n="courses.cg_title">🎨 Computer Graphics</h2>
+                        <span class="badge-tag badge-red" data-i18n="courses.badge_undergrad">Undergraduate • UNICAP</span>
+                        <a href="courses/computacao-grafica/index.html" class="share-discipline-btn" style="text-decoration: none;" data-i18n="hub.open_dedicated">📂 Open Dedicated Course Page →</a>
                         <button class="share-discipline-btn" onclick="copyDisciplineLink('computacao-grafica', this)" title="Copy direct link for students">
-                            🔗 <span>Copy Link</span>
+                            🔗 <span data-i18n="hub.copy_link">Copy Link</span>
                         </button>
                     </div>
-                    <p class="discipline-desc">
+                    <p class="discipline-desc" data-i18n="desc.cg">
                         Fundamental principles of 2D and 3D computer graphics, vector representations, homogeneous transformation matrices, projections, rasterization, and real-time graphics pipelines.
                     </p>
 
@@ -155,69 +159,20 @@
                                 </a>
                             </div>
                         </div>
-
-                        <!-- Lecture 7: Fundamentos de Microsserviços -->
-                        <div class="material-card">
-                            <div class="material-card-content">
-                                <div class="material-meta">
-                                    <span class="badge-tag badge-red">Slide Presentation</span>
-                                    <span class="badge-tag badge-blue">PDF Slide Viewer</span>
-                                    <span class="badge-tag badge-green">Microservices &amp; Middleware</span>
-                                </div>
-                                <h3 class="material-title">Lecture 7: Distributed Systems &amp; Microservices Architecture</h3>
-                                <p class="material-description">
-                                    Fundamental principles of distributed systems, design goals (resource sharing, distribution transparency, openness, scalability), the 8 fallacies of distributed computing, the role of middleware, layered architectures (2-tier, 3-tier, N-tier), architectural comparison: Monolith vs. SOA vs. Microservices, domain decomposition heuristics, synchronous vs. asynchronous communication trade-offs, and initial project guidelines for the 2nd GQ.
-                                </p>
-                            </div>
-                            <div class="material-card-actions">
-                                <a href="courses/arquitetura-sistemas/aula-microsservicos/index.html" class="material-btn">
-                                    ▶ Open Slide Viewer
-                                </a>
-                                <a href="courses/arquitetura-sistemas/aula-microsservicos/aula-01-fundamentos-microsservicos.pdf" class="material-btn material-btn-secondary" download target="_blank" title="Download PDF Slides">
-                                    📄 Download PDF
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Lecture 8: Containers e Docker -->
-                        <div class="material-card">
-                            <div class="material-card-content">
-                                <div class="material-meta">
-                                    <span class="badge-tag badge-red">Slide Presentation</span>
-                                    <span class="badge-tag badge-blue">PDF Slide Viewer</span>
-                                    <span class="badge-tag badge-green">Containers &amp; Docker</span>
-                                    <span class="badge-tag" style="background: rgba(168, 85, 247, 0.15); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.35); font-weight: 600;">📋 Projeto 2ª GQ</span>
-                                </div>
-                                <h3 class="material-title">Lecture 8: Containers &amp; Docker for Distributed Systems</h3>
-                                <p class="material-description">
-                                    Evolution from bare-metal to virtual machines and containers, Linux kernel isolation primitives (Namespaces, Cgroups, UnionFS/OverlayFS), Docker architecture and image layer caching, data persistence (Volumes vs. Bind Mounts), container networking and internal DNS, multi-service orchestration with Docker Compose, and official project specification for the 2nd GQ Distributed Middleware.
-                                </p>
-                            </div>
-                            <div class="material-card-actions">
-                                <a href="courses/arquitetura-sistemas/aula-containers-docker/index.html" class="material-btn">
-                                    ▶ Open Slide Viewer
-                                </a>
-                                <a href="courses/arquitetura-sistemas/aula-containers-docker/16-containers-docker-sistemas-distribuidos-aula-2.0.pdf" class="material-btn material-btn-secondary" download target="_blank" title="Download PDF Slides">
-                                    📄 Download PDF (Slides)
-                                </a>
-                                <a href="courses/arquitetura-sistemas/aula-containers-docker/16b-detalhes-projeto-middleware-2gq.pdf" class="material-btn material-btn-secondary" download target="_blank" title="Download Project Guidelines PDF">
-                                    📋 Project Guidelines (PDF)
-                                </a>
-                            </div>
-                        </div>
                     </div>
                 </article>
 
                 <!-- Course 2: Analysis of Algorithms -->
                 <article class="discipline-section" id="analise-de-algoritmos">
                     <div class="discipline-header">
-                        <h2 class="discipline-name">⚡ Analysis of Algorithms</h2>
-                        <span class="badge-tag badge-blue">Undergraduate • UNICAP</span>
+                        <h2 class="discipline-name" data-i18n="courses.aa_title">⚡ Analysis of Algorithms</h2>
+                        <span class="badge-tag badge-blue" data-i18n="courses.badge_undergrad">Undergraduate • UNICAP</span>
+                        <a href="courses/analise-de-algoritmos/index.html" class="share-discipline-btn" style="text-decoration: none;" data-i18n="hub.open_dedicated">📂 Open Dedicated Course Page →</a>
                         <button class="share-discipline-btn" onclick="copyDisciplineLink('analise-de-algoritmos', this)" title="Copy direct link for students">
-                            🔗 <span>Copy Link</span>
+                            🔗 <span data-i18n="hub.copy_link">Copy Link</span>
                         </button>
                     </div>
-                    <p class="discipline-desc">
+                    <p class="discipline-desc" data-i18n="desc.aa">
                         Asymptotic time and space complexity analysis, Big-O / Big-Omega / Big-Theta notation, recurrence relations (Master Theorem), algorithmic design paradigms (divide-and-conquer, greedy methods, dynamic programming), and graph algorithms.
                     </p>
 
@@ -321,13 +276,14 @@
                 <!-- Course 3: Systems Architecture -->
                 <article class="discipline-section" id="arquitetura-sistemas">
                     <div class="discipline-header">
-                        <h2 class="discipline-name">🌐 Systems Architecture</h2>
-                        <span class="badge-tag badge-green">Undergraduate • UNICAP</span>
+                        <h2 class="discipline-name" data-i18n="courses.as_title">🌐 Systems Architecture</h2>
+                        <span class="badge-tag badge-green" data-i18n="courses.badge_undergrad">Undergraduate • UNICAP</span>
+                        <a href="courses/arquitetura-sistemas/index.html" class="share-discipline-btn" style="text-decoration: none;" data-i18n="hub.open_dedicated">📂 Open Dedicated Course Page →</a>
                         <button class="share-discipline-btn" onclick="copyDisciplineLink('arquitetura-sistemas', this)" title="Copy direct link for students">
-                            🔗 <span>Copy Link</span>
+                            🔗 <span data-i18n="hub.copy_link">Copy Link</span>
                         </button>
                     </div>
-                    <p class="discipline-desc">
+                    <p class="discipline-desc" data-i18n="desc.as">
                         Architectural models for distributed systems, structured and flat naming, Distributed Hash Tables (DHTs), Domain Name System (DNS), clock synchronization, distributed election algorithms, and microservices fundamentals.
                     </p>
 
@@ -353,6 +309,56 @@
                                 </a>
                             </div>
                         </div>
+
+                        <!-- Lecture 7: Fundamentos de Microsserviços -->
+                        <div class="material-card">
+                            <div class="material-card-content">
+                                <div class="material-meta">
+                                    <span class="badge-tag badge-red">Slide Presentation</span>
+                                    <span class="badge-tag badge-blue">PDF Slide Viewer</span>
+                                    <span class="badge-tag badge-green">Microservices &amp; Middleware</span>
+                                </div>
+                                <h3 class="material-title">Lecture 7: Distributed Systems &amp; Microservices Architecture</h3>
+                                <p class="material-description">
+                                    Fundamental principles of distributed systems, design goals (resource sharing, distribution transparency, openness, scalability), the 8 fallacies of distributed computing, the role of middleware, layered architectures (2-tier, 3-tier, N-tier), architectural comparison: Monolith vs. SOA vs. Microservices, domain decomposition heuristics, synchronous vs. asynchronous communication trade-offs, and initial project guidelines for the 2nd GQ.
+                                </p>
+                            </div>
+                            <div class="material-card-actions">
+                                <a href="courses/arquitetura-sistemas/aula-microsservicos/index.html" class="material-btn">
+                                    ▶ Open Slide Viewer
+                                </a>
+                                <a href="courses/arquitetura-sistemas/aula-microsservicos/aula-01-fundamentos-microsservicos.pdf" class="material-btn material-btn-secondary" download target="_blank" title="Download PDF Slides">
+                                    📄 Download PDF
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Lecture 8: Containers e Docker -->
+                        <div class="material-card">
+                            <div class="material-card-content">
+                                <div class="material-meta">
+                                    <span class="badge-tag badge-red">Slide Presentation</span>
+                                    <span class="badge-tag badge-blue">PDF Slide Viewer</span>
+                                    <span class="badge-tag badge-green">Containers &amp; Docker</span>
+                                    <span class="badge-tag" style="background: rgba(168, 85, 247, 0.15); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.35); font-weight: 600;">📋 Projeto 2ª GQ</span>
+                                </div>
+                                <h3 class="material-title">Lecture 8: Containers &amp; Docker for Distributed Systems</h3>
+                                <p class="material-description">
+                                    Evolution from bare-metal to virtual machines and containers, Linux kernel isolation primitives (Namespaces, Cgroups, UnionFS/OverlayFS), Docker architecture and image layer caching, data persistence (Volumes vs. Bind Mounts), container networking and internal DNS, multi-service orchestration with Docker Compose, and official project specification for the 2nd GQ Distributed Middleware.
+                                </p>
+                            </div>
+                            <div class="material-card-actions">
+                                <a href="courses/arquitetura-sistemas/aula-containers-docker/index.html" class="material-btn">
+                                    ▶ Open Slide Viewer
+                                </a>
+                                <a href="courses/arquitetura-sistemas/aula-containers-docker/16-containers-docker-sistemas-distribuidos-aula-2.0.pdf" class="material-btn material-btn-secondary" download target="_blank" title="Download PDF Slides">
+                                    📄 Download PDF (Slides)
+                                </a>
+                                <a href="courses/arquitetura-sistemas/aula-containers-docker/16b-detalhes-projeto-middleware-2gq.pdf" class="material-btn material-btn-secondary" download target="_blank" title="Download Project Guidelines PDF">
+                                    📋 Project Guidelines (PDF)
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </article>
             </section>
@@ -361,13 +367,21 @@
 
     <!-- Site Footer -->
     <footer class="site-footer">
-        <p>&copy; 2026 Pedro Rafael Ximenes. All rights reserved. • Hosted on GitHub Pages</p>
+        <p data-i18n="footer.copyright">&copy; 2026 Pedro Rafael Ximenes. All rights reserved. • Hosted on GitHub Pages</p>
     </footer>
 
+    <script src="assets/js/i18n.js"></script>
     <script src="assets/js/script.js"></script>
     <script>
         function copyDisciplineLink(id, btn) {
-            const url = window.location.origin + window.location.pathname + '#' + id;
+            let path = '';
+            if (id === 'computacao-grafica') path = 'courses/computacao-grafica/';
+            else if (id === 'analise-de-algoritmos') path = 'courses/analise-de-algoritmos/';
+            else if (id === 'arquitetura-sistemas') path = 'courses/arquitetura-sistemas/';
+            
+            const currentDir = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+            const url = path ? (window.location.origin + currentDir + path) : (window.location.origin + window.location.pathname + '#' + id);
+            
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(url).then(() => {
                     const originalHtml = btn.innerHTML;

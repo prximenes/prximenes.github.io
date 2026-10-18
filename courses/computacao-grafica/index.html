@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Graphics | Pedro Rafael</title>
+    <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+    <link rel="icon" type="image/png" sizes="64x64" href="../../assets/images/favicon.png">
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/style-dark.css" id="theme-link">
+    <link rel="stylesheet" href="../../assets/css/home.css">
+    <link rel="stylesheet" href="../../assets/css/courses.css">
+</head>
+<body class="theme-dark home-body">
+
+    <!-- Top Navigation Header -->
+    <header class="site-header">
+        <a href="../../index.html" class="brand-title" style="display: inline-flex; align-items: center; gap: 8px;">
+            <img src="../../assets/images/favicon.svg" alt="Logo" width="24" height="24" style="border-radius: 6px;">
+            <span>Pedro Rafael</span>
+        </a>
+        <nav class="nav-menu" aria-label="Main Navigation">
+            <a href="../../index.html#about" data-i18n="nav.about">About</a>
+            <a href="../../courses.html" style="color: #e53935; font-weight: 700;" data-i18n="nav.courses">Courses</a>
+            <a href="../../index.html#news" data-i18n="nav.news">News</a>
+            <a href="../../index.html#publications" data-i18n="nav.publications">Publications</a>
+            <a href="../../courses.html" class="back-link" style="padding: 4px 10px; font-size: 13px;" data-i18n="nav.back_courses">← Back to Courses Hub</a>
+        </nav>
+        <div class="header-actions">
+            <button id="lang-toggle-button" class="lang-toggle-btn" aria-label="Switch language">🌐 PT</button>
+            <div class="theme-toggle" style="position: static;">
+                <button id="toggle-button">☀️ Light Mode</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="disciplinas-page" style="width: 100%; max-width: 1000px; margin: 20px auto 40px auto;">
+        <main class="container disciplinas-container">
+            <div class="nav-header">
+                <div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                        <a href="../../courses.html" style="color: #ef5350; text-decoration: none; font-size: 13px; font-weight: 600;" data-i18n="nav.back_courses">← Back to Courses Hub</a>
+                    </div>
+                    <h1 class="disciplinas-title" style="margin: 0;" data-i18n="courses.cg_title">🎨 Computer Graphics</h1>
+                    <span style="font-size: 14px; opacity: 0.85;" data-i18n="hub.subtitle">Universidade Católica de Pernambuco (UNICAP)</span>
+                </div>
+                <button class="share-discipline-btn" style="padding: 8px 16px; font-size: 13px;" onclick="copyCurrentCourseLink(this)" title="Copy direct link for students">
+                    🔗 <span data-i18n="hub.copy_link">Copy Link</span>
+                </button>
+            </div>
+
+            <section class="content">
+                <div style="margin-bottom: 24px;">
+                    <span class="badge-tag badge-red" style="margin-right: 8px;" data-i18n="courses.badge_undergrad">Undergraduate • UNICAP</span>
+                    <span class="badge-tag badge-blue">Ciência da Computação &amp; Engenharias</span>
+                </div>
+
+                <p class="disciplinas-intro" data-i18n="desc.cg">
+                    Fundamental principles of 2D and 3D computer graphics, vector representations, homogeneous transformation matrices, projections, rasterization, and real-time graphics pipelines.
+                </p>
+
+                <div class="materials-grid">
+                    <!-- Lesson 1: 2D Part 1 -->
+                    <div class="material-card">
+                        <div class="material-card-content">
+                            <div class="material-meta">
+                                <span class="badge-tag badge-red">Interactive Lecture</span>
+                                <span class="badge-tag badge-blue">Reveal.js + Canvas</span>
+                            </div>
+                            <h3 class="material-title">2D Geometric Transformations (Part 1)</h3>
+                            <p class="material-description">
+                                Mathematical formulation, 3x3 homogeneous coordinate matrices, and interactive dynamic simulations of translation, scaling, rotation, and shearing with live Canvas manipulation.
+                            </p>
+                        </div>
+                        <div class="material-card-actions">
+                            <a href="transf2d-p1/index.html" class="material-btn">
+                                ▶ Open Interactive Presentation
+                            </a>
+                            <a href="transf2d-p1/transf2d-p1.pdf" class="material-btn material-btn-secondary" download target="_blank" title="Download PDF Slides">
+                                📄 Download PDF
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Lesson 2: 2D Part 2 -->
+                    <div class="material-card">
+                        <div class="material-card-content">
+                            <div class="material-meta">
+                                <span class="badge-tag badge-red">Interactive Lecture</span>
+                                <span class="badge-tag badge-blue">Reveal.js + Warsaw Beamer</span>
+                                <span class="badge-tag badge-green">KaTeX + Simulators</span>
+                            </div>
+                            <h3 class="material-title">2D Geometric Transformations (Part 2)</h3>
+                            <p class="material-description">
+                                Inverse transformations, composite transformations (matrix order &amp; non-commutativity), fixed-point rotation &amp; scaling, reflections, shearing, and interactive sandbox playground.
+                            </p>
+                        </div>
+                        <div class="material-card-actions">
+                            <a href="transf2d-p2/index.html" class="material-btn">
+                                ▶ Open Interactive Presentation
+                            </a>
+                            <a href="transf2d-p2/transf2d-p2.pdf" class="material-btn material-btn-secondary" download target="_blank" title="Download PDF Slides">
+                                📄 Download PDF
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Lesson 3: 2D Part 3 -->
+                    <div class="material-card">
+                        <div class="material-card-content">
+                            <div class="material-meta">
+                                <span class="badge-tag badge-red">Interactive Lecture</span>
+                                <span class="badge-tag badge-blue">Reveal.js + Warsaw Beamer</span>
+                                <span class="badge-tag badge-green">KaTeX + Canvas &amp; WebGL</span>
+                            </div>
+                            <h3 class="material-title">2D Geometric Transformations (Part 3)</h3>
+                            <p class="material-description">
+                                Transformations between 2D coordinate systems (change of basis), Method 1 (rotation angle $\theta$), Method 2 (orthonormal basis without angles), transformations in HTML5 Canvas, execution order, and pipeline integration with WebGL &amp; Three.js.
+                            </p>
+                        </div>
+                        <div class="material-card-actions">
+                            <a href="transf2d-p3/index.html" class="material-btn">
+                                ▶ Open Interactive Presentation
+                            </a>
+                            <a href="transf2d-p3/transf2d-p3.pdf" class="material-btn material-btn-secondary" download target="_blank" title="Download PDF Slides">
+                                📄 Download PDF
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Lesson 4: 3D Part 1 -->
+                    <div class="material-card">
+                        <div class="material-card-content">
+                            <div class="material-meta">
+                                <span class="badge-tag badge-red">Interactive Lecture</span>
+                                <span class="badge-tag badge-blue">Slide Viewer + Warsaw Beamer</span>
+                                <span class="badge-tag badge-green">3D Homogeneous Coordinates</span>
+                            </div>
+                            <h3 class="material-title">3D Geometric Transformations (Part 1)</h3>
+                            <p class="material-description">
+                                Transition from 2D to 3D spaces, 4D homogeneous coordinates &amp; $4 \times 4$ matrices, 3D translation vectors, uniform/non-uniform scaling, right-hand Cartesian coordinate system, and principal axis rotations ($R_x, R_y, R_z$) with geometric derivation.
+                            </p>
+                        </div>
+                        <div class="material-card-actions">
+                            <a href="transf3d-p1/index.html" class="material-btn">
+                                ▶ Open Slide Viewer
+                            </a>
+                            <a href="transf3d-p1/transf3d-p1.pdf" class="material-btn material-btn-secondary" download target="_blank" title="Download PDF Slides">
+                                📄 Download PDF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Site Footer -->
+    <footer class="site-footer">
+        <p data-i18n="footer.copyright">&copy; 2026 Pedro Rafael Ximenes. All rights reserved. • Hosted on GitHub Pages</p>
+    </footer>
+
+    <script src="../../assets/js/i18n.js"></script>
+    <script src="../../assets/js/script.js"></script>
+    <script>
+        function copyCurrentCourseLink(btn) {
+            const url = window.location.href.split('?')[0].split('#')[0];
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(() => {
+                    const originalHtml = btn.innerHTML;
+                    btn.innerHTML = '✓ <span>Copied!</span>';
+                    btn.style.color = '#22c55e';
+                    setTimeout(() => {
+                        btn.innerHTML = originalHtml;
+                        btn.style.color = '';
+                    }, 2000);
+                }).catch(() => {
+                    prompt('Copy this link:', url);
+                });
+            } else {
+                prompt('Copy this link:', url);
+            }
+        }
+    </script>
+</body>
+</html>

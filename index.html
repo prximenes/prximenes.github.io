@@ -20,14 +20,17 @@
             <span>Pedro Rafael</span>
         </a>
         <nav class="nav-menu" aria-label="Main Navigation">
-            <a href="#about">About</a>
-            <a href="#courses">Courses</a>
-            <a href="#news">News</a>
-            <a href="#publications">Publications</a>
-            <a href="courses.html" style="color: #e53935; font-weight: 700;">📚 Teaching Hub</a>
+            <a href="#about" data-i18n="nav.about">About</a>
+            <a href="#courses" data-i18n="nav.courses">Courses</a>
+            <a href="#news" data-i18n="nav.news">News</a>
+            <a href="#publications" data-i18n="nav.publications">Publications</a>
+            <a href="courses.html" style="color: #e53935; font-weight: 700;" data-i18n="nav.teaching_hub">📚 Teaching Hub</a>
         </nav>
-        <div class="theme-toggle" style="position: static;">
-            <button id="toggle-button">☀️ Light Mode</button>
+        <div class="header-actions">
+            <button id="lang-toggle-button" class="lang-toggle-btn" aria-label="Switch language">🌐 PT</button>
+            <div class="theme-toggle" style="position: static;">
+                <button id="toggle-button">☀️ Light Mode</button>
+            </div>
         </div>
     </header>
 
@@ -40,16 +43,16 @@
                 <img src="assets/images/profile.jpg" alt="Pedro Rafael Ximenes" class="profile-avatar">
             </div>
             
-            <h1 class="profile-name">Pedro Rafael</h1>
-            <p class="profile-title">Professor of Computer Science</p>
-            <p class="profile-affil">
+            <h1 class="profile-name" data-i18n="sidebar.name">Pedro Rafael</h1>
+            <p class="profile-title" data-i18n="sidebar.title">Professor of Computer Science</p>
+            <p class="profile-affil" data-i18n-html="sidebar.affil">
                 <strong>Universidade Católica de Pernambuco (UNICAP)</strong><br>
                 Ph.D. Candidate @ <strong>UFPE (CIn)</strong>
             </p>
 
             <div class="profile-info-list">
                 <div class="profile-info-item">
-                    <span>📍</span> <span>Recife, PE — Brazil</span>
+                    <span>📍</span> <span data-i18n="sidebar.location">Recife, PE — Brazil</span>
                 </div>
                 <div class="profile-info-item">
                     <span>✉️</span> <a href="mailto:pedro@prxc.dev" style="color: inherit; text-decoration: none;">pedro@prxc.dev</a>
@@ -58,7 +61,7 @@
 
             <nav class="sidebar-links" aria-label="Social and Academic Profiles">
                 <a href="courses.html" class="sidebar-link-btn" style="background: linear-gradient(135deg, #e53935 0%, #b71c1c 100%);">
-                    <span>📚</span> <span>Courses &amp; Materials</span>
+                    <span>📚</span> <span data-i18n="sidebar.courses_btn">Courses &amp; Materials</span>
                 </a>
                 <a href="https://scholar.google.com.br/citations?user=CsC6auoAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" class="sidebar-link-btn">
                     <span>🎓</span> <span>Google Scholar</span>
@@ -78,7 +81,7 @@
             </nav>
 
             <div class="topics-section">
-                <h4>Research Topics</h4>
+                <h4 data-i18n="sidebar.topics_title">Research Topics</h4>
                 <div class="topics-pills">
                     <span class="topic-pill">LLMs in Networking</span>
                     <span class="topic-pill">Root Cause Analysis (RCA)</span>
@@ -100,12 +103,12 @@
             <!-- Section 1: About & Bio -->
             <section id="about" class="feed-card">
                 <div class="section-header">
-                    <h2 class="section-title"><span>👤</span> About Me</h2>
+                    <h2 class="section-title"><span>👤</span> <span data-i18n="about.title">About Me</span></h2>
                 </div>
-                <p class="bio-paragraph">
+                <p class="bio-paragraph" data-i18n-html="about.p1">
                     I am a <strong>Professor of Computer Science</strong> at the <strong>Universidade Católica de Pernambuco (UNICAP)</strong> and a <strong>Ph.D. Candidate in Computer Science</strong> at the Informatics Center of <strong>Universidade Federal de Pernambuco (CIn-UFPE)</strong>.
                 </p>
-                <p class="bio-paragraph">
+                <p class="bio-paragraph" data-i18n-html="about.p2">
                     I hold a B.Sc. in Computer Engineering and an M.Sc. in Computer Science with an emphasis on Networks and Distributed Systems. My research investigates <strong>Large Language Models (LLMs) for Automated Root Cause Analysis (RCA) in Network Virtualization</strong>, <strong>Computer Networks</strong>, <strong>Task Offloading</strong>, <strong>Digital Twin Networks</strong>, <strong>Optimization</strong>, <strong>Linux Kernel &amp; Fast Packet Processing</strong>, and <strong>Cloud/Edge Virtualization</strong>, with extensive application in <strong>Machine Learning</strong> and <strong>Data Science</strong>.
                 </p>
             </section>
@@ -113,107 +116,69 @@
             <!-- Section 2: Featured Courses -->
             <section id="courses" class="feed-card">
                 <div class="section-header">
-                    <h2 class="section-title"><span>📚</span> Featured Courses &amp; Teaching</h2>
-                    <a href="courses.html" class="section-action-link">View all courses →</a>
+                    <h2 class="section-title"><span>📚</span> <span data-i18n="courses.section_title">Featured Courses &amp; Teaching</span></h2>
+                    <a href="courses.html" class="section-action-link" data-i18n="courses.view_all">View all courses →</a>
                 </div>
                 <div class="courses-grid-feed">
+                    <!-- Course 1: Computer Graphics -->
                     <div class="course-item-card">
                         <div>
-                            <span class="topic-pill" style="margin-bottom: 8px; display: inline-block;">UNICAP • Undergraduate</span>
-                            <h3 class="course-item-title">🎨 Computer Graphics</h3>
-                            <p class="course-item-desc">
-                                Interactive lecture slides, vector transformations, 2D/3D matrix representations, and live HTML5 Canvas simulations.
+                            <span class="topic-pill" style="margin-bottom: 8px; display: inline-block;" data-i18n="courses.badge_undergrad">UNICAP • Undergraduate</span>
+                            <h3 class="course-item-title" data-i18n="courses.cg_title">🎨 Computer Graphics</h3>
+                            <p class="course-item-desc" data-i18n="courses.cg_desc">
+                                Vector spaces, 3x3 and 4x4 homogeneous matrices, 2D/3D geometric transformations, change of basis, projections, and real-time Canvas/WebGL pipelines.
                             </p>
                         </div>
-                        <div style="display: flex; flex-direction: column; gap: 8px;">
-                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                <a href="courses/computacao-grafica/transf2d-p1/index.html" class="sidebar-link-btn" style="flex: 1; min-width: 140px; text-align: center; justify-content: center; font-size: 13px;">
-                                    ▶ 2D Transformations (Part 1)
-                                </a>
-                                <a href="courses/computacao-grafica/transf2d-p1/transf2d-p1.pdf" class="sidebar-link-btn sidebar-link-btn-secondary" download target="_blank" title="Download PDF Slides">
-                                    📄 PDF
-                                </a>
+                        <div style="margin-top: 14px;">
+                            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px;">
+                                <span class="topic-pill">2D/3D Transforms</span>
+                                <span class="topic-pill">WebGL &amp; Three.js</span>
+                                <span class="topic-pill">Canvas Simulators</span>
                             </div>
-                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                <a href="courses/computacao-grafica/transf2d-p2/index.html" class="sidebar-link-btn" style="flex: 1; min-width: 140px; text-align: center; justify-content: center; font-size: 13px;">
-                                    ▶ 2D Transformations (Part 2)
-                                </a>
-                                <a href="courses/computacao-grafica/transf2d-p2/transf2d-p2.pdf" class="sidebar-link-btn sidebar-link-btn-secondary" download target="_blank" title="Download PDF Slides">
-                                    📄 PDF
-                                </a>
-                            </div>
-                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                <a href="courses/computacao-grafica/transf2d-p3/index.html" class="sidebar-link-btn" style="flex: 1; min-width: 140px; text-align: center; justify-content: center; font-size: 13px;">
-                                    ▶ 2D Transformations (Part 3)
-                                </a>
-                                <a href="courses/computacao-grafica/transf2d-p3/transf2d-p3.pdf" class="sidebar-link-btn sidebar-link-btn-secondary" download target="_blank" title="Download PDF Slides">
-                                    📄 PDF
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="course-item-card">
-                        <div>
-                            <span class="topic-pill" style="margin-bottom: 8px; display: inline-block;">UNICAP • Undergraduate</span>
-                            <h3 class="course-item-title">⚡ Analysis of Algorithms</h3>
-                            <p class="course-item-desc">
-                                Asymptotic complexity, Big-O notation, algorithm design paradigms (divide-and-conquer, dynamic programming), and iterative/recursive complexity.
-                            </p>
-                        </div>
-                        <div style="display: flex; flex-direction: column; gap: 8px;">
-                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                <a href="courses/analise-de-algoritmos/aula5-calc-complex-alg-iterativos-2/index.html" class="sidebar-link-btn" style="flex: 1; min-width: 140px; text-align: center; justify-content: center; font-size: 13px;">
-                                    ▶ Iterative Complexity II
-                                </a>
-                                <a href="courses/analise-de-algoritmos/aula5-calc-complex-alg-iterativos-2/aula5.pdf" class="sidebar-link-btn sidebar-link-btn-secondary" download target="_blank" title="Download PDF Slides">
-                                    📄 PDF
-                                </a>
-                            </div>
-                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                <a href="courses/analise-de-algoritmos/aula6-complex-ED/index.html" class="sidebar-link-btn" style="flex: 1; min-width: 140px; text-align: center; justify-content: center; font-size: 13px;">
-                                    ▶ Complexity &amp; Data Structures
-                                </a>
-                                <a href="courses/analise-de-algoritmos/aula6-complex-ED/aula6.pdf" class="sidebar-link-btn sidebar-link-btn-secondary" download target="_blank" title="Download PDF Slides">
-                                    📄 PDF
-                                </a>
-                            </div>
-                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                <a href="courses/analise-de-algoritmos/aula7-complex-alg-recursivo/index.html" class="sidebar-link-btn" style="flex: 1; min-width: 140px; text-align: center; justify-content: center; font-size: 13px;">
-                                    ▶ Recursive Complexity (6.b)
-                                </a>
-                                <a href="courses/analise-de-algoritmos/aula7-complex-alg-recursivo/aula6_analise_algoritmos_recursivos.pdf" class="sidebar-link-btn sidebar-link-btn-secondary" download target="_blank" title="Download PDF Slides">
-                                    📄 PDF
-                                </a>
-                            </div>
-                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                <a href="courses/analise-de-algoritmos/aula7-intro-problemas-p/index.html" class="sidebar-link-btn" style="flex: 1; min-width: 140px; text-align: center; justify-content: center; font-size: 13px;">
-                                    ▶ Intro to P Problems
-                                </a>
-                                <a href="courses/analise-de-algoritmos/polinomial-vs-exponencial/index.html" class="sidebar-link-btn" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-color: rgba(16, 185, 129, 0.4); color: #ffffff; font-size: 13px; font-weight: 600;" target="_blank" title="Simulador Interativo: Polinomial vs Exponencial (Slide 16)">
-                                    📊 Demo Slide 16
-                                </a>
-                                <a href="courses/analise-de-algoritmos/aula7-intro-problemas-p/aula7.pdf" class="sidebar-link-btn sidebar-link-btn-secondary" download target="_blank" title="Download PDF Slides">
-                                    📄 PDF
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="course-item-card">
-                        <div>
-                            <span class="topic-pill" style="margin-bottom: 8px; display: inline-block;">UNICAP • Undergraduate</span>
-                            <h3 class="course-item-title">🌐 Systems Architecture</h3>
-                            <p class="course-item-desc">
-                                Structured and flat naming, Domain Name System (DNS), hierarchical namespace layers, iterative vs. recursive resolution, and interactive live simulations.
-                            </p>
-                        </div>
-                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                            <a href="courses/arquitetura-sistemas/aula-dns/index.html" class="sidebar-link-btn" style="flex: 1; min-width: 140px; text-align: center; justify-content: center; font-size: 13px;">
-                                ▶ DNS Architecture
+                            <a href="courses/computacao-grafica/index.html" class="sidebar-link-btn" style="text-align: center; justify-content: center; font-size: 13.5px; font-weight: 700; background: linear-gradient(135deg, #e53935 0%, #b71c1c 100%); width: 100%;" data-i18n="courses.cg_cta">
+                                View Course &amp; Lectures →
                             </a>
-                            <a href="courses/arquitetura-sistemas/aula-dns/11-nomeacao-dns-aula-4.3.pdf" class="sidebar-link-btn sidebar-link-btn-secondary" download target="_blank" title="Download PDF Slides">
-                                📄 PDF
+                        </div>
+                    </div>
+
+                    <!-- Course 2: Analysis of Algorithms -->
+                    <div class="course-item-card">
+                        <div>
+                            <span class="topic-pill" style="margin-bottom: 8px; display: inline-block;" data-i18n="courses.badge_undergrad">UNICAP • Undergraduate</span>
+                            <h3 class="course-item-title" data-i18n="courses.aa_title">⚡ Analysis of Algorithms</h3>
+                            <p class="course-item-desc" data-i18n="courses.aa_desc">
+                                Asymptotic complexity (Big-O, Ω, Θ), iterative analysis, Master Theorem for recursive algorithms, and computational tractability (P class).
+                            </p>
+                        </div>
+                        <div style="margin-top: 14px;">
+                            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px;">
+                                <span class="topic-pill">Big-O &amp; Recurrences</span>
+                                <span class="topic-pill">Data Structures</span>
+                                <span class="topic-pill">Interactive Simulators</span>
+                            </div>
+                            <a href="courses/analise-de-algoritmos/index.html" class="sidebar-link-btn" style="text-align: center; justify-content: center; font-size: 13.5px; font-weight: 700; background: linear-gradient(135deg, #e53935 0%, #b71c1c 100%); width: 100%;" data-i18n="courses.aa_cta">
+                                View Course &amp; Lectures →
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Course 3: Systems Architecture -->
+                    <div class="course-item-card">
+                        <div>
+                            <span class="topic-pill" style="margin-bottom: 8px; display: inline-block;" data-i18n="courses.badge_undergrad">UNICAP • Undergraduate</span>
+                            <h3 class="course-item-title" data-i18n="courses.as_title">🌐 Systems Architecture</h3>
+                            <p class="course-item-desc" data-i18n="courses.as_desc">
+                                Distributed systems architectural models, structured naming &amp; DNS, microservices decomposition, and Docker container orchestration.
+                            </p>
+                        </div>
+                        <div style="margin-top: 14px;">
+                            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px;">
+                                <span class="topic-pill">DNS Resolution</span>
+                                <span class="topic-pill">Microservices</span>
+                                <span class="topic-pill">Containers &amp; Docker</span>
+                            </div>
+                            <a href="courses/arquitetura-sistemas/index.html" class="sidebar-link-btn" style="text-align: center; justify-content: center; font-size: 13.5px; font-weight: 700; background: linear-gradient(135deg, #e53935 0%, #b71c1c 100%); width: 100%;" data-i18n="courses.as_cta">
+                                View Course &amp; Lectures →
                             </a>
                         </div>
                     </div>
@@ -223,72 +188,37 @@
             <!-- Section 3: News & Timeline -->
             <section id="news" class="feed-card">
                 <div class="section-header">
-                    <h2 class="section-title"><span>📰</span> News &amp; Updates</h2>
+                    <h2 class="section-title"><span>📰</span> <span data-i18n="news.title">News &amp; Updates</span></h2>
                 </div>
                 <div class="timeline">
+                    <!-- Real News 1: SBRC Best Paper Nominee -->
                     <div class="timeline-item">
                         <div class="timeline-date">2026</div>
-                        <div class="timeline-text">
-                            Published the slide presentation and PDF deck for <strong>Complexity of Recursive Algorithms</strong> (Recurrence Relations, Recursion Trees, and Master Theorem) in the Analysis of Algorithms course at UNICAP.
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2026</div>
-                        <div class="timeline-text">
-                            Published the interactive HTML5 Beamer slide deck for <strong>2D Geometric Transformations (Part 3)</strong> (Coordinate Systems Change, Orthonormal Basis, Canvas 2D, WebGL &amp; Three.js) in the Computer Graphics course at UNICAP.
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2026</div>
-                        <div class="timeline-text">
-                            Published the interactive HTML5 Beamer slide deck for <strong>Complexity of Algorithms &amp; Data Structures</strong> (Contiguous vs. Linked Memory, Stacks, Circular Queues, BST, Heap, Hash Tables) in the Analysis of Algorithms course at UNICAP.
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2026</div>
-                        <div class="timeline-text">
-                            Published the interactive HTML5 Beamer slide deck for <strong>2D Geometric Transformations (Part 2)</strong> (Composite Matrices, Inverses, Reflection &amp; Shearing) in the Computer Graphics course at UNICAP.
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2026</div>
-                        <div class="timeline-text">
-                            Published the interactive HTML5 Beamer slide deck for <strong>DNS &amp; Structured Naming</strong> (Hierarchical Layers, Iterative vs. Recursive Resolution, and Live Simulators) in the Systems Architecture course at UNICAP.
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2026</div>
-                        <div class="timeline-text">
+                        <div class="timeline-text" data-i18n-html="news.sbrc_2026">
                             🏆 Paper <a href="https://scholar.google.com.br/citations?view_op=view_citation&hl=en&user=CsC6auoAAAAJ&sortby=pubdate&citation_for_view=CsC6auoAAAAJ:YOwf2qJgpHMC" target="_blank" rel="noopener noreferrer">On the Limits of Automated Root Cause Analysis in Network Virtualization Scenarios using Language Models</a> was <strong>nominated for the Best Paper Award</strong> at the <em>Simpósio Brasileiro de Redes de Computadores e Sistemas Distribuídos (SBRC 2026)</em>!
                         </div>
                     </div>
+
+                    <!-- Real News 2: Preprints -->
                     <div class="timeline-item">
                         <div class="timeline-date">2026</div>
-                        <div class="timeline-text">
-                            Published the interactive HTML5 Beamer slide deck for <strong>Complexity of Iterative Algorithms II</strong> (Sorting, Best/Worst Cases, Two-Pointers) in the Analysis of Algorithms course at UNICAP.
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2026</div>
-                        <div class="timeline-text">
-                            Published the interactive HTML5 slide deck for <strong>2D Geometric Transformations</strong> in the Computer Graphics course at UNICAP.
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2026</div>
-                        <div class="timeline-text">
+                        <div class="timeline-text" data-i18n-html="news.preprints_2026">
                             New preprints on <em>Digital Twin Synchronization: towards a data-centric architecture</em> and comparative TSN performance evaluations.
                         </div>
                     </div>
+
+                    <!-- Real News 3: BRACIS -->
                     <div class="timeline-item">
                         <div class="timeline-date">2025</div>
-                        <div class="timeline-text">
+                        <div class="timeline-text" data-i18n-html="news.bracis_2025">
                             Presented paper on <em>Deep Learning-Based Intrusion Detection for Automotive Ethernet</em> at the Brazilian Conference on Intelligent Systems (BRACIS).
                         </div>
                     </div>
+
+                    <!-- Real News 4: JNCA Survey -->
                     <div class="timeline-item">
                         <div class="timeline-date">2024</div>
-                        <div class="timeline-text">
+                        <div class="timeline-text" data-i18n-html="news.jnca_2024">
                             Comprehensive survey <em>Living on the edge: A survey of digital twin-assisted task offloading in safety-critical environments</em> published in <strong>Journal of Network and Computer Applications (JNCA)</strong>.
                         </div>
                     </div>
@@ -298,8 +228,8 @@
             <!-- Section 4: Selected Publications -->
             <section id="publications" class="feed-card">
                 <div class="section-header">
-                    <h2 class="section-title"><span>🔬</span> Selected Publications</h2>
-                    <a href="https://scholar.google.com.br/citations?user=CsC6auoAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" class="section-action-link">Full Google Scholar (240+ citations) →</a>
+                    <h2 class="section-title"><span>🔬</span> <span data-i18n="publications.title">Selected Publications</span></h2>
+                    <a href="https://scholar.google.com.br/citations?user=CsC6auoAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" class="section-action-link" data-i18n="publications.scholar_link">Full Google Scholar (240+ citations) →</a>
                 </div>
 
                 <div class="pub-list">
@@ -436,9 +366,10 @@
 
     <!-- Site Footer -->
     <footer class="site-footer">
-        <p>&copy; 2026 Pedro Rafael Ximenes. All rights reserved. • Hosted on GitHub Pages</p>
+        <p data-i18n="footer.copyright">&copy; 2026 Pedro Rafael Ximenes. All rights reserved. • Hosted on GitHub Pages</p>
     </footer>
 
+    <script src="assets/js/i18n.js"></script>
     <script src="assets/js/script.js"></script>
 </body>
 </html>
