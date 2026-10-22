@@ -38,7 +38,7 @@
             "courses.cg_desc": "Vector spaces, 3x3 and 4x4 homogeneous matrices, 2D/3D geometric transformations, change of basis, projections, and real-time Canvas/WebGL pipelines.",
             "courses.cg_cta": "View Course & Lectures →",
             "courses.aa_title": "⚡ Analysis of Algorithms",
-            "courses.aa_desc": "Asymptotic complexity (Big-O, Ω, Θ), iterative analysis, Master Theorem for recursive algorithms, and computational tractability (P class).",
+            "courses.aa_desc": "Asymptotic complexity (Big-O, Ω, Θ), iterative analysis, Master Theorem for recursive algorithms, and computational tractability (P and NP classes).",
             "courses.aa_cta": "View Course & Lectures →",
             "courses.as_title": "🌐 Systems Architecture",
             "courses.as_desc": "Distributed systems architectural models, structured naming & DNS, microservices decomposition, and Docker container orchestration.",
@@ -84,6 +84,7 @@
             "btn.project_guidelines": "📋 Project Guidelines (PDF)",
             "btn.interactive_demo": "📊 Interactive Graph (Slide 16)",
             "btn.lab_practice": "🧪 Lab Practice (GitHub)",
+            "btn.complement_np": "📚 NP-Completeness (Complement)",
 
             // Footer & Theme
             "footer.copyright": "© 2026 Pedro Rafael Ximenes. All rights reserved. • Hosted on GitHub Pages",
@@ -122,7 +123,7 @@
             "courses.cg_desc": "Espaços vetoriais, matrizes homogêneas 3x3 e 4x4, transformações geométricas 2D/3D, mudança de base, projeções e pipelines gráficos interativos com Canvas e WebGL.",
             "courses.cg_cta": "Acessar Disciplina e Aulas →",
             "courses.aa_title": "⚡ Análise de Algoritmos",
-            "courses.aa_desc": "Complexidade assintótica (Big-O, Ω, Θ), análise iterativa, Teorema Mestre para algoritmos recursivos e tratabilidade computacional (classe P).",
+            "courses.aa_desc": "Complexidade assintótica (Big-O, Ω, Θ), análise iterativa, Teorema Mestre para algoritmos recursivos, tratabilidade computacional e classes P vs NP.",
             "courses.aa_cta": "Acessar Disciplina e Aulas →",
             "courses.as_title": "🌐 Arquitetura de Sistemas",
             "courses.as_desc": "Modelos arquiteturais de sistemas distribuídos, nomeação estruturada e DNS, decomposição em microsserviços e orquestração de containers com Docker.",
@@ -168,6 +169,7 @@
             "btn.project_guidelines": "📋 Diretrizes do Projeto (PDF)",
             "btn.interactive_demo": "📊 Gráfico Interativo (Slide 16)",
             "btn.lab_practice": "🧪 Prática de Laboratório (GitHub)",
+            "btn.complement_np": "📚 NP-Completude (Complemento)",
 
             // Footer & Theme
             "footer.copyright": "© 2026 Pedro Rafael Ximenes. Todos os direitos reservados. • Hospedado no GitHub Pages",
