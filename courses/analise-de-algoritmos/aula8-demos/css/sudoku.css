@@ -1,0 +1,118 @@
+/* ============================================================
+   SUDOKU — grade, estados das células e legenda
+   ============================================================ */
+
+.race-bar {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 20px;
+}
+
+.sudoku-grid {
+  --n: 9;
+  display: grid;
+  grid-template-columns: repeat(var(--n), 1fr);
+  width: 100%;
+  max-width: 460px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  border: 3px solid var(--border-strong);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--border-strong);
+  gap: 1px;
+}
+
+.sudoku-grid.size-4 {
+  --n: 4;
+  max-width: 300px;
+}
+
+.cell {
+  background: var(--bg-cell);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: clamp(14px, 2.6vw, 22px);
+  color: var(--text-primary);
+  position: relative;
+  transition: background-color 0.12s ease;
+  min-width: 0;
+}
+
+.size-4 .cell {
+  font-size: clamp(20px, 5vw, 30px);
+}
+
+/* Bordas grossas entre blocos */
+.cell.box-right { border-right: 2px solid var(--border-strong); }
+.cell.box-bottom { border-bottom: 2px solid var(--border-strong); }
+
+.cell.given {
+  background: var(--bg-cell-given);
+  color: var(--text-primary);
+}
+
+/* Os tons "soft" são translúcidos: pintados sobre a cor sólida da célula,
+   para o fundo escuro da grade (as linhas) não vazar */
+.cell.placed { color: var(--c-solve); }
+.cell.unit { background: linear-gradient(var(--c-verify-soft), var(--c-verify-soft)), var(--bg-cell); }
+.cell.seen { color: var(--c-verify); }
+.cell.cursor { background: linear-gradient(rgba(16, 185, 129, 0.45), rgba(16, 185, 129, 0.45)), var(--bg-cell); }
+.cell.try { background: linear-gradient(var(--c-warn-soft), var(--c-warn-soft)), var(--bg-cell); outline: 2px solid var(--c-warn); outline-offset: -2px; color: var(--c-warn); }
+.cell.conflict { background: linear-gradient(var(--c-solve-soft), var(--c-solve-soft)), var(--bg-cell); outline: 2px solid var(--c-solve); outline-offset: -2px; color: var(--c-solve); }
+.cell.ok-flash { background: linear-gradient(var(--c-verify-soft), var(--c-verify-soft)), var(--bg-cell); }
+.cell.given.ok-flash { background: linear-gradient(var(--c-verify-soft), var(--c-verify-soft)), var(--bg-cell-given); }
+
+/* Grade editável do desafio */
+.cell input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font: inherit;
+  color: var(--c-info);
+  outline: none;
+  caret-color: var(--c-info);
+}
+
+.cell input:focus {
+  background: var(--c-info-soft);
+}
+
+/* Legenda */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: -6px;
+}
+
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sw {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid var(--border-subtle);
+}
+
+.sw-given { background: var(--bg-cell-given); }
+.sw-unit { background: var(--c-verify-soft); border-color: var(--c-verify); }
+.sw-try { background: var(--c-warn-soft); border: 2px solid var(--c-warn); }
+.sw-placed { background: var(--bg-cell); border: 2px solid var(--c-solve); }
+.sw-conflict { background: var(--c-solve-soft); border: 2px solid var(--c-solve); }

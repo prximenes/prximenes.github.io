@@ -187,6 +187,35 @@ document.addEventListener('DOMContentLoaded', () => {
     sidePrevBtn.disabled = (currentPage <= 1);
     nextBtn.disabled = (currentPage >= totalPages);
     sideNextBtn.disabled = (currentPage >= totalPages);
+
+    // Sincronizar URL hash com slide atual (#6)
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState(null, '', '#' + currentPage);
+    }
+
+    updateDemoBanner();
+  }
+
+  // Banner das Demos Interativas (Sudoku, Mochila, Significado de NP)
+  const DEMO_BANNERS = [
+    { pages: [6, 24, 25], icon: '🧩', href: '../aula8-demos/sudoku.html', title: 'Demo Interativa: Sudoku', text: 'Corrida verificador vs. resolvedor: 243 cheques contra milhares de tentativas.' },
+    { pages: [7, 8], icon: '🎒', href: '../aula8-demos/mochila.html', title: 'Demo Interativa: Mochila 0-1', text: 'Monte a mochila, veja o verificador conferir e a força bruta testar os 2ⁿ subconjuntos.' },
+    { pages: [14, 15, 16, 17, 18], icon: '🔮', href: '../aula8-demos/significado-np.html', title: 'Demo Interativa: O que significa NP?', text: 'Robô comum, robô que se clona e robô sortudo: não determinismo sem máquina de Turing.' }
+  ];
+
+  function updateDemoBanner() {
+    const banner = document.getElementById('demo-interactive-banner');
+    if (!banner) return;
+    const demo = DEMO_BANNERS.find((d) => d.pages.includes(currentPage));
+    if (!demo) {
+      banner.style.display = 'none';
+      return;
+    }
+    document.getElementById('demo-banner-icon').textContent = demo.icon;
+    document.getElementById('demo-banner-title').textContent = demo.title;
+    document.getElementById('demo-banner-text').textContent = demo.text;
+    document.getElementById('demo-banner-link').href = demo.href;
+    banner.style.display = 'block';
   }
 
   // Controles de Zoom

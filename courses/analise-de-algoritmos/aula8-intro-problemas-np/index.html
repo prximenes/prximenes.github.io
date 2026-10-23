@@ -55,6 +55,11 @@
           <span>📚</span> <span>NP-Completude (Complemento)</span>
         </a>
 
+        <!-- Demos Interativas -->
+        <a href="../aula8-demos/index.html" target="_blank" class="warsaw-tool-btn demo-btn" title="Demos Interativas: Sudoku, Mochila e o Significado de NP">
+          <span>🎮</span> <span>Demos</span>
+        </a>
+
         <!-- Tela Cheia -->
         <button id="fullscreen-btn" class="warsaw-tool-btn" title="Alternar Modo Tela Cheia (F)">
           <span>⛶</span>
@@ -81,6 +86,20 @@
     <!-- Setas Laterais Flutuantes -->
     <button id="side-prev-btn" class="side-nav-btn prev" title="Slide Anterior (←)">‹</button>
     <button id="side-next-btn" class="side-nav-btn next" title="Próximo Slide (→)">›</button>
+
+    <!-- Banner Dinâmico das Demos Interativas (Slides 6, 7–8, 14–18, 24–25) -->
+    <div id="demo-interactive-banner" class="slide16-interactive-banner" style="display: none;">
+      <div class="banner-content">
+        <span class="banner-icon" id="demo-banner-icon">🎮</span>
+        <div class="banner-text">
+          <strong id="demo-banner-title">Demo Interativa</strong>
+          <span id="demo-banner-text"></span>
+        </div>
+        <a href="../aula8-demos/index.html" id="demo-banner-link" target="_blank" class="banner-action-btn">
+          Abrir Demo ↗
+        </a>
+      </div>
+    </div>
 
     <!-- Wrapper do Canvas do Slide -->
     <div id="canvas-wrapper" class="slide-canvas-wrapper">

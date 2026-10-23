@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mochila 0-1: Verificar vs. Resolver — Aula 8 (Slides 7–8)</title>
+  <meta name="description" content="Demo interativa da Aula 8 de Análise de Algoritmos (UNICAP): monte a mochila, veja o verificador conferir em O(n) e a força bruta percorrer todos os 2ⁿ subconjuntos.">
+
+  <link rel="icon" type="image/svg+xml" href="../../../assets/images/favicon.svg">
+  <link rel="shortcut icon" href="../../../favicon.ico">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/mochila.css">
+</head>
+<body>
+
+  <header id="warsaw-header">
+    <div class="warsaw-section-bar">
+      <div class="warsaw-left-group">
+        <a href="../aula8-intro-problemas-np/index.html#7" class="warsaw-nav-back" title="Voltar para o Slide 7 da Aula 8">← Slide 7 (Aula 8)</a>
+        <span class="warsaw-tag">UNICAP</span>
+        <span class="warsaw-header-title">Mochila 0-1: Verificar vs. Resolver</span>
+      </div>
+      <div class="warsaw-tools">
+        <button id="fullscreen-btn" class="warsaw-tool-btn" title="Alternar Modo Tela Cheia (F)"><span>⛶</span></button>
+        <button id="theme-toggle-btn" class="warsaw-tool-btn" title="Alternar Tema Claro/Escuro"><span>🌙</span> <span>Escuro</span></button>
+      </div>
+    </div>
+    <div class="warsaw-subsection-bar">
+      <nav class="demo-tabs" aria-label="Demos da Aula 8">
+        <a href="index.html" class="demo-tab">Demos</a>
+        <a href="sudoku.html" class="demo-tab">🧩 Sudoku</a>
+        <a href="mochila.html" class="demo-tab active">🎒 Mochila</a>
+        <a href="significado-np.html" class="demo-tab">🔮 O que é NP?</a>
+      </nav>
+      <span style="opacity: 0.85;">Prof. Pedro Ximenes • 2026.2</span>
+    </div>
+  </header>
+
+  <div class="app-container">
+
+    <div class="intro-banner">
+      <h1><span>🎒</span> A caverna do tesouro</h1>
+      <p>
+        Você é um explorador numa caverna cheia de tesouros, mas sua mochila aguenta no máximo <strong>C kg</strong>.
+        A pergunta de decisão (<a href="../aula8-intro-problemas-np/index.html#7">Slide 7</a>) é:
+        <em>dá para levar pelo menos <strong>V</strong> moedas de valor sem estourar a mochila?</em>
+        Escolher os itens é difícil. Conferir uma escolha pronta (<a href="../aula8-intro-problemas-np/index.html#8">Slide 8</a>) é só somar.
+      </p>
+    </div>
+
+    <!-- ============================================================
+         MONTE A SUA MOCHILA + VERIFICADOR
+         ============================================================ -->
+    <div class="card instance-bar">
+      <span class="panel-title"><span>🗺️</span> Instância</span>
+      <div class="pill-group" id="size-pills">
+        <button class="pill active" data-n="4">Slide 8 (4 itens)</button>
+        <button class="pill" data-n="8">8 itens</button>
+        <button class="pill" data-n="12">12 itens</button>
+        <button class="pill" data-n="16">16 itens</button>
+      </div>
+      <span class="instance-goal" id="instance-goal"></span>
+    </div>
+
+    <div class="main-side">
+      <div class="card accent-info">
+        <div class="card-title"><span>🖐️</span> Monte a sua mochila <span class="text-muted" style="font-size: 13px; font-weight: 600;">clique nos tesouros</span></div>
+        <div class="items-grid" id="items-grid"></div>
+
+        <div class="bag-meters">
+          <div class="meter">
+            <div class="meter-head"><span>⚖️ Peso</span><span class="mono" id="w-text">0 / 9 kg</span></div>
+            <div class="meter-bar"><span id="w-bar"></span><i class="meter-limit" style="left: 100%;"></i></div>
+          </div>
+          <div class="meter">
+            <div class="meter-head"><span>🪙 Valor</span><span class="mono" id="v-text">0 / meta 12</span></div>
+            <div class="meter-bar"><span id="v-bar"></span><i class="meter-limit" id="v-limit"></i></div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn" id="greedy-btn" title="Pega sempre o item mais valioso que ainda cabe">🤑 Atalho guloso: mais valioso primeiro</button>
+          <button class="btn" id="empty-btn">↺ Esvaziar mochila</button>
+          <button class="btn btn-magic" id="oracle-btn" title="Mostra uma solução (como se alguém soprasse a resposta)">🔮 Pedir a resposta ao oráculo</button>
+        </div>
+        <div class="callout" id="pick-msg">Tente achar uma combinação que vale pelo menos a meta sem passar do peso.</div>
+      </div>
+
+      <div class="card accent-verify">
+        <div class="card-title"><span>🔍</span> Verificador (Slide 8)</div>
+        <p class="card-sub">Certificado = a lista de itens escolhidos, <span class="mono" id="cert-text">T = { }</span>.</p>
+        <ul class="check-list" id="check-list">
+          <li id="chk-1"><span class="mark">1</span><div><strong>T ⊆ itens?</strong> <span id="chk-1-detail"></span></div></li>
+          <li id="chk-2"><span class="mark">2</span><div><strong>Peso total ≤ C?</strong> <span id="chk-2-detail"></span></div></li>
+          <li id="chk-3"><span class="mark">3</span><div><strong>Valor total ≥ V?</strong> <span id="chk-3-detail"></span></div></li>
+        </ul>
+        <div class="verdict" id="verdict">—</div>
+        <div class="stat">
+          <span class="stat-label">Custo da verificação</span>
+          <span class="stat-value text-verify" id="verify-cost">0 somas</span>
+          <span class="stat-hint">uma soma de peso e uma de valor por item: O(n)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         FORÇA BRUTA: TODOS OS 2^n SUBCONJUNTOS
+         ============================================================ -->
+    <div class="card accent-solve">
+      <div class="card-title"><span>🔦</span> Resolver por força bruta: testar <em>todas</em> as mochilas possíveis</div>
+      <p class="card-sub">Cada quadradinho é um subconjunto de itens (cada item entra ou não: 2 opções por item, <span class="mono" id="space-size">2⁴ = 16</span> mochilas). O resolvedor sem atalhos precisa testar um por um. A sua mochila atual é o quadradinho com o anel dourado: verificar é olhar <strong>só ele</strong>.</p>
+
+      <div class="brute-layout">
+        <div class="brute-canvas-wrap" id="brute-wrap">
+          <canvas id="brute-canvas"></canvas>
+          <canvas id="brute-overlay"></canvas>
+        </div>
+
+        <div class="brute-side">
+          <div class="btn-row">
+            <button class="btn btn-solve" id="brute-btn">▶ Testar todas</button>
+            <button class="btn" id="brute-pause-btn">⏸ Pausar</button>
+            <button class="btn" id="brute-reset-btn">↺</button>
+          </div>
+          <div class="speed-control">
+            <span>🐢</span>
+            <input type="range" id="brute-speed" min="0" max="100" value="20">
+            <span>🐇</span>
+            <span class="mono" id="brute-speed-label"></span>
+          </div>
+
+          <div class="panel-title" style="margin-top: 4px;"><span>🎒</span> Mochila sendo testada</div>
+          <div class="bits-row" id="bits-row"></div>
+          <div class="mono current-line" id="current-line">—</div>
+
+          <div class="stat-row">
+            <div class="stat">
+              <span class="stat-label">Testadas</span>
+              <span class="stat-value text-solve" id="b-tested">0</span>
+              <span class="stat-hint" id="b-tested-hint">de 16</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Soluções</span>
+              <span class="stat-value text-verify" id="b-found">0</span>
+              <span class="stat-hint">peso ≤ C e valor ≥ V</span>
+            </div>
+          </div>
+          <div class="progress"><span id="b-progress" style="background: var(--c-solve);"></span></div>
+
+          <div class="legend-col">
+            <span><i class="sw" style="background: var(--sq-untested);"></i> ainda não testada</span>
+            <span><i class="sw" style="background: var(--sq-heavy);"></i> estoura o peso</span>
+            <span><i class="sw" style="background: var(--sq-light);"></i> cabe, mas vale pouco</span>
+            <span><i class="sw" style="background: var(--sq-valid);"></i> solução (SIM!)</span>
+          </div>
+        </div>
+      </div>
+      <div class="callout" id="brute-msg">Aperte “Testar todas” e acompanhe a busca.</div>
+    </div>
+
+    <!-- ============================================================
+         ESCALA
+         ============================================================ -->
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title"><span>📏</span> E com mais itens?</div>
+        <p class="card-sub">Computador fazendo 10⁹ operações por segundo. Arraste n (os números do Slide 7 são n = 20, 60 e 100).</p>
+        <div class="speed-control">
+          <span>n =</span>
+          <input type="range" id="scale-n" min="1" max="100" value="20" style="flex: 1;">
+          <span class="mono stat-value" id="scale-n-label" style="font-size: 20px; min-width: 44px;">20</span>
+        </div>
+        <div class="stat-row">
+          <div class="stat">
+            <span class="stat-label">Mochilas possíveis</span>
+            <span class="stat-value" id="scale-subsets">—</span>
+            <span class="stat-hint">2ⁿ</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label text-solve">Resolver (força bruta)</span>
+            <span class="stat-value text-solve" id="scale-solve">—</span>
+            <span class="stat-hint" id="scale-solve-hint">2ⁿ · n operações</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label text-verify">Verificar</span>
+            <span class="stat-value text-verify" id="scale-verify">—</span>
+            <span class="stat-hint" id="scale-verify-hint">2n operações</span>
+          </div>
+        </div>
+        <div class="callout" id="scale-msg"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span>💡</span> O que levar para a aula</div>
+        <div class="callout bad"><strong>O atalho guloso falha.</strong> Na instância do slide, pegar o mais valioso primeiro (🗿 + 🏺) dá 11 moedas, mas 👑 + 💍 + 🏺 dá 12. Não existe regra simples conhecida que sempre acerte.</div>
+        <div class="callout warn"><strong>Resolver = procurar no tabuleiro inteiro.</strong> Cada item a mais <em>dobra</em> o número de quadradinhos: 2ⁿ.</div>
+        <div class="callout ok"><strong>Verificar = olhar um quadradinho.</strong> Some os pesos, some os valores, compare com C e V: O(n).</div>
+        <div class="callout magic"><strong>O oráculo</strong> (botão 🔮) é a pessoa que “sopra” a resposta. Se a resposta é SIM, existe um sopro que o verificador aceita. É exatamente isso que significa estar em NP.</div>
+      </div>
+    </div>
+  </div>
+
+  <footer id="warsaw-footline">
+    <div>Prof. Pedro Ximenes • UNICAP — Análise de Algoritmos</div>
+    <div>Aula 8: Introdução a Problemas NP • Slides 7–8 Interativos</div>
+    <div>
+      <span>Itens: <kbd>1</kbd>…<kbd>9</kbd></span>
+      <span>Força bruta: <kbd>Espaço</kbd></span>
+      <span>Tela Cheia: <kbd>F</kbd></span>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script src="js/mochila.js"></script>
+</body>
+</html>

@@ -1,0 +1,303 @@
+/* ============================================================
+   O QUE SIGNIFICA NP — nome, árvore de escolhas, analogias e quiz
+   ============================================================ */
+
+/* Bloco do nome N + P */
+.name-card {
+  gap: 18px;
+}
+
+.name-letters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 700px) {
+  .name-letters {
+    grid-template-columns: 1fr;
+  }
+}
+
+.letter-box {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 18px;
+  align-items: center;
+  padding: 16px 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+}
+
+.letter-box.magic { background: var(--c-magic-soft); border-color: var(--c-magic); }
+.letter-box.verify { background: var(--c-verify-soft); border-color: var(--c-verify); }
+
+.letter {
+  grid-row: span 2;
+  font-family: 'Outfit', sans-serif;
+  font-size: 72px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.letter-box.magic .letter { color: var(--c-magic); }
+.letter-box.verify .letter { color: var(--c-verify); }
+
+.letter-word {
+  font-family: 'Outfit', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.letter-hint {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.letter-hint strong {
+  color: var(--text-primary);
+}
+
+.myth {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--c-solve-soft);
+  border: 1px solid var(--c-solve);
+}
+
+.myth-wrong {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 17px;
+  color: var(--c-solve);
+  text-decoration: line-through;
+  text-decoration-thickness: 3px;
+}
+
+.myth-arrow {
+  font-weight: 800;
+  color: var(--c-solve);
+}
+
+/* Barra de modo */
+.mode-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.k-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  flex-wrap: wrap;
+}
+
+.k-control input {
+  width: 64px;
+  padding: 6px 8px;
+  border-radius: 7px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-inset);
+  color: var(--text-primary);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* Árvore */
+.tree-wrap {
+  width: 100%;
+  overflow-x: auto;
+  background: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 8px;
+}
+
+#tree {
+  display: block;
+  width: 100%;
+  min-width: 720px;
+  height: auto;
+}
+
+#tree .edge {
+  stroke: var(--border-strong);
+  stroke-width: 1.6;
+  opacity: 0.45;
+  transition: stroke 0.15s ease, opacity 0.15s ease;
+}
+
+#tree .edge.take { stroke-dasharray: none; }
+#tree .edge.skip { stroke-dasharray: 4 4; }
+
+#tree .edge.trail { stroke: var(--c-info); opacity: 0.9; stroke-width: 2.4; }
+#tree .edge.clone { stroke: var(--c-magic); opacity: 0.95; stroke-width: 2.4; }
+#tree .edge.cert { stroke: var(--c-verify); opacity: 1; stroke-width: 4; }
+
+#tree .node circle {
+  fill: var(--bg-cell);
+  stroke: var(--border-strong);
+  stroke-width: 1.5;
+  transition: fill 0.15s ease, stroke 0.15s ease;
+}
+
+#tree .node text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  fill: var(--text-secondary);
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+}
+
+#tree .node.leaf text {
+  font-size: 12px;
+}
+
+#tree .node.seen circle { stroke: var(--c-info); }
+#tree .node.seen text { fill: var(--text-primary); }
+#tree .node.cloned circle { stroke: var(--c-magic); }
+#tree .node.cloned text { fill: var(--text-primary); }
+#tree .node.yes circle { fill: var(--c-verify); stroke: var(--c-verify); }
+#tree .node.yes text { fill: #fff; }
+#tree .node.no circle { fill: var(--c-solve-soft); stroke: var(--c-solve); }
+#tree .node.no text { fill: var(--c-solve); }
+#tree .node.target circle { stroke: var(--c-verify); stroke-width: 3; stroke-dasharray: 3 3; }
+
+#tree .level-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  fill: var(--text-secondary);
+  dominant-baseline: central;
+}
+
+#tree .edge-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  dominant-baseline: central;
+  text-anchor: middle;
+}
+
+#tree .edge-label.take { fill: var(--c-verify); }
+#tree .edge-label.skip { fill: var(--text-muted); }
+
+#tree .robot {
+  font-size: 22px;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+}
+
+#tree .robot.small { font-size: 15px; }
+
+#tree .bubble {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  text-anchor: middle;
+  fill: var(--c-verify);
+}
+
+/* Tabela comparativa */
+.compare-table td {
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* Analogias */
+.analogy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.analogy p {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.analogy p strong {
+  color: var(--text-primary);
+}
+
+.analogy-emoji {
+  font-size: 36px;
+  line-height: 1;
+}
+
+/* Quiz */
+.quiz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.quiz-card {
+  text-align: left;
+  font-family: inherit;
+  color: var(--text-primary);
+  background: var(--bg-inset);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.quiz-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-active);
+}
+
+.quiz-statement {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.quiz-answer {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  display: none;
+}
+
+.quiz-card.open .quiz-answer {
+  display: block;
+}
+
+.quiz-card.open.true { border-color: var(--c-verify); background: var(--c-verify-soft); }
+.quiz-card.open.false { border-color: var(--c-solve); background: var(--c-solve-soft); }
+
+.quiz-tag {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.quiz-card.open.true .quiz-tag { color: var(--c-verify); }
+.quiz-card.open.false .quiz-tag { color: var(--c-solve); }

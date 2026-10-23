@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demos Interativas — Aula 8 (Problemas NP)</title>
+  <meta name="description" content="Demos interativas da Aula 8 de Análise de Algoritmos (UNICAP): Sudoku, Mochila 0-1 e o significado de NP.">
+
+  <link rel="icon" type="image/svg+xml" href="../../../assets/images/favicon.svg">
+  <link rel="shortcut icon" href="../../../favicon.ico">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header id="warsaw-header">
+    <div class="warsaw-section-bar">
+      <div class="warsaw-left-group">
+        <a href="../aula8-intro-problemas-np/index.html" class="warsaw-nav-back" title="Voltar para os slides da Aula 8">← Slides (Aula 8)</a>
+        <a href="../index.html" class="warsaw-nav-back" title="Página da disciplina">Disciplina</a>
+        <span class="warsaw-tag">UNICAP</span>
+        <span class="warsaw-header-title">Aula 8 — Demos Interativas</span>
+      </div>
+      <div class="warsaw-tools">
+        <button id="fullscreen-btn" class="warsaw-tool-btn" title="Alternar Modo Tela Cheia (F)"><span>⛶</span></button>
+        <button id="theme-toggle-btn" class="warsaw-tool-btn" title="Alternar Tema Claro/Escuro"><span>🌙</span> <span>Escuro</span></button>
+      </div>
+    </div>
+    <div class="warsaw-subsection-bar">
+      <nav class="demo-tabs" aria-label="Demos da Aula 8">
+        <a href="index.html" class="demo-tab active">Demos</a>
+        <a href="sudoku.html" class="demo-tab">🧩 Sudoku</a>
+        <a href="mochila.html" class="demo-tab">🎒 Mochila</a>
+        <a href="significado-np.html" class="demo-tab">🔮 O que é NP?</a>
+      </nav>
+      <span style="opacity: 0.85;">Prof. Pedro Ximenes • 2026.2</span>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <div class="intro-banner">
+      <h1><span>🎮</span> Resolver vs. verificar, na prática</h1>
+      <p>Três demos para usar junto com os slides da Aula 8. Cada uma tem um link de volta para o slide que ela ilustra.</p>
+    </div>
+
+    <div class="hub-grid">
+      <a href="sudoku.html" class="card hub-card accent-verify">
+        <div class="hub-emoji">🧩</div>
+        <span class="hub-slide">Slide 6</span>
+        <div class="card-title">Sudoku: verificar vs. resolver</div>
+        <p class="card-sub" style="margin-top: 0;">Corrida lado a lado: o verificador confere a grade em 243 cheques enquanto o resolvedor faz dezenas de milhares de tentativas. Inclui desafio para a turma resolver com cronômetro.</p>
+      </a>
+
+      <a href="mochila.html" class="card hub-card accent-solve">
+        <div class="hub-emoji">🎒</div>
+        <span class="hub-slide">Slides 7–8</span>
+        <div class="card-title">Mochila 0-1: a caverna do tesouro</div>
+        <p class="card-sub" style="margin-top: 0;">Monte a mochila e veja o verificador do Slide 8 conferir na hora. Depois, assista à força bruta pintar os 2ⁿ subconjuntos um por um, e veja o atalho guloso falhar.</p>
+      </a>
+
+      <a href="significado-np.html" class="card hub-card accent-magic">
+        <div class="hub-emoji">🔮</div>
+        <span class="hub-slide">Slides 14–17</span>
+        <div class="card-title">O que significa NP?</div>
+        <p class="card-sub" style="margin-top: 0;">Tempo Polinomial Não Determinístico sem máquina de Turing: um robô comum, um robô que se clona a cada escolha e um robô sortudo (o certificado). Fecha com um quiz de verdadeiro ou falso.</p>
+      </a>
+    </div>
+  </div>
+
+  <footer id="warsaw-footline">
+    <div>Prof. Pedro Ximenes • UNICAP — Análise de Algoritmos</div>
+    <div>Aula 8: Introdução a Problemas NP</div>
+    <div><span>Tela Cheia: <kbd>F</kbd></span></div>
+  </footer>
+
+  <script src="js/common.js"></script>
+</body>
+</html>

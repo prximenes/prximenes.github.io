@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>O que significa NP? — Aula 8 (Slides 14–17)</title>
+  <meta name="description" content="Demo interativa da Aula 8 de Análise de Algoritmos (UNICAP): o significado de Tempo Polinomial Não Determinístico explicado com robôs que se clonam, chutes de sorte e certificados, sem máquina de Turing.">
+
+  <link rel="icon" type="image/svg+xml" href="../../../assets/images/favicon.svg">
+  <link rel="shortcut icon" href="../../../favicon.ico">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/significado.css">
+</head>
+<body>
+
+  <header id="warsaw-header">
+    <div class="warsaw-section-bar">
+      <div class="warsaw-left-group">
+        <a href="../aula8-intro-problemas-np/index.html#16" class="warsaw-nav-back" title="Voltar para o Slide 16 da Aula 8">← Slide 16 (Aula 8)</a>
+        <span class="warsaw-tag">UNICAP</span>
+        <span class="warsaw-header-title">O que significa NP?</span>
+      </div>
+      <div class="warsaw-tools">
+        <button id="fullscreen-btn" class="warsaw-tool-btn" title="Alternar Modo Tela Cheia (F)"><span>⛶</span></button>
+        <button id="theme-toggle-btn" class="warsaw-tool-btn" title="Alternar Tema Claro/Escuro"><span>🌙</span> <span>Escuro</span></button>
+      </div>
+    </div>
+    <div class="warsaw-subsection-bar">
+      <nav class="demo-tabs" aria-label="Demos da Aula 8">
+        <a href="index.html" class="demo-tab">Demos</a>
+        <a href="sudoku.html" class="demo-tab">🧩 Sudoku</a>
+        <a href="mochila.html" class="demo-tab">🎒 Mochila</a>
+        <a href="significado-np.html" class="demo-tab active">🔮 O que é NP?</a>
+      </nav>
+      <span style="opacity: 0.85;">Prof. Pedro Ximenes • 2026.2</span>
+    </div>
+  </header>
+
+  <div class="app-container">
+
+    <!-- ============================================================
+         1. O NOME
+         ============================================================ -->
+    <div class="card name-card">
+      <div class="name-letters">
+        <div class="letter-box magic">
+          <div class="letter">N</div>
+          <div class="letter-word">Não determinístico</div>
+          <div class="letter-hint">o computador pode <strong>se clonar</strong> a cada escolha (ou, o que dá no mesmo, <strong>chutar certo</strong>)</div>
+        </div>
+        <div class="letter-box verify">
+          <div class="letter">P</div>
+          <div class="letter-word">Polinomial</div>
+          <div class="letter-hint">e termina em <strong>poucos passos de relógio</strong>: n, n², n³…</div>
+        </div>
+      </div>
+      <div class="myth">
+        <span class="myth-wrong">NP = “Não Polinomial”</span>
+        <span class="myth-arrow">✗</span>
+        <span>Esse é o erro mais comum! O “N” não é de <em>não</em>, é de <em>não determinístico</em>.</span>
+      </div>
+    </div>
+
+    <div class="intro-banner">
+      <h1><span>🤖</span> Três computadores, um mesmo problema</h1>
+      <p>
+        Vamos usar a Soma de Subconjunto do <a href="../aula8-intro-problemas-np/index.html#9">Slide 9</a>: dado <span class="mono">S = {3, 5, 7, 11, 13}</span>, existe um subconjunto que soma <span class="mono">k</span>?
+        Cada número exige uma decisão: <strong>pega</strong> ou <strong>não pega</strong>. As decisões formam uma árvore. Cada folha é um subconjunto, e o caminho até ela diz quais números foram pegos.
+        A pergunta é: <em>como cada computador encontra a folha certa?</em>
+      </p>
+    </div>
+
+    <!-- ============================================================
+         2. A ÁRVORE DE ESCOLHAS
+         ============================================================ -->
+    <div class="card">
+      <div class="mode-bar">
+        <div class="pill-group" id="mode-pills">
+          <button class="pill active" data-mode="det">🤖 Computador comum</button>
+          <button class="pill" data-mode="nd">🌌 Computador mágico (clones)</button>
+          <button class="pill" data-mode="lucky">🍀 Chute de sorte = certificado</button>
+        </div>
+        <div class="k-control">
+          <label for="k-input">Alvo k =</label>
+          <input type="number" id="k-input" value="25" min="0" max="39">
+          <button class="btn" data-k="25" title="Instância do Slide 9 (resposta SIM)">25 (SIM)</button>
+          <button class="btn" data-k="9" title="Nenhum subconjunto soma 9 (resposta NÃO)">9 (NÃO)</button>
+        </div>
+      </div>
+
+      <div class="callout" id="mode-explain"></div>
+
+      <div class="tree-wrap">
+        <svg id="tree" viewBox="-120 -20 1100 420" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Árvore de decisões pega / não pega"></svg>
+      </div>
+
+      <div class="btn-row" style="justify-content: space-between;">
+        <div class="btn-row">
+          <button class="btn btn-info" id="play-btn">▶ Rodar</button>
+          <button class="btn" id="step-btn">⏭ Um passo</button>
+          <button class="btn" id="reset-btn">↺ Reiniciar</button>
+        </div>
+        <div class="speed-control">
+          <span>🐢</span>
+          <input type="range" id="speed" min="0" max="100" value="45">
+          <span>🐇</span>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat">
+          <span class="stat-label">⏱️ Tempo (passos do relógio)</span>
+          <span class="stat-value text-info" id="st-time">0</span>
+          <span class="stat-hint" id="st-time-hint"></span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">🤖 Robôs ao mesmo tempo</span>
+          <span class="stat-value text-magic" id="st-robots">1</span>
+          <span class="stat-hint" id="st-robots-hint"></span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">🧮 Trabalho total</span>
+          <span class="stat-value text-warn" id="st-work">0</span>
+          <span class="stat-hint">soma do esforço de todos os robôs</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">🍃 Folhas conferidas</span>
+          <span class="stat-value" id="st-leaves">0</span>
+          <span class="stat-hint">de 32 subconjuntos</span>
+        </div>
+      </div>
+
+      <div class="callout" id="tree-msg">Aperte <strong>Rodar</strong>.</div>
+    </div>
+
+    <!-- ============================================================
+         3. COMPARAÇÃO
+         ============================================================ -->
+    <div class="card">
+      <div class="card-title"><span>⚖️</span> Comparando os três</div>
+      <div class="table-scroll">
+        <table class="data-table compare-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Tempo para n números</th>
+              <th>Robôs</th>
+              <th>Existe de verdade?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>🤖 Comum</strong> (determinístico)</td>
+              <td class="text-solve">até 2ⁿ caminhos: <strong>exponencial</strong></td>
+              <td>1</td>
+              <td>✅ é o seu notebook</td>
+            </tr>
+            <tr>
+              <td><strong>🌌 Mágico</strong> (não determinístico)</td>
+              <td class="text-verify">n passos: <strong>polinomial</strong></td>
+              <td class="text-solve">2ⁿ clones</td>
+              <td>❌ é um modelo teórico</td>
+            </tr>
+            <tr>
+              <td><strong>🍀 Chute de sorte</strong> + verificador</td>
+              <td class="text-verify">n passos: <strong>polinomial</strong></td>
+              <td>1</td>
+              <td>⚠️ o <em>verificador</em> existe; o chute certo precisa vir de alguém (o certificado)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="big-quote">
+        Um problema está em <span class="text-magic">NP</span> quando o <span class="text-magic">computador mágico</span> o resolve em <span class="text-verify">tempo polinomial</span>.<br>
+        <span style="font-size: 0.8em; color: var(--text-secondary);">Isso é o mesmo que dizer: dado o chute certo (certificado), <span class="text-verify">verificar</span> é polinomial (Slide 14).</span>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         4. ANALOGIAS
+         ============================================================ -->
+    <div class="analogy-grid">
+      <div class="card analogy">
+        <div class="analogy-emoji">🌳</div>
+        <div class="card-title">O labirinto com clones</div>
+        <p>A cada bifurcação, você não escolhe: <strong>se divide em dois</strong> e cada cópia segue por um lado. Se alguma cópia acha a saída, ela grita “achei!”. O tempo é só o comprimento do caminho, mesmo com milhões de cópias andando ao mesmo tempo.</p>
+      </div>
+      <div class="card analogy">
+        <div class="analogy-emoji">📝</div>
+        <div class="card-title">A prova de Verdadeiro ou Falso</div>
+        <p>Com n questões, existem 2ⁿ gabaritos. Quem tenta todos precisa fazer 2ⁿ provas. Um aluno <strong>sortudo</strong> chuta tudo certo de primeira, e o professor corrige em n passos. NP = problemas em que existe um “gabarito” que dá para <strong>corrigir rápido</strong>.</p>
+      </div>
+      <div class="card analogy">
+        <div class="analogy-emoji">🔑</div>
+        <div class="card-title">O molho de chaves (Slide 17)</div>
+        <p>2ⁿ chaves e uma fechadura. O comum testa chave por chave. O mágico pega a certa “por intuição”. Mas atenção: <strong>testar se uma chave abre</strong> é rápido para os dois. É essa parte que faz o problema estar em NP.</p>
+      </div>
+      <div class="card analogy">
+        <div class="analogy-emoji">🧙</div>
+        <div class="card-title">Ver todos os futuros</div>
+        <p>Sabe o feiticeiro de filme que “viu 14 milhões de futuros” para achar o único em que os heróis vencem? Isso é não determinismo: explorar <strong>todas as possibilidades ao mesmo tempo</strong> e ficar com a que dá certo.</p>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         5. POR QUE NÃO EXISTE? (ESCALA)
+         ============================================================ -->
+    <div class="two-col">
+      <div class="card accent-magic">
+        <div class="card-title"><span>🌌</span> Por que não construímos o computador mágico?</div>
+        <p class="card-sub">Ele termina em n passos… mas precisa de 2ⁿ robôs trabalhando ao mesmo tempo. Arraste n:</p>
+        <div class="speed-control">
+          <span>n =</span>
+          <input type="range" id="scale-n" min="1" max="100" value="60" style="flex: 1;">
+          <span class="mono stat-value" id="scale-n-label" style="font-size: 20px; min-width: 44px;">60</span>
+        </div>
+        <div class="stat-row">
+          <div class="stat">
+            <span class="stat-label">Passos do mágico</span>
+            <span class="stat-value text-verify" id="scale-time">60</span>
+            <span class="stat-hint">n (polinomial)</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Clones necessários</span>
+            <span class="stat-value text-solve" id="scale-clones">—</span>
+            <span class="stat-hint">2ⁿ</span>
+          </div>
+        </div>
+        <div class="callout magic" id="scale-msg"></div>
+      </div>
+
+      <div class="card accent-info">
+        <div class="card-title"><span>💰</span> A pergunta de 1 milhão de dólares</div>
+        <p style="font-size: 13.5px; line-height: 1.6; color: var(--text-secondary);">
+          Todo problema que o <strong class="text-magic">computador mágico</strong> resolve em tempo polinomial
+          também pode ser resolvido em tempo polinomial por um <strong>computador comum</strong>, <em>sem mágica</em>?
+        </p>
+        <div class="big-quote">P <span class="text-magic">=</span> NP ?</div>
+        <div class="callout info">Ninguém sabe. É um dos 7 Problemas do Milênio do Instituto Clay, com prêmio de <strong>US$ 1 milhão</strong>. A maioria dos pesquisadores aposta que P ≠ NP: a mágica faria falta.</div>
+        <div class="callout"><strong>Sabemos que P ⊆ NP</strong>: se o computador comum já resolve rápido, o mágico também resolve (é só não usar os clones).</div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         6. VERDADEIRO OU FALSO
+         ============================================================ -->
+    <div class="card">
+      <div class="card-title"><span>🎯</span> Verdadeiro ou falso? <span class="text-muted" style="font-size: 13px; font-weight: 600;">clique para revelar</span></div>
+      <div class="quiz-grid" id="quiz"></div>
+    </div>
+  </div>
+
+  <footer id="warsaw-footline">
+    <div>Prof. Pedro Ximenes • UNICAP — Análise de Algoritmos</div>
+    <div>Aula 8: Introdução a Problemas NP • Slides 14–17 Interativos</div>
+    <div>
+      <span>Rodar: <kbd>Espaço</kbd></span>
+      <span>Passo: <kbd>→</kbd></span>
+      <span>Modos: <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></span>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script src="js/significado-np.js"></script>
+</body>
+</html>

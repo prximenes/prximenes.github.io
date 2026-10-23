@@ -85,6 +85,7 @@
             "btn.interactive_demo": "📊 Interactive Graph (Slide 16)",
             "btn.lab_practice": "🧪 Lab Practice (GitHub)",
             "btn.complement_np": "📚 NP-Completeness (Complement)",
+            "btn.demos_np": "🎮 Interactive Demos (Slides 6, 7–8, 14–17)",
 
             // Footer & Theme
             "footer.copyright": "© 2026 Pedro Rafael Ximenes. All rights reserved. • Hosted on GitHub Pages",
@@ -170,6 +171,7 @@
             "btn.interactive_demo": "📊 Gráfico Interativo (Slide 16)",
             "btn.lab_practice": "🧪 Prática de Laboratório (GitHub)",
             "btn.complement_np": "📚 NP-Completude (Complemento)",
+            "btn.demos_np": "🎮 Demos Interativas (Slides 6, 7–8, 14–17)",
 
             // Footer & Theme
             "footer.copyright": "© 2026 Pedro Rafael Ximenes. Todos os direitos reservados. • Hospedado no GitHub Pages",

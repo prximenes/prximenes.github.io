@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sudoku: Verificar vs. Resolver — Aula 8 (Slide 6)</title>
+  <meta name="description" content="Demo interativa da Aula 8 de Análise de Algoritmos (UNICAP): verificar uma grade de Sudoku custa 243 cheques, resolvê-la por tentativa e erro custa dezenas de milhares de tentativas.">
+
+  <link rel="icon" type="image/svg+xml" href="../../../assets/images/favicon.svg">
+  <link rel="shortcut icon" href="../../../favicon.ico">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/sudoku.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       CABEÇALHO FIXO WARSAW (DUPLA BARRA)
+       ============================================================ -->
+  <header id="warsaw-header">
+    <div class="warsaw-section-bar">
+      <div class="warsaw-left-group">
+        <a href="../aula8-intro-problemas-np/index.html#6" class="warsaw-nav-back" title="Voltar para o Slide 6 da Aula 8">← Slide 6 (Aula 8)</a>
+        <span class="warsaw-tag">UNICAP</span>
+        <span class="warsaw-header-title">Sudoku: Verificar vs. Resolver</span>
+      </div>
+      <div class="warsaw-tools">
+        <button id="fullscreen-btn" class="warsaw-tool-btn" title="Alternar Modo Tela Cheia (F)"><span>⛶</span></button>
+        <button id="theme-toggle-btn" class="warsaw-tool-btn" title="Alternar Tema Claro/Escuro"><span>🌙</span> <span>Escuro</span></button>
+      </div>
+    </div>
+    <div class="warsaw-subsection-bar">
+      <nav class="demo-tabs" aria-label="Demos da Aula 8">
+        <a href="index.html" class="demo-tab">Demos</a>
+        <a href="sudoku.html" class="demo-tab active">🧩 Sudoku</a>
+        <a href="mochila.html" class="demo-tab">🎒 Mochila</a>
+        <a href="significado-np.html" class="demo-tab">🔮 O que é NP?</a>
+      </nav>
+      <span style="opacity: 0.85;">Prof. Pedro Ximenes • 2026.2</span>
+    </div>
+  </header>
+
+  <div class="app-container">
+
+    <div class="intro-banner">
+      <h1><span>🧩</span> Resolver é difícil, verificar é fácil</h1>
+      <p>
+        Do <a href="../aula8-intro-problemas-np/index.html#6">Slide 6</a>: resolver um Sudoku difícil pode levar horas, mas conferir uma grade pronta leva segundos.
+        À esquerda, um <strong class="text-verify">verificador</strong> recebe a grade pronta (o <em>certificado</em>) e confere linhas, colunas e blocos.
+        À direita, um <strong class="text-solve">resolvedor</strong> parte da grade incompleta e vai chutando dígitos e voltando atrás quando erra.
+        Aperte <strong>Corrida</strong>: os dois andam na mesma velocidade.
+      </p>
+    </div>
+
+    <!-- ============================================================
+         CORRIDA: VERIFICADOR vs RESOLVEDOR
+         ============================================================ -->
+    <div class="card race-bar">
+      <div class="btn-row">
+        <button class="btn btn-info" id="race-btn" title="Inicia verificador e resolvedor juntos, na mesma velocidade">🏁 Corrida (mesma velocidade)</button>
+        <button class="btn" id="pause-btn" title="Pausar / continuar (Espaço)">⏸ Pausar</button>
+        <button class="btn" id="reset-all-btn" title="Reiniciar os dois lados">↺ Reiniciar tudo</button>
+      </div>
+      <div class="speed-control">
+        <span>🐢</span>
+        <input type="range" id="speed" min="0" max="100" value="30" title="Passos por segundo">
+        <span>🐇</span>
+        <span class="mono" id="speed-label">30 passos/s</span>
+      </div>
+      <div class="pill-group" id="puzzle-pills" title="Escolha o Sudoku do resolvedor">
+        <button class="pill active" data-puzzle="classic">Clássico (Slide 25)</button>
+        <button class="pill" data-puzzle="hard">“O mais difícil do mundo” (Inkala)</button>
+      </div>
+    </div>
+
+    <div class="callout info" id="race-msg">
+      Dica: comece devagar (🐢) para ver cada passo, depois acelere. O verificador sempre termina em <strong>243 cheques</strong>.
+    </div>
+
+    <div class="two-col">
+
+      <!-- Verificador -->
+      <div class="card accent-verify">
+        <div class="card-title"><span>🔍</span> Verificador <span class="text-muted" style="font-size: 13px; font-weight: 600;">recebe a grade pronta</span></div>
+        <div class="sudoku-grid" id="verify-grid" aria-label="Grade do verificador"></div>
+        <div class="stat-row">
+          <div class="stat">
+            <span class="stat-label">Cheques</span>
+            <span class="stat-value text-verify" id="v-checks">0</span>
+            <span class="stat-hint">de 243 no máximo</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Conferindo</span>
+            <span class="stat-value" id="v-unit" style="font-size: 16px;">—</span>
+            <span class="stat-hint" id="v-unit-hint">linhas → colunas → blocos</span>
+          </div>
+        </div>
+        <div class="progress"><span id="v-progress" style="background: var(--c-verify);"></span></div>
+        <div class="btn-row">
+          <button class="btn btn-verify" id="verify-btn">▶ Verificar</button>
+          <button class="btn" id="sabotage-btn" title="Troca dois dígitos de lugar: a grade deixa de ser solução">💥 Sabotar a grade</button>
+          <button class="btn" id="restore-btn">↺ Restaurar</button>
+        </div>
+        <div class="callout" id="verify-msg">O certificado é a grade 9×9 completa. Para cada linha, coluna e bloco: “já vi esse dígito?”</div>
+      </div>
+
+      <!-- Resolvedor -->
+      <div class="card accent-solve">
+        <div class="card-title"><span>🧠</span> Resolvedor <span class="text-muted" style="font-size: 13px; font-weight: 600;">tentativa e erro (backtracking)</span></div>
+        <div class="sudoku-grid" id="solve-grid" aria-label="Grade do resolvedor"></div>
+        <div class="stat-row">
+          <div class="stat">
+            <span class="stat-label">Tentativas</span>
+            <span class="stat-value text-solve" id="s-tries">0</span>
+            <span class="stat-hint" id="s-tries-hint">dígitos testados</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Voltas atrás</span>
+            <span class="stat-value text-warn" id="s-backs">0</span>
+            <span class="stat-hint">becos sem saída</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Vazias</span>
+            <span class="stat-value" id="s-empty">0</span>
+            <span class="stat-hint">células a preencher</span>
+          </div>
+        </div>
+        <div class="progress"><span id="s-progress" style="background: var(--c-solve);"></span></div>
+        <div class="btn-row">
+          <button class="btn btn-solve" id="solve-btn">▶ Resolver</button>
+          <button class="btn" id="solve-reset-btn">↺ Reiniciar</button>
+        </div>
+        <div class="callout" id="solve-msg">Algoritmo: na próxima célula vazia, tente 1, 2, …, 9. Se nenhum dígito couber, apague e volte para a célula anterior.</div>
+      </div>
+    </div>
+
+    <!-- Legenda -->
+    <div class="legend">
+      <span><i class="sw sw-given"></i> pista original</span>
+      <span><i class="sw sw-unit"></i> grupo sendo conferido</span>
+      <span><i class="sw sw-try"></i> tentativa atual</span>
+      <span><i class="sw sw-placed"></i> chute do resolvedor</span>
+      <span><i class="sw sw-conflict"></i> conflito / volta atrás</span>
+    </div>
+
+    <!-- ============================================================
+         DESAFIO DA TURMA
+         ============================================================ -->
+    <div class="main-side">
+      <div class="card accent-info">
+        <div class="card-title"><span>✍️</span> Desafio: você resolve, o computador verifica</div>
+        <p class="card-sub">Peça para alguém da turma resolver. O cronômetro começa no primeiro dígito. Depois, compare o tempo de resolver com o tempo de verificar.</p>
+        <div class="btn-row">
+          <div class="pill-group" id="challenge-pills">
+            <button class="pill active" data-size="4">Mini 4×4 (aquecimento)</button>
+            <button class="pill" data-size="9">9×9 (Slide 25)</button>
+          </div>
+        </div>
+        <div class="sudoku-grid editable" id="challenge-grid" aria-label="Grade do desafio"></div>
+        <div class="btn-row">
+          <button class="btn btn-verify" id="challenge-verify-btn">✔ Verificar minha grade</button>
+          <button class="btn" id="challenge-reveal-btn">👀 Mostrar solução</button>
+          <button class="btn" id="challenge-reset-btn">↺ Limpar</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="panel-title"><span>⏱️</span> Placar</div>
+        <div class="stat">
+          <span class="stat-label">Você (resolvendo)</span>
+          <span class="stat-value text-solve" id="c-timer">0:00</span>
+          <span class="stat-hint">cronômetro do humano</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Computador (verificando)</span>
+          <span class="stat-value text-verify" id="c-verify-time">—</span>
+          <span class="stat-hint" id="c-verify-hint">aperte “Verificar”</span>
+        </div>
+        <div class="callout" id="challenge-msg">Repare: para verificar, ninguém precisa saber <em>como</em> você chegou na resposta. Basta conferir as regras.</div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         E SE O SUDOKU CRESCER?
+         ============================================================ -->
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title"><span>📈</span> E se o Sudoku crescer?</div>
+        <p class="card-sub">Sudoku generalizado: grade N×N com N = k² (4×4, 9×9, 16×16, …). Supondo cerca de metade das células vazias:</p>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Grade</th>
+                <th class="text-verify">Verificar (3·N²)</th>
+                <th class="text-solve">Força bruta pura (N<sup>vazias</sup>)</th>
+              </tr>
+            </thead>
+            <tbody id="growth-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span>💡</span> O que levar para a aula</div>
+        <div class="callout ok"><strong>Verificar</strong> é mecânico: 3 grupos × N células. Para 9×9, sempre 243 cheques, não importa quão difícil seja o puzzle.</div>
+        <div class="callout bad"><strong>Resolver</strong> depende de sorte: o resolvedor não sabe qual dígito é o certo, então chuta e volta atrás. No puzzle de Inkala ele faz <strong>~446 mil</strong> tentativas.</div>
+        <div class="callout warn">O backtracking já é bem mais esperto que a força bruta pura (que testaria até 9<sup>51</sup> grades), mas ninguém conhece um método <strong>polinomial</strong> para o Sudoku N×N: ele é NP-completo (Slide 24).</div>
+        <div class="callout magic">Ponte para o próximo slide: o resolvedor seria instantâneo se alguém <strong>soprasse o dígito certo</strong> em cada célula. Esse “sopro” é o certificado.</div>
+      </div>
+    </div>
+  </div>
+
+  <footer id="warsaw-footline">
+    <div>Prof. Pedro Ximenes • UNICAP — Análise de Algoritmos</div>
+    <div>Aula 8: Introdução a Problemas NP • Slide 6 Interativo</div>
+    <div>
+      <span>Corrida: <kbd>R</kbd></span>
+      <span>Pausar: <kbd>Espaço</kbd></span>
+      <span>Tela Cheia: <kbd>F</kbd></span>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script src="js/sudoku.js"></script>
+</body>
+</html>
