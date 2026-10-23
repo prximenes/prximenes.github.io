@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Exemplo 3 – Sistema Solar (Three.js)</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #000; overflow: hidden; }
+    canvas { display: block; }
+    #info {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 15px;
+      background: rgba(0, 0, 0, 0.65);
+      padding: 8px 20px;
+      border-radius: 8px;
+      text-align: center;
+      pointer-events: none;
+    }
+    #clock {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      color: #aaa;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 6px 14px;
+      border-radius: 6px;
+      pointer-events: none;
+    }
+    #clock span { color: #ffdd55; }
+  </style>
+</head>
+<body>
+  <div id="info">Sistema Solar Simplificado – Animação automática (câmera de cima)</div>
+  <div id="clock">
+    Hora: <span id="hora">0</span>h &nbsp;|&nbsp;
+    Dia:  <span id="dia">0</span>
+  </div>
+
+  <!-- Biblioteca Three.js baixada localmente (evita problema de CORS ao abrir via file://) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+
+    // ================================================================
+    // OBJETIVO DESTE EXEMPLO
+    // Demonstrar hierarquia de grupos aninhados para simular órbitas.
+    // A chave: grupoTerra é FILHO de grupoSol. Quando grupoSol gira,
+    // grupoTerra (e tudo dentro dele) orbita junto automaticamente —
+    // sem nenhuma trigonometria manual!
+    //
+    // Hierarquia:
+    //   scene
+    //     └── grupoSol          ← girar aqui = rotação própria do Sol
+    //           ├── sol (mesh)
+    //           ├── halo (mesh)
+    //           └── grupoTerra  ← girar aqui = Terra orbita o Sol
+    //                 ├── terra (mesh, x=5)
+    //                 └── grupoLua (posição x=5, no centro da Terra)
+    //                       └── lua (mesh, x=1) ← girar aqui = Lua orbita Terra
+    // ================================================================
+
+    // --- PILAR 1: SCENE ---
+    const scene = new THREE.Scene(); // mundo 3D onde todos os astros existem
+
+    // --- PILAR 2: CAMERA  (posicionada diretamente acima, olhando para baixo) ---
+    const camera = new THREE.PerspectiveCamera(
+      55,                                     // FOV: campo de visão em graus
+      window.innerWidth / window.innerHeight,  // aspecto da janela
+      0.1,                                    // near: distância mínima de renderização
+      1000                                    // far: distância máxima de renderização
+    );
+    camera.position.set(0, 14, 0); // câmera em y=14 (acima do plano orbital), x=z=0
+    camera.up.set(1, 0, 0);        // IMPORTANTE: define qual direção é "cima" para a câmera;
+                                   // como lookAt aponta em -Y, precisamos que "cima" seja o eixo X
+    camera.lookAt(0, 0, 0);        // câmera olha para a origem (onde o Sol está)
+
+    // --- PILAR 3: RENDERER ---
+    const renderer = new THREE.WebGLRenderer({ antialias: true }); // renderizador com anti-serrilhamento
+    renderer.setSize(window.innerWidth, window.innerHeight);        // canvas = tamanho da janela
+    renderer.setClearColor(0x000011);                               // fundo azul-noite muito escuro
+    document.body.appendChild(renderer.domElement);                 // insere o canvas na página
+
+    // ================================================================
+    // ESTRELAS DE FUNDO
+    // THREE.Points renderiza um conjunto de pontos (cada estrela = 1 ponto).
+    // BufferGeometry é a forma mais eficiente de passar dados para a GPU.
+    // ================================================================
+    const starGeo = new THREE.BufferGeometry(); // geometria vazia que receberá os pontos
+    const starPositions = [];                   // array temporário com as posições xyz de cada estrela
+    for (let i = 0; i < 1200; i++) {           // gera 1200 estrelas aleatórias
+      starPositions.push(
+        (Math.random() - 0.5) * 300, // x aleatório entre -150 e +150
+        (Math.random() - 0.5) * 300, // y aleatório entre -150 e +150
+        (Math.random() - 0.5) * 300  // z aleatório entre -150 e +150
+      );
+    }
+    // Float32BufferAttribute: array de floats com 3 valores por vértice (x, y, z)
+    starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPositions, 3));
+    scene.add(new THREE.Points(
+      starGeo,                                              // geometria com as posições
+      new THREE.PointsMaterial({ color: 0xffffff, size: 0.3 }) // material: pontos brancos, tamanho 0.3
+    ));
+
+    // ================================================================
+    // SOL
+    // grupoSol é o pivô de rotação do Sol e o pai da órbita da Terra.
+    // Girar grupoSol.rotation.y = rotação própria do Sol.
+    // ================================================================
+    const grupoSol = new THREE.Group(); // pivô: tudo que girar em grupoSol orbita o Sol
+    scene.add(grupoSol);                // adiciona o grupo à cena
+
+    const sol = new THREE.Mesh(
+      new THREE.SphereGeometry(1.4, 32, 32),                      // esfera grande: raio=1.4, 32x32 segmentos
+      new THREE.MeshBasicMaterial({ color: 0xffdd00, wireframe: true }) // amarelo-ouro, wireframe
+    );
+    grupoSol.add(sol); // Sol é filho de grupoSol: gira com ele
+
+    const halo = new THREE.Mesh(
+      new THREE.SphereGeometry(1.6, 16, 16), // esfera um pouco maior que o Sol (raio=1.6)
+      new THREE.MeshBasicMaterial({
+        color: 0xff8800,    // laranja
+        wireframe: true,
+        transparent: true,  // habilita transparência
+        opacity: 0.15       // quase invisível: dá impressão de brilho difuso
+      })
+    );
+    grupoSol.add(halo); // halo também é filho do Sol
+
+    // ================================================================
+    // TERRA
+    // CHAVE DO EXEMPLO: grupoTerra é filho de grupoSol.
+    // Quando grupoSol.rotation.y muda, grupoTerra gira em torno do Sol
+    // automaticamente — sem calcular seno/cosseno!
+    // ================================================================
+    const grupoTerra = new THREE.Group(); // pivô da órbita da Terra em torno do Sol
+    grupoSol.add(grupoTerra);             // TERRA é filha do SOL → orbita junto
+
+    const terra = new THREE.Mesh(
+      new THREE.SphereGeometry(0.5, 20, 20),                      // esfera menor: raio=0.5
+      new THREE.MeshBasicMaterial({ color: 0x2255ff, wireframe: true }) // azul, wireframe
+    );
+    terra.position.x = 5;  // afasta a Terra 5 unidades do centro do grupoTerra (= distância ao Sol)
+    grupoTerra.add(terra);  // Terra é filha do grupoTerra
+
+    // Anel visual da órbita da Terra (decorativo, não se move)
+    const orbitaTerraGeo = new THREE.RingGeometry(4.98, 5.02, 64); // anel: raio interno ≈ raio externo ≈ 5
+    const orbitaTerra = new THREE.Mesh(
+      orbitaTerraGeo,
+      new THREE.MeshBasicMaterial({ color: 0x334466, side: THREE.DoubleSide }) // visível dos dois lados
+    );
+    orbitaTerra.rotation.x = Math.PI / 2; // o anel começa vertical; giramos 90° para ficar deitado no plano XZ
+    scene.add(orbitaTerra); // adicionado DIRETO à scene (não ao grupoSol) → fica fixo, não orbita
+
+    // ================================================================
+    // LUA
+    // grupoLua é filho de grupoTerra. Posicionado no CENTRO da Terra (x=5).
+    // A lua.position.x=1 define o raio da órbita em torno da Terra.
+    // Girar grupoLua.rotation.y = Lua orbita a Terra.
+    // ================================================================
+    const grupoLua = new THREE.Group(); // pivô da órbita da Lua em torno da Terra
+    grupoLua.position.x = 5;           // coloca o pivô no mesmo lugar que a Terra
+    grupoTerra.add(grupoLua);           // LUA é filha da TERRA → a órbita da Terra arrasta a Lua
+
+    const lua = new THREE.Mesh(
+      new THREE.SphereGeometry(0.18, 12, 12),                     // esfera pequena: raio=0.18
+      new THREE.MeshBasicMaterial({ color: 0xaaaaaa, wireframe: true }) // cinza, wireframe
+    );
+    lua.position.x = 1.0; // raio da órbita lunar: 1 unidade a partir do centro da Terra
+    grupoLua.add(lua);     // Lua é filha do grupoLua
+
+    // ================================================================
+    // RELÓGIO SIMULADO
+    // Cada frame = 1 hora simulada. Contadores avançam no loop.
+    // ================================================================
+    let hora = 0; // hora do dia atual (0–23)
+    let dia  = 0; // dia do ano atual (0–359)
+
+    // Referências aos elementos HTML do HUD para atualizar o texto
+    const elHora = document.getElementById('hora'); // <span id="hora">
+    const elDia  = document.getElementById('dia');  // <span id="dia">
+
+    // ================================================================
+    // LISTENER DE REDIMENSIONAMENTO
+    // ================================================================
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight; // corrige aspecto
+      camera.updateProjectionMatrix();                        // aplica à matriz de projeção
+      renderer.setSize(window.innerWidth, window.innerHeight); // redimensiona o canvas
+    });
+
+    // ================================================================
+    // LOOP DE ANIMAÇÃO
+    // ================================================================
+    const toRad = THREE.MathUtils.degToRad; // converte graus em radianos
+
+    function animate() {
+      requestAnimationFrame(animate); // agenda próximo frame (≈60fps)
+
+      // --- AVANÇAR O RELÓGIO ---
+      hora += 1;         // cada frame = 1 hora simulada
+      if (hora >= 24) {  // ao completar 24 horas...
+        hora = 0;        // zera as horas
+        dia += 1;        // ...avança 1 dia
+      }
+      if (dia >= 360) dia = 0; // ao completar 360 dias (1 ano), reinicia
+
+      // --- ROTAÇÕES ---
+
+      // Sol: rotação própria — 1 volta a cada 28 dias = 28 × 24 = 672 frames
+      // dia * (360/28) = quantos graus já girou desde o dia 0
+      grupoSol.rotation.y = toRad(dia * (360 / 28));
+
+      // Terra: órbita ao redor do Sol — 1 volta a cada 360 dias = 1 grau/dia
+      // Como grupoTerra é filho do grupoSol, a rotação de grupoSol JÁ move grupoTerra.
+      // A rotação abaixo adiciona o movimento orbital EXTRA da Terra.
+      grupoTerra.rotation.y = toRad(dia); // 1 grau por dia → 360 dias = 360°
+
+      // Terra: rotação própria — 1 volta a cada 24 horas = 15 graus/hora
+      // Aqui giramos o MESH terra diretamente (não o grupo), pois é rotação em torno do próprio eixo
+      terra.rotation.y = toRad(hora * 15); // 15° × 24h = 360° por dia
+
+      // Lua: órbita a Terra — 1 volta a cada 28 dias (igual ao Sol por simplificação)
+      grupoLua.rotation.y = toRad(dia * (360 / 28)); // herdará também o movimento orbital da Terra
+
+      // --- ATUALIZAR HUD ---
+      elHora.textContent = hora; // mostra a hora atual no elemento #hora
+      elDia.textContent  = dia;  // mostra o dia atual no elemento #dia
+
+      renderer.render(scene, camera); // desenha o frame
+    }
+
+    animate();
+  </script>
+</body>
+</html>

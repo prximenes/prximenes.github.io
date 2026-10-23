@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Project: Rubik's Cube (Three.js) | Computação Gráfica • UNICAP</title>
+    <link rel="icon" type="image/svg+xml" href="../../assets/images/favicon.svg">
+    <link rel="icon" type="image/png" sizes="64x64" href="../../assets/images/favicon.png">
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/style-dark.css?v=20261019" id="theme-link">
+    <link rel="stylesheet" href="../../assets/css/home.css?v=20261019">
+    <link rel="stylesheet" href="../../assets/css/courses.css?v=20261019">
+
+    <!-- Prism.js Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+
+    <style>
+        .project-page-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px 24px 64px;
+        }
+
+        /* Playground Header & Tabs */
+        .playground-section {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            margin-bottom: 40px;
+            backdrop-filter: blur(8px);
+        }
+
+        body.theme-light .playground-section {
+            background: #ffffff;
+            border-color: rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .tabs-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.25);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        body.theme-light .tabs-bar {
+            background: #f8fafc;
+            border-bottom-color: rgba(0, 0, 0, 0.08);
+        }
+
+        .tabs-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: transparent;
+            color: #94a3b8;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 13.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab-btn:hover {
+            color: #f8fafc;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        body.theme-light .tab-btn {
+            color: #475569;
+        }
+
+        body.theme-light .tab-btn:hover {
+            color: #0f172a;
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        .tab-btn.active {
+            color: #ffffff;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+        }
+
+        body.theme-light .tab-btn.active {
+            color: #ffffff;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        }
+
+        .tab-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Split-view Container: Half Code, Half Live Compiled */
+        .split-view {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 620px;
+            height: 72vh;
+            max-height: 820px;
+            background: #1e1e1e;
+        }
+
+        body.theme-light .split-view {
+            background: #f1f5f9;
+        }
+
+        @media (max-width: 992px) {
+            .split-view {
+                grid-template-columns: 1fr;
+                height: auto;
+                max-height: none;
+            }
+        }
+
+        /* Left Pane: Code Viewer */
+        .code-pane {
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            background: #18181b;
+            overflow: hidden;
+        }
+
+        body.theme-light .code-pane {
+            border-right-color: rgba(0, 0, 0, 0.1);
+            background: #1e293b;
+        }
+
+        .pane-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            background: rgba(0, 0, 0, 0.35);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+
+        .pane-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .pane-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pane-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #f1f5f9;
+            font-size: 11.5px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .pane-btn:hover {
+            background: rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+        }
+
+        .code-scroll-wrapper {
+            flex: 1;
+            overflow: auto;
+            position: relative;
+        }
+
+        .code-scroll-wrapper pre {
+            margin: 0 !important;
+            padding: 16px !important;
+            height: 100%;
+            background: transparent !important;
+            font-family: 'Fira Code', monospace !important;
+            font-size: 12.5px !important;
+            line-height: 1.55 !important;
+        }
+
+        /* Right Pane: Live Compiled Iframe */
+        .preview-pane {
+            display: flex;
+            flex-direction: column;
+            background: #09090b;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .preview-iframe-wrapper {
+            flex: 1;
+            position: relative;
+            background: #000;
+            display: flex;
+        }
+
+        .preview-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+            background: #111;
+        }
+
+        .preview-footer-hints {
+            padding: 8px 16px;
+            background: rgba(0, 0, 0, 0.7);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 12px;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .preview-footer-hints kbd {
+            background: rgba(255, 255, 255, 0.12);
+            color: #f8fafc;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 11px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Project Specs Section */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .specs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .spec-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 24px;
+        }
+
+        body.theme-light .spec-card {
+            background: #ffffff;
+            border-color: rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+        }
+
+        .spec-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #f8fafc;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        body.theme-light .spec-title {
+            color: #0f172a;
+        }
+
+        .req-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .req-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #cbd5e1;
+        }
+
+        body.theme-light .req-item {
+            color: #475569;
+        }
+
+        .req-bullet {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            background: rgba(37, 99, 235, 0.15);
+            color: #60a5fa;
+            font-weight: 700;
+            font-size: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .gold-tip-box {
+            background: rgba(234, 179, 8, 0.08);
+            border: 1px solid rgba(234, 179, 8, 0.3);
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-top: 18px;
+            color: #fef08a;
+            font-size: 13.5px;
+            line-height: 1.5;
+        }
+
+        body.theme-light .gold-tip-box {
+            background: #fffbeb;
+            border-color: #fde68a;
+            color: #854d0e;
+        }
+
+        .gold-tip-box strong {
+            color: #facc15;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        body.theme-light .gold-tip-box strong {
+            color: #b45309;
+        }
+    </style>
+</head>
+<body class="theme-dark home-body">
+
+    <!-- Top Navigation Header -->
+    <header class="site-header">
+        <a href="../../index.html" class="brand-title" style="display: inline-flex; align-items: center; gap: 8px;">
+            <img src="../../assets/images/favicon.svg" alt="Logo" width="24" height="24" style="border-radius: 6px;">
+            <span>Pedro Rafael</span>
+        </a>
+        <nav class="nav-menu" aria-label="Main Navigation">
+            <a href="../../index.html#about" data-i18n="nav.about">About</a>
+            <a href="../../courses.html" style="color: #e53935; font-weight: 700;" data-i18n="nav.courses">Courses</a>
+            <a href="../../index.html#news" data-i18n="nav.news">News</a>
+            <a href="../../index.html#publications" data-i18n="nav.publications">Publications</a>
+        </nav>
+        <div class="header-actions">
+            <div class="lang-switcher" id="lang-switcher" role="group" aria-label="Language selector">
+                <button type="button" class="lang-btn" data-lang="en">EN</button>
+                <button type="button" class="lang-btn" data-lang="pt">PT</button>
+            </div>
+            <button id="toggle-button" class="theme-toggle-btn" aria-label="Toggle dark/light theme">☀️ Light Mode</button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="disciplinas-page">
+        <main class="project-page-container">
+            <!-- Nav Header -->
+            <div class="nav-header">
+                <div>
+                    <div>
+                        <a href="../index.html" class="course-breadcrumb">← Voltar para Computação Gráfica</a>
+                        <span style="opacity: 0.4; margin: 0 6px;">•</span>
+                        <a href="../../courses.html" class="course-breadcrumb" data-i18n="nav.back_courses">Central de Aulas</a>
+                    </div>
+                    <h1 class="disciplinas-title" style="margin: 0;">🎲 Projeto 3D: Cubo Mágico (Rubik's Cube)</h1>
+                    <span class="disciplinas-subtitle">Simulação Interativa com Three.js &amp; Hierarquia de Transformações • UNICAP</span>
+                </div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <a href="ficha-avaliacao-cubo-magico.pdf" download class="share-discipline-btn" style="text-decoration: none; color: inherit;">
+                        📋 <span>Ficha de Avaliação (PDF)</span>
+                    </a>
+                    <a href="../transf3d-p3/transf3d-p3.pdf" download class="share-discipline-btn" style="text-decoration: none; color: inherit;">
+                        📄 <span>Slides da Prática (PDF)</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Badges & Intro -->
+            <div style="margin-bottom: 20px;">
+                <span class="badge-tag badge-red">Projeto Prático</span>
+                <span class="badge-tag badge-blue">Three.js + WebGL</span>
+                <span class="badge-tag badge-green">Split-View Playground</span>
+                <span class="badge-tag" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6; border: 1px solid rgba(139, 92, 246, 0.35); font-weight: 600;">Semestre 2026.2</span>
+            </div>
+
+            <p class="disciplinas-intro" style="max-width: 950px; margin-bottom: 28px;">
+                Ambiente interativo de desenvolvimento e estudo do <strong>Projeto do Cubo Mágico 3D</strong>. Explore os três exemplos preparatórios fundamentais lado a lado: <strong>o código-fonte completo</strong> de um lado e a <strong>aplicação WebGL compilada em tempo real</strong> do outro.
+            </p>
+
+            <!-- SPLIT-VIEW PLAYGROUND -->
+            <section class="playground-section">
+                <!-- Tabs Bar -->
+                <div class="tabs-bar">
+                    <div class="tabs-group" role="tablist">
+                        <button class="tab-btn active" onclick="switchExample(1)" id="tab-btn-1">
+                            <span>1️⃣</span> <span>Exemplo 1: Rotação Interativa</span>
+                        </button>
+                        <button class="tab-btn" onclick="switchExample(2)" id="tab-btn-2">
+                            <span>2️⃣</span> <span>Exemplo 2: Grupos e Escopo</span>
+                        </button>
+                        <button class="tab-btn" onclick="switchExample(3)" id="tab-btn-3">
+                            <span>3️⃣</span> <span>Exemplo 3: Sistema Solar</span>
+                        </button>
+                    </div>
+                    <div class="tab-actions">
+                        <span id="active-example-badge" style="font-size: 12px; color: #94a3b8; font-weight: 600;">
+                            ex1-rotacao.html
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Split View Area -->
+                <div class="split-view">
+                    <!-- Left: Code Pane (Metade Código) -->
+                    <div class="code-pane">
+                        <div class="pane-header">
+                            <div class="pane-title">
+                                <span>📄</span> <span id="code-filename">ex1-rotacao.html</span>
+                            </div>
+                            <div class="pane-controls">
+                                <button class="pane-btn" onclick="copyCode()" id="copy-btn" title="Copiar código-fonte completo">
+                                    📋 <span>Copiar</span>
+                                </button>
+                                <a id="download-raw-btn" href="ex1-rotacao.html" download class="pane-btn" title="Baixar arquivo HTML original">
+                                    💾 <span>Baixar HTML</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="code-scroll-wrapper">
+                            <pre class="line-numbers"><code id="code-display" class="language-html">Carregando código...</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Right: Live Preview Pane (Metade Compilada) -->
+                    <div class="preview-pane">
+                        <div class="pane-header">
+                            <div class="pane-title" style="color: #34d399;">
+                                <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10b981; margin-right: 2px; animation: pulse 2s infinite;"></span>
+                                <span>WebGL Three.js (Execução em Tempo Real)</span>
+                            </div>
+                            <div class="pane-controls">
+                                <button class="pane-btn" onclick="reloadPreview()" title="Recarregar simulação">
+                                    🔄 <span>Recarregar</span>
+                                </button>
+                                <a id="open-tab-btn" href="ex1-rotacao.html" target="_blank" class="pane-btn" title="Abrir em aba cheia separada">
+                                    ↗ <span>Tela Inteira</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="preview-iframe-wrapper">
+                            <iframe id="preview-frame" class="preview-iframe" src="ex1-rotacao.html" title="Live Three.js Demo"></iframe>
+                        </div>
+                        <div class="preview-footer-hints" id="controls-hint">
+                            <span>🎮 <strong>Controles:</strong> Clique no canvas para interagir. Use <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> para rotacionar e <kbd>PageUp</kbd> / <kbd>PageDown</kbd> para zoom.</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PROJECT DETAILS & GUIDELINES -->
+            <section class="specs-grid">
+                <!-- Requirements Column -->
+                <div class="spec-card">
+                    <h2 class="spec-title">
+                        <span>🎯</span> <span>Especificações do Projeto: Cubo Mágico 3D</span>
+                    </h2>
+                    <ul class="req-list">
+                        <li class="req-item">
+                            <span class="req-bullet">1</span>
+                            <div>
+                                <strong>Modelagem Completa $3 \times 3 \times 3$:</strong> Construir a geometria do cubo composto por exatamente <strong>27 cubinhos individuais</strong> com espaçamento adequado e as 6 cores canônicas aplicadas nas faces externas (Branco, Amarelo, Vermelho, Laranja, Azul, Verde).
+                            </div>
+                        </li>
+                        <li class="req-item">
+                            <span class="req-bullet">2</span>
+                            <div>
+                                <strong>Rotação das 6 Faces Principais ($90^\circ$):</strong> Implementar acionamento interativo para girar cada uma das 6 faces: <em>Right (R)</em>, <em>Left (L)</em>, <em>Up (U)</em>, <em>Down (D)</em>, <em>Front (F)</em> e <em>Back (B)</em>, em sentido horário e anti-horário.
+                            </div>
+                        </li>
+                        <li class="req-item">
+                            <span class="req-bullet">3</span>
+                            <div>
+                                <strong>Animação Suave &amp; Reancoragem:</strong> A rotação deve ser fluida e interpolada ao longo dos quadros via <code>requestAnimationFrame</code>. Ao finalizar a rotação de $90^\circ$, os cubinhos devem ter suas matrizes atualizadas e reancorados na cena global.
+                            </div>
+                        </li>
+                        <li class="req-item">
+                            <span class="req-bullet">4</span>
+                            <div>
+                                <strong>Câmera Orbital 3D:</strong> Controle livre de órbita (rotação do ponto de vista e zoom) para inspeção visual do cubo de qualquer ângulo.
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="gold-tip-box">
+                        <strong>💡 Dica de Ouro de Arquitetura (Three.js Hierarchy)</strong>
+                        Use grupos dinâmicos com <code>new THREE.Group()</code>. Ao girar uma face, filtre os 9 cubinhos pertencentes àquela coordenada de plano, adicione-os temporariamente ao grupo da face (<code>grupoFace.add(cubinho)</code>), anime a rotação do grupo e, ao atingir $\pm 90^\circ$, desfaça o grupo transferindo a transformação acumulada de volta para as posições globais da cena!
+                    </div>
+                </div>
+
+                <!-- Deliverables Column -->
+                <div class="spec-card">
+                    <h2 class="spec-title">
+                        <span>📦</span> <span>Entregáveis &amp; Recursos</span>
+                    </h2>
+                    <ul class="req-list" style="margin-bottom: 20px;">
+                        <li class="req-item">
+                            <span class="req-bullet">✓</span>
+                            <div>
+                                <strong>Repositório no GitHub:</strong> Código completo, com histórico de commits de todos os membros do grupo e <code>README.md</code> explicativo.
+                            </div>
+                        </li>
+                        <li class="req-item">
+                            <span class="req-bullet">✓</span>
+                            <div>
+                                <strong>Execução Web Direta:</strong> Arquivo <code>index.html</code> rodando Three.js diretamente no navegador sem etapas complexas de build.
+                            </div>
+                        </li>
+                        <li class="req-item">
+                            <span class="req-bullet">✓</span>
+                            <div>
+                                <strong>Relatório Técnico (PDF):</strong> Explicação das matrizes de transformação, hierarquia de nós utilizada e desafios superados.
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <a href="ficha-avaliacao-cubo-magico.pdf" download class="material-btn" style="text-align: center; justify-content: center; font-size: 13.5px;">
+                            📋 Baixar Ficha de Avaliação (PDF)
+                        </a>
+                        <a href="../transf3d-p3/index.html" class="material-btn material-btn-secondary" style="text-align: center; justify-content: center; font-size: 13.5px;">
+                            ▶ Abrir Slides da Aula (Three.js)
+                        </a>
+                        <a href="../transf3d-p3/transf3d-p3-teoria.pdf" download class="material-btn material-btn-secondary" style="text-align: center; justify-content: center; font-size: 13.5px;">
+                            📚 Baixar Teoria: Mudança de Base (PDF)
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Site Footer -->
+    <footer class="site-footer">
+        <p data-i18n="footer.copyright">&copy; 2026 Pedro Rafael Ximenes. All rights reserved. • Hosted on GitHub Pages</p>
+    </footer>
+
+    <!-- Prism.js Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+    <script src="../../assets/js/i18n.js?v=20261019"></script>
+    <script src="../../assets/js/script.js?v=20261019"></script>
+
+    <script>
+        const examples = {
+            1: {
+                file: 'ex1-rotacao.html',
+                name: 'Exemplo 1: Rotação Interativa',
+                hint: '🎮 <strong>Controles:</strong> Clique no canvas para focar. Use <kbd>←</kbd> <kbd>→</kbd> para girar em Y, <kbd>↑</kbd> <kbd>↓</kbd> para girar em X e <kbd>PageUp</kbd> / <kbd>PageDown</kbd> para zoom.'
+            },
+            2: {
+                file: 'ex2-escopo.html',
+                name: 'Exemplo 2: Grupos e Escopo',
+                hint: '🎮 <strong>Controles:</strong> Clique no canvas para focar. Use <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> para rotacionar as esferas e <kbd>PageUp</kbd> / <kbd>PageDown</kbd> para escala global.'
+            },
+            3: {
+                file: 'ex3-solar.html',
+                name: 'Exemplo 3: Sistema Solar',
+                hint: '☀️ <strong>Animação Automática:</strong> Hierarquia Sol → Terra → Lua com órbitas contínuas acopladas ao relógio de simulação.'
+            }
+        };
+
+        let currentEx = 1;
+        const codeCache = {};
+
+        function loadCode(exNum) {
+            const ex = examples[exNum];
+            const codeDisplay = document.getElementById('code-display');
+
+            if (codeCache[exNum]) {
+                codeDisplay.textContent = codeCache[exNum];
+                Prism.highlightElement(codeDisplay);
+                return;
+            }
+
+            fetch(ex.file)
+                .then(res => {
+                    if (!res.ok) throw new Error('Network error');
+                    return res.text();
+                })
+                .then(text => {
+                    codeCache[exNum] = text;
+                    codeDisplay.textContent = text;
+                    Prism.highlightElement(codeDisplay);
+                })
+                .catch(err => {
+                    codeDisplay.textContent = 'Não foi possível carregar o código automaticamente via rede. Você pode baixar o arquivo ' + ex.file + ' diretamente pelos botões acima.';
+                });
+        }
+
+        function switchExample(num) {
+            currentEx = num;
+            const ex = examples[num];
+
+            // Update tabs active state
+            document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+                btn.classList.toggle('active', (idx + 1) === num);
+            });
+
+            // Update file names & badges
+            document.getElementById('code-filename').textContent = ex.file;
+            document.getElementById('active-example-badge').textContent = ex.file;
+            document.getElementById('download-raw-btn').href = ex.file;
+            document.getElementById('open-tab-btn').href = ex.file;
+            document.getElementById('controls-hint').innerHTML = ex.hint;
+
+            // Update iframe preview
+            document.getElementById('preview-frame').src = ex.file;
+
+            // Load and highlight code
+            loadCode(num);
+        }
+
+        function reloadPreview() {
+            const iframe = document.getElementById('preview-frame');
+            iframe.src = iframe.src;
+        }
+
+        function copyCode() {
+            const code = document.getElementById('code-display').textContent;
+            const btn = document.getElementById('copy-btn');
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(code).then(() => {
+                    const original = btn.innerHTML;
+                    btn.innerHTML = '✓ <span>Copiado!</span>';
+                    btn.style.color = '#22c55e';
+                    setTimeout(() => {
+                        btn.innerHTML = original;
+                        btn.style.color = '';
+                    }, 2000);
+                });
+            }
+        }
+
+        // Initialize with Example 1
+        document.addEventListener('DOMContentLoaded', () => {
+            switchExample(1);
+        });
+    </script>
+</body>
+</html>

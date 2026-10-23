@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Exemplo 1 – Rotação Interativa (Three.js)</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #111; overflow: hidden; }
+    canvas { display: block; }
+    #info {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 15px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 8px 20px;
+      border-radius: 8px;
+      text-align: center;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    #info span { color: #ffdd55; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div id="info">
+    <span>← →</span> Rotacionar em Y &nbsp;|&nbsp;
+    <span>↑ ↓</span> Rotacionar em X &nbsp;|&nbsp;
+    <span>Page Up / Down</span> Zoom
+  </div>
+
+  <!-- Biblioteca Three.js baixada localmente (evita problema de CORS ao abrir via file://) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+
+    // ================================================================
+    // PILAR 1: SCENE  (o "mundo" onde todos os objetos vivem)
+    // Equivalente à tela em branco do Canvas 2D.
+    // Tudo que você criar precisa ser adicionado aqui com scene.add().
+    // ================================================================
+    const scene = new THREE.Scene();
+
+    // ================================================================
+    // PILAR 2: CAMERA  (o ponto de vista do observador)
+    // PerspectiveCamera simula a visão humana (objetos distantes parecem menores).
+    // ================================================================
+    const camera = new THREE.PerspectiveCamera(
+      45,                                    // campo de visão vertical em graus (FOV)
+      window.innerWidth / window.innerHeight, // aspecto da tela (largura / altura)
+      0.1,                                   // plano de corte próximo (near): objetos mais perto que 0.1 não aparecem
+      1000                                   // plano de corte distante (far): objetos além de 1000 não aparecem
+    );
+    camera.position.set(0, 2, 8); // posiciona a câmera: x=0 (centro), y=2 (um pouco acima), z=8 (afastada para frente)
+
+    // ================================================================
+    // PILAR 3: RENDERER 
+    // Equivalente ao contexto ctx do Canvas 2D, mas usa a GPU via WebGL.
+    // ================================================================
+    const renderer = new THREE.WebGLRenderer({ antialias: true }); // antialias=true suaviza bordas serrilhadas
+    renderer.setSize(window.innerWidth, window.innerHeight);        // define o tamanho do canvas = tamanho da janela
+    renderer.setClearColor(0x111111);                               // cor de fundo (cinza bem escuro, quase preto)
+    document.body.appendChild(renderer.domElement);                 // insere o <canvas> gerado pelo Three.js na página
+
+    // ================================================================
+    // GRUPO RAIZ  (escopo que engloba todos os objetos da cena)
+    // Análogo ao ctx.save() do Canvas: transformar o grupo afeta tudo dentro dele.
+    // ================================================================
+    const grupo = new THREE.Group(); // cria um objeto de agrupamento vazio
+    scene.add(grupo);                // adiciona o grupo à cena (sem isso ele não existe no mundo)
+
+    // ================================================================
+    // ESFERA WIREFRAME AMARELA
+    // Mesh = Geometry (forma) + Material (aparência) — sempre este par.
+    // ================================================================
+    const esfera = new THREE.Mesh(
+      new THREE.SphereGeometry(1, 24, 24),                           // esfera: raio=1, 24 fatias horizontais, 24 verticais
+      new THREE.MeshBasicMaterial({ color: 0xffff00, wireframe: true }) // material: amarelo (#ffff00), só arestas (wireframe)
+    );
+    // esfera.position é (0,0,0) por padrão → fica no centro do grupo
+    // esfera.position.y = 0.5; // desloca a esfera para cima: fica "em cima" da chapa (que tem altura 0.2, então 0.5 é um pouco acima do centro)
+    grupo.add(esfera); // adiciona a esfera ao grupo (não direto à scene)
+
+    // ================================================================
+    // CHAPA AZUL ACHATADA
+    // BoxGeometry com altura muito pequena (0.2) simula uma plataforma.
+    // ================================================================
+    const chapa = new THREE.Mesh(
+      new THREE.BoxGeometry(4, 0.2, 4),           // caixa: largura=4, altura=0.2 (achatada), profundidade=4
+      new THREE.MeshBasicMaterial({ color: 0x0044ff }) // material: azul sólido (sem wireframe)
+    );
+    chapa.position.y = -1.15; // desloca a chapa para baixo: fica logo abaixo da esfera (raio=1, então -1.15 encosta)
+    grupo.add(chapa);          // adiciona ao mesmo grupo que a esfera → os dois se movem juntos
+
+    // ================================================================
+    // VARIÁVEIS DE ESTADO DOS CONTROLES
+    // Armazenam o estado atual das transformações em unidades humanas.
+    // O loop de animação as lê a cada frame e aplica ao grupo.
+    // ================================================================
+    let alfa  = 0; // ângulo de rotação em torno do eixo X, em graus
+    let beta  = 0; // ângulo de rotação em torno do eixo Y, em graus
+    let delta = 1; // fator de escala uniforme (1 = tamanho original)
+
+    // ================================================================
+    // LISTENER DE TECLADO
+    // 'keydown' dispara uma vez a cada tecla pressionada.
+    // Cada tecla incrementa/decrementa a variável de estado correspondente.
+    // ================================================================
+    document.addEventListener('keydown', (e) => { // e.key contém o nome da tecla pressionada
+      switch (e.key) {
+        case 'ArrowRight': beta  -= 3; break; // seta direita → gira 3° no sentido horário em Y
+        case 'ArrowLeft':  beta  += 3; break; // seta esquerda → gira 3° no sentido anti-horário em Y
+        case 'ArrowUp':    alfa  -= 3; break; // seta cima → inclina 3° para trás em X
+        case 'ArrowDown':  alfa  += 3; break; // seta baixo → inclina 3° para frente em X
+        case 'PageUp':     delta  = Math.min(delta * 1.1, 5);   break; // Page Up → aumenta escala 10% (máx. 5x)
+        case 'PageDown':   delta  = Math.max(delta * 0.9, 0.2); break; // Page Down → diminui escala 10% (mín. 0.2x)
+      }
+    });
+
+    // ================================================================
+    // LISTENER DE REDIMENSIONAMENTO DA JANELA
+    // Sem isso, o canvas fica com proporção errada se a janela mudar.
+    // ================================================================
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight; // atualiza o aspecto da câmera
+      camera.updateProjectionMatrix();                        // re-calcula a matriz de projeção com o novo aspecto
+      renderer.setSize(window.innerWidth, window.innerHeight); // redimensiona o canvas
+    });
+
+    // ================================================================
+    // FUNÇÃO AUXILIAR: converter graus → radianos
+    // Three.js trabalha internamente com radianos, mas graus são mais intuitivos.
+    // toRad(90) → 1.5708... (π/2)
+    // ================================================================
+    const toRad = THREE.MathUtils.degToRad;
+
+    // ================================================================
+    // LOOP DE ANIMAÇÃO  (idêntico ao do Canvas 2D)
+    // requestAnimationFrame chama 'animate' antes de cada quadro do monitor
+    // (normalmente 60 vezes por segundo). É o coração de toda animação web.
+    // ================================================================
+    function animate() {
+      requestAnimationFrame(animate); // agenda a próxima chamada (cria o loop)
+
+      // Aplica as transformações acumuladas pelas teclas:
+      grupo.rotation.x = toRad(alfa); // rotação em X: inclinar para frente/trás
+      grupo.rotation.y = toRad(beta); // rotação em Y: girar esquerda/direita
+      grupo.scale.setScalar(delta);   // escala uniforme: mesmo valor em x, y e z
+
+      renderer.render(scene, camera); // desenha a cena vista pela câmera no canvas
+    }
+
+    animate();
+  </script>
+</body>
+</html>

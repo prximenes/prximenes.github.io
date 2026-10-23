@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Exemplo 2 – Grupos e Escopo (Three.js)</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #111; overflow: hidden; }
+    canvas { display: block; }
+    #info {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 15px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 8px 20px;
+      border-radius: 8px;
+      text-align: center;
+      pointer-events: none;
+    }
+    #info span { color: #ffdd55; font-weight: bold; }
+    #labels {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 13px;
+      color: #ccc;
+      background: rgba(0,0,0,0.5);
+      padding: 6px 16px;
+      border-radius: 6px;
+      pointer-events: none;
+    }
+    #labels .verm { color: #ff5555; font-weight: bold; }
+    #labels .amar { color: #ffff55; font-weight: bold; }
+    #labels .glob { color: #88aaff; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div id="info">
+    <span>← →  ↑ ↓</span> Rotacionar as esferas &nbsp;|&nbsp;
+    <span>Page Up / Down</span> Escala global (ambas)
+  </div>
+  <div id="labels">
+    <span class="verm">Esfera vermelha</span> (grupoVerm) &nbsp;|&nbsp;
+    <span class="amar">Esfera amarela</span> (grupoAmar) &nbsp;|&nbsp;
+    Escala afeta o <span class="glob">globalGroup</span>
+  </div>
+
+  <!-- Biblioteca Three.js baixada localmente (evita problema de CORS ao abrir via file://) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+
+    // ================================================================
+    // OBJETIVO DESTE EXEMPLO
+    // Demonstrar hierarquia de grupos: cada esfera tem sua rotação LOCAL,
+    // mas ambas compartilham uma escala GLOBAL através do globalGroup.
+    // Analogia: ctx.save() e ctx.restore() do Canvas 2D.
+    //
+    // Hierarquia:
+    //   globalGroup  ← escala aqui afeta TUDO
+    //     ├── grupoVerm  ← rotação aqui afeta só a esfera vermelha
+    //     │     └── esfVerm  (posicionada em x = +3)
+    //     └── grupoAmar  ← rotação aqui afeta só a esfera amarela
+    //           └── esfAmar  (posicionada em x = -3)
+    // ================================================================
+
+    // --- PILAR 1: SCENE ---
+    const scene = new THREE.Scene(); // contêiner de todos os objetos do mundo 3D
+
+    // --- PILAR 2: CAMERA ---
+    const camera = new THREE.PerspectiveCamera(
+      45,                                     // campo de visão (FOV) em graus
+      window.innerWidth / window.innerHeight,  // aspecto = largura / altura da janela
+      0.1,                                    // distância mínima de renderização (near)
+      1000                                    // distância máxima de renderização (far)
+    );
+    camera.position.set(0, 1.5, 12); // câmera levemente acima (y=1.5) e recuada (z=12)
+
+    // --- PILAR 3: RENDERER ---
+    const renderer = new THREE.WebGLRenderer({ antialias: true }); // renderizador WebGL com suavização de bordas
+    renderer.setSize(window.innerWidth, window.innerHeight);        // canvas ocupa toda a janela
+    renderer.setClearColor(0x111111);                               // fundo cinza escuro
+    document.body.appendChild(renderer.domElement);                 // insere o canvas gerado na página
+
+    // ================================================================
+    // GRUPO GLOBAL  (escopo raiz — controla escala de tudo)
+    // Equivale ao "ctx.save()" mais externo do Canvas.
+    // ================================================================
+    const globalGroup = new THREE.Group(); // grupo pai de todos os outros grupos
+    scene.add(globalGroup);                // adiciona à cena para que apareça na renderização
+
+    // ================================================================
+    // GEOMETRIA COMPARTILHADA
+    // As duas esferas têm a mesma forma (mesmo objeto SphereGeometry).
+    // Reutilizar economiza memória na GPU — só o material é diferente.
+    // ================================================================
+    const geoEsfera = new THREE.SphereGeometry(1, 24, 24); // esfera: raio=1, 24x24 segmentos
+
+    // ================================================================
+    // ESFERA VERMELHA
+    // grupoVerm é o "ctx.save()" local desta esfera.
+    // A posição x=+3 é definida no mesh, não no grupo,
+    // para que a rotação do grupo ocorra em torno da origem (0,0,0).
+    // ================================================================
+    const grupoVerm = new THREE.Group();   // grupo local da esfera vermelha
+    const esfVerm = new THREE.Mesh(
+      geoEsfera,                                                     // forma compartilhada
+      new THREE.MeshBasicMaterial({ color: 0xff3333, wireframe: true }) // material: vermelho, só arestas
+    );
+    esfVerm.position.x = 3;    // posiciona a esfera a +3 unidades no eixo X
+    grupoVerm.add(esfVerm);    // esfera entra no grupo local
+    globalGroup.add(grupoVerm); // grupo local entra no grupo raiz
+
+    // ================================================================
+    // ESFERA AMARELA  (mesma lógica da vermelha, lado oposto)
+    // ================================================================
+    const grupoAmar = new THREE.Group();   // grupo local da esfera amarela
+    const esfAmar = new THREE.Mesh(
+      geoEsfera,                                                     // mesma geometria
+      new THREE.MeshBasicMaterial({ color: 0xffff00, wireframe: true }) // material: amarelo, wireframe
+    );
+    esfAmar.position.x = -3;   // posiciona a esfera a -3 unidades no eixo X
+    grupoAmar.add(esfAmar);    // esfera entra no grupo local
+    globalGroup.add(grupoAmar); // grupo local entra no grupo raiz
+
+    // ================================================================
+    // LINHA DE REFERÊNCIA NO EIXO X
+    // Ajuda a visualizar o efeito da escala global.
+    // THREE.Line exige: BufferGeometry com pontos + LineBasicMaterial.
+    // ================================================================
+    const lineMat = new THREE.LineBasicMaterial({ color: 0x444444 }); // material de linha (cinza)
+    const lineGeo = new THREE.BufferGeometry().setFromPoints([        // geometria definida por dois pontos
+      new THREE.Vector3(-5, 0, 0), // extremidade esquerda da linha
+      new THREE.Vector3( 5, 0, 0)  // extremidade direita da linha
+    ]);
+    globalGroup.add(new THREE.Line(lineGeo, lineMat)); // adiciona a linha ao grupo raiz (escala global a afeta também)
+
+    // ================================================================
+    // VARIÁVEIS DE ESTADO DOS CONTROLES
+    // ================================================================
+    let alfa  = 0; // rotação em X em graus (compartilhada pelos dois grupos locais)
+    let beta  = 0; // rotação em Y em graus (compartilhada pelos dois grupos locais)
+    let delta = 1; // fator de escala do globalGroup (afeta tudo ao mesmo tempo)
+
+    // ================================================================
+    // LISTENER DE TECLADO
+    // Usa if em vez de switch — funciona da mesma forma, só é mais curto.
+    // ================================================================
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') beta  -= 3;                       // gira ambas as esferas para a direita
+      if (e.key === 'ArrowLeft')  beta  += 3;                       // gira ambas para a esquerda
+      if (e.key === 'ArrowUp')    alfa  -= 3;                       // inclina as esferas para trás
+      if (e.key === 'ArrowDown')  alfa  += 3;                       // inclina para frente
+      if (e.key === 'PageUp')     delta  = Math.min(delta * 1.1, 4);   // aumenta escala global 10% (máx. 4x)
+      if (e.key === 'PageDown')   delta  = Math.max(delta * 0.9, 0.2); // diminui escala global 10% (mín. 0.2x)
+    });
+
+    // ================================================================
+    // LISTENER DE REDIMENSIONAMENTO
+    // ================================================================
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight; // corrige aspecto da câmera
+      camera.updateProjectionMatrix();                        // aplica o novo aspecto
+      renderer.setSize(window.innerWidth, window.innerHeight); // redimensiona o canvas
+    });
+
+    // ================================================================
+    // LOOP DE ANIMAÇÃO
+    // ================================================================
+    const toRad = THREE.MathUtils.degToRad; // utilitário: converte graus em radianos
+
+    function animate() {
+      requestAnimationFrame(animate); // agenda a próxima chamada — cria o loop de 60fps
+
+      // Rotação LOCAL de cada grupo: as esferas giram de forma independente.
+      // (Aqui os valores são iguais; você poderia usar variáveis diferentes para
+      //  que cada esfera girasse em velocidade/direção diferente.)
+      grupoVerm.rotation.x = toRad(alfa); // inclina a esfera vermelha em X
+      grupoVerm.rotation.y = toRad(beta); // gira a esfera vermelha em Y
+      grupoAmar.rotation.x = toRad(alfa); // inclina a esfera amarela em X
+      grupoAmar.rotation.y = toRad(beta); // gira a esfera amarela em Y
+
+      // Escala GLOBAL: aplicada ao pai — propaga automaticamente para todos os filhos.
+      globalGroup.scale.setScalar(delta); // setScalar(v) é atalho para scale.set(v, v, v)
+
+      renderer.render(scene, camera); // desenha o frame atual
+    }
+
+    animate(); // dispara o loop pela primeira vez
+  </script>
+</body>
+</html>
