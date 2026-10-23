@@ -1,11 +1,11 @@
 /**
- * COMPUTAÇÃO GRÁFICA — TRANSFORMAÇÕES 3D (PARTE 3)
+ * COMPUTAÇÃO GRÁFICA — TRANSFORMAÇÕES 3D (PARTE 3: TEORIA)
  * Controlador do Visualizador de Slides PDF (PDF.js + Tema Warsaw Beamer)
  * Autor: Prof. Pedro Ximenes (UNICAP)
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  const pdfUrl = 'transf3d-p3.pdf';
+  const pdfUrl = 'transf3d-p3-teoria.pdf';
 
   // Configuração do Worker do PDF.js
   if (window.pdfjsLib) {

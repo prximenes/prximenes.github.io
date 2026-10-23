@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Computação Gráfica — Transformações Geométricas 3D (Parte 3)</title>
-  <meta name="description" content="Visualizador de slides da aula de Transformações Geométricas 3D (Parte 3) da UNICAP: Programação 3D com Three.js, Hierarquia de Grupos, Pilares de Cena e Projeto Cubo Mágico.">
+  <title>Computação Gráfica — Transformações Geométricas 3D (Parte 3: Teoria)</title>
+  <meta name="description" content="Visualizador de slides da aula de Transformações Geométricas 3D (Parte 3: Teoria) da UNICAP: Mudança de Sistemas de Coordenadas 3D, Matrizes de Transformação e Coordenadas Homogêneas.">
   
   <link rel="icon" type="image/svg+xml" href="../../../assets/images/favicon.svg">
   <link rel="shortcut icon" href="../../../favicon.ico">
@@ -26,7 +26,7 @@
         <a href="../../../courses.html" class="warsaw-nav-back" title="Voltar para a página de Cursos">← Courses</a>
         <a href="../index.html" class="warsaw-nav-back" style="margin-left: 4px;" title="Voltar para Computação Gráfica">🎨 Disciplina</a>
         <span class="warsaw-tag">UNICAP</span>
-        <span class="warsaw-header-title">Computação Gráfica — Transformações 3D (Parte 3)</span>
+        <span class="warsaw-header-title">Computação Gráfica — Transformações 3D (Parte 3: Teoria)</span>
       </div>
 
       <!-- Ferramentas Centrais / Direitas -->
@@ -34,8 +34,8 @@
         <!-- Navegação de Páginas -->
         <div class="page-nav-controls" title="Navegação rápida de slides">
           <button id="prev-btn" class="page-nav-btn" title="Slide Anterior (←)">◀</button>
-          <input type="number" id="page-num-input" class="page-nav-input" min="1" max="19" value="1" title="Ir para o slide">
-          <span class="page-nav-total">/ <span id="page-count">19</span></span>
+          <input type="number" id="page-num-input" class="page-nav-input" min="1" max="33" value="1" title="Ir para o slide">
+          <span class="page-nav-total">/ <span id="page-count">33</span></span>
           <button id="next-btn" class="page-nav-btn" title="Próximo Slide (→)">▶</button>
         </div>
 
@@ -46,14 +46,14 @@
           <button id="zoom-in-btn" class="font-zoom-btn" title="Aumentar Zoom (+)">A+</button>
         </div>
 
-        <!-- Botão Baixar PDF Prática Three.js -->
-        <a href="transf3d-p3.pdf" download class="warsaw-tool-btn primary-btn" title="Baixar Slides da Prática Three.js">
-          <span>📄</span> <span>PDF Prática</span>
+        <!-- Botão Baixar PDF Teórico -->
+        <a href="transf3d-p3-teoria.pdf" download class="warsaw-tool-btn primary-btn" title="Baixar Slides de Mudança de Sistema de Coordenadas 3D (Teoria)">
+          <span>📚</span> <span>PDF Teoria</span>
         </a>
 
-        <!-- Botão Baixar PDF Teórico -->
-        <a href="transf3d-p3-teoria.pdf" download class="warsaw-tool-btn" title="Baixar Slides de Mudança de Sistema de Coordenadas 3D (Teoria)">
-          <span>📚</span> <span>PDF Teoria</span>
+        <!-- Botão Baixar PDF Prática Three.js -->
+        <a href="transf3d-p3-pratica.pdf" download class="warsaw-tool-btn" title="Baixar Slides da Prática Three.js">
+          <span>📄</span> <span>PDF Prática</span>
         </a>
 
         <!-- Botão Projeto Cubo Mágico -->
@@ -75,7 +75,7 @@
 
     <!-- Segunda Barra (Subseção) -->
     <div class="warsaw-subsection-bar">
-      <span>› Programação 3D com Three.js &amp; Hierarquia de Transformações</span>
+      <span>› Mudança de Sistemas de Coordenadas 3D &amp; Matrizes de Transformação</span>
       <span style="opacity: 0.85;">Prof. Pedro Ximenes • Semestre Letivo 2026.2</span>
     </div>
   </header>
@@ -104,14 +104,14 @@
       <h3>Visualizador Indisponível</h3>
       <p>Não foi possível renderizar a prévia interativa no seu navegador. Você pode baixar ou abrir diretamente o arquivo PDF:</p>
       <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-        <a href="transf3d-p3.pdf" target="_blank" class="warsaw-tool-btn primary-btn" style="height: 36px; padding: 6px 16px; font-size: 13px;">
-          Abrir PDF no Navegador
+        <a href="transf3d-p3-teoria.pdf" target="_blank" class="warsaw-tool-btn primary-btn" style="height: 36px; padding: 6px 16px; font-size: 13px;">
+          Abrir PDF Teoria no Navegador
         </a>
-        <a href="transf3d-p3.pdf" download class="warsaw-tool-btn" style="height: 36px; padding: 6px 16px; font-size: 13px;">
-          Baixar PDF da Prática
+        <a href="transf3d-p3-teoria.pdf" download class="warsaw-tool-btn" style="height: 36px; padding: 6px 16px; font-size: 13px;">
+          Baixar PDF Teoria
         </a>
-        <a href="../projeto-cubo-magico/index.html" class="warsaw-tool-btn demo-btn" style="height: 36px; padding: 6px 16px; font-size: 13px;">
-          Ir para o Projeto Cubo Mágico
+        <a href="transf3d-p3-pratica.pdf" download class="warsaw-tool-btn" style="height: 36px; padding: 6px 16px; font-size: 13px;">
+          Baixar PDF Prática
         </a>
       </div>
     </div>
@@ -122,7 +122,7 @@
        ============================================================ -->
   <footer id="warsaw-footline">
     <div class="foot-left">Prof. Pedro Ximenes • UNICAP</div>
-    <div class="foot-mid">Transformações Geométricas 3D — Programação Three.js e Hierarquia de Escopos</div>
+    <div class="foot-mid">Transformações Geométricas 3D — Mudança de Sistemas de Coordenadas 3D (Teoria)</div>
     <div class="foot-right">
       <span>Navegar: <kbd>◄</kbd> <kbd>►</kbd> ou <kbd>Espaço</kbd></span>
       <span>Tela Cheia: <kbd>F</kbd></span>
