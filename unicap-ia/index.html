@@ -1185,37 +1185,76 @@ Inicie a simulação dizendo exatamente:
                 </div>
             </div>
 
-            <!-- PROMPTS PRONTOS DA AULA 3 -->
-            <h3 style="color: var(--unicap-primary); font-size: 1.2rem; margin: 1.5rem 0 0.5rem 0;">🛠️ Cardápio de Prompts: Avaliação Autêntica, Rubricas &amp; Feedback</h3>
-            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Utilize os prompts estruturados abaixo no Microsoft Copilot ou Google NotebookLM para auditar suas avaliações, construir rubricas observáveis e agilizar o feedback:</p>
-
-            <!-- PROMPT 7.1 -->
-            <div class="prompt-container">
-                <div class="prompt-header">
-                    <span>PROMPT 7.1: TESTE DE ROBUSTEZ DA AVALIAÇÃO COM IA (AUDITORIA ANTI-COLA)</span>
-                    <button class="btn-copy" onclick="copyPrompt('prompt-robustez-avaliacao')">📋 Copiar Prompt</button>
+                        <!-- ======================================================== -->
+            <!-- BLOCO 1: O LABORATÓRIO CENTRAL DA AULA (DESTAQUE MÁXIMO)    -->
+            <!-- ======================================================== -->
+            <div style="background: #fdf2f4; border: 2px solid var(--unicap-primary); border-radius: 12px; padding: 1.5rem; margin-top: 1.5rem; box-shadow: 0 4px 14px rgba(138, 21, 56, 0.08);">
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem;">
+                    <h3 style="color: var(--unicap-primary); font-size: 1.25rem; margin: 0;">🧪 Laboratório Central: Redesenhe sua Avaliação em 4 Passos</h3>
+                    <span style="background: var(--unicap-primary); color: white; padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.78rem; font-weight: 700; text-transform: uppercase;">Prática em Duplas · 13 Minutos</span>
                 </div>
-                <pre id="prompt-robustez-avaliacao" class="prompt-code">[PAPEL]: Atue como auditor pedagógico e especialista em avaliação autêntica no Ensino Superior.
+                <p style="font-size: 0.92rem; color: #475569; margin-bottom: 1rem; line-height: 1.6;">
+                    <strong>Dinâmica de Bancada:</strong> Junte-se com um colega ao lado. Abram o Copilot ou NotebookLM no celular ou notebook. Vocês usarão o <strong>Prompt Mestre</strong> abaixo para auditar uma avaliação real da sua disciplina e transformá-la em uma avaliação autêntica e resistente à cola passiva:
+                </p>
 
-[CONTEXTO]: Sou docente de [INSERIR DISCIPLINA] no curso de [INSERIR CURSO]. O objetivo de aprendizagem desta unidade é: "[INSERIR OBJETIVO DA TAXONOMIA DE BLOOM: ex.: diagnosticar falhas de segurança e propor contramedidas viáveis]".
+                <!-- 4 PASSOS EM GRID -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0.75rem; margin-bottom: 1.25rem;">
+                    <div style="background: white; border: 1px solid #fecdd3; border-radius: 8px; padding: 0.75rem;">
+                        <strong style="color: var(--unicap-primary); font-size: 0.85rem; display: block;">1. Escolha (1 min)</strong>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">Uma prova ou trabalho real e o verbo de Bloom do objetivo.</span>
+                    </div>
+                    <div style="background: white; border: 1px solid #fecdd3; border-radius: 8px; padding: 0.75rem;">
+                        <strong style="color: var(--unicap-primary); font-size: 0.85rem; display: block;">2. Teste (3 min)</strong>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">Cole o prompt abaixo e veja o que a IA entrega sozinha.</span>
+                    </div>
+                    <div style="background: white; border: 1px solid #fecdd3; border-radius: 8px; padding: 0.75rem;">
+                        <strong style="color: var(--unicap-primary); font-size: 0.85rem; display: block;">3. Redesenhe (4 min)</strong>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">Aplique processo visível, contexto real e defesa oral.</span>
+                    </div>
+                    <div style="background: white; border: 1px solid #fecdd3; border-radius: 8px; padding: 0.75rem;">
+                        <strong style="color: var(--unicap-primary); font-size: 0.85rem; display: block;">4. Rubrique (2 min)</strong>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">Exija 3 critérios observáveis em 3 níveis da IA.</span>
+                    </div>
+                </div>
+
+                <!-- PROMPT CENTRAL DO LABORATÓRIO -->
+                <div class="prompt-container" style="margin-top: 0.5rem; border: 2px solid var(--unicap-primary);">
+                    <div class="prompt-header" style="background: var(--unicap-primary); color: white;">
+                        <span style="font-weight: 700;">PROMPT CENTRAL DO LABORATÓRIO (SLIDE 17 · REDESENHO COMPLETO)</span>
+                        <button class="btn-copy" style="background: white; color: var(--unicap-primary); font-weight: 700;" onclick="copyPrompt('prompt-lab-redesenho-completo')">📋 Copiar Prompt do Laboratório</button>
+                    </div>
+                    <pre id="prompt-lab-redesenho-completo" class="prompt-code">Sou docente de [INSERIR DISCIPLINA] no curso de [INSERIR CURSO]. 
+O objetivo de aprendizagem desta unidade é: "[INSERIR OBJETIVO: ex.: diagnosticar falhas e propor intervenções viáveis]".
 Esta é a avaliação que costumo aplicar atualmente:
-"[COLAR AVALIAÇÃO / QUESTÃO / ENUNCIADO ATUAL]"
+"[COLAR AVALIAÇÃO / QUESTÃO / TRABALHO ATUAL]".
 
-[TAREFA]: Realize uma auditoria completa desta avaliação em 3 passos:
-1. Resolução pela IA: Resolva esta avaliação exatamente como um estudante universitário mediano responderia utilizando uma IA generativa padrão;
-2. Diagnóstico de Fragilidade: Aponte com precisão o que essa resposta gerada pela IA NÃO comprova sobre o objetivo de aprendizagem (o que o aluno consegue terceirizar sem demonstrar competência real);
-3. Redesenho Autêntico: Proponha 2 versões alternativas e reformuladas desta mesma avaliação aplicando as 4 alavancas da avaliação autêntica (Processo Visível, Contexto Real, Defesa Oral e Uso Declarado de IA).
-
-[RESTRIÇÕES]: Não proponha soluções meramente punitivas ou de vigilância. Foque no redesenho pedagógico que torne a IA um insumo de partida e evidencie a tomada de decisão do estudante.</pre>
+Execute as 4 etapas a seguir:
+1. Resolva esta avaliação exatamente como um estudante mediano utilizando IA generativa padrão;
+2. Aponte com precisão o que sua resposta gerada NÃO comprova sobre o objetivo de aprendizagem (o que o aluno consegue terceirizar sem demonstrar competência);
+3. Proponha uma versão redesenhada e alinhada ao objetivo, exigindo processo visível, contexto real da profissão e defesa da decisão tomada;
+4. Crie uma rubrica analítica com 3 critérios e 3 níveis (Em desenvolvimento, Proficiente, Avançado) com descritores observáveis para essa nova versão.</pre>
+                </div>
             </div>
 
-            <!-- PROMPT 7.2 -->
-            <div class="prompt-container">
-                <div class="prompt-header">
-                    <span>PROMPT 7.2: GERADOR DE RUBRICA ANALÍTICA COM CRITÉRIOS OBSERVÁVEIS</span>
-                    <button class="btn-copy" onclick="copyPrompt('prompt-rubrica-analitica')">📋 Copiar Prompt</button>
+            <!-- ======================================================== -->
+            <!-- BLOCO 2: PROMPTS DE APROFUNDAMENTO (APÓS O LABORATÓRIO)    -->
+            <!-- ======================================================== -->
+            <div style="margin-top: 2.5rem; border-top: 2px dashed #cbd5e1; padding-top: 1.75rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem;">
+                    <h3 style="color: var(--unicap-primary); font-size: 1.25rem; margin: 0;">📚 Prompts de Aprofundamento (Para Explorar Após o Laboratório)</h3>
+                    <span style="background: #e2e8f0; color: #475569; padding: 0.2rem 0.65rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600;">Repertório para o Semestre</span>
                 </div>
-                <pre id="prompt-rubrica-analitica" class="prompt-code">[PAPEL]: Atue como especialista em avaliação da aprendizagem no Ensino Superior.
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+                    Após a partilha do laboratório, explore os instrumentos modulares abaixo caso haja tempo em sala, ou utilize-os diretamente no planejamento das avaliações do 1º e 2º GQ da sua disciplina:
+                </p>
+
+                <!-- PROMPT 7.1 -->
+                <div class="prompt-container">
+                    <div class="prompt-header">
+                        <span>PROMPT 7.1: GERADOR DE RUBRICA ANALÍTICA COM CRITÉRIOS OBSERVÁVEIS</span>
+                        <button class="btn-copy" onclick="copyPrompt('prompt-rubrica-analitica')">📋 Copiar Prompt</button>
+                    </div>
+                    <pre id="prompt-rubrica-analitica" class="prompt-code">[PAPEL]: Atue como especialista em avaliação da aprendizagem no Ensino Superior.
 
 [CONTEXTO]: Para a disciplina de [INSERIR DISCIPLINA] (curso de [INSERIR CURSO]), apliquei uma atividade de [INSERIR ATIVIDADE: ex.: estudo de caso, relatório técnico, parecer jurídico, plano de intervenção] cujo objetivo de aprendizagem é: "[INSERIR OBJETIVO]".
 
@@ -1228,15 +1267,15 @@ Esta é a avaliação que costumo aplicar atualmente:
 1. Proibido usar adjetivos vagos ou subjetivos (como "bom", "razoável", "ótimo", "criativo", "insuficiente");
 2. Descreva exatamente o que o estudante faz, apresenta ou deixa de evidenciar em cada nível;
 3. O nível 'Proficiente' deve representar o padrão de aprovação institucional exigido no semestre.</pre>
-            </div>
-
-            <!-- PROMPT 7.3 -->
-            <div class="prompt-container">
-                <div class="prompt-header">
-                    <span>PROMPT 7.3: RUBRICA DE PONTO ÚNICO (SINGLE-POINT RUBRIC) PARA CORREÇÃO ÁGIL</span>
-                    <button class="btn-copy" onclick="copyPrompt('prompt-rubrica-ponto-unico')">📋 Copiar Prompt</button>
                 </div>
-                <pre id="prompt-rubrica-ponto-unico" class="prompt-code">[PAPEL]: Atue como designer instrucional universitário focado em avaliação formativa.
+
+                <!-- PROMPT 7.2 -->
+                <div class="prompt-container">
+                    <div class="prompt-header">
+                        <span>PROMPT 7.2: RUBRICA DE PONTO ÚNICO (SINGLE-POINT RUBRIC) PARA CORREÇÃO ÁGIL</span>
+                        <button class="btn-copy" onclick="copyPrompt('prompt-rubrica-ponto-unico')">📋 Copiar Prompt</button>
+                    </div>
+                    <pre id="prompt-rubrica-ponto-unico" class="prompt-code">[PAPEL]: Atue como designer instrucional universitário focado em avaliação formativa.
 
 [CONTEXTO]: Preciso avaliar [INSERIR ATIVIDADE PRÁTICA] na disciplina de [INSERIR DISCIPLINA]. Para dar feedback ágil e personalizado aos estudantes sem sobrecarga burocrática, quero adotar uma Rubrica de Ponto Único (Single-Point Rubric).
 
@@ -1251,15 +1290,15 @@ Elabore 3 a 4 linhas de critérios, incluindo obrigatoriamente:
 - Curadoria Crítica e Transparência no Uso de IA.
 
 [RESTRIÇÕES]: Foque na clareza do padrão central para que o estudante saiba exatamente o que é esperado antes de iniciar o trabalho.</pre>
-            </div>
-
-            <!-- PROMPT 7.4 -->
-            <div class="prompt-container">
-                <div class="prompt-header">
-                    <span>PROMPT 7.4: FEEDBACK FORMATIVO EM 3 PASSOS (HATTIE &amp; TIMPERLEY)</span>
-                    <button class="btn-copy" onclick="copyPrompt('prompt-feedback-3passos')">📋 Copiar Prompt</button>
                 </div>
-                <pre id="prompt-feedback-3passos" class="prompt-code">[PAPEL]: Atue como professor orientador empático, analítico e focado no avanço do estudante.
+
+                <!-- PROMPT 7.3 -->
+                <div class="prompt-container">
+                    <div class="prompt-header">
+                        <span>PROMPT 7.3: FEEDBACK FORMATIVO EM 3 PASSOS (HATTIE &amp; TIMPERLEY)</span>
+                        <button class="btn-copy" onclick="copyPrompt('prompt-feedback-3passos')">📋 Copiar Prompt</button>
+                    </div>
+                    <pre id="prompt-feedback-3passos" class="prompt-code">[PAPEL]: Atue como professor orientador empático, analítico e focado no avanço do estudante.
 
 [CONTEXTO]: Com base na seguinte rubrica de avaliação:
 "[COLAR A RUBRICA OU CRITÉRIOS]"
@@ -1272,15 +1311,15 @@ E nas minhas anotações pedagógicas brutas sobre a entrega de um estudante (se
 3. Qual o próximo passo? (Indicar exatamente 1 ação prática, factível e prioritária que o estudante deve executar antes da próxima entrega regimental).
 
 [RESTRIÇÕES]: Tom construtivo, encorajador e profissional. Limite máximo de 120 palavras. Jamais faça julgamentos pessoais; aponte evidências objetivas do trabalho.</pre>
-            </div>
-
-            <!-- PROMPT 7.5 -->
-            <div class="prompt-container">
-                <div class="prompt-header">
-                    <span>PROMPT 7.5: TICKET DE SAÍDA &amp; CHECK RÁPIDO DE LEITURA (3 MINUTOS)</span>
-                    <button class="btn-copy" onclick="copyPrompt('prompt-ticket-saida')">📋 Copiar Prompt</button>
                 </div>
-                <pre id="prompt-ticket-saida" class="prompt-code">[PAPEL]: Atue como especialista em avaliação formativa em sala de aula ativa.
+
+                <!-- PROMPT 7.4 -->
+                <div class="prompt-container">
+                    <div class="prompt-header">
+                        <span>PROMPT 7.4: TICKET DE SAÍDA &amp; CHECK RÁPIDO DE LEITURA (3 MINUTOS)</span>
+                        <button class="btn-copy" onclick="copyPrompt('prompt-ticket-saida')">📋 Copiar Prompt</button>
+                    </div>
+                    <pre id="prompt-ticket-saida" class="prompt-code">[PAPEL]: Atue como especialista em avaliação formativa em sala de aula ativa.
 
 [CONTEXTO]: Acabei de ministrar uma aula (ou indiquei a leitura prévia do texto anexo) sobre o tema [INSERIR TEMA DA AULA / CONTEÚDO] na disciplina [INSERIR DISCIPLINA]. O objetivo da aula foi: "[INSERIR OBJETIVO DA AULA]".
 
@@ -1290,15 +1329,15 @@ E nas minhas anotações pedagógicas brutas sobre a entrega de um estudante (se
 3. Gabarito Comentado Docente: Chave de correção rápida com as respostas esperadas e o roteiro do que o professor deve retomar na aula seguinte caso a turma erre a questão conceitual.
 
 [RESTRIÇÕES]: A atividade deve ser realizável em no máximo 3 minutos pelos estudantes (no papel ou via formulário Microsoft Forms no celular).</pre>
-            </div>
-
-            <!-- PROMPT 7.6 -->
-            <div class="prompt-container">
-                <div class="prompt-header">
-                    <span>PROMPT 7.6: ELABORADOR DE CASOS COM DILEMA AUTÊNTICO (SEM RESPOSTA ÚNICA)</span>
-                    <button class="btn-copy" onclick="copyPrompt('prompt-dilema-autentico')">📋 Copiar Prompt</button>
                 </div>
-                <pre id="prompt-dilema-autentico" class="prompt-code">[PAPEL]: Atue como especialista em Problem-Based Learning (PBL) e avaliação autêntica universitária.
+
+                <!-- PROMPT 7.5 -->
+                <div class="prompt-container">
+                    <div class="prompt-header">
+                        <span>PROMPT 7.5: ELABORADOR DE CASOS COM DILEMA AUTÊNTICO (SEM RESPOSTA ÚNICA)</span>
+                        <button class="btn-copy" onclick="copyPrompt('prompt-dilema-autentico')">📋 Copiar Prompt</button>
+                    </div>
+                    <pre id="prompt-dilema-autentico" class="prompt-code">[PAPEL]: Atue como especialista em Problem-Based Learning (PBL) e avaliação autêntica universitária.
 
 [CONTEXTO]: Sou docente de [INSERIR DISCIPLINA] para turmas de [INSERIR GRADUAÇÃO]. Preciso criar uma avaliação prática em equipe para o [1ºGQ ou 2ºGQ] sobre o tema [INSERIR CONTEÚDO]. Quero que a atividade seja imune à geração automática superficial por IA.
 
@@ -1309,15 +1348,15 @@ E nas minhas anotações pedagógicas brutas sobre a entrega de um estudante (se
 4. Instrução de Transparência de IA: Enunciado formal com o Semáforo de IA (o que é permitido usar, ex.: simulação de argumentos contrários, e o que deve ser autoria do grupo).
 
 [RESTRIÇÕES]: Os dados do caso devem ser verossímeis e específicos, forçando os alunos a lidar com incerteza e justificativa técnica.</pre>
-            </div>
-
-            <!-- PROMPT 7.7 -->
-            <div class="prompt-container">
-                <div class="prompt-header">
-                    <span>PROMPT 7.7: GUIA DE AUTOAVALIAÇÃO E AVALIAÇÃO POR PARES COM SEMÁFORO DE IA</span>
-                    <button class="btn-copy" onclick="copyPrompt('prompt-autoavaliacao-pares')">📋 Copiar Prompt</button>
                 </div>
-                <pre id="prompt-autoavaliacao-pares" class="prompt-code">[PAPEL]: Atue como facilitador pedagógico de aprendizagem colaborativa no Ensino Superior.
+
+                <!-- PROMPT 7.6 -->
+                <div class="prompt-container">
+                    <div class="prompt-header">
+                        <span>PROMPT 7.6: GUIA DE AUTOAVALIAÇÃO E AVALIAÇÃO POR PARES COM SEMÁFORO DE IA</span>
+                        <button class="btn-copy" onclick="copyPrompt('prompt-autoavaliacao-pares')">📋 Copiar Prompt</button>
+                    </div>
+                    <pre id="prompt-autoavaliacao-pares" class="prompt-code">[PAPEL]: Atue como facilitador pedagógico de aprendizagem colaborativa no Ensino Superior.
 
 [CONTEXTO]: Os estudantes da disciplina [INSERIR DISCIPLINA] estão produzindo um [INSERIR PRODUTO: ex.: projeto, artigo, plano de negócios, parecer] e realizarão uma sessão de avaliação entre pares (Peer Review) com seus rascunhos antes da entrega somativa final.
 
@@ -1327,33 +1366,6 @@ E nas minhas anotações pedagógicas brutas sobre a entrega de um estudante (se
 3. Declaração do Semáforo de IA: Um quadro de transparência onde o autor da entrega declara em quais etapas utilizou ferramentas de IA generativa (ex.: ideação, revisão de texto, geração de código/dados) e quais decisões e intervenções críticas foram de autoria própria.
 
 [RESTRIÇÕES]: Linguagem direta, clara e acessível para estudantes de graduação. Foco no aperfeiçoamento mútuo antes da nota final.</pre>
-            </div>
-
-            <!-- LABORATÓRIO PRÁTICO EM DUPLAS (13 MIN) -->
-            <div style="background: #fdf2f4; border: 1px solid #fecdd3; border-radius: 8px; padding: 1.25rem; margin-top: 1.5rem;">
-                <h4 style="color: var(--unicap-primary); margin-bottom: 0.5rem;">🧪 Laboratório da Aula: Redesenhe sua Avaliação em 4 Passos (13 min)</h4>
-                <p style="font-size: 0.9rem; margin-bottom: 0.75rem;">Dinâmica em duplas com celular ou notebook utilizando qualquer IA generativa (Copilot ou NotebookLM):</p>
-                <ol style="padding-left: 1.25rem; font-size: 0.88rem; line-height: 1.7;">
-                    <li><strong>1. Escolha (1 min):</strong> Selecione uma avaliação real que você aplica e o objetivo de aprendizagem correspondente.</li>
-                    <li><strong>2. Teste (3 min):</strong> Execute o Prompt 7.8 abaixo e observe o que a IA entrega sozinha.</li>
-                    <li><strong>3. Redesenhe (4 min):</strong> Alinhe o verbo do objetivo à tarefa e aplique 2 das 4 alavancas (Processo, Contexto, Defesa, Uso Declarado).</li>
-                    <li><strong>4. Rubrique (2 min):</strong> Peça à IA 3 critérios observáveis em 3 níveis e ajuste os descritores.</li>
-                </ol>
-
-                <div class="prompt-container" style="margin-top: 1rem;">
-                    <div class="prompt-header">
-                        <span>PROMPT 7.8: PROMPT INTEGRADO DO LABORATÓRIO (REDESENHO EM 4 PASSOS)</span>
-                        <button class="btn-copy" onclick="copyPrompt('prompt-lab-redesenho-completo')">📋 Copiar Prompt</button>
-                    </div>
-                    <pre id="prompt-lab-redesenho-completo" class="prompt-code">Sou docente de [DISCIPLINA] no curso de [CURSO]. 
-O objetivo de aprendizagem é: [OBJETIVO: ex.: diagnosticar e propor intervenções viáveis].
-Esta é minha avaliação atual: [DESCREVER / COLAR AVALIAÇÃO].
-
-Execute as 4 etapas a seguir:
-1. Resolva esta avaliação exatamente como um estudante mediano utilizando IA;
-2. Aponte com clareza o que sua resposta gerada NÃO comprova sobre o objetivo de aprendizagem;
-3. Proponha uma versão redesenhada alinhada ao objetivo, exigindo processo visível, contexto real da profissão e defesa da decisão tomada;
-4. Crie uma rubrica analítica com 3 critérios e 3 níveis (Em desenvolvimento, Proficiente, Avançado) com descritores observáveis para essa nova versão.</pre>
                 </div>
             </div>
         </section>
