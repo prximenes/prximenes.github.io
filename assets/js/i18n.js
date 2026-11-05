@@ -89,6 +89,8 @@
             "btn.demos_np": "🎮 Interactive Demos (Slides 6, 7–8, 14–17)",
             "btn.theory_pdf": "📄 Theory (PDF)",
             "btn.practice_pdf": "📄 Practice (PDF)",
+            "btn.worksheet_pdf": "📝 Worksheet (PDF)",
+            "btn.models_zip": "🧊 3D Models (.zip)",
 
             // Footer & Theme
             "footer.copyright": "© 2026 Pedro Rafael Ximenes. All rights reserved. • Hosted on GitHub Pages",
@@ -178,6 +180,8 @@
             "btn.demos_np": "🎮 Demos Interativas (Slides 6, 7–8, 14–17)",
             "btn.theory_pdf": "📄 Teoria (PDF)",
             "btn.practice_pdf": "📄 Prática (PDF)",
+            "btn.worksheet_pdf": "📝 Ficha da Prática (PDF)",
+            "btn.models_zip": "🧊 Modelos 3D (.zip)",
 
             // Footer & Theme
             "footer.copyright": "© 2026 Pedro Rafael Ximenes. Todos os direitos reservados. • Hospedado no GitHub Pages",
