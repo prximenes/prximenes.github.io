@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Demos Interativas — Aula 8 (Problemas NP)</title>
-  <meta name="description" content="Demos interativas da Aula 8 de Análise de Algoritmos (UNICAP): Sudoku, Mochila 0-1 e o significado de NP.">
+  <title>Demos Interativas — Aulas 8 e 9 (Problemas NP e Decidibilidade)</title>
+  <meta name="description" content="Demos interativas da Aula 8 de Análise de Algoritmos (UNICAP): Sudoku, Mochila 0-1, o significado de NP e, da Aula 9, a Conjectura de Collatz.">
 
   <link rel="icon" type="image/svg+xml" href="../../../assets/images/favicon.svg">
   <link rel="shortcut icon" href="../../../favicon.ico">
@@ -19,7 +19,7 @@
         <a href="../aula8-intro-problemas-np/index.html" class="warsaw-nav-back" title="Voltar para os slides da Aula 8">← Slides (Aula 8)</a>
         <a href="../index.html" class="warsaw-nav-back" title="Página da disciplina">Disciplina</a>
         <span class="warsaw-tag">UNICAP</span>
-        <span class="warsaw-header-title">Aula 8 — Demos Interativas</span>
+        <span class="warsaw-header-title">Aulas 8 e 9 — Demos Interativas</span>
       </div>
       <div class="warsaw-tools">
         <button id="fullscreen-btn" class="warsaw-tool-btn" title="Alternar Modo Tela Cheia (F)"><span>⛶</span></button>
@@ -27,11 +27,12 @@
       </div>
     </div>
     <div class="warsaw-subsection-bar">
-      <nav class="demo-tabs" aria-label="Demos da Aula 8">
+      <nav class="demo-tabs" aria-label="Demos interativas">
         <a href="index.html" class="demo-tab active">Demos</a>
         <a href="sudoku.html" class="demo-tab">🧩 Sudoku</a>
         <a href="mochila.html" class="demo-tab">🎒 Mochila</a>
         <a href="significado-np.html" class="demo-tab">🔮 O que é NP?</a>
+        <a href="collatz.html" class="demo-tab">🌀 Collatz</a>
       </nav>
       <span style="opacity: 0.85;">Prof. Pedro Ximenes • 2026.2</span>
     </div>
@@ -40,7 +41,7 @@
   <div class="app-container">
     <div class="intro-banner">
       <h1><span>🎮</span> Resolver vs. verificar, na prática</h1>
-      <p>Três demos para usar junto com os slides da Aula 8. Cada uma tem um link de volta para o slide que ela ilustra.</p>
+      <p>Três demos para usar junto com os slides da Aula 8 e uma para a Aula 9 (Decidibilidade). Cada uma tem um link de volta para o slide que ela ilustra.</p>
     </div>
 
     <div class="hub-grid">
@@ -64,12 +65,18 @@
         <div class="card-title">O que significa NP?</div>
         <p class="card-sub" style="margin-top: 0;">Tempo Polinomial Não Determinístico sem máquina de Turing: um robô comum, um robô que se clona a cada escolha e um robô sortudo (o certificado). Fecha com um quiz de verdadeiro ou falso.</p>
       </a>
+      <a href="collatz.html" class="card hub-card accent-info">
+        <div class="hub-emoji">🌀</div>
+        <span class="hub-slide">Aula 9 • Slides 12–15</span>
+        <div class="card-title">Collatz: para ou não para?</div>
+        <p class="card-sub" style="margin-top: 0;">Rode a sequência 3n + 1 passo a passo e veja o programa subir e descer até o 1. Um observador com relógio mostra por que esperar não decide se um programa para, e uma varredura de milhares de n mostra por que testar muitos casos não é prova.</p>
+      </a>
     </div>
   </div>
 
   <footer id="warsaw-footline">
     <div>Prof. Pedro Ximenes • UNICAP — Análise de Algoritmos</div>
-    <div>Aula 8: Introdução a Problemas NP</div>
+    <div>Aula 8: Problemas NP • Aula 9: Decidibilidade</div>
     <div><span>Tela Cheia: <kbd>F</kbd></span></div>
   </footer>
 

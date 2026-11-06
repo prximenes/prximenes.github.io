@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conjectura de Collatz — Aula 9 (Slides 12–15)</title>
+  <meta name="description" content="Demo interativa da Aula 9 de Análise de Algoritmos (UNICAP): rode a sequência de Collatz, veja por que esperar não responde se um programa para e por que testar muitos casos não é prova.">
+
+  <link rel="icon" type="image/svg+xml" href="../../../assets/images/favicon.svg">
+  <link rel="shortcut icon" href="../../../favicon.ico">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/collatz.css">
+</head>
+<body>
+
+  <header id="warsaw-header">
+    <div class="warsaw-section-bar">
+      <div class="warsaw-left-group">
+        <a href="../aula9-decidibilidade/index.html#12" class="warsaw-nav-back" title="Voltar para o Slide 12 da Aula 9">← Slide 12 (Aula 9)</a>
+        <span class="warsaw-tag">UNICAP</span>
+        <span class="warsaw-header-title">Conjectura de Collatz: Para ou Não Para?</span>
+      </div>
+      <div class="warsaw-tools">
+        <button id="fullscreen-btn" class="warsaw-tool-btn" title="Alternar Modo Tela Cheia (F)"><span>⛶</span></button>
+        <button id="theme-toggle-btn" class="warsaw-tool-btn" title="Alternar Tema Claro/Escuro"><span>🌙</span> <span>Escuro</span></button>
+      </div>
+    </div>
+    <div class="warsaw-subsection-bar">
+      <nav class="demo-tabs" aria-label="Demos interativas">
+        <a href="index.html" class="demo-tab">Demos</a>
+        <a href="sudoku.html" class="demo-tab">🧩 Sudoku</a>
+        <a href="mochila.html" class="demo-tab">🎒 Mochila</a>
+        <a href="significado-np.html" class="demo-tab">🔮 O que é NP?</a>
+        <a href="collatz.html" class="demo-tab active">🌀 Collatz</a>
+      </nav>
+      <span style="opacity: 0.85;">Prof. Pedro Ximenes • 2026.2</span>
+    </div>
+  </header>
+
+  <div class="app-container">
+
+    <div class="intro-banner">
+      <h1><span>🌀</span> Sobe, desce… e sempre chega no 1?</h1>
+      <p>
+        Comece com um inteiro <strong>n &gt; 0</strong>. Se ele é <strong>par</strong>, divida por 2. Se é <strong>ímpar</strong>, faça <strong>3n + 1</strong>. Repita.
+        A pergunta (<a href="../aula9-decidibilidade/index.html#12">Slide 12</a>) é: <em>esse processo sempre chega em 1?</em>
+        Ou seja, o programa <span class="mono">collatz(n)</span> do <a href="../aula9-decidibilidade/index.html#15">Slide 15</a> <strong>para</strong> para todo n?
+        Ninguém sabe a resposta desde 1937.
+      </p>
+    </div>
+
+    <!-- ============================================================
+         RODE A SEQUÊNCIA
+         ============================================================ -->
+    <div class="card instance-bar">
+      <span class="panel-title"><span>🔢</span> Escolha n</span>
+      <input type="text" inputmode="numeric" id="n-input" class="n-input mono" value="27" aria-label="Valor inicial n">
+      <div class="pill-group" id="preset-pills">
+        <button class="pill" data-n="6">6</button>
+        <button class="pill" data-n="7">7</button>
+        <button class="pill active" data-n="27">27</button>
+        <button class="pill" data-n="97">97</button>
+        <button class="pill" data-n="871">871</button>
+        <button class="pill" data-n="837799">837 799</button>
+      </div>
+      <span class="instance-goal" id="preset-note"></span>
+    </div>
+
+    <div class="main-side">
+      <div class="card accent-info">
+        <div class="card-title"><span>📈</span> A trajetória de n <span class="text-muted" style="font-size: 13px; font-weight: 600;">valor a cada passo</span></div>
+
+        <div class="chart-wrap" id="traj-wrap">
+          <canvas id="traj-canvas"></canvas>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-info" id="play-btn">▶ Rodar</button>
+          <button class="btn" id="step-btn" title="Um passo (→)">⏭ Um passo</button>
+          <button class="btn" id="finish-btn">⏩ Até o fim</button>
+          <button class="btn" id="reset-btn">↺ Recomeçar</button>
+          <div class="pill-group" id="scale-pills" style="margin-left: auto;">
+            <button class="pill active" data-scale="lin">Escala linear</button>
+            <button class="pill" data-scale="log">Escala log</button>
+          </div>
+        </div>
+        <div class="speed-control">
+          <span>🐢</span>
+          <input type="range" id="speed" min="0" max="100" value="55" style="flex: 1; max-width: 260px;">
+          <span>🐇</span>
+          <span class="mono" id="speed-label"></span>
+        </div>
+
+        <div class="panel-title"><span>🧾</span> Sequência até agora</div>
+        <div class="trail mono" id="trail"></div>
+      </div>
+
+      <div class="card accent-verify">
+        <div class="card-title"><span>🖥️</span> O programa rodando</div>
+        <pre class="code-box mono" id="code-box"><span class="ln" data-line="1">funcao collatz(n):</span>
+<span class="ln" data-line="2">  enquanto n != 1 faca</span>
+<span class="ln" data-line="3">    se n mod 2 = 0:  n &lt;- n / 2</span>
+<span class="ln" data-line="4">    senao:           n &lt;- 3*n + 1</span>
+<span class="ln" data-line="5">  fim</span>
+<span class="ln" data-line="6">  retorne 1</span></pre>
+
+        <div class="current-n">
+          <span class="stat-label">n agora</span>
+          <span class="current-n-value mono" id="cur-n">27</span>
+          <span class="parity-tag" id="cur-parity">ímpar → 3n + 1</span>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat">
+            <span class="stat-label">Passos</span>
+            <span class="stat-value text-info" id="st-steps">0</span>
+            <span class="stat-hint">iterações do laço</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Maior valor</span>
+            <span class="stat-value text-warn" id="st-max">27</span>
+            <span class="stat-hint" id="st-max-hint">pico da subida</span>
+          </div>
+        </div>
+        <div class="verdict" id="run-verdict">Rodando… ainda não chegou em 1</div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         ESPERAR RESOLVE?
+         ============================================================ -->
+    <div class="card accent-solve">
+      <div class="card-title"><span>⏱️</span> “E se a gente esperar bastante?” O observador com relógio</div>
+      <p class="card-sub">
+        Lembra da primeira tentativa de resolver o Problema da Parada: <strong>simular o programa e ver se ele para</strong>?
+        Aqui o observador roda <span class="mono">collatz(n)</span> por no máximo <strong>K passos</strong>. Se chegar em 1, ele responde SIM.
+        Se o tempo acabar, ele só pode dizer <strong>“não sei”</strong>: talvez falte só mais um pouco, talvez nunca termine.
+      </p>
+
+      <div class="speed-control">
+        <span>Limite K =</span>
+        <input type="range" id="k-slider" min="5" max="600" value="100" style="flex: 1;">
+        <span class="mono stat-value" id="k-label" style="font-size: 20px; min-width: 56px;">100</span>
+        <span>passos</span>
+      </div>
+
+      <div class="watch-grid" id="watch-grid"></div>
+      <div class="callout" id="watch-msg"></div>
+    </div>
+
+    <!-- ============================================================
+         TESTAR MUITOS n
+         ============================================================ -->
+    <div class="card accent-magic">
+      <div class="card-title"><span>🔬</span> Testar muitos casos: n = 1, 2, 3, …, N</div>
+      <p class="card-sub">Cada ponto é um n testado: a altura é quantos passos ele levou até chegar em 1. Arraste N e aperte “Testar todos”.</p>
+
+      <div class="brute-layout">
+        <div class="chart-wrap tall" id="scan-wrap">
+          <canvas id="scan-canvas"></canvas>
+        </div>
+
+        <div class="brute-side">
+          <div class="speed-control">
+            <span>N =</span>
+            <input type="range" id="scan-n" min="0" max="100" value="60" style="flex: 1;">
+            <span class="mono stat-value" id="scan-n-label" style="font-size: 18px; min-width: 90px; text-align: right;">10 000</span>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-magic" id="scan-btn">▶ Testar todos</button>
+            <button class="btn" id="scan-reset-btn">↺</button>
+          </div>
+
+          <div class="stat-row">
+            <div class="stat">
+              <span class="stat-label">Testados</span>
+              <span class="stat-value text-magic" id="sc-tested">0</span>
+              <span class="stat-hint" id="sc-tested-hint">de 10 000</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Chegaram em 1</span>
+              <span class="stat-value text-verify" id="sc-ok">0</span>
+              <span class="stat-hint">nenhum contraexemplo</span>
+            </div>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Recorde de passos</span>
+            <span class="stat-value text-warn" id="sc-record">—</span>
+            <span class="stat-hint" id="sc-record-hint">o n mais “teimoso” até agora</span>
+          </div>
+          <div class="progress"><span id="sc-progress" style="background: var(--c-magic);"></span></div>
+        </div>
+      </div>
+      <div class="callout" id="scan-msg">Aperte “Testar todos” e acompanhe.</div>
+    </div>
+
+    <!-- ============================================================
+         O QUE LEVAR PARA A AULA
+         ============================================================ -->
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title"><span>💡</span> O que levar para a aula</div>
+        <div class="callout ok"><strong>Testar um caso é fácil.</strong> Para um n específico, basta rodar: se chegar em 1, a resposta é SIM (n = 27 leva 111 passos).</div>
+        <div class="callout warn"><strong>Testar muitos casos não é prova.</strong> Computadores já conferiram todos os n até cerca de 2⁶⁸ (≈ 3 × 10²⁰). Mesmo assim, ninguém provou que vale para <em>todo</em> n.</div>
+        <div class="callout bad"><strong>Esperar não decide.</strong> Se o programa ainda está rodando depois de K passos, isso não prova que ele nunca vai parar. É exatamente o problema do “simulador” na prova da indecidibilidade de HALT.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span>🔗</span> Conexão com o Problema da Parada</div>
+        <div class="big-quote">Um programa <span class="text-info">H</span> que resolvesse HALT responderia, para <em>qualquer</em> n, se <span class="mono">collatz(n)</span> para.</div>
+        <div class="callout info">Hoje nem os melhores matemáticos sabem responder isso para todo n. Na aula vamos ver algo mais forte: esse <strong>H</strong> não existe. Não é só que ainda não o encontramos: é <strong>impossível</strong> escrevê-lo.</div>
+        <div class="callout magic"><strong>Atenção:</strong> HALT ser indecidível não diz que Collatz é falsa nem que ela nunca será provada. Diz que não existe um <em>único algoritmo</em> que responda a pergunta da parada para <em>todos</em> os programas.</div>
+      </div>
+    </div>
+  </div>
+
+  <footer id="warsaw-footline">
+    <div>Prof. Pedro Ximenes • UNICAP — Análise de Algoritmos</div>
+    <div>Aula 9: Decidibilidade • Slides 12–15 Interativos</div>
+    <div>
+      <span>Rodar/Pausar: <kbd>Espaço</kbd></span>
+      <span>Um passo: <kbd>→</kbd></span>
+      <span>Tela Cheia: <kbd>F</kbd></span>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script src="js/collatz.js"></script>
+</body>
+</html>
